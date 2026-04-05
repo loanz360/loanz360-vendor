@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Session Debug</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            padding: 30px;
+        }
+        h1 {
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            display: block;
+            margin: 0 auto 20px;
+        }
+        button:hover {
+            background: #00cc00;
+        }
+        pre {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 15px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+        }
+        .status.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+        }
+        .status.warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 2px solid #ffa500;
+            color: #ffa500;
+        }
+        .link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .link a {
+            color: #00ff00;
+            text-decoration: none;
+            border: 1px solid #00ff00;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 5px;
+        }
+        .link a:hover {
+            background: rgba(0, 255, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 SESSION DEBUG TOOL</h1>
+
+        <button onclick="checkSession()">CHECK SESSION NOW</button>
+
+        <div id="status"></div>
+        <div id="result"></div>
+
+        <div class="link">
+            <a href="/simple-login.html">← Simple Login</a>
+            <a href="/superadmin">Super Admin Dashboard →</a>
+        </div>
+    </div>
+
+    <script>
+        async function checkSession() {
+            const statusDiv = document.getElementById('status');
+            const resultDiv = document.getElementById('result');
+
+            statusDiv.innerHTML = '<div class="status">Checking session...</div>';
+            resultDiv.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/debug/check-session', {
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                // Analyze the result
+                let statusHtml = '';
+                let statusClass = 'warning';
+
+                if (data.superAdminSession?.exists) {
+                    if (data.databaseSession?.found) {
+                        if (data.databaseSession.data?.isExpired) {
+                            statusHtml = '⚠️ SESSION EXPIRED - Please login again';
+                            statusClass = 'error';
+                        } else if (data.databaseSession.data?.revoked) {
+                            statusHtml = '⚠️ SESSION REVOKED - Please login again';
+                            statusClass = 'error';
+                        } else if (data.admin?.found) {
+                            if (data.admin.data?.is_active && !data.admin.data?.is_locked) {
+                                statusHtml = '✅ SESSION VALID - You should be able to access dashboard';
+                                statusClass = 'success';
+                            } else {
+                                statusHtml = '❌ ADMIN ACCOUNT INACTIVE OR LOCKED';
+                                statusClass = 'error';
+                            }
+                        } else {
+                            statusHtml = '❌ ADMIN NOT FOUND IN DATABASE';
+                            statusClass = 'error';
+                        }
+                    } else {
+                        statusHtml = '❌ SESSION COOKIE EXISTS BUT NOT IN DATABASE';
+                        statusClass = 'error';
+                    }
+                } else {
+                    statusHtml = '⚠️ NO SESSION COOKIE FOUND - Please login';
+                    statusClass = 'warning';
+                }
+
+                statusDiv.innerHTML = `<div class="status ${statusClass}">${statusHtml}</div>`;
+                resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="status error">❌ ERROR CHECKING SESSION</div>';
+                resultDiv.innerHTML = `<pre>Error: ${error.message}</pre>`;
+            }
+        }
+
+        // Auto-check on load
+        window.addEventListener('load', checkSession);
+    </script>
+</body>
+</html>

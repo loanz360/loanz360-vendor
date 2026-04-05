@@ -1,0 +1,136 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
+import { logApiError } from '@/lib/monitoring/errorLogger'
+import { apiLogger } from '@/lib/utils/logger'
+
+export const dynamic = 'force-dynamic'
+
+// GET: Fetch single canned response
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  // Apply rate limiting
+  const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+  if (rateLimitResponse) return rateLimitResponse
+
+  try {
+    const { id } = await params
+    const supabase = await createClient()
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { data: response, error } = await supabase
+      .from('customer_support_canned_responses')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle()
+
+    if (error) throw error
+
+    return NextResponse.json({ response })
+  } catch (error: unknown) {
+    apiLogger.error('Error fetching canned response', error)
+    logApiError(error as Error, request, { action: 'get' })
+    return NextResponse.json(
+      { error: 'Failed to fetch canned response' },
+      { status: 500 }
+    )
+  }
+}
+
+// PATCH: Update canned response
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    const supabase = await createClient()
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Check if user is super admin
+    const { data: patchSaData } = await supabase
+      .from('super_admins')
+      .select('id')
+      .eq('id', user.id)
+      .maybeSingle()
+
+    const body = await request.json()
+    const { title, content, category, department, is_active, is_global } = body
+
+    // Build update object
+    const updates: any = { updated_at: new Date().toISOString() }
+
+    if (title !== undefined) updates.title = title.trim()
+    if (content !== undefined) updates.content = content.trim()
+    if (category !== undefined) updates.category = category
+    if (department !== undefined) updates.department = department
+    if (is_active !== undefined) updates.is_active = is_active
+
+    // Only Super Admin can set is_global
+    if (!!patchSaData && is_global !== undefined) {
+      updates.is_global = is_global
+    }
+
+    // Update canned response (RLS will check ownership)
+    const { data: updated, error } = await supabase
+      .from('customer_support_canned_responses')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .maybeSingle()
+
+    if (error) throw error
+
+    return NextResponse.json({ response: updated })
+  } catch (error: unknown) {
+    apiLogger.error('Error updating canned response', error)
+    logApiError(error as Error, request, { action: 'get' })
+    return NextResponse.json(
+      { error: 'Failed to update canned response' },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE: Delete canned response
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params
+    const supabase = await createClient()
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Delete canned response (RLS will check ownership)
+    const { error } = await supabase
+      .from('customer_support_canned_responses')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error
+
+    return NextResponse.json({ message: 'Canned response deleted successfully' })
+  } catch (error: unknown) {
+    apiLogger.error('Error deleting canned response', error)
+    logApiError(error as Error, request, { action: 'get' })
+    return NextResponse.json(
+      { error: 'Failed to delete canned response' },
+      { status: 500 }
+    )
+  }
+}

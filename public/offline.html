@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Offline - LOANZ 360</title>
+  <link rel="manifest" href="/manifest.json">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+      padding: 48px 40px;
+      text-align: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .icon svg {
+      width: 50px;
+      height: 50px;
+      stroke: white;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ef4444;
+      animation: blink 1.5s infinite;
+    }
+
+    .status-dot.online {
+      background: #22c55e;
+      animation: none;
+    }
+
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .status-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ef4444;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .status-text.online {
+      color: #22c55e;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #1e293b;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      color: white;
+    }
+
+    .button-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+    }
+
+    .button-secondary {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .button-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+
+    .divider span {
+      font-size: 13px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .features {
+      text-align: left;
+    }
+
+    .features h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #334155;
+      text-align: center;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: #f8fafc;
+      border-radius: 10px;
+      transition: transform 0.2s;
+    }
+
+    .feature-item:hover {
+      transform: scale(1.02);
+    }
+
+    .feature-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-icon.blue {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+
+    .feature-icon.green {
+      background: #dcfce7;
+      color: #16a34a;
+    }
+
+    .feature-icon.purple {
+      background: #f3e8ff;
+      color: #9333ea;
+    }
+
+    .feature-icon.orange {
+      background: #ffedd5;
+      color: #ea580c;
+    }
+
+    .feature-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .feature-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .feature-text h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 2px;
+    }
+
+    .feature-text p {
+      font-size: 11px;
+      color: #64748b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pending-sync {
+      margin-top: 24px;
+      padding: 16px;
+      background: #fef3c7;
+      border-radius: 12px;
+      display: none;
+    }
+
+    .pending-sync.show {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pending-sync svg {
+      width: 24px;
+      height: 24px;
+      stroke: #d97706;
+      flex-shrink: 0;
+    }
+
+    .pending-sync-text {
+      flex: 1;
+    }
+
+    .pending-sync-text h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #92400e;
+      margin-bottom: 2px;
+    }
+
+    .pending-sync-text p {
+      font-size: 12px;
+      color: #b45309;
+    }
+
+    .network-info {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 32px 24px;
+        border-radius: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        font-size: 15px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .icon {
+        width: 80px;
+        height: 80px;
+      }
+
+      .icon svg {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">L</div>
+
+    <div class="icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1L23 23" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10.71 5.05A16 16 0 0 1 22.58 9" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="20" r="1" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="status">
+      <div class="status-dot" id="statusDot"></div>
+      <span class="status-text" id="statusText">Offline</span>
+    </div>
+
+    <h1>No Internet Connection</h1>
+    <p class="subtitle">
+      You're currently offline. Some features are still available while we wait for your connection to return.
+    </p>
+
+    <div class="actions">
+      <button class="button button-primary" onclick="window.location.reload()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 2v6h-6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 12a9 9 0 0 1 15-6.7L21 8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 22v-6h6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 12a9 9 0 0 1-15 6.7L3 16" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Try Again
+      </button>
+      <a href="/" class="button button-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="9 22 9 12 15 12 15 22" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Go to Home
+      </a>
+    </div>
+
+    <div class="divider">
+      <span>Available Offline</span>
+    </div>
+
+    <div class="features">
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feature-icon blue">
+            <svg viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>Cached Tickets</h3>
+            <p>View previously loaded tickets</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon green">
+            <svg viewBox="0 0 24 24">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>Auto-Sync</h3>
+            <p>Changes sync when online</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon purple">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>Knowledge Base</h3>
+            <p>Access cached articles</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon orange">
+            <svg viewBox="0 0 24 24">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <div class="feature-text">
+            <h3>Your Profile</h3>
+            <p>View cached user data</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pending-sync" id="pendingSync">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M21 2v6h-6"/>
+        <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+      </svg>
+      <div class="pending-sync-text">
+        <h4>Pending Changes</h4>
+        <p id="pendingCount">You have changes waiting to sync</p>
+      </div>
+    </div>
+
+    <div class="network-info" id="networkInfo">
+      Checking connection status...
+    </div>
+  </div>
+
+  <script>
+    // Network status monitoring
+    function updateNetworkStatus() {
+      const statusDot = document.getElementById('statusDot');
+      const statusText = document.getElementById('statusText');
+      const networkInfo = document.getElementById('networkInfo');
+
+      if (navigator.onLine) {
+        statusDot.classList.add('online');
+        statusText.classList.add('online');
+        statusText.textContent = 'Online';
+        networkInfo.textContent = 'Connection restored! Reloading...';
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        statusDot.classList.remove('online');
+        statusText.classList.remove('online');
+        statusText.textContent = 'Offline';
+
+        // Get connection info if available
+        if ('connection' in navigator) {
+          const conn = navigator.connection;
+          networkInfo.textContent = `Network type: ${conn.effectiveType || 'Unknown'} | Downlink: ${conn.downlink || 'N/A'} Mbps`;
+        } else {
+          networkInfo.textContent = 'No internet connection detected';
+        }
+      }
+    }
+
+    // Check for pending sync requests
+    async function checkPendingSync() {
+      try {
+        if ('indexedDB' in window) {
+          const request = indexedDB.open('loanz360-offline', 1);
+          request.onsuccess = (event) => {
+            const db = event.target.result;
+            if (db.objectStoreNames.contains('pending-requests')) {
+              const tx = db.transaction('pending-requests', 'readonly');
+              const store = tx.objectStore('pending-requests');
+              const countRequest = store.count();
+
+              countRequest.onsuccess = () => {
+                if (countRequest.result > 0) {
+                  document.getElementById('pendingSync').classList.add('show');
+                  document.getElementById('pendingCount').textContent =
+                    `${countRequest.result} change${countRequest.result > 1 ? 's' : ''} waiting to sync`;
+                }
+              };
+            }
+          };
+        }
+      } catch (e) {
+        console.log('Could not check pending sync:', e);
+      }
+    }
+
+    // Initialize
+    updateNetworkStatus();
+    checkPendingSync();
+
+    // Listen for network changes
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+
+    // Periodic connection check
+    setInterval(() => {
+      if (navigator.onLine) {
+        fetch('/manifest.json', { method: 'HEAD', cache: 'no-store' })
+          .then(() => window.location.reload())
+          .catch(() => {});
+      }
+    }, 10000);
+
+    // Register for SW messages
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data.type === 'SYNC_SUCCESS') {
+          checkPendingSync();
+        }
+      });
+    }
+  </script>
+</body>
+</html>

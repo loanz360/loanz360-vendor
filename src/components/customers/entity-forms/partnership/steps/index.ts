@@ -1,0 +1,5 @@
+export { default as FirmDetailsStep } from './FirmDetailsStep'
+export { default as PartnersStep } from './PartnersStep'
+export { default as AddressStep } from './AddressStep'
+export { default as DocumentsStep } from './DocumentsStep'
+export { default as ReviewStep } from './ReviewStep'

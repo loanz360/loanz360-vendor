@@ -1,0 +1,899 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* LOANZ 360 Design System Variables */
+:root {
+  --default-transition-duration: 150ms;
+  --default-font-family: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --default-font-feature-settings: normal;
+  --default-font-variation-settings: normal;
+
+  --color-background: #000000;
+  --color-foreground: #ffffff;
+  --color-card: #2E2E2E;
+  --color-card-foreground: #ffffff;
+  --color-popover: #2E2E2E;
+  --color-popover-foreground: #ffffff;
+  --color-primary: #ff6700;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #2e2e2e;
+  --color-secondary-foreground: #ffffff;
+  --color-muted: #1a1a1a;
+  --color-muted-foreground: #b3b3b3;
+  --color-accent: #ff6700;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #333333;
+  --color-input: #000000;
+  --color-ring: #ff6700;
+  --color-sidebar: #1a1a1a;
+  --color-dashboard-card: #3a3a3a;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Portal Card Background — Single source of truth for ALL portals */
+  --portal-card-bg: #111827;
+  --customer-card-bg: var(--portal-card-bg);
+
+  /* Golden Profile Card — Design Tokens (Single source of truth) */
+  --gpc-bg: #000000;
+  --gpc-border: rgba(212, 175, 55, 0.3);
+  --gpc-border-hover: rgba(212, 175, 55, 0.6);
+  --gpc-gold-darkest: #8B6914;
+  --gpc-gold-dark: #8B7740;
+  --gpc-gold: #B8860B;
+  --gpc-gold-primary: #D4AF37;
+  --gpc-gold-light: #F0D078;
+  --gpc-gold-muted: #5A4A2A;
+  --gpc-progress-bg: #1A1608;
+  --gpc-avatar-bg: #0A0A0A;
+  --gpc-verified: #4ade80;
+  --gpc-levitate-duration: 4s;
+  --gpc-shimmer-duration: 3s;
+  --gpc-sparkle-duration: 4s;
+
+  --radius: 0.5rem;
+}
+
+/* Light Mode Override — activated via data-theme="light" */
+html.light-mode {
+  color-scheme: light;
+
+  --color-background: #f8f9fa;
+  --color-foreground: #171717;
+  --color-card: #ffffff;
+  --color-card-foreground: #171717;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #171717;
+  --color-primary: #ff6700;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f1f1f1;
+  --color-secondary-foreground: #171717;
+  --color-muted: #f1f1f1;
+  --color-muted-foreground: #6b7280;
+  --color-accent: #ff6700;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #e5e7eb;
+  --color-input: #ffffff;
+  --color-ring: #ff6700;
+  --color-sidebar: #ffffff;
+  --color-dashboard-card: #ffffff;
+  --portal-card-bg: #ffffff;
+  --customer-card-bg: var(--portal-card-bg);
+}
+
+html.light-mode body {
+  background-color: #f8f9fa;
+  color: #171717;
+}
+
+html.light-mode h1,
+html.light-mode h2,
+html.light-mode h3,
+html.light-mode h4,
+html.light-mode h5,
+html.light-mode h6 {
+  color: #ff6700;
+}
+
+/* Base Styles */
+body {
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+  font-family: var(--default-font-family);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-size: 12px;
+  min-height: 100vh;
+}
+
+/* Heading Styles - Orange color for all main content headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  color: #FF6700;
+  font-weight: 600;
+}
+
+/* Specific heading adjustments */
+h1 { font-size: 2rem; line-height: 1.2; }
+h2 { font-size: 1.5rem; line-height: 1.3; }
+h3 { font-size: 1.25rem; line-height: 1.4; }
+h4 { font-size: 1.125rem; line-height: 1.4; }
+h5 { font-size: 1rem; line-height: 1.4; }
+h6 { font-size: 0.875rem; line-height: 1.4; }
+
+/* Dark theme is default */
+html:not(.light-mode) {
+  color-scheme: dark;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+/* Form Elements Base Styling */
+input, textarea, select {
+  color: var(--color-foreground);
+  background-color: #000000;
+  border-color: var(--color-border);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-ring);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-ring);
+}
+
+/* LOANZ 360 Brand Utilities */
+.loanz-gradient {
+  background: linear-gradient(135deg, #ff6700 0%, #ff8533 100%);
+}
+
+.loanz-dark-gradient {
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+}
+
+.loanz-glow {
+  box-shadow: 0 0 20px rgba(255, 103, 0, 0.3);
+}
+
+.loanz-card {
+  background-color: var(--color-card);
+  color: var(--color-card-foreground);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+}
+
+/* ============================================
+   MASTER CARD SYSTEM - LOANZ 360
+   Single source of truth for all card styling
+   ============================================ */
+
+/* Base Card - Foundation for all cards */
+.card-base {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.card-base:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Content Card - Main content sections, forms, lists */
+.content-card {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.content-card:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Table Card - For data tables */
+.table-card {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* Info Card - For information panels */
+.info-card {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+/* Card Item - For list items inside cards */
+.card-item {
+  background-color: rgba(31, 41, 55, 0.5);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.card-item:hover {
+  background-color: #1f2937;
+}
+
+/* Quick Action Card - Clickable action cards */
+.action-card {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(55, 65, 81, 0.5);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.action-card:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   STAT CARDS - Solid dark cards for metrics
+   ============================================ */
+
+.stat-card {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card-blue {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-blue:hover {
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
+}
+
+.stat-card-green {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-green:hover {
+  box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.1);
+}
+
+.stat-card-red {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-red:hover {
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.1);
+}
+
+.stat-card-orange {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-orange:hover {
+  box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.1);
+}
+
+.stat-card-purple {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-purple:hover {
+  box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.1);
+}
+
+.stat-card-yellow {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-yellow:hover {
+  box-shadow: 0 10px 15px -3px rgba(234, 179, 8, 0.1);
+}
+
+.stat-card-cyan {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-cyan:hover {
+  box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.1);
+}
+
+.stat-card-emerald {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-emerald:hover {
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.1);
+}
+
+.stat-card-indigo {
+  background-color: var(--portal-card-bg);
+  border: 1px solid rgba(30, 58, 138, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-indigo:hover {
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.1);
+}
+
+/* ============================================
+   GRADIENT STAT CARDS - Dashboard hero metrics
+   Rich gradient backgrounds for visual impact
+   ============================================ */
+
+.stat-card-gradient-orange {
+  background: linear-gradient(to bottom right, rgb(124, 45, 18), rgb(67, 20, 7));
+  border: 1px solid rgba(194, 65, 12, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-gradient-orange:hover {
+  box-shadow: 0 10px 15px -3px rgba(124, 45, 18, 0.2);
+}
+
+.stat-card-gradient-blue {
+  background: linear-gradient(to bottom right, rgb(30, 58, 138), rgb(23, 37, 84));
+  border: 1px solid rgba(29, 78, 216, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-gradient-blue:hover {
+  box-shadow: 0 10px 15px -3px rgba(30, 58, 138, 0.2);
+}
+
+.stat-card-gradient-green {
+  background: linear-gradient(to bottom right, rgb(20, 83, 45), rgb(5, 46, 22));
+  border: 1px solid rgba(21, 128, 61, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-gradient-green:hover {
+  box-shadow: 0 10px 15px -3px rgba(20, 83, 45, 0.2);
+}
+
+.stat-card-gradient-yellow {
+  background: linear-gradient(to bottom right, rgb(113, 63, 18), rgb(66, 32, 6));
+  border: 1px solid rgba(161, 98, 7, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-gradient-yellow:hover {
+  box-shadow: 0 10px 15px -3px rgba(113, 63, 18, 0.2);
+}
+
+.stat-card-gradient-cyan {
+  background: linear-gradient(to bottom right, rgb(22, 78, 99), rgb(8, 51, 68));
+  border: 1px solid rgba(14, 116, 144, 0.3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card-gradient-cyan:hover {
+  box-shadow: 0 10px 15px -3px rgba(22, 78, 99, 0.2);
+}
+
+/* Glassmorphism Effect */
+.frosted-card {
+  background-color: rgba(74, 74, 74, 0.5) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+}
+
+.frosted-sidebar {
+  background: #000000;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 2px solid rgba(249, 115, 22, 0.3);
+  box-shadow: 2px 0 10px rgba(249, 115, 22, 0.15);
+}
+
+.frosted-header {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 10, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 2px solid rgba(249, 115, 22, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(249, 115, 22, 0.15);
+}
+
+.transparent-header {
+  background: transparent;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.premium-header {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.98) 0%, rgba(5, 5, 5, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, rgba(255, 103, 0, 0.3), transparent) 1;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 103, 0, 0.08);
+}
+
+.frosted-menu-hover {
+  background-color: rgba(74, 74, 74, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Custom Scrollbar Styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #374151 transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 3px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thumb-gray-700::-webkit-scrollbar-thumb {
+  background: #374151;
+}
+
+.loanz-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition-property: color, background-color, border-color;
+  transition-duration: var(--default-transition-duration);
+  cursor: pointer;
+  border: none;
+  padding: 0.5rem 1rem;
+}
+
+.loanz-button:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+.loanz-button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.loanz-button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+.loanz-button-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+}
+
+/* Form group spacing */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-foreground);
+}
+
+.form-input {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: #000000;
+  color: var(--color-foreground);
+  font-size: 0.875rem;
+  transition: border-color var(--default-transition-duration);
+}
+
+.form-input:focus {
+  border-color: var(--color-ring);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(255, 103, 0, 0.2);
+}
+
+.form-error {
+  font-size: 0.75rem;
+  color: var(--color-error);
+}
+
+/* Dashboard Layout Styles */
+.container-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.container-app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.main-content {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.customer-main-content {
+  background: #000000;
+}
+
+.banner {
+  width: 100%;
+  height: 300px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.bg-gradient-dark {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2e2e2e 100%);
+}
+
+/* Grid layouts */
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-dashboard {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Sidebar width variables */
+:root {
+  --sidebar-width: 280px;
+  --header-height: 70px;
+  --content-gap: 38px;
+  --content-top-offset: 108px;
+}
+
+.sidebar-width {
+  width: var(--sidebar-width);
+}
+
+.lg\:ml-sidebar-width {
+  @media (min-width: 1024px) {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+.lg\:ml-16 {
+  @media (min-width: 1024px) {
+    margin-left: 4rem;
+  }
+}
+
+/* Animations */
+@keyframes loginProgress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+.animate-login-progress {
+  animation: loginProgress 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Golden Profile Card */
+.golden-card {
+  background: var(--gpc-bg);
+  border: 2px solid var(--gpc-border);
+  position: relative;
+  animation: goldCardLevitate var(--gpc-levitate-duration) ease-in-out infinite;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  transform: translateY(-1px);
+}
+
+.golden-card:hover {
+  box-shadow: 0 0 28px rgba(212, 175, 55, 0.4), 0 8px 40px rgba(0, 0, 0, 0.7), 0 20px 60px rgba(212, 175, 55, 0.12), inset 0 1px 0 rgba(212, 175, 55, 0.1);
+  border-color: var(--gpc-border-hover);
+  transform: translateY(-3px);
+}
+
+@keyframes goldCardLevitate {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.15), 0 6px 24px rgba(0, 0, 0, 0.6), 0 12px 40px rgba(212, 175, 55, 0.06);
+    border-color: rgba(212, 175, 55, 0.3);
+    transform: translateY(-1px);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(212, 175, 55, 0.3), 0 10px 36px rgba(0, 0, 0, 0.6), 0 18px 50px rgba(212, 175, 55, 0.1);
+    border-color: rgba(212, 175, 55, 0.5);
+    transform: translateY(-3px);
+  }
+}
+
+.golden-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gpc-gold), var(--gpc-gold-primary), var(--gpc-gold-light), var(--gpc-gold-primary), var(--gpc-gold), transparent);
+  z-index: 3;
+  border-radius: 0 0 2px 2px;
+}
+
+.golden-sparkle-cascade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 65px;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(2.5px 2.5px at 4% 14%, rgba(255, 215, 0, 0.95) 50%, transparent 50%),
+    radial-gradient(3px 3px at 10% 35%, rgba(212, 175, 55, 0.7) 50%, transparent 50%),
+    radial-gradient(2px 2px at 15% 8%, rgba(240, 208, 120, 0.85) 50%, transparent 50%),
+    radial-gradient(3.5px 3.5px at 20% 45%, rgba(184, 134, 11, 0.5) 50%, transparent 50%),
+    radial-gradient(2.5px 2.5px at 25% 20%, rgba(255, 215, 0, 0.8) 50%, transparent 50%),
+    radial-gradient(2px 2px at 31% 52%, rgba(212, 175, 55, 0.45) 50%, transparent 50%),
+    radial-gradient(3px 3px at 36% 12%, rgba(240, 208, 120, 0.9) 50%, transparent 50%),
+    radial-gradient(2.5px 2.5px at 41% 38%, rgba(255, 215, 0, 0.55) 50%, transparent 50%),
+    radial-gradient(2px 2px at 47% 6%, rgba(184, 134, 11, 0.85) 50%, transparent 50%),
+    radial-gradient(3px 3px at 52% 48%, rgba(212, 175, 55, 0.4) 50%, transparent 50%),
+    radial-gradient(2.5px 2.5px at 57% 24%, rgba(255, 215, 0, 0.75) 50%, transparent 50%),
+    radial-gradient(3.5px 3.5px at 63% 42%, rgba(240, 208, 120, 0.55) 50%, transparent 50%),
+    radial-gradient(2px 2px at 68% 15%, rgba(212, 175, 55, 0.9) 50%, transparent 50%),
+    radial-gradient(3px 3px at 74% 50%, rgba(184, 134, 11, 0.45) 50%, transparent 50%),
+    radial-gradient(2.5px 2.5px at 79% 10%, rgba(255, 215, 0, 0.8) 50%, transparent 50%),
+    radial-gradient(2px 2px at 84% 34%, rgba(212, 175, 55, 0.6) 50%, transparent 50%),
+    radial-gradient(3px 3px at 89% 22%, rgba(240, 208, 120, 0.75) 50%, transparent 50%),
+    radial-gradient(2.5px 2.5px at 94% 44%, rgba(255, 215, 0, 0.4) 50%, transparent 50%),
+    radial-gradient(2px 2px at 98% 5%, rgba(184, 134, 11, 0.7) 50%, transparent 50%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 55%, transparent 100%);
+  animation: sparkleBreath var(--gpc-sparkle-duration) ease-in-out infinite alternate;
+}
+
+.golden-sparkle-cascade::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(2.5px 2.5px at 7% 26%, rgba(255, 215, 0, 0.6) 50%, transparent 50%),
+    radial-gradient(2px 2px at 17% 42%, rgba(212, 175, 55, 0.75) 50%, transparent 50%),
+    radial-gradient(3px 3px at 28% 30%, rgba(240, 208, 120, 0.4) 50%, transparent 50%),
+    radial-gradient(2px 2px at 37% 52%, rgba(184, 134, 11, 0.6) 50%, transparent 50%),
+    radial-gradient(2.5px 2.5px at 45% 18%, rgba(255, 215, 0, 0.5) 50%, transparent 50%),
+    radial-gradient(2px 2px at 55% 40%, rgba(212, 175, 55, 0.7) 50%, transparent 50%),
+    radial-gradient(3px 3px at 65% 48%, rgba(240, 208, 120, 0.35) 50%, transparent 50%),
+    radial-gradient(2px 2px at 75% 28%, rgba(184, 134, 11, 0.75) 50%, transparent 50%),
+    radial-gradient(2.5px 2.5px at 86% 46%, rgba(255, 215, 0, 0.45) 50%, transparent 50%),
+    radial-gradient(2px 2px at 96% 20%, rgba(212, 175, 55, 0.6) 50%, transparent 50%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 50%, transparent 100%);
+  animation: sparkleBreath 3s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes sparkleBreath {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.65; }
+}
+
+.golden-text {
+  background: linear-gradient(135deg, var(--gpc-gold) 0%, var(--gpc-gold-primary) 25%, var(--gpc-gold-light) 50%, var(--gpc-gold-primary) 75%, var(--gpc-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.golden-progress-bar {
+  background: linear-gradient(90deg, var(--gpc-gold-darkest), var(--gpc-gold-primary), var(--gpc-gold-light), var(--gpc-gold-primary), var(--gpc-gold-darkest));
+  background-size: 200% 100%;
+  animation: goldProgressShimmer var(--gpc-shimmer-duration) ease-in-out infinite;
+  border-radius: 9999px;
+  position: relative;
+}
+
+@keyframes goldProgressShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.golden-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.4) 30%, rgba(240, 208, 120, 0.5) 50%, rgba(212, 175, 55, 0.4) 70%, transparent 100%);
+}
+
+.golden-footer-link {
+  transition: all 0.3s ease;
+}
+
+.golden-footer-link:hover {
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.12) 0%, rgba(184, 134, 11, 0.08) 100%) !important;
+}
+
+.golden-footer-link:hover span,
+.golden-footer-link:hover svg {
+  color: #D4AF37 !important;
+  -webkit-text-fill-color: #D4AF37 !important;
+}
+
+/* Achievement Cards — Premium Visual Effects */
+@keyframes scan {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+@keyframes pulse-glow-cyan {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2), 0 0 40px rgba(0, 217, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.4), 0 0 80px rgba(0, 217, 255, 0.2), 0 0 120px rgba(0, 217, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.8);
+  }
+}
+
+@keyframes pulse-glow-gold {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.2), 0 0 40px rgba(251, 191, 36, 0.1);
+    border-color: rgba(251, 191, 36, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.4), 0 0 80px rgba(251, 191, 36, 0.2), 0 0 120px rgba(251, 191, 36, 0.1);
+    border-color: rgba(251, 191, 36, 0.8);
+  }
+}
+
+@keyframes pulse-glow-purple {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2), 0 0 40px rgba(168, 85, 247, 0.1);
+    border-color: rgba(168, 85, 247, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.4), 0 0 80px rgba(168, 85, 247, 0.2), 0 0 120px rgba(168, 85, 247, 0.1);
+    border-color: rgba(168, 85, 247, 0.8);
+  }
+}
+
+@keyframes pulse-glow-rose {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(244, 63, 94, 0.2), 0 0 40px rgba(244, 63, 94, 0.1);
+    border-color: rgba(244, 63, 94, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(244, 63, 94, 0.4), 0 0 80px rgba(244, 63, 94, 0.2), 0 0 120px rgba(244, 63, 94, 0.1);
+    border-color: rgba(244, 63, 94, 0.8);
+  }
+}

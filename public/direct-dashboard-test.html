@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Direct Dashboard Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+        }
+        .section {
+            background: #111;
+            border: 1px solid #0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+        }
+        pre {
+            background: #000;
+            border: 1px solid #333;
+            padding: 10px;
+            overflow-x: auto;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+    </style>
+</head>
+<body>
+    <h1>🔬 Direct Dashboard Access Test</h1>
+
+    <div class="section">
+        <h2>Step 1: Login First</h2>
+        <input type="password" id="password" placeholder="Enter password" style="padding: 10px; width: 300px;">
+        <button onclick="doLogin()">LOGIN</button>
+        <div id="loginResult"></div>
+    </div>
+
+    <div class="section">
+        <h2>Step 2: Check Session</h2>
+        <button onclick="checkSession()">CHECK SESSION</button>
+        <div id="sessionResult"></div>
+    </div>
+
+    <div class="section">
+        <h2>Step 3: Fetch Dashboard HTML</h2>
+        <button onclick="fetchDashboard()">FETCH DASHBOARD</button>
+        <div id="dashboardResult"></div>
+    </div>
+
+    <div class="section">
+        <h2>Step 4: Direct Navigation</h2>
+        <p>If all above steps work, click to navigate:</p>
+        <button onclick="window.location.href='/superadmin'">GO TO DASHBOARD</button>
+    </div>
+
+    <script>
+        async function doLogin() {
+            const password = document.getElementById('password').value;
+            const resultDiv = document.getElementById('loginResult');
+
+            if (!password) {
+                resultDiv.innerHTML = '<p class="error">Please enter password</p>';
+                return;
+            }
+
+            resultDiv.innerHTML = '<p>Logging in...</p>';
+
+            try {
+                const response = await fetch('/api/superadmin/auth/simple-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'sales.loanz360@gmail.com',
+                        password: password
+                    }),
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    resultDiv.innerHTML = `
+                        <p class="success">✅ LOGIN SUCCESS</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p>Now check session in Step 2</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <p class="error">❌ LOGIN FAILED</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">ERROR: ${error.message}</p>`;
+            }
+        }
+
+        async function checkSession() {
+            const resultDiv = document.getElementById('sessionResult');
+            resultDiv.innerHTML = '<p>Checking session...</p>';
+
+            try {
+                const response = await fetch('/api/auth/verify-session', {
+                    credentials: 'include'
+                });
+
+                const data = await response.json();
+
+                if (data.authenticated) {
+                    resultDiv.innerHTML = `
+                        <p class="success">✅ SESSION VALID</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                        <p>Now fetch dashboard in Step 3</p>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <p class="error">❌ SESSION INVALID</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">ERROR: ${error.message}</p>`;
+            }
+        }
+
+        async function fetchDashboard() {
+            const resultDiv = document.getElementById('dashboardResult');
+            resultDiv.innerHTML = '<p>Fetching dashboard...</p>';
+
+            try {
+                const response = await fetch('/superadmin', {
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'text/html'
+                    }
+                });
+
+                const text = await response.text();
+
+                if (response.ok) {
+                    // Check if we got HTML or a redirect
+                    if (text.includes('<!DOCTYPE html') || text.includes('<html')) {
+                        resultDiv.innerHTML = `
+                            <p class="success">✅ DASHBOARD HTML RECEIVED</p>
+                            <p>Status: ${response.status}</p>
+                            <p>Content length: ${text.length} bytes</p>
+                            <p>Contains dashboard: ${text.includes('dashboard') || text.includes('Dashboard') ? 'YES' : 'NO'}</p>
+                            <p>Contains redirect: ${text.includes('redirect') || text.includes('login') ? 'MAYBE' : 'NO'}</p>
+                            <details>
+                                <summary>View HTML (first 1000 chars)</summary>
+                                <pre>${text.substring(0, 1000)}</pre>
+                            </details>
+                        `;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <p class="error">❌ GOT NON-HTML RESPONSE</p>
+                            <pre>${text.substring(0, 500)}</pre>
+                        `;
+                    }
+                } else {
+                    resultDiv.innerHTML = `
+                        <p class="error">❌ REQUEST FAILED (${response.status})</p>
+                        <pre>${text.substring(0, 500)}</pre>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">ERROR: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

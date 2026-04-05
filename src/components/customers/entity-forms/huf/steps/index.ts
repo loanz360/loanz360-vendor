@@ -1,0 +1,6 @@
+export { default as HUFDetailsStep } from './HUFDetailsStep'
+export { default as KartaStep } from './KartaStep'
+export { default as CoparcenersStep } from './CoparcenersStep'
+export { default as AddressStep } from './AddressStep'
+export { default as DocumentsStep } from './DocumentsStep'
+export { default as ReviewStep } from './ReviewStep'

@@ -1,0 +1,6 @@
+export { default as CompanyDetailsStep } from './CompanyDetailsStep'
+export { default as DirectorsStep } from './DirectorsStep'
+export { default as ShareholdersStep } from './ShareholdersStep'
+export { default as AddressStep } from './AddressStep'
+export { default as DocumentsStep } from './DocumentsStep'
+export { default as ReviewStep } from './ReviewStep'

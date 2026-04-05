@@ -1,0 +1,13 @@
+﻿{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "export NODE_OPTIONS='--max-old-space-size=8192' && next build",
+  "installCommand": "npm install --legacy-peer-deps",
+  "framework": "nextjs",
+  "regions": ["bom1"],
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "crons": []
+}

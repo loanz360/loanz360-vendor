@@ -1,0 +1,5 @@
+export { default as SocietyDetailsStep } from './SocietyDetailsStep'
+export { default as BoardMembersStep } from './BoardMembersStep'
+export { default as AddressStep } from './AddressStep'
+export { default as DocumentsStep } from './DocumentsStep'
+export { default as ReviewStep } from './ReviewStep'

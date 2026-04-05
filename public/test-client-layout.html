@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Client Layout Auth</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+        }
+        .section {
+            background: #111;
+            border: 1px solid #0f0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+        }
+        pre {
+            background: #000;
+            border: 1px solid #333;
+            padding: 10px;
+            overflow-x: auto;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test Client Layout Auth Logic</h1>
+
+    <div class="section">
+        <h2>Simulate Client Layout Auth Check</h2>
+        <p>This mimics what _client-layout.tsx does</p>
+        <button onclick="testClientAuth()">RUN CLIENT AUTH CHECK</button>
+        <div id="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Manual Dashboard Load</h2>
+        <p>If auth check passes, try loading dashboard in iframe:</p>
+        <button onclick="loadDashboard()">LOAD DASHBOARD IN IFRAME</button>
+        <div id="iframeContainer"></div>
+    </div>
+
+    <script>
+        async function testClientAuth() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>Testing client auth logic...</p>';
+
+            const steps = [];
+
+            try {
+                // Step 1: Check verify-session API (what the client layout should do)
+                steps.push('<p><strong>Step 1:</strong> Calling /api/auth/verify-session...</p>');
+
+                const verifyResponse = await fetch('/api/auth/verify-session', {
+                    credentials: 'include'
+                });
+
+                const verifyData = await verifyResponse.json();
+
+                if (verifyResponse.ok) {
+                    steps.push(`<p class="success">✅ Response OK (${verifyResponse.status})</p>`);
+                    steps.push(`<pre>${JSON.stringify(verifyData, null, 2)}</pre>`);
+
+                    if (verifyData.authenticated && verifyData.role === 'SUPER_ADMIN') {
+                        steps.push('<p class="success">✅ Auth check PASSED - Client layout SHOULD allow access</p>');
+                        steps.push('<p>The client layout should now render the dashboard.</p>');
+                        steps.push('<p><strong>If you still get redirected, there is a bug in _client-layout.tsx</strong></p>');
+                    } else {
+                        steps.push('<p class="error">❌ Auth check FAILED</p>');
+                        steps.push(`<p>authenticated: ${verifyData.authenticated}</p>`);
+                        steps.push(`<p>role: ${verifyData.role}</p>`);
+                    }
+                } else {
+                    steps.push(`<p class="error">❌ Response failed (${verifyResponse.status})</p>`);
+                    steps.push(`<pre>${JSON.stringify(verifyData, null, 2)}</pre>`);
+                }
+
+                // Step 2: Check Supabase fallback (what client layout does if verify-session fails)
+                steps.push('<br><p><strong>Step 2:</strong> Checking Supabase session fallback...</p>');
+                steps.push('<p>The client layout will try Supabase Auth if verify-session fails.</p>');
+                steps.push('<p>Since we used simple login, there is NO Supabase session.</p>');
+                steps.push('<p class="error">⚠️ If verify-session fails, client layout will redirect to login!</p>');
+
+                resultDiv.innerHTML = steps.join('');
+
+            } catch (error) {
+                steps.push(`<p class="error">ERROR: ${error.message}</p>`);
+                steps.push(`<pre>${error.stack}</pre>`);
+                resultDiv.innerHTML = steps.join('');
+            }
+        }
+
+        function loadDashboard() {
+            const container = document.getElementById('iframeContainer');
+            container.innerHTML = `
+                <p>Loading dashboard in iframe...</p>
+                <iframe
+                    src="/superadmin"
+                    width="100%"
+                    height="600"
+                    style="border: 2px solid #0f0; background: white; margin-top: 20px;"
+                    onload="checkIframeRedirect(this)"
+                ></iframe>
+            `;
+        }
+
+        function checkIframeRedirect(iframe) {
+            try {
+                const iframeUrl = iframe.contentWindow.location.href;
+                const container = document.getElementById('iframeContainer');
+
+                if (iframeUrl.includes('/login')) {
+                    container.innerHTML = `
+                        <p class="error">❌ REDIRECTED TO LOGIN!</p>
+                        <p>URL: ${iframeUrl}</p>
+                        <p><strong>This confirms the client-side redirect issue.</strong></p>
+                        <p>The problem is in /src/app/superadmin/(dashboard)/_client-layout.tsx</p>
+                    ` + container.innerHTML;
+                } else {
+                    container.innerHTML = `
+                        <p class="success">✅ Dashboard loaded successfully!</p>
+                        <p>URL: ${iframeUrl}</p>
+                    ` + container.innerHTML;
+                }
+            } catch (e) {
+                // Cross-origin restriction, can't read iframe URL
+                console.log('Cannot read iframe URL (cross-origin or same-origin policy)');
+            }
+        }
+
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            setTimeout(testClientAuth, 500);
+        });
+    </script>
+</body>
+</html>

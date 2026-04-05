@@ -1,0 +1,196 @@
+export type Locale = 'en' | 'hi'
+
+export const SUPPORTED_LOCALES: Record<Locale, { name: string; nativeName: string }> = {
+  en: { name: 'English', nativeName: 'English' },
+  hi: { name: 'Hindi', nativeName: '\u0939\u093F\u0928\u094D\u0926\u0940' },
+}
+
+// Common UI strings used across the HR portal
+const translations: Record<Locale, Record<string, string>> = {
+  en: {
+    // Navigation
+    'nav.dashboard': 'Dashboard',
+    'nav.employees': 'Employees',
+    'nav.attendance': 'Attendance',
+    'nav.leaves': 'Leaves',
+    'nav.payroll': 'Payroll',
+    'nav.performance': 'Performance',
+    'nav.recruitment': 'Recruitment',
+    'nav.compliance': 'Compliance',
+    'nav.learning': 'Learning',
+    'nav.settings': 'Settings',
+
+    // Common actions
+    'action.save': 'Save',
+    'action.cancel': 'Cancel',
+    'action.delete': 'Delete',
+    'action.edit': 'Edit',
+    'action.create': 'Create',
+    'action.search': 'Search',
+    'action.filter': 'Filter',
+    'action.export': 'Export',
+    'action.import': 'Import',
+    'action.refresh': 'Refresh',
+    'action.submit': 'Submit',
+    'action.approve': 'Approve',
+    'action.reject': 'Reject',
+    'action.view': 'View',
+    'action.download': 'Download',
+    'action.upload': 'Upload',
+    'action.close': 'Close',
+    'action.confirm': 'Confirm',
+    'action.back': 'Go Back',
+    'action.next': 'Next',
+    'action.previous': 'Previous',
+    'action.selectAll': 'Select All',
+    'action.deselectAll': 'Deselect All',
+
+    // Status
+    'status.active': 'Active',
+    'status.inactive': 'Inactive',
+    'status.pending': 'Pending',
+    'status.approved': 'Approved',
+    'status.rejected': 'Rejected',
+    'status.completed': 'Completed',
+    'status.draft': 'Draft',
+    'status.processing': 'Processing',
+    'status.onHold': 'On Hold',
+    'status.cancelled': 'Cancelled',
+
+    // Common labels
+    'label.name': 'Name',
+    'label.email': 'Email',
+    'label.phone': 'Phone',
+    'label.department': 'Department',
+    'label.designation': 'Designation',
+    'label.date': 'Date',
+    'label.status': 'Status',
+    'label.actions': 'Actions',
+    'label.total': 'Total',
+    'label.showing': 'Showing',
+    'label.of': 'of',
+    'label.results': 'results',
+    'label.noData': 'No data found',
+    'label.loading': 'Loading...',
+    'label.error': 'Something went wrong',
+    'label.success': 'Success',
+    'label.required': 'Required',
+    'label.optional': 'Optional',
+
+    // Dashboard
+    'dashboard.welcome': 'Welcome back',
+    'dashboard.totalEmployees': 'Total Employees',
+    'dashboard.presentToday': 'Present Today',
+    'dashboard.onLeave': 'On Leave',
+    'dashboard.pendingApprovals': 'Pending Approvals',
+    'dashboard.recentActivity': 'Recent Activity',
+    'dashboard.upcomingBirthdays': 'Upcoming Birthdays',
+    'dashboard.quickStats': 'Quick Stats',
+
+    // Messages
+    'msg.confirmDelete': 'Are you sure you want to delete this? This action cannot be undone.',
+    'msg.saveSuccess': 'Changes saved successfully',
+    'msg.deleteSuccess': 'Deleted successfully',
+    'msg.createSuccess': 'Created successfully',
+    'msg.updateSuccess': 'Updated successfully',
+    'msg.networkError': 'Network error. Please check your connection.',
+    'msg.unauthorized': 'You are not authorized to perform this action.',
+    'msg.sessionExpired': 'Your session has expired. Please log in again.',
+  },
+  hi: {
+    // Navigation
+    'nav.dashboard': '\u0921\u0948\u0936\u092C\u094B\u0930\u094D\u0921',
+    'nav.employees': '\u0915\u0930\u094D\u092E\u091A\u093E\u0930\u0940',
+    'nav.attendance': '\u0909\u092A\u0938\u094D\u0925\u093F\u0924\u093F',
+    'nav.leaves': '\u091B\u0941\u091F\u094D\u091F\u093F\u092F\u093E\u0901',
+    'nav.payroll': '\u0935\u0947\u0924\u0928',
+    'nav.performance': '\u092A\u094D\u0930\u0926\u0930\u094D\u0936\u0928',
+    'nav.recruitment': '\u092D\u0930\u094D\u0924\u0940',
+    'nav.compliance': '\u0905\u0928\u0941\u092A\u093E\u0932\u0928',
+    'nav.learning': '\u0936\u093F\u0915\u094D\u0937\u0923',
+    'nav.settings': '\u0938\u0947\u091F\u093F\u0902\u0917\u094D\u0938',
+
+    // Common actions
+    'action.save': '\u0938\u0939\u0947\u091C\u0947\u0902',
+    'action.cancel': '\u0930\u0926\u094D\u0926 \u0915\u0930\u0947\u0902',
+    'action.delete': '\u0939\u091F\u093E\u090F\u0902',
+    'action.edit': '\u0938\u0902\u092A\u093E\u0926\u093F\u0924 \u0915\u0930\u0947\u0902',
+    'action.create': '\u092C\u0928\u093E\u090F\u0902',
+    'action.search': '\u0916\u094B\u091C\u0947\u0902',
+    'action.filter': '\u092B\u093C\u093F\u0932\u094D\u091F\u0930',
+    'action.export': '\u0928\u093F\u0930\u094D\u092F\u093E\u0924',
+    'action.import': '\u0906\u092F\u093E\u0924',
+    'action.refresh': '\u0930\u0940\u092B\u094D\u0930\u0947\u0936',
+    'action.submit': '\u091C\u092E\u093E \u0915\u0930\u0947\u0902',
+    'action.approve': '\u0938\u094D\u0935\u0940\u0915\u0943\u0924',
+    'action.reject': '\u0905\u0938\u094D\u0935\u0940\u0915\u0943\u0924',
+    'action.view': '\u0926\u0947\u0916\u0947\u0902',
+    'action.download': '\u0921\u093E\u0909\u0928\u0932\u094B\u0921',
+    'action.upload': '\u0905\u092A\u0932\u094B\u0921',
+    'action.close': '\u092C\u0902\u0926 \u0915\u0930\u0947\u0902',
+    'action.confirm': '\u092A\u0941\u0937\u094D\u091F\u093F \u0915\u0930\u0947\u0902',
+    'action.back': '\u0935\u093E\u092A\u0938 \u091C\u093E\u090F\u0902',
+    'action.next': '\u0905\u0917\u0932\u093E',
+    'action.previous': '\u092A\u093F\u091B\u0932\u093E',
+    'action.selectAll': '\u0938\u092D\u0940 \u091A\u0941\u0928\u0947\u0902',
+    'action.deselectAll': '\u0938\u092D\u0940 \u0905\u091A\u092F\u0928\u093F\u0924',
+
+    // Status
+    'status.active': '\u0938\u0915\u094D\u0930\u093F\u092F',
+    'status.inactive': '\u0928\u093F\u0937\u094D\u0915\u094D\u0930\u093F\u092F',
+    'status.pending': '\u0932\u0902\u092C\u093F\u0924',
+    'status.approved': '\u0938\u094D\u0935\u0940\u0915\u0943\u0924',
+    'status.rejected': '\u0905\u0938\u094D\u0935\u0940\u0915\u0943\u0924',
+    'status.completed': '\u092A\u0942\u0930\u094D\u0923',
+    'status.draft': '\u0921\u094D\u0930\u093E\u092B\u094D\u091F',
+    'status.processing': '\u092A\u094D\u0930\u0938\u0902\u0938\u094D\u0915\u0930\u0923',
+    'status.onHold': '\u0930\u0941\u0915\u093E \u0939\u0941\u0906',
+    'status.cancelled': '\u0930\u0926\u094D\u0926',
+
+    // Common labels
+    'label.name': '\u0928\u093E\u092E',
+    'label.email': '\u0908\u092E\u0947\u0932',
+    'label.phone': '\u092B\u093C\u094B\u0928',
+    'label.department': '\u0935\u093F\u092D\u093E\u0917',
+    'label.designation': '\u092A\u0926\u0928\u093E\u092E',
+    'label.date': '\u0924\u093E\u0930\u0940\u0916',
+    'label.status': '\u0938\u094D\u0925\u093F\u0924\u093F',
+    'label.actions': '\u0915\u093E\u0930\u094D\u0930\u0935\u093E\u0908',
+    'label.total': '\u0915\u0941\u0932',
+    'label.showing': '\u0926\u093F\u0916\u093E \u0930\u0939\u093E \u0939\u0948',
+    'label.of': '\u0915\u093E',
+    'label.results': '\u092A\u0930\u093F\u0923\u093E\u092E',
+    'label.noData': '\u0915\u094B\u0908 \u0921\u0947\u091F\u093E \u0928\u0939\u0940\u0902 \u092E\u093F\u0932\u093E',
+    'label.loading': '\u0932\u094B\u0921 \u0939\u094B \u0930\u0939\u093E \u0939\u0948...',
+    'label.error': '\u0915\u0941\u091B \u0917\u0932\u0924 \u0939\u094B \u0917\u092F\u093E',
+    'label.success': '\u0938\u092B\u0932',
+    'label.required': '\u0906\u0935\u0936\u094D\u092F\u0915',
+    'label.optional': '\u0935\u0948\u0915\u0932\u094D\u092A\u093F\u0915',
+
+    // Dashboard
+    'dashboard.welcome': '\u0935\u093E\u092A\u0938 \u0938\u094D\u0935\u093E\u0917\u0924 \u0939\u0948',
+    'dashboard.totalEmployees': '\u0915\u0941\u0932 \u0915\u0930\u094D\u092E\u091A\u093E\u0930\u0940',
+    'dashboard.presentToday': '\u0906\u091C \u0909\u092A\u0938\u094D\u0925\u093F\u0924',
+    'dashboard.onLeave': '\u091B\u0941\u091F\u094D\u091F\u0940 \u092A\u0930',
+    'dashboard.pendingApprovals': '\u0932\u0902\u092C\u093F\u0924 \u0905\u0928\u0941\u092E\u094B\u0926\u0928',
+    'dashboard.recentActivity': '\u0939\u093E\u0932 \u0915\u0940 \u0917\u0924\u093F\u0935\u093F\u0927\u093F',
+    'dashboard.upcomingBirthdays': '\u0906\u0917\u093E\u092E\u0940 \u091C\u0928\u094D\u092E\u0926\u093F\u0928',
+    'dashboard.quickStats': '\u0924\u094D\u0935\u0930\u093F\u0924 \u0906\u0901\u0915\u0921\u093C\u0947',
+
+    // Messages
+    'msg.confirmDelete': '\u0915\u094D\u092F\u093E \u0906\u092A \u0935\u093E\u0915\u0908 \u0907\u0938\u0947 \u0939\u091F\u093E\u0928\u093E \u091A\u093E\u0939\u0924\u0947 \u0939\u0948\u0902? \u092F\u0939 \u0915\u094D\u0930\u093F\u092F\u093E \u092A\u0942\u0930\u094D\u0935\u0935\u0924 \u0928\u0939\u0940\u0902 \u0915\u0940 \u091C\u093E \u0938\u0915\u0924\u0940\u0964',
+    'msg.saveSuccess': '\u092A\u0930\u093F\u0935\u0930\u094D\u0924\u0928 \u0938\u092B\u0932\u0924\u093E\u092A\u0942\u0930\u094D\u0935\u0915 \u0938\u0939\u0947\u091C\u0947 \u0917\u090F',
+    'msg.deleteSuccess': '\u0938\u092B\u0932\u0924\u093E\u092A\u0942\u0930\u094D\u0935\u0915 \u0939\u091F\u093E\u092F\u093E \u0917\u092F\u093E',
+    'msg.createSuccess': '\u0938\u092B\u0932\u0924\u093E\u092A\u0942\u0930\u094D\u0935\u0915 \u092C\u0928\u093E\u092F\u093E \u0917\u092F\u093E',
+    'msg.updateSuccess': '\u0938\u092B\u0932\u0924\u093E\u092A\u0942\u0930\u094D\u0935\u0915 \u0905\u092A\u0921\u0947\u091F \u0915\u093F\u092F\u093E \u0917\u092F\u093E',
+    'msg.networkError': '\u0928\u0947\u091F\u0935\u0930\u094D\u0915 \u0924\u094D\u0930\u0941\u091F\u093F\u0964 \u0915\u0943\u092A\u092F\u093E \u0905\u092A\u0928\u093E \u0915\u0928\u0947\u0915\u094D\u0936\u0928 \u091C\u093E\u0902\u091A\u0947\u0902\u0964',
+    'msg.unauthorized': '\u0906\u092A \u092F\u0939 \u0915\u094D\u0930\u093F\u092F\u093E \u0915\u0930\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u0905\u0927\u093F\u0915\u0943\u0924 \u0928\u0939\u0940\u0902 \u0939\u0948\u0902\u0964',
+    'msg.sessionExpired': '\u0906\u092A\u0915\u093E \u0938\u0924\u094D\u0930 \u0938\u092E\u093E\u092A\u094D\u0924 \u0939\u094B \u0917\u092F\u093E \u0939\u0948\u0964 \u0915\u0943\u092A\u092F\u093E \u092A\u0941\u0928\u0903 \u0932\u0949\u0917 \u0907\u0928 \u0915\u0930\u0947\u0902\u0964',
+  },
+}
+
+export function t(key: string, locale: Locale = 'en'): string {
+  return translations[locale]?.[key] || translations.en[key] || key
+}
+
+export default translations

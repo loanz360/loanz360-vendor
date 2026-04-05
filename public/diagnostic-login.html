@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Login - Step by Step</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1a1a1a;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            padding: 30px;
+        }
+        h1 { color: #00ff00; text-align: center; margin-bottom: 30px; }
+        .form-section {
+            background: #000;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        input {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #00ff00;
+            border-radius: 4px;
+        }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover { background: #00cc00; }
+        button:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+        .steps {
+            background: #000;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .step {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 3px solid #333;
+            padding-left: 15px;
+        }
+        .step.pending { border-left-color: #666; color: #666; }
+        .step.running { border-left-color: #ffff00; color: #ffff00; animation: pulse 1s infinite; }
+        .step.success { border-left-color: #00ff00; color: #00ff00; }
+        .step.error { border-left-color: #ff0000; color: #ff0000; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .detail {
+            background: #0a0a0a;
+            border: 1px solid #222;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 2px solid #ffa500;
+            color: #ffa500;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 DIAGNOSTIC LOGIN - STEP BY STEP TRACE</h1>
+
+        <div class="form-section">
+            <h3>Login Credentials</h3>
+            <input type="email" id="email" value="sales.loanz360@gmail.com" placeholder="Email">
+            <input type="password" id="password" placeholder="Password">
+            <button id="loginBtn" onclick="startDiagnosticLogin()">START DIAGNOSTIC LOGIN</button>
+        </div>
+
+        <div class="steps" id="steps">
+            <h3>Diagnostic Steps:</h3>
+            <div id="stepList"></div>
+        </div>
+
+        <div class="warning" id="finalResult" style="display: none;"></div>
+    </div>
+
+    <script>
+        let stepNumber = 0;
+
+        const steps = [
+            { id: 'parse', name: 'Parse Form Data' },
+            { id: 'call-api', name: 'Call Login API' },
+            { id: 'check-response', name: 'Check API Response' },
+            { id: 'check-cookies', name: 'Verify Cookies Set' },
+            { id: 'test-session-api', name: 'Test Session via API' },
+            { id: 'test-middleware', name: 'Test Middleware Recognition' },
+            { id: 'navigate', name: 'Navigate to Dashboard' },
+            { id: 'check-client-auth', name: 'Check Client Layout Auth' }
+        ];
+
+        function initSteps() {
+            const stepList = document.getElementById('stepList');
+            stepList.innerHTML = steps.map((step, i) => `
+                <div class="step pending" id="step-${step.id}" data-index="${i}">
+                    <strong>Step ${i + 1}:</strong> ${step.name}
+                    <div class="detail" id="detail-${step.id}" style="display: none;"></div>
+                </div>
+            `).join('');
+        }
+
+        function updateStep(id, status, message, data = null) {
+            const step = document.getElementById(`step-${id}`);
+            const detail = document.getElementById(`detail-${id}`);
+
+            step.className = `step ${status}`;
+
+            if (message) {
+                detail.style.display = 'block';
+                detail.innerHTML = `<pre>${message}</pre>`;
+                if (data) {
+                    detail.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                }
+            }
+        }
+
+        async function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function startDiagnosticLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const finalResult = document.getElementById('finalResult');
+
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'RUNNING DIAGNOSTICS...';
+            finalResult.style.display = 'none';
+            initSteps();
+
+            try {
+                // Step 1: Parse form data
+                updateStep('parse', 'running', 'Parsing form data...');
+                await wait(500);
+                updateStep('parse', 'success', 'Form data parsed', { email, passwordLength: password.length });
+
+                // Step 2: Call login API
+                updateStep('call-api', 'running', 'Calling /api/superadmin/auth/simple-login...');
+                await wait(500);
+
+                const loginResponse = await fetch('/api/superadmin/auth/simple-login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                    credentials: 'include'
+                });
+
+                const loginData = await loginResponse.json();
+
+                if (!loginResponse.ok || !loginData.success) {
+                    updateStep('call-api', 'error', `API returned error (${loginResponse.status})`, loginData);
+                    throw new Error('Login API failed');
+                }
+
+                updateStep('call-api', 'success', `API responded successfully (${loginResponse.status})`, loginData);
+
+                // Step 3: Check response
+                updateStep('check-response', 'running', 'Analyzing response...');
+                await wait(500);
+                updateStep('check-response', 'success', 'Response valid', {
+                    success: loginData.success,
+                    userId: loginData.user?.id,
+                    email: loginData.user?.email,
+                    role: loginData.user?.role
+                });
+
+                // Step 4: Check cookies
+                updateStep('check-cookies', 'running', 'Checking if cookies were set...');
+                await wait(500);
+
+                const allCookies = document.cookie.split(';').map(c => c.trim());
+                const superAdminCookie = allCookies.find(c => c.startsWith('super_admin_session='));
+
+                if (!superAdminCookie) {
+                    updateStep('check-cookies', 'error', 'super_admin_session cookie NOT found!', {
+                        allCookies: allCookies.map(c => c.split('=')[0])
+                    });
+                    throw new Error('Session cookie not set');
+                }
+
+                updateStep('check-cookies', 'success', 'super_admin_session cookie found', {
+                    cookie: superAdminCookie.substring(0, 50) + '...',
+                    allCookies: allCookies.map(c => c.split('=')[0])
+                });
+
+                // Step 5: Test session via API
+                updateStep('test-session-api', 'running', 'Testing session with check-session API...');
+                await wait(500);
+
+                const sessionCheck = await fetch('/api/debug/check-session', {
+                    credentials: 'include'
+                });
+                const sessionData = await sessionCheck.json();
+
+                if (!sessionData.databaseSession?.found) {
+                    updateStep('test-session-api', 'error', 'Session not found in database!', sessionData);
+                    throw new Error('Session not in database');
+                }
+
+                updateStep('test-session-api', 'success', 'Session valid in database', {
+                    found: sessionData.databaseSession.found,
+                    expired: sessionData.databaseSession.data?.isExpired,
+                    adminEmail: sessionData.admin?.data?.email
+                });
+
+                // Step 6: Test middleware
+                updateStep('test-middleware', 'running', 'Testing middleware authentication...');
+                await wait(500);
+
+                const authTest = await fetch('/api/debug/test-auth', {
+                    credentials: 'include'
+                });
+                const authData = await authTest.json();
+
+                if (!authData.authResult?.isAuthenticated) {
+                    updateStep('test-middleware', 'error', 'Middleware does NOT recognize session!', authData);
+                    finalResult.style.display = 'block';
+                    finalResult.innerHTML = '<strong>❌ PROBLEM FOUND:</strong> Middleware is not recognizing the session cookie. Check middleware.ts and auth/middleware.ts';
+                    throw new Error('Middleware auth failed');
+                }
+
+                updateStep('test-middleware', 'success', 'Middleware recognizes session', authData.authResult);
+
+                // Step 7: Navigate to dashboard
+                updateStep('navigate', 'running', 'Attempting to navigate to /superadmin...');
+                await wait(1000);
+
+                // Don't actually navigate, just test if we would be allowed
+                updateStep('navigate', 'success', 'Navigation would be allowed by middleware');
+
+                // Step 8: Check client layout auth
+                updateStep('check-client-auth', 'running', 'Testing client-side auth check...');
+                await wait(500);
+
+                // Simulate what the client layout does
+                const clientCookies = document.cookie.split(';').map(c => c.trim());
+                const clientSuperAdminCookie = clientCookies.find(c => c.startsWith('super_admin_session='));
+
+                if (!clientSuperAdminCookie) {
+                    updateStep('check-client-auth', 'error', 'Client layout would NOT see cookie!', {
+                        reason: 'super_admin_session cookie not accessible to JavaScript',
+                        httpOnly: 'Cookie might be HttpOnly'
+                    });
+                    finalResult.style.display = 'block';
+                    finalResult.innerHTML = '<strong>❌ PROBLEM FOUND:</strong> The super_admin_session cookie is HttpOnly, so client-side JavaScript cannot read it! The client layout cannot verify the session. This is why you\'re being redirected.';
+                    throw new Error('Cookie not accessible to client');
+                }
+
+                updateStep('check-client-auth', 'success', 'Client layout CAN see cookie', {
+                    cookie: clientSuperAdminCookie.substring(0, 50) + '...'
+                });
+
+                // All steps passed
+                finalResult.style.display = 'block';
+                finalResult.style.borderColor = '#00ff00';
+                finalResult.style.color = '#00ff00';
+                finalResult.innerHTML = '<strong>✅ ALL CHECKS PASSED!</strong><br><br>You should now be able to login successfully. Click below to proceed:<br><br><a href="/simple-login.html" style="color: #00ff00; text-decoration: underline;">Go to Simple Login</a>';
+
+            } catch (error) {
+                console.error('Diagnostic error:', error);
+                if (finalResult.innerHTML === '') {
+                    finalResult.style.display = 'block';
+                    finalResult.innerHTML = `<strong>❌ ERROR:</strong> ${error.message}`;
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'RUN DIAGNOSTICS AGAIN';
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', initSteps);
+    </script>
+</body>
+</html>

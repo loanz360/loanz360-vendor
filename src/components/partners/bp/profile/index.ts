@@ -1,0 +1,13 @@
+// BP Profile Section Components - Export all
+export { default as PartnerAccountOverview } from './PartnerAccountOverview'
+export { default as BusinessEntitySection } from './BusinessEntitySection'
+export { default as ProfessionalSourcingSection } from './ProfessionalSourcingSection'
+export { default as TeamHierarchySection } from './TeamHierarchySection'
+export { default as TaxComplianceSection } from './TaxComplianceSection'
+export { default as PayoutGridSection } from './PayoutGridSection'
+export { default as MyTeamSection } from './MyTeamSection'
+export { default as AgreementsSection } from './AgreementsSection'
+export { default as SecuritySection } from './SecuritySection'
+export { default as DocumentRepositorySection } from './DocumentRepositorySection'
+export { default as AuditActivitySection } from './AuditActivitySection'
+export { default as BPPersonalDetailsSection } from './BPPersonalDetailsSection'
