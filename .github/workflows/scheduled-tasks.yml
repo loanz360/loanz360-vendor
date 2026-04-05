@@ -1,0 +1,122 @@
+name: Scheduled Tasks (Cron Jobs)
+
+# This workflow replaces Vercel cron jobs (which require Pro plan)
+# It calls the existing cron API endpoints on a schedule
+
+on:
+  schedule:
+    # Contest evaluation - Daily at 2 AM UTC (2:00 AM)
+    - cron: '0 2 * * *'
+
+    # Analytics calculation - Daily at noon UTC (12:00 PM)
+    - cron: '0 12 * * *'
+
+    # Notification processing - Every 5 minutes
+    - cron: '*/5 * * * *'
+
+  # Allow manual triggering for testing
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Which task to run'
+        required: true
+        type: choice
+        options:
+          - contest-evaluate
+          - calculate-analytics
+          - process-scheduled
+          - all
+
+jobs:
+  # Job 1: Contest Evaluation (Daily at 2 AM)
+  contest-evaluation:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 2 * * *' || github.event.inputs.task == 'contest-evaluate' || github.event.inputs.task == 'all'
+
+    steps:
+      - name: Call Contest Evaluation API
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            "${{ secrets.VERCEL_APP_URL }}/api/cron/contest-evaluate" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          echo "Response Code: $http_code"
+          echo "Response Body: $body"
+
+          if [ "$http_code" -ne 200 ]; then
+            echo "Error: Contest evaluation failed with status $http_code"
+            exit 1
+          fi
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "Contest evaluation cron job failed!"
+          echo "Time: $(date)"
+          echo "Check your Vercel logs for details"
+
+  # Job 2: Analytics Calculation (Daily at noon)
+  analytics-calculation:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 12 * * *' || github.event.inputs.task == 'calculate-analytics' || github.event.inputs.task == 'all'
+
+    steps:
+      - name: Call Analytics Calculation API
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            "${{ secrets.VERCEL_APP_URL }}/api/cron/calculate-analytics" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          echo "Response Code: $http_code"
+          echo "Response Body: $body"
+
+          if [ "$http_code" -ne 200 ]; then
+            echo "Error: Analytics calculation failed with status $http_code"
+            exit 1
+          fi
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "Analytics calculation cron job failed!"
+          echo "Time: $(date)"
+          echo "Check your Vercel logs for details"
+
+  # Job 3: Notification Processing (Every 5 minutes)
+  notification-processing:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '*/5 * * * *' || github.event.inputs.task == 'process-scheduled' || github.event.inputs.task == 'all'
+
+    steps:
+      - name: Call Notification Processing API
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            "${{ secrets.VERCEL_APP_URL }}/api/notifications/process-scheduled" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json")
+
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+
+          echo "Response Code: $http_code"
+          echo "Response Body: $body"
+
+          if [ "$http_code" -ne 200 ]; then
+            echo "Error: Notification processing failed with status $http_code"
+            exit 1
+          fi
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "Notification processing cron job failed!"
+          echo "Time: $(date)"
+          echo "Check your Vercel logs for details"

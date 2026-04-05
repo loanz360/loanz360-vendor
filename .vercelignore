@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+
+# Test files - not needed in production
+__tests__/
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+cypress/
+playwright/
+coverage/
+.nyc_output/
+
+# Development files
+*.md
+!README.md
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts from local
+.next/
+out/
+dist/
+build/
+
+# Scripts not needed in production
+scripts/
+*.sh
+
+# Config files not needed in build
+.eslintrc*
+.prettierrc*
+jest.config.*
+vitest.config.*
+playwright.config.*
+tsconfig.test.json
+
+# Documentation
+docs/
+*.mdx
+
+# Local environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Git
+.git/
+.gitignore
+
+# Security audit reports
+security-audit-report.json
+
+# Misc
+.DS_Store
+Thumbs.db
+*.pem
+*.key
