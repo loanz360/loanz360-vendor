@@ -64,7 +64,7 @@ export function getCSPHeader(nonce: string): string {
     "default-src 'self'",
     // Scripts: Nonce-based + strict-dynamic for Next.js hydration
     // Next.js 15 supports nonce-based CSP without unsafe-eval in production
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://vercel.live`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://vercel.live${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
     // Styles: Allow self + unsafe-inline for styled components + Google Fonts
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     // Images: Allow self, data URLs, and HTTPS

@@ -170,18 +170,7 @@ export function setSecurityHeaders(response: NextResponse): NextResponse {
   // Referrer policy
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 
-  // Content Security Policy
-  const csp = [
-    "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Note: unsafe-eval for Next.js dev
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
-    "img-src 'self' data: https:",
-    "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
-    "frame-ancestors 'none'",
-  ].join('; ')
-
-  response.headers.set('Content-Security-Policy', csp)
+  // NOTE: CSP is set by middleware via csp-nonce.ts (nonce-based). Do not set it here.
 
   // Strict Transport Security (HTTPS only)
   if (process.env.NODE_ENV === 'production') {

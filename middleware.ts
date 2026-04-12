@@ -168,8 +168,8 @@ export async function middleware(request: NextRequest) {
 
   // SECURITY: Validate origin for API requests
   if (isAPIRoute) {
-    const originValid = await validateOrigin(request)
-    if (!originValid) {
+    const originValidation = validateOrigin(request)
+    if (!originValidation.valid) {
       securityLogger.logSecurityEvent({
         level: 'warn',
         event: 'INVALID_ORIGIN',
