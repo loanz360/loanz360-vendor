@@ -369,7 +369,7 @@ export async function middleware(request: NextRequest) {
     console.error('[SECURITY] Middleware error:', error)
     const response = NextResponse.next()
     response.headers.set('X-Content-Type-Options', 'nosniff')
-    response.headers.set('X-Frame-Options', 'DENY')
+    response.headers.set('X-Frame-Options', 'SAMEORIGIN')
     return response
   }
 }
@@ -391,7 +391,7 @@ function setSecurityHeaders(
   response.headers.set('X-Content-Type-Options', 'nosniff')
 
   // Prevent clickjacking
-  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('X-Frame-Options', 'SAMEORIGIN')
 
   // XSS Protection (legacy browsers)
   response.headers.set('X-XSS-Protection', '1; mode=block')
@@ -434,7 +434,7 @@ function setSecurityHeaders(
   } catch {
     // Fallback CSP if dynamic generation fails
     response.headers.set('Content-Security-Policy',
-      "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'none';"
+      "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-ancestors 'self' https://vercel.com https://*.vercel.com https://vercel.live;"
     )
   }
 

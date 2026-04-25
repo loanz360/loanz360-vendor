@@ -74,7 +74,7 @@ export function getCSPHeader(nonce: string): string {
     // Connections: Allow self, Supabase, and Vercel
     `connect-src 'self' ${supabaseUrl} wss://*.supabase.co https://vercel.live`,
     // Frames: Only self and Vercel
-    "frame-ancestors 'self'",
+    "frame-ancestors 'self' https://vercel.com https://*.vercel.com https://vercel.live",
     "frame-src 'self' https://vercel.live",
     // Base URI: Only self
     "base-uri 'self'",
