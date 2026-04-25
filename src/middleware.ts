@@ -189,6 +189,49 @@ function isBot(request: NextRequest): boolean {
   return botPatterns.some(pattern => ua.includes(pattern))
 }
 
+// ─── Auth gate ───────────────────────────────────────────────────────────────
+
+const PUBLIC_PATH_PREFIXES = [
+  '/auth/',
+  '/api/',
+  '/shared/',
+  '/_next/',
+  '/error',
+  '/not-found',
+  '/manifest.json',
+  '/robots.txt',
+  '/sitemap.xml',
+]
+const PUBLIC_PATHS_EXACT = new Set<string>([
+  '/',
+  '/auth',
+  '/error',
+  '/not-found',
+])
+
+function isPublicPath(pathname: string): boolean {
+  if (PUBLIC_PATHS_EXACT.has(pathname)) return true
+  for (const prefix of PUBLIC_PATH_PREFIXES) {
+    if (pathname.startsWith(prefix)) return true
+  }
+  return false
+}
+
+function hasAuthCookie(request: NextRequest): boolean {
+  for (const cookie of request.cookies.getAll()) {
+    const name = cookie.name
+    if (
+      (name.startsWith('sb-') && (name.endsWith('-auth-token') ||
+        name.endsWith('-auth-token.0') || name.endsWith('-auth-token.1'))) ||
+      name === 'sb-access-token' ||
+      name === 'sb-refresh-token'
+    ) {
+      return true
+    }
+  }
+  return false
+}
+
 /**
  * Check if path should be blocked
  */
@@ -301,6 +344,18 @@ export async function middleware(request: NextRequest) {
       setSecurityHeaders(response, requestId, nonce, rateLimit)
 
       return response
+    }
+
+    // ─── Authentication gate for non-API routes ─────────────────────────────
+    if (!isPublicPath(pathname)) {
+      if (!hasAuthCookie(request)) {
+        const loginUrl = new URL('/auth/login', request.url)
+        const original = pathname + (request.nextUrl.search || '')
+        if (original && original !== '/auth/login') {
+          loginUrl.searchParams.set('redirect', original)
+        }
+        return NextResponse.redirect(loginUrl)
+      }
     }
 
     // For non-API routes, add security headers including CSP with nonce

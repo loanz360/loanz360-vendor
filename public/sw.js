@@ -4,7 +4,8 @@
  * @version 3.0.0
  */
 
-const APP_VERSION = '3.0.0';
+// Bump on caching-policy change so installed clients evict the old cache.
+const APP_VERSION = '3.1.0';
 const CACHE_PREFIX = 'loanz360';
 const CACHE_STATIC = `${CACHE_PREFIX}-static-v${APP_VERSION}`;
 const CACHE_DYNAMIC = `${CACHE_PREFIX}-dynamic-v${APP_VERSION}`;
@@ -20,16 +21,12 @@ const MAX_IMAGE_CACHE_SIZE = 50;
 const API_CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
 const DYNAMIC_CACHE_EXPIRY = 24 * 60 * 60 * 1000; // 24 hours
 
-// Static assets to pre-cache on install
+// Public-only pre-cache. Authenticated landings removed so the edge
+// middleware redirect runs on first anonymous visit.
 const STATIC_ASSETS = [
   '/',
   '/offline.html',
   '/manifest.json',
-  '/customer',
-  '/superadmin',
-  '/employees',
-  '/employees/cro/ai-crm',
-  '/employees/cro/ai-crm/pipeline'
 ];
 
 // API endpoints to cache (with their caching strategies)
@@ -427,9 +424,20 @@ async function handleStaticRequest(request) {
 }
 
 /**
- * Handle dynamic requests - network first
+ * Handle dynamic requests — network only for navigations.
+ *
+ * Top-level document loads bypass cache so the edge auth middleware
+ * runs on every page load and can redirect to /auth/login.
  */
 async function handleDynamicRequest(request) {
+  if (request.mode === 'navigate') {
+    try {
+      return await fetch(request);
+    } catch (_error) {
+      return caches.match('/offline.html');
+    }
+  }
+
   try {
     const networkResponse = await fetch(request);
 
@@ -445,11 +453,6 @@ async function handleDynamicRequest(request) {
 
     if (cachedResponse) {
       return cachedResponse;
-    }
-
-    // Return offline page for navigation requests
-    if (request.mode === 'navigate') {
-      return caches.match('/offline.html');
     }
 
     return new Response('Offline', { status: 503 });
