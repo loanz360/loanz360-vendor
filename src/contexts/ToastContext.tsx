@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect, useMemo, ReactNode } from 'react'
 import Toast, { ToastType } from '@/components/ui/Toast'
 
 interface ToastMessage {
@@ -49,8 +49,17 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     }
   }, [showToast])
 
+  // Memoize provider value — without this, every render produced a new
+  // object, every `useToast()` consumer got a new ref, and useCallbacks
+  // depending on `toast` got new fn refs each render, retriggering any
+  // useEffect that listed them in deps and producing infinite fetch loops.
+  const value = useMemo(
+    () => ({ showToast, success, error, warning, info }),
+    [showToast, success, error, warning, info]
+  )
+
   return (
-    <ToastContext.Provider value={{ showToast, success, error, warning, info }}>
+    <ToastContext.Provider value={value}>
       {children}
 
       {/* Toast Container */}
