@@ -7,7 +7,6 @@ import { ThemeProvider } from "@/lib/contexts/theme-context";
 import { AuthProvider } from "@/lib/auth/auth-context";
 
 // Force all pages to be dynamically rendered - reduces build time significantly
-export const dynamic = 'force-dynamic';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
