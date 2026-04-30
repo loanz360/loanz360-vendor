@@ -191,8 +191,8 @@ export async function PATCH(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { id, action, progress_percent, score, feedback, status } = body
 
     if (!id) return NextResponse.json({ success: false, error: 'Enrollment ID is required' }, { status: 400 })

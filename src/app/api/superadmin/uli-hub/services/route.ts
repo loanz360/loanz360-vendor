@@ -101,8 +101,8 @@ export async function POST(request: NextRequest) {
 // PATCH — Update an existing ULI service
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     if (!body.id) {
       return NextResponse.json(
         { success: false, error: 'Service ID is required' },

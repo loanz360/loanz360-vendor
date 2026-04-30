@@ -176,8 +176,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { escalation_id, action, notes, ticket_id, ticket_source, to_level, reason } = body
 
     if (!action) {

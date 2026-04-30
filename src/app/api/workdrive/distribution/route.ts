@@ -366,8 +366,8 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { distributionId, action } = body
 
     if (!distributionId) {

@@ -261,8 +261,8 @@ export async function PATCH(request: NextRequest) {
 
     const isHR = ['HR_EXECUTIVE', 'HR_MANAGER'].includes(employee.sub_role)
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { skill_id, action, ...updateData } = body
 
     if (!skill_id) {

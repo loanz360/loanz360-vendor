@@ -311,8 +311,8 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { type, word, word_type, severity, rule_id, is_active } = body
 
     if (type === 'dictionary' && word) {

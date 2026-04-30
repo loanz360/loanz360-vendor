@@ -158,8 +158,8 @@ export async function PATCH(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const queryId = request.nextUrl.searchParams.get('id')
     const { id: bodyId, title, description, category, delivery_mode, duration_hours, is_mandatory, target_roles, max_participants, facilitator, status } = body
     const id = bodyId || queryId

@@ -229,8 +229,8 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { offer_id, action, notes, collection_name } = body
 
     if (!offer_id || !action) {

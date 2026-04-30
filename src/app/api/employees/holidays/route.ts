@@ -207,8 +207,8 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Only HR and Super Admin can update holidays' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { id, name, date, type, description, is_mandatory } = body
 
     if (!id || !name || !date) {

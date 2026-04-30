@@ -333,8 +333,8 @@ export async function POST(
     }
 
     const { id } = paramValidation.data
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
 
     // Validate and sanitize bulk input
     const validationResult = bulkUpdatePermissionsSchema.safeParse(body)

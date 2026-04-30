@@ -171,8 +171,8 @@ export async function DELETE(request: NextRequest) {
     // Fallback: try reading from request body for backwards compatibility
     if (!resourceType || !resourceId) {
       try {
-        const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+        const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
         if (!resourceType && body.resource_type) resourceType = body.resource_type as ResourceType
         if (!resourceId && body.resource_id) resourceId = body.resource_id
         // Backwards compat with file_id

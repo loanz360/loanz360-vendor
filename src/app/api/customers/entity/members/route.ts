@@ -232,8 +232,8 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { memberId, entityId, role_key, role_name, canSignDocuments, canApplyForLoans, canManageEntity, isPrimary, status } = body
 
     if (!memberId || !entityId) {

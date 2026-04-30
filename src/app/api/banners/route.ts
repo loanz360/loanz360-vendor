@@ -473,8 +473,8 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const {
       id,
       title,
@@ -774,8 +774,8 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr3 } = await parseBody(request)
+    if (_valErr3) return _valErr3
     const { action, bannerIds } = body
 
     // Validate action

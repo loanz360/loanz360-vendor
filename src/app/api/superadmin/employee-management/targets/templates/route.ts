@@ -198,8 +198,8 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { template_id, employee_ids, target_period, start_date, end_date } = body
 
     if (!template_id || !employee_ids || !Array.isArray(employee_ids)) {

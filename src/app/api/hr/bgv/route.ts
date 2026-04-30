@@ -167,8 +167,8 @@ export async function PATCH(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { check_id, bgv_request_id, status, notes, verified_by } = body
     if (!check_id) return NextResponse.json({ success: false, error: 'Check ID required' }, { status: 400 })
     if (!bgv_request_id) return NextResponse.json({ success: false, error: 'BGV Request ID required' }, { status: 400 })

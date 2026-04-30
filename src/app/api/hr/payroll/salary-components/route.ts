@@ -260,8 +260,8 @@ export async function PUT(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { id } = body
 
     if (!id) {

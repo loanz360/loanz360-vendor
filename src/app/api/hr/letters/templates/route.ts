@@ -88,8 +88,8 @@ export async function PATCH(request: Request) {
     if (authError || !user) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: "Access denied. HR only." }, { status: 403 })
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { id, ...updates } = body
     if (!id) return NextResponse.json({ success: false, error: "id is required" }, { status: 400 })
     const updatePayload: Record<string, unknown> = { updated_at: new Date().toISOString() }

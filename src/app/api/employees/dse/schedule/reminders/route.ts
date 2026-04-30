@@ -272,8 +272,8 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Reminder ID is required' }, { status: 400 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const validatedData = updateReminderSchema.parse(body)
 
     // Verify reminder exists and belongs to user

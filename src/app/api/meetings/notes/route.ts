@@ -182,8 +182,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Note ID required' }, { status: 400 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
 
     // Verify ownership
     const { data: existingNote } = await supabase

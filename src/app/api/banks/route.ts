@@ -209,8 +209,8 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
 
     // Validate with Zod
     const validatedData = updateBankSchema.parse(body)

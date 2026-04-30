@@ -577,8 +577,8 @@ export async function PUT(
     }
 
     const { id } = paramValidation.data
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { token, trustDevice = false } = body
 
     if (!token) {

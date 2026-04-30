@@ -225,8 +225,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden: Only SuperAdmin or HR can review claims' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
-    if (_valErr) return _valErr
+    const { data: body, error: _valErr2 } = await parseBody(request)
+    if (_valErr2) return _valErr2
     const { claim_id, claim_status, review_notes, payment_reference } = body
 
     if (!claim_id || !claim_status) {
