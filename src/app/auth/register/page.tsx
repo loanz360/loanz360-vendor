@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic'
 
 import React from 'react'
 import { RoleSpecificRegisterForm, getSubRoleOptions } from '@/components/auth/role-specific-register-form'
