@@ -31,7 +31,6 @@ interface UserRecord {
   full_name: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase client type is complex; using Awaited<ReturnType> causes issues
 async function verifyHRAccess(supabase: Awaited<ReturnType<typeof createClient>>, userId: string) {
   const { checkHRAccessByUserId } = await import('@/lib/auth/hr-access')
   return checkHRAccessByUserId(supabase, userId)

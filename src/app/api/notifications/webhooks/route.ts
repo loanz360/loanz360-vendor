@@ -113,7 +113,6 @@ interface NormalizedEvent {
   timestamp?: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function normalizeEvents(provider: string, payload: Record<string, any>): NormalizedEvent[] {
   const events: NormalizedEvent[] = []
 
