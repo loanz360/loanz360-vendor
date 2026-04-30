@@ -371,7 +371,7 @@ export class AuditLogger {
     userId?: string
     ipAddress?: string
     userAgent?: string
-    requestBody?: unknown    status: number
+    requestBody?: unknown; status: number
     responseTime?: number
     error?: string
   }): void {

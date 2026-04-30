@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    let body: unknown    try {
+    let body: unknown; try {
       body = await request.json()
     } catch {
       return NextResponse.json(
@@ -240,7 +240,7 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    let body: unknown    try {
+    let body: unknown; try {
       body = await request.json()
     } catch {
       return NextResponse.json(

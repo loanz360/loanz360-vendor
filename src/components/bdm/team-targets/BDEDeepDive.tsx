@@ -47,7 +47,7 @@ interface TrendsResponse {
   trends: TrendData[]
   summary: {
     totalMonths: number
-    averages: unknown    overallGrowth: unknown    bestMonth: unknown    worstMonth: unknown    consistency: unknown    patterns: unknown  }
+    averages: unknown; overallGrowth: unknown; bestMonth: unknown; worstMonth: unknown; consistency: unknown; patterns: unknown  }
 }
 
 export default function BDEDeepDive({ month, year }: BDEDeepDiveProps) {

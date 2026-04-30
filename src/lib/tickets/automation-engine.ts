@@ -91,7 +91,7 @@ export interface WorkflowExecution {
   actions_executed: {
     action: WorkflowAction
     success: boolean
-    result?: unknown    error?: string
+    result?: unknown; error?: string
   }[]
   started_at: string
   completed_at?: string

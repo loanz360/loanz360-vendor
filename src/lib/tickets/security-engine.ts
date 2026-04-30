@@ -39,7 +39,7 @@ export interface AuditLogEntry {
   details: Record<string, unknown>
   changes?: {
     field: string
-    old_value: unknown    new_value: unknown  }[]
+    old_value: unknown; new_value: unknown  }[]
   timestamp: string
   session_id?: string
 }

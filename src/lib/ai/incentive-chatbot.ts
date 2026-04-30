@@ -10,7 +10,7 @@ export interface ChatMessage {
   timestamp: Date
   metadata?: {
     queryType?: string
-    contextData?: unknown    functionCalls?: string[]
+    contextData?: unknown; functionCalls?: string[]
   }
 }
 

@@ -529,7 +529,7 @@ export interface CAMGenerationInput {
 
   // Verification Results
   verification_results?: {
-    identity?: unknown    credit_bureau?: unknown    income?: unknown    bank_statement?: unknown    aml_screening?: unknown  }
+    identity?: unknown; credit_bureau?: unknown; income?: unknown; bank_statement?: unknown; aml_screening?: unknown  }
 
   // Options
   options?: {

@@ -33,7 +33,7 @@ export interface UploadResult {
   duplicateCount: number
   errors: Array<{
     row: number
-    data: unknown    error: string
+    data: unknown; error: string
     fieldName?: string
   }>
   estimatedTime?: number

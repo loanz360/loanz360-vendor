@@ -386,7 +386,7 @@ export class VerificationService {
     const startedAt = new Date().toISOString()
 
     try {
-      let result: unknown      let provider: string = ''
+      let result: unknown; let provider: string = ''
       let referenceId: string = ''
 
       switch (type) {

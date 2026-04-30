@@ -99,7 +99,7 @@ export class IncentiveAuditService {
     action: AuditAction
     actionCategory: ActionCategory
     context: AuditContext
-    oldValues?: unknown    newValues?: unknown  }): Promise<string | null> {
+    oldValues?: unknown; newValues?: unknown  }): Promise<string | null> {
     try {
       const supabase = await createClient()
 

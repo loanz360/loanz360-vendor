@@ -16,7 +16,7 @@ interface IdentityVerificationResult {
     last_4: string
     name: string
     dob: string
-    address: unknown    verified: boolean
+    address: unknown; verified: boolean
   }
   digilocker?: {
     connected: boolean
