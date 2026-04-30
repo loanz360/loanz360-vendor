@@ -395,23 +395,10 @@ export function checkSecurityFeatures(): {
  * Log security status on startup
  */
 export function logSecurityStatus(): void {
-  console.log('')
-  console.log('='.repeat(60))
-  console.log('SECURITY STATUS')
-  console.log('='.repeat(60))
 
   const features = checkSecurityFeatures()
 
-  console.log(`  2FA Enabled:              ${features.twoFactorEnabled ? '✅' : '❌'}`)
-  console.log(`  Email Verification:       ${features.emailVerificationRequired ? '✅' : '❌'}`)
-  console.log(`  HTTPS Enforced:           ${features.httpsEnforced ? '✅' : '❌'}`)
-  console.log(`  CSRF Protection:          ${features.csrfProtectionEnabled ? '✅' : '❌'}`)
-  console.log(`  Rate Limiting:            ${features.rateLimitingEnabled ? '✅' : '❌'}`)
 
   const audit = getConfigAudit()
-  console.log('')
-  console.log(`  ${audit.summary}`)
 
-  console.log('='.repeat(60))
-  console.log('')
 }

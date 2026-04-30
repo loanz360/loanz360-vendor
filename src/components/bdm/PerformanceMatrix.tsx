@@ -177,7 +177,6 @@ export function PerformanceMatrix({ dateRange = 'last_30_days', onBDEClick }: Pe
 
   const handleExport = () => {
     // Export logic would go here
-    console.log('Exporting performance matrix...')
   }
 
   if (error) {

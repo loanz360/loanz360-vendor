@@ -202,10 +202,8 @@ export class ScheduledMessagingService {
         totalFailed = results.filter(r => !r.success).length
       } else if (message.message_type === 'email') {
         // Email sending logic (to be implemented)
-        console.log('Email sending not yet implemented')
       } else if (message.message_type === 'whatsapp') {
         // WhatsApp sending logic
-        console.log('WhatsApp bulk sending not yet implemented')
       }
 
       // Update status

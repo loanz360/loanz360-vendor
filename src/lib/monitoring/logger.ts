@@ -20,7 +20,6 @@ class Logger {
 
   info(message: string, metadata?: LogMetadata): void {
     const formatted = this.formatMessage('info', message, metadata)
-    console.log(formatted)
   }
 
   warn(message: string, metadata?: LogMetadata): void {

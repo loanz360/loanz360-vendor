@@ -259,7 +259,7 @@ export async function GET(request: NextRequest) {
       const { data, count, error } = await query.order('employee_profile(first_name)').range(from, from + pageSize - 1)
 
       if (error) {
-        apiLogger.error('PF tab query failed', { error: error.message, month, year })
+        apiLogger.error('PF tab query failed', { error: 'An unexpected error occurred', month, year })
         return NextResponse.json({ success: false, error: 'Failed to fetch PF data: ' + error.message }, { status: 500 })
       }
 
@@ -323,7 +323,7 @@ export async function GET(request: NextRequest) {
       const { data, count, error } = await query.order('employee_profile(first_name)').range(from, from + pageSize - 1)
 
       if (error) {
-        apiLogger.error('ESI tab query failed', { error: error.message, month, year })
+        apiLogger.error('ESI tab query failed', { error: 'An unexpected error occurred', month, year })
         return NextResponse.json({ success: false, error: 'Failed to fetch ESI data: ' + error.message }, { status: 500 })
       }
 
@@ -368,7 +368,7 @@ export async function GET(request: NextRequest) {
       const { data, count, error } = await query.order('employee_profile(first_name)').range(from, from + pageSize - 1)
 
       if (error) {
-        apiLogger.error('PT tab query failed', { error: error.message, month, year })
+        apiLogger.error('PT tab query failed', { error: 'An unexpected error occurred', month, year })
         return NextResponse.json({ success: false, error: 'Failed to fetch Professional Tax data: ' + error.message }, { status: 500 })
       }
 
@@ -421,7 +421,7 @@ export async function GET(request: NextRequest) {
 
       if (error) {
         // Fallback: show employees even if form_16_records table doesn't exist yet
-        apiLogger.warn('TDS form_16_records query failed, falling back to employee_profile', { error: error.message })
+        apiLogger.warn('TDS form_16_records query failed, falling back to employee_profile', { error: 'An unexpected error occurred' })
         try {
           let fallbackQuery = adminClient
             .from('employee_profile')

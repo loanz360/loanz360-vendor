@@ -35,7 +35,6 @@ class GlobalErrorHandler {
     window.addEventListener('error', this.handleResourceError.bind(this), true)
 
     this.isInitialized = true
-    console.log('🛡️ Global error handler initialized')
   }
 
   private handleError(event: ErrorEvent) {

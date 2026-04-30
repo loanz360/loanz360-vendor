@@ -71,12 +71,10 @@ export async function initializeRedis(config: CacheConfig = {}): Promise<boolean
     })
 
     redisClient.on('connect', () => {
-      console.log('Redis: Connected')
       isRedisAvailable = true
     })
 
     redisClient.on('disconnect', () => {
-      console.log('Redis: Disconnected')
       isRedisAvailable = false
     })
 

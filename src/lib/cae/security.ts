@@ -355,11 +355,9 @@ export class AuditLogger {
       if (error) {
         // Fallback to console if database insert fails
         console.error('[AUDIT] Failed to persist to database:', error)
-        console.log('[AUDIT]', JSON.stringify(entry))
       }
     } catch (error) {
       // Fallback to console on any error
-      console.log('[AUDIT]', JSON.stringify(entry))
     }
   }
 

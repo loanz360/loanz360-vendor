@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query.limit(50)
 
     if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+      return NextResponse.json({ success: false, error: 'An unexpected error occurred' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true, data: data || [] })
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
       .maybeSingle()
 
     if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+      return NextResponse.json({ success: false, error: 'An unexpected error occurred' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true, data }, { status: 201 })
@@ -154,7 +154,7 @@ export async function DELETE(request: NextRequest) {
       .eq('cro_id', user.id)
 
     if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+      return NextResponse.json({ success: false, error: 'An unexpected error occurred' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true, message: 'Filter deleted' })

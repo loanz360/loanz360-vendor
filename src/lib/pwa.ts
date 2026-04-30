@@ -20,7 +20,6 @@ let updateAvailable = false
  */
 export async function registerServiceWorker(config: ServiceWorkerConfig = {}): Promise<ServiceWorkerRegistration | null> {
   if (typeof window === 'undefined' || !('serviceWorker' in navigator)) {
-    console.log('[PWA] Service workers not supported')
     return null
   }
 
@@ -29,7 +28,6 @@ export async function registerServiceWorker(config: ServiceWorkerConfig = {}): P
       scope: '/'
     })
 
-    console.log('[PWA] Service worker registered:', registration.scope)
 
     // Check for updates
     registration.onupdatefound = () => {
@@ -40,12 +38,10 @@ export async function registerServiceWorker(config: ServiceWorkerConfig = {}): P
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
               // New update available
-              console.log('[PWA] New update available')
               updateAvailable = true
               config.onUpdate?.(registration!)
             } else {
               // Content cached for offline
-              console.log('[PWA] Content cached for offline use')
               config.onSuccess?.(registration!)
             }
           }
@@ -55,7 +51,6 @@ export async function registerServiceWorker(config: ServiceWorkerConfig = {}): P
 
     // Listen for messages from service worker
     navigator.serviceWorker.addEventListener('message', (event) => {
-      console.log('[PWA] Message from SW:', event.data)
 
       if (event.data.type === 'SYNC_SUCCESS') {
         // Dispatch custom event for components to listen to
@@ -73,13 +68,11 @@ export async function registerServiceWorker(config: ServiceWorkerConfig = {}): P
 
     // Network status listeners
     window.addEventListener('online', () => {
-      console.log('[PWA] Back online')
       config.onOnline?.()
       triggerSync()
     })
 
     window.addEventListener('offline', () => {
-      console.log('[PWA] Gone offline')
       config.onOffline?.()
     })
 
@@ -99,7 +92,6 @@ export async function unregisterServiceWorker(): Promise<boolean> {
 
   try {
     const result = await registration.unregister()
-    console.log('[PWA] Service worker unregistered')
     return result
   } catch (error) {
     console.error('[PWA] Unregistration failed:', error)
@@ -156,7 +148,6 @@ export async function triggerSync(): Promise<void> {
   if (registration?.sync) {
     try {
       await (registration.sync as any).register('sync-pending')
-      console.log('[PWA] Background sync registered')
     } catch (error) {
       console.error('[PWA] Background sync failed:', error)
     }
@@ -217,7 +208,6 @@ export async function subscribeToPush(): Promise<PushSubscription | null> {
     const permission = await requestNotificationPermission()
 
     if (permission !== 'granted') {
-      console.log('[PWA] Notification permission denied')
       return null
     }
 
@@ -226,7 +216,6 @@ export async function subscribeToPush(): Promise<PushSubscription | null> {
       applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
     })
 
-    console.log('[PWA] Push subscription created')
     return subscription
   } catch (error) {
     console.error('[PWA] Push subscription failed:', error)
@@ -245,7 +234,6 @@ export async function unsubscribeFromPush(): Promise<boolean> {
 
     if (subscription) {
       await subscription.unsubscribe()
-      console.log('[PWA] Push subscription removed')
       return true
     }
 
@@ -303,14 +291,12 @@ export function initInstallPrompt(): void {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault()
     deferredPrompt = e as BeforeInstallPromptEvent
-    console.log('[PWA] Install prompt ready')
 
     window.dispatchEvent(new CustomEvent('pwa-install-available'))
   })
 
   window.addEventListener('appinstalled', () => {
     deferredPrompt = null
-    console.log('[PWA] App installed')
 
     window.dispatchEvent(new CustomEvent('pwa-installed'))
   })

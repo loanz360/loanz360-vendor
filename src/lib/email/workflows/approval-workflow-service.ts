@@ -967,7 +967,6 @@ export class ApprovalWorkflowService {
   ): Promise<void> {
     // TODO: Implement notification sending
     // This would integrate with the notification/email system
-    console.log(`[ApprovalWorkflow] Notification: ${notificationType} for request ${requestId} to ${recipientIds.length} recipients`);
   }
 
   // ============================================================================

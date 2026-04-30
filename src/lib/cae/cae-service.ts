@@ -346,7 +346,6 @@ export class CAEService {
         }
 
         try {
-          console.log(`[CAE] Attempting provider: ${currentProviderType} (fallback chain: ${fallbackChain.join(' → ')})`)
           attemptedProviders.push(currentProviderType)
 
           // Process appraisal with timeout (30 seconds default)
@@ -544,7 +543,6 @@ export class CAEService {
         }
       }
 
-      console.log(`[CAE] Fallback chain for ${primaryProvider}: ${fallbackChain.join(' → ')}`)
       return fallbackChain
     } catch (error) {
       console.error('[CAE] Error building fallback chain:', error)
@@ -773,7 +771,6 @@ export class CAEService {
     try {
       const supabase = await createClient()
 
-      console.log(`[CAE] Rolling back transaction ${transactionId}: ${reason}`)
 
       // Get all appraisals with this transaction ID
       const { data: appraisals } = await supabase
@@ -782,7 +779,6 @@ export class CAEService {
         .eq('transaction_id', transactionId)
 
       if (!appraisals || appraisals.length === 0) {
-        console.log('[CAE] No appraisals found for transaction rollback')
         return
       }
 
@@ -837,7 +833,6 @@ export class CAEService {
         },
       })
 
-      console.log(`[CAE] Transaction ${transactionId} rolled back successfully`)
     } catch (error) {
       console.error('[CAE] Failed to rollback transaction:', error)
 

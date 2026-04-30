@@ -137,7 +137,6 @@ class InMemoryQueue<T = JobData> {
       job.status = 'completed'
       job.finishedOn = Date.now()
       job.progress = 100
-      console.log(`[Queue:${this.name}] Job ${jobId} completed`)
     } catch (error: unknown) {
       if (job.attempts < job.maxAttempts) {
         job.status = 'pending'
@@ -182,15 +181,12 @@ class InMemoryQueue<T = JobData> {
   }
 
   async pause(): Promise<void> {
-    console.log(`[Queue:${this.name}] Paused`)
   }
 
   async resume(): Promise<void> {
-    console.log(`[Queue:${this.name}] Resumed`)
   }
 
   async close(): Promise<void> {
-    console.log(`[Queue:${this.name}] Closed`)
   }
 }
 
@@ -415,7 +411,6 @@ export async function cancelJob(queueName: string, jobId: string): Promise<boole
     const job = await queue.getJob(jobId)
     // In-memory jobs can't be truly canceled, but we can mark them
     if (job) {
-      console.log(`[Queue] Job ${jobId} cancel requested`)
       return true
     }
     return false
@@ -433,7 +428,6 @@ export async function retryJob(queueName: string, jobId: string): Promise<boolea
     const queue = getQueueByName(queueName)
     const job = await queue.getJob(jobId)
     if (job) {
-      console.log(`[Queue] Job ${jobId} retry requested`)
       return true
     }
     return false
@@ -447,7 +441,6 @@ export async function retryJob(queueName: string, jobId: string): Promise<boolea
  * Setup queue event listeners for monitoring (no-op for in-memory)
  */
 export function setupQueueEventListeners(): void {
-  console.log('[Queue] In-memory queue event listeners active')
 }
 
 /**
@@ -462,7 +455,6 @@ export async function pauseAllQueues(): Promise<void> {
     analyticsQueue.pause(),
     cleanupQueue.pause()
   ])
-  console.log('[Queue] All queues paused')
 }
 
 /**
@@ -477,7 +469,6 @@ export async function resumeAllQueues(): Promise<void> {
     analyticsQueue.resume(),
     cleanupQueue.resume()
   ])
-  console.log('[Queue] All queues resumed')
 }
 
 /**
@@ -492,5 +483,4 @@ export async function closeAllQueues(): Promise<void> {
     analyticsQueue.close(),
     cleanupQueue.close()
   ])
-  console.log('[Queue] All queues closed')
 }

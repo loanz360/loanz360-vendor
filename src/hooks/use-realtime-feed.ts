@@ -280,7 +280,6 @@ export function useRealtimeFeed(options: UseRealtimeFeedOptions = {}): UseRealti
       }
 
       eventSource.addEventListener('connected', () => {
-        console.log('[RealtimeFeed] Connected to stream')
       })
 
       eventSource.addEventListener('activity', (event) => {

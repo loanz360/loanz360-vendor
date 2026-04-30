@@ -139,7 +139,6 @@ class MessageQueueService {
       throw error
     }
 
-    console.log(`[MessageQueue] Enqueued message ${data.id} for ${recipient}`)
     return data.id
   }
 
@@ -182,7 +181,6 @@ class MessageQueueService {
       throw error
     }
 
-    console.log(`[MessageQueue] Enqueued ${data?.length || 0} messages`)
     return (data || []).map(d => d.id)
   }
 
@@ -195,7 +193,6 @@ class MessageQueueService {
    */
   async processQueue(): Promise<ProcessingResult> {
     if (this.processing) {
-      console.log('[MessageQueue] Already processing, skipping')
       return { processed: 0, succeeded: 0, failed: 0, retried: 0, deadLettered: 0 }
     }
 
@@ -231,7 +228,6 @@ class MessageQueueService {
         return result
       }
 
-      console.log(`[MessageQueue] Processing ${messages.length} messages`)
 
       // Process each message
       for (const message of messages) {
@@ -288,7 +284,6 @@ class MessageQueueService {
         }
       }
 
-      console.log(`[MessageQueue] Processing complete:`, result)
       return result
     } finally {
       this.processing = false
@@ -349,7 +344,6 @@ class MessageQueueService {
   ): Promise<{ messageId: string }> {
     // This would call the actual provider API
     // For now, return a mock response
-    console.log(`[MessageQueue] Sending to ${recipient} via ${provider.name}`)
 
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 100))
@@ -422,7 +416,6 @@ class MessageQueueService {
         })
         .eq('id', message.id)
 
-      console.log(`[MessageQueue] Message ${message.id} scheduled for retry at ${nextRetryAt}`)
     }
   }
 
@@ -435,11 +428,9 @@ class MessageQueueService {
    */
   startProcessing(intervalMs = 10000): void {
     if (this.processingInterval) {
-      console.log('[MessageQueue] Processing already started')
       return
     }
 
-    console.log(`[MessageQueue] Starting queue processing every ${intervalMs}ms`)
     this.processingInterval = setInterval(() => {
       this.processQueue().catch(err => {
         console.error('[MessageQueue] Processing error:', err)
@@ -454,7 +445,6 @@ class MessageQueueService {
     if (this.processingInterval) {
       clearInterval(this.processingInterval)
       this.processingInterval = null
-      console.log('[MessageQueue] Processing stopped')
     }
   }
 
@@ -508,7 +498,6 @@ class MessageQueueService {
       throw error
     }
 
-    console.log(`[MessageQueue] Retried ${data?.length || 0} dead letter messages`)
     return data?.length || 0
   }
 
@@ -532,7 +521,6 @@ class MessageQueueService {
       throw error
     }
 
-    console.log(`[MessageQueue] Purged ${data?.length || 0} old messages`)
     return data?.length || 0
   }
 }

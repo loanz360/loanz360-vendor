@@ -133,7 +133,6 @@ export function useS3Upload(options?: UseS3UploadOptions) {
 
     // If direct upload fails, try server-side upload
     if (!result.success) {
-      console.log('Direct S3 upload failed, falling back to server-side upload')
       return uploadViaServer(file, uploadType)
     }
 

@@ -177,7 +177,6 @@ class SecureLogger {
     // Just log to console for now
     try {
       if (this.isDevelopment) {
-        console.log('[Auth Logs] Flushed', logsToFlush.length, 'entries')
       }
       // TODO: Re-enable database logging once root cause is fixed
       /*

@@ -310,7 +310,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] Ticket created notification sent to ${data.employeeEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending ticket created email:', error)
@@ -380,7 +379,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] New ticket notification sent to ${data.hrAdminEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending HR/Admin new ticket email:', error)
@@ -431,7 +429,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] New reply notification sent to ${data.employeeEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending new reply email:', error)
@@ -482,7 +479,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] Employee reply notification sent to ${data.hrAdminEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending employee reply email:', error)
@@ -542,7 +538,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] Status change notification sent to ${data.employeeEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending status change email:', error)
@@ -595,7 +590,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] Ticket resolved notification sent to ${data.employeeEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending ticket resolved email:', error)
@@ -640,7 +634,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] Ticket closed notification sent to ${data.employeeEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending ticket closed email:', error)
@@ -683,7 +676,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] Ticket reopened notification sent to ${data.employeeEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending ticket reopened email:', error)
@@ -738,7 +730,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] Specific assignment notification sent to ${data.hrAdminEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending specific assignment email:', error)
@@ -788,7 +779,6 @@ export class EmployeeSupportEmailService {
         }
       })
 
-      console.log(`📧 [EmployeeSupportEmail] SLA warning sent to ${data.hrAdminEmail}:`, result.success)
       return result.success
     } catch (error) {
       console.error('[EmployeeSupportEmail] Error sending SLA warning email:', error)

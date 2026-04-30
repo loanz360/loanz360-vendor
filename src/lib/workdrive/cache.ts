@@ -183,7 +183,6 @@ export async function preloadResources(resources: {
 }[]): Promise<void> {
   // This would be implemented to preload resources in the background
   // For now, it's a placeholder for future implementation
-  console.log('Preloading resources:', resources.length)
 }
 
 // Cache statistics

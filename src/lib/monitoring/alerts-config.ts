@@ -294,33 +294,28 @@ async function checkEscalationThreshold(
  * Send alert notification
  */
 async function sendAlertNotification(event: AlertEvent, config: AlertConfig): Promise<void> {
-  console.log(`[Alert Notification] Sending ${event.severity} alert for ${event.type}`)
 
   // Email notification
   if (config.notification_channels.includes('email')) {
     // Integrate with email service
-    console.log('[Alert] Email notification would be sent')
     // await sendAlertEmail(event, config)
   }
 
   // Slack notification
   if (config.notification_channels.includes('slack')) {
     // Integrate with Slack webhook
-    console.log('[Alert] Slack notification would be sent')
     // await sendSlackAlert(event, config)
   }
 
   // SMS notification
   if (config.notification_channels.includes('sms')) {
     // Integrate with SMS service
-    console.log('[Alert] SMS notification would be sent')
     // await sendSMSAlert(event, config)
   }
 
   // PagerDuty notification
   if (config.notification_channels.includes('pagerduty')) {
     // Integrate with PagerDuty
-    console.log('[Alert] PagerDuty notification would be sent')
     // await sendPagerDutyAlert(event, config)
   }
 }
@@ -329,7 +324,6 @@ async function sendAlertNotification(event: AlertEvent, config: AlertConfig): Pr
  * Escalate alert to higher severity
  */
 async function escalateAlert(event: AlertEvent, config: AlertConfig): Promise<void> {
-  console.log(`[Alert Escalation] Escalating ${event.type} to CRITICAL`)
 
   const escalatedEvent: AlertEvent = {
     ...event,

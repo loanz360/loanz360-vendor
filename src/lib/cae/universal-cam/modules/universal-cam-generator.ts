@@ -268,7 +268,6 @@ export class UniversalCAMGenerator {
       }
 
       const processingTime = Date.now() - startTime
-      console.log(`CAM generated in ${processingTime}ms for lead ${input.lead_id}`)
 
       return {
         success: true,

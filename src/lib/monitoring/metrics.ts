@@ -41,7 +41,6 @@ class MetricsCollector {
 
     // Send to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[METRIC] ${name}:`, value, tags);
     }
   }
 

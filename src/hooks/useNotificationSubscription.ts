@@ -47,7 +47,6 @@ export function useNotificationSubscription({
               filter: `user_id=eq.${userId}`
             },
             async (payload) => {
-              console.log('[Realtime] New notification received:', payload)
 
               // Fetch the full notification details
               if (payload.new && 'notification_id' in payload.new) {
@@ -83,7 +82,6 @@ export function useNotificationSubscription({
               filter: `user_id=eq.${userId}`
             },
             async (payload) => {
-              console.log('[Realtime] Notification updated:', payload)
 
               // Fetch updated notification
               if (payload.new && 'notification_id' in payload.new) {
@@ -119,7 +117,6 @@ export function useNotificationSubscription({
               filter: `user_id=eq.${userId}`
             },
             (payload) => {
-              console.log('[Realtime] Notification deleted:', payload)
 
               if (payload.old && 'notification_id' in payload.old && onNotificationDelete) {
                 onNotificationDelete(payload.old.notification_id as string)
@@ -127,7 +124,6 @@ export function useNotificationSubscription({
             }
           )
           .subscribe((status) => {
-            console.log('[Realtime] Subscription status:', status)
 
             if (status === 'SUBSCRIBED') {
               setIsSubscribed(true)
@@ -152,7 +148,6 @@ export function useNotificationSubscription({
     // Cleanup function
     return () => {
       if (channel) {
-        console.log('[Realtime] Unsubscribing from notifications')
         supabase.removeChannel(channel)
         setIsSubscribed(false)
       }

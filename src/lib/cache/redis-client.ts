@@ -65,7 +65,6 @@ async function initializeRedis(): Promise<RedisClientType> {
         reconnectStrategy: (retries) => {
           // Exponential backoff: 50ms, 100ms, 200ms, ..., max 3000ms
           const delay = Math.min(50 * Math.pow(2, retries), 3000)
-          console.log(`Redis reconnection attempt ${retries + 1}, waiting ${delay}ms`)
           return delay
         },
       },
@@ -78,22 +77,18 @@ async function initializeRedis(): Promise<RedisClientType> {
     })
 
     redisClient.on('connect', () => {
-      console.log('Redis Client Connected')
     })
 
     redisClient.on('ready', () => {
-      console.log('Redis Client Ready')
       isConnected = true
       isConnecting = false
     })
 
     redisClient.on('reconnecting', () => {
-      console.log('Redis Client Reconnecting...')
       isConnected = false
     })
 
     redisClient.on('end', () => {
-      console.log('Redis Client Connection Closed')
       isConnected = false
     })
 
@@ -307,7 +302,6 @@ export async function closeRedis(): Promise<void> {
   try {
     if (redisClient && isConnected) {
       await redisClient.quit()
-      console.log('Redis connection closed')
     }
   } catch (error) {
     console.error('Failed to close Redis connection:', error)

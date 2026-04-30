@@ -74,7 +74,6 @@ export function initSentry() {
   try {
     // Sentry will be initialized via sentry.client.config.ts and sentry.server.config.ts
     // after npm install @sentry/nextjs and running npx @sentry/wizard@latest -i nextjs
-    console.log('Sentry monitoring enabled')
     return true
   } catch (error) {
     console.error('Failed to initialize Sentry:', error)

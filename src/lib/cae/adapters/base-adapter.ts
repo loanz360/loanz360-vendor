@@ -40,11 +40,9 @@ export abstract class BaseCAEAdapter implements CAEProviderAdapter {
   }
 
   protected logRequest(request: CAERequest, requestId: string): void {
-    console.log(`[${this.provider}] Processing request ${requestId} for lead ${request.lead_id}`)
   }
 
   protected logResponse(response: CAEResponse): void {
-    console.log(`[${this.provider}] Response for ${response.request_id}: ${response.success ? 'SUCCESS' : 'FAILED'}`)
   }
 
   protected createErrorResponse(requestId: string, error: string, errorCode?: string): CAEResponse {

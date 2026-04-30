@@ -51,7 +51,6 @@ export function useRealtimeNotifications(options: UseRealtimeNotificationsOption
 
           switch (data.type) {
             case 'connected':
-              console.log('SSE connected:', data.user_id)
               break
 
             case 'notification':
@@ -66,7 +65,6 @@ export function useRealtimeNotifications(options: UseRealtimeNotificationsOption
               break
 
             default:
-              console.log('Unknown SSE event:', data)
           }
         } catch (err) {
           console.error('Error parsing SSE message:', err)

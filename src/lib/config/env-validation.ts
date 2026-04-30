@@ -202,7 +202,6 @@ export function validateEnvironmentOrThrow(): void {
   // Log success in development
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line no-console
-    console.log('✅ Environment variables validated successfully')
   }
 }
 

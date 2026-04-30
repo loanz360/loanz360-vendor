@@ -35,7 +35,6 @@ export class SecurityLogger {
                    entry.level === 'warn' ? '⚠️' :
                    entry.level === 'critical' ? '🚨' : '📝'
       // eslint-disable-next-line no-console
-      console.log(`${icon} [${entry.level.toUpperCase()}] ${entry.event}`, fullEntry)
     }
 
     // In production, log to database via API

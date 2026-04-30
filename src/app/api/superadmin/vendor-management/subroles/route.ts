@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
 
     // If table doesn't exist or query fails, fall back to config
     if (error) {
-      apiLogger.warn('vendor_sub_roles table not available, falling back to config', { error: error.message })
+      apiLogger.warn('vendor_sub_roles table not available, falling back to config', { error: 'An unexpected error occurred' })
 
       const fallbackRoles = VENDOR_SUB_ROLES.map((role, index) => ({
         id: `config-${index}`,

@@ -52,7 +52,6 @@ export class ProviderHealthMonitor {
       return
     }
 
-    console.log('[HealthMonitor] Starting automated health checks...')
     this.isRunning = true
 
     // Run immediate check
@@ -81,7 +80,6 @@ export class ProviderHealthMonitor {
     }
     this.isRunning = false
 
-    console.log('[HealthMonitor] Stopped automated health checks')
 
     auditLogger.log({
       action: 'STOP_HEALTH_MONITOR',
@@ -97,7 +95,6 @@ export class ProviderHealthMonitor {
     const supabase = await createClient()
     const results: HealthCheckResult[] = []
 
-    console.log('[HealthMonitor] Running health checks for all providers...')
 
     // Get all active providers from database
     const { data: providers, error } = await supabase
@@ -111,7 +108,6 @@ export class ProviderHealthMonitor {
     }
 
     if (!providers || providers.length === 0) {
-      console.log('[HealthMonitor] No active providers found')
       return results
     }
 
@@ -144,7 +140,6 @@ export class ProviderHealthMonitor {
       }
     }
 
-    console.log(`[HealthMonitor] Health check complete. Results: ${results.length}`)
     return results
   }
 

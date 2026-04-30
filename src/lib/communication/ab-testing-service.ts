@@ -255,10 +255,8 @@ export class ABTestingService {
           }
         } else if (test.message_type === 'email') {
           // Email sending logic (to be implemented)
-          console.log('Email A/B testing not yet implemented')
         } else if (test.message_type === 'whatsapp') {
           // WhatsApp sending logic (to be implemented)
-          console.log('WhatsApp A/B testing not yet implemented')
         }
       }
 

@@ -249,7 +249,6 @@ export async function updateSLAStatistics() {
  * Master SLA monitor function - runs all checks
  */
 export async function runSLAMonitor() {
-  console.log('[SLA Monitor] Starting SLA monitoring checks...')
 
   const results = {
     warnings: await checkSLAWarnings(),
@@ -257,7 +256,6 @@ export async function runSLAMonitor() {
     timestamp: new Date().toISOString()
   }
 
-  console.log('[SLA Monitor] Completed:', results)
 
   return results
 }

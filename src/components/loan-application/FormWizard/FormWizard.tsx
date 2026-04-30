@@ -345,7 +345,6 @@ const StepContent = ({
           onDelete={onDocumentDelete}
           onVerify={async (docId) => {
             // Document verification logic
-            console.log('Verifying document:', docId);
           }}
         />
       );

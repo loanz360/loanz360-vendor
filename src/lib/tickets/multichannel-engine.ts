@@ -444,19 +444,16 @@ export async function sendOutboundMessage(message: Omit<OutboundMessage, 'id' | 
 // Channel-specific sending functions (these would integrate with actual APIs)
 async function sendEmailMessage(message: Omit<OutboundMessage, 'id' | 'created_at' | 'status'>): Promise<{ success: boolean; external_id?: string; error?: string }> {
   // In production, this would use nodemailer, SendGrid, etc.
-  console.log('Sending email to:', message.recipient_email)
   return { success: true, external_id: `email_${Date.now()}` }
 }
 
 async function sendSMSMessage(message: Omit<OutboundMessage, 'id' | 'created_at' | 'status'>): Promise<{ success: boolean; external_id?: string; error?: string }> {
   // In production, this would use Twilio, MSG91, etc.
-  console.log('Sending SMS to:', message.recipient_phone)
   return { success: true, external_id: `sms_${Date.now()}` }
 }
 
 async function sendWhatsAppMessage(message: Omit<OutboundMessage, 'id' | 'created_at' | 'status'>): Promise<{ success: boolean; external_id?: string; error?: string }> {
   // In production, this would use WhatsApp Business API
-  console.log('Sending WhatsApp to:', message.recipient_phone)
   return { success: true, external_id: `wa_${Date.now()}` }
 }
 

@@ -219,7 +219,6 @@ export function ExportDialog({ isOpen, onClose, selectedIds, totalRecords }: Exp
 
   const handleDownload = (job: ExportJob) => {
     // Simulate download
-    console.log('Downloading:', job.downloadUrl)
     toast.info(`Downloading ${job.downloadUrl}`)
   }
 

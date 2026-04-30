@@ -11,6 +11,5 @@
       "maxDuration": 30
     }
   },
-  "crons": [],
-  "ignoreCommand": "git log -1 --pretty=%B | grep -qF \"[deploy]\" && exit 1 || exit 0"
+  "crons": []
 }

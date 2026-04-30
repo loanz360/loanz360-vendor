@@ -84,7 +84,6 @@ export function useEmployeeSupportRealtime(options: UseEmployeeSupportRealtimeOp
                 : undefined
             },
             (payload) => {
-              console.log('[EmployeeSupport Realtime] Ticket change:', payload)
 
               if (payload.eventType === 'INSERT' && options.onNewTicket) {
                 options.onNewTicket(payload.new)
@@ -100,7 +99,6 @@ export function useEmployeeSupportRealtime(options: UseEmployeeSupportRealtimeOp
             }
           )
           .subscribe((status) => {
-            console.log('[EmployeeSupport Realtime] Ticket subscription status:', status)
             if (status === 'SUBSCRIBED') {
               setIsConnected(true)
               setError(null)
@@ -125,14 +123,12 @@ export function useEmployeeSupportRealtime(options: UseEmployeeSupportRealtimeOp
                 filter: `ticket_id=eq.${options.ticketId}`
               },
               (payload) => {
-                console.log('[EmployeeSupport Realtime] New message:', payload)
                 if (options.onNewMessage) {
                   options.onNewMessage(payload.new)
                 }
               }
             )
             .subscribe((status) => {
-              console.log('[EmployeeSupport Realtime] Message subscription status:', status)
             })
         }
 

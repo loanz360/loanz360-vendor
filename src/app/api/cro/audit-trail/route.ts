@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       .range(offset, offset + limit - 1)
 
     if (error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+      return NextResponse.json({ success: false, error: 'An unexpected error occurred' }, { status: 500 })
     }
 
     // Fetch user names for performed_by

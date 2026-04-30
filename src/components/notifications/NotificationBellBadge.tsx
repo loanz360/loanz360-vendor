@@ -36,7 +36,6 @@ export default function NotificationBellBadge({ onClick, userId }: NotificationB
     userId: userId,
     enabled: !!userId,
     onNewNotification: (notification) => {
-      console.log('[Bell] New notification received:', notification)
 
       // Add to notifications list
       setNotifications((prev) => [notification, ...prev.slice(0, 4)])
@@ -56,11 +55,9 @@ export default function NotificationBellBadge({ onClick, userId }: NotificationB
         audio.volume = 0.5
         audio.play().catch(err => console.log('Audio play failed:', err))
       } catch (err) {
-        console.log('Audio not available:', err)
       }
     },
     onNotificationUpdate: (notification) => {
-      console.log('[Bell] Notification updated:', notification)
 
       // Update in list if exists
       setNotifications((prev) =>

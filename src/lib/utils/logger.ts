@@ -64,11 +64,9 @@ class Logger {
     if (this.isProd) {
       // Structured JSON for log aggregation in production
       // eslint-disable-next-line no-console
-      console.log(JSON.stringify(logEntry))
     } else {
       // Human-readable format for development
       // eslint-disable-next-line no-console
-      console.log(`${emoji[level]} [${this.module}] ${message}`, context || '')
     }
   }
 

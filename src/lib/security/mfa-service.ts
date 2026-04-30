@@ -402,7 +402,6 @@ export class MFAService {
 
       // TODO: Send SMS via Twilio/MSG91
       // await this.sendSMS(normalizedPhone, `Your LOANZ 360 verification code is: ${verificationCode}`)
-      console.log(`📱 SMS verification code for ${normalizedPhone}: ${verificationCode}`)
 
       return {
         success: true,
@@ -505,7 +504,6 @@ export class MFAService {
         .eq('id', methodId)
 
       // TODO: Send SMS
-      console.log(`📱 SMS code for ${method.phone_number}: ${verificationCode}`)
 
       return { success: true }
     } catch (error: unknown) {
@@ -540,7 +538,6 @@ export class MFAService {
       if (error) throw error
 
       // TODO: Send email via email service
-      console.log(`📧 Email verification code for ${emailAddress}: ${verificationCode}`)
 
       return {
         success: true,

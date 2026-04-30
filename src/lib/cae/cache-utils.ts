@@ -326,7 +326,6 @@ export class TTLCache<T = any> {
     if (cleaned > 0) {
       this.stats.deletes += cleaned
       this.stats.size = this.store.size
-      console.log(`[CACHE] Cleaned up ${cleaned} expired entries`)
     }
   }
 
@@ -475,7 +474,6 @@ export function invalidateAllCaches(): void {
   healthCache.clear()
   camCache.clear()
   analyticsCache.clear()
-  console.log('[CACHE] All caches invalidated')
 }
 
 /**
@@ -500,16 +498,6 @@ export function getAllCacheStats(): Record<string, CacheStats> {
 export function logCacheStats(): void {
   const stats = getAllCacheStats()
 
-  console.log('=== Cache Statistics ===')
   for (const [name, stat] of Object.entries(stats)) {
-    console.log(`\n${name.toUpperCase()} Cache:`)
-    console.log(`  Size: ${stat.size}/${stat.maxSize}`)
-    console.log(`  Hits: ${stat.hits}`)
-    console.log(`  Misses: ${stat.misses}`)
-    console.log(`  Hit Rate: ${(stat.hitRate * 100).toFixed(2)}%`)
-    console.log(`  Sets: ${stat.sets}`)
-    console.log(`  Deletes: ${stat.deletes}`)
-    console.log(`  Evictions: ${stat.evictions}`)
   }
-  console.log('========================')
 }

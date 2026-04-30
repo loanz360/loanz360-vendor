@@ -42,7 +42,6 @@ async function getActiveProvider(): Promise<CreditBureauProviderConfig | null> {
 
   if (error || !providers || providers.length === 0) {
     // Return mock provider config if no real provider configured
-    console.log('No active credit bureau provider found, using mock');
     return createMockProviderConfig('CIBIL');
   }
 

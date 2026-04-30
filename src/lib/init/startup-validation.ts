@@ -132,13 +132,10 @@ export function runStartupValidation(): StartupValidationResult {
     timestamp: new Date().toISOString(),
   }
 
-  console.log('🚀 Starting application validation...\n')
 
   // 1. Validate environment variables
-  console.log('1️⃣  Validating environment variables...')
   try {
     validateEnvironmentOrThrow()
-    console.log('   ✅ Environment variables validated\n')
   } catch {
     result.success = false
     result.errors.push('Environment validation failed')
@@ -147,58 +144,42 @@ export function runStartupValidation(): StartupValidationResult {
   }
 
   // 2. Validate database configuration
-  console.log('2️⃣  Validating database configuration...')
   const dbValidation = validateDatabaseConfig()
   if (!dbValidation.valid) {
     result.success = false
     result.errors.push(...dbValidation.errors)
     console.error('   ❌ Database configuration invalid')
     dbValidation.errors.forEach(err => console.error(`      - ${err}`))
-    console.log('')
   } else {
-    console.log('   ✅ Database configuration valid\n')
   }
 
   // 3. Validate security configuration
-  console.log('3️⃣  Validating security configuration...')
   const secValidation = validateSecurityConfig()
   if (!secValidation.valid) {
     result.success = false
     result.errors.push(...secValidation.errors)
     console.error('   ❌ Security configuration invalid')
     secValidation.errors.forEach(err => console.error(`      - ${err}`))
-    console.log('')
   } else {
-    console.log('   ✅ Security configuration valid\n')
   }
 
   if (secValidation.warnings.length > 0) {
     result.warnings.push(...secValidation.warnings)
     secValidation.warnings.forEach(warn => console.warn(`   ⚠️  ${warn}`))
-    console.log('')
   }
 
   // 4. Validate compliance prerequisites
-  console.log('4️⃣  Validating compliance prerequisites...')
   const complianceValidation = validateCompliancePrerequisites()
   if (complianceValidation.warnings.length > 0) {
     result.warnings.push(...complianceValidation.warnings)
     complianceValidation.warnings.forEach(warn => console.warn(`   ⚠️  ${warn}`))
   } else {
-    console.log('   ✅ All compliance prerequisites configured\n')
   }
 
   // Final result
   if (result.success) {
-    console.log('═══════════════════════════════════════════════════════════')
-    console.log('✅ STARTUP VALIDATION PASSED')
-    console.log('═══════════════════════════════════════════════════════════')
-    console.log(`Environment: ${isProduction() ? 'PRODUCTION' : 'DEVELOPMENT'}`)
-    console.log(`Timestamp: ${result.timestamp}`)
     if (result.warnings.length > 0) {
-      console.log(`Warnings: ${result.warnings.length}`)
     }
-    console.log('═══════════════════════════════════════════════════════════\n')
   } else {
     console.error('═══════════════════════════════════════════════════════════')
     console.error('❌ STARTUP VALIDATION FAILED')

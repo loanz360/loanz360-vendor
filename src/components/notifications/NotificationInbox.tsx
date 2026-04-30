@@ -64,7 +64,6 @@ export default function NotificationInbox({ onNotificationClick }: NotificationI
     userId: user?.id,
     enabled: !!user?.id,
     onNewNotification: (notification) => {
-      console.log('[Inbox] New notification received:', notification)
 
       // Add to beginning of notifications list
       setNotifications((prev) => [notification, ...prev])
@@ -76,7 +75,6 @@ export default function NotificationInbox({ onNotificationClick }: NotificationI
       })
     },
     onNotificationUpdate: (notification) => {
-      console.log('[Inbox] Notification updated:', notification)
 
       // Update the notification in the list
       setNotifications((prev) =>
@@ -84,7 +82,6 @@ export default function NotificationInbox({ onNotificationClick }: NotificationI
       )
     },
     onNotificationDelete: (notificationId) => {
-      console.log('[Inbox] Notification deleted:', notificationId)
 
       // Remove from list
       setNotifications((prev) => prev.filter((n) => n.id !== notificationId))

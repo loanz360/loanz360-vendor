@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     if (error) {
       apiLogger.error('Bridge RPC error:', error)
       return NextResponse.json(
-        { success: false, error: error.message || 'Failed to bridge deal to CAE' },
+        { success: false, error: 'An unexpected error occurred' || 'Failed to bridge deal to CAE' },
         { status: 500 }
       )
     }

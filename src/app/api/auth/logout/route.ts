@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       logger.warn('Logout signOut error (session may already be invalid)', {
-        error: error.message,
+        error: 'An unexpected error occurred',
         userId,
         ip: clientIP,
       })

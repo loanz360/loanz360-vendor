@@ -56,7 +56,6 @@ class InMemoryWorker<T> {
     this.name = queueName
     this.handler = handler
     this.concurrency = options?.concurrency || 1
-    console.log(`[Worker:${this.name}] Initialized with concurrency ${this.concurrency}`)
   }
 
   on(event: 'completed', handler: (job: Job<T>) => void): void
@@ -82,7 +81,6 @@ class InMemoryWorker<T> {
 
   async close(): Promise<void> {
     this.running = false
-    console.log(`[Worker:${this.name}] Closed`)
   }
 }
 
@@ -93,7 +91,6 @@ class InMemoryWorker<T> {
 export const emailWorker = new InMemoryWorker<EmailJobData>(
   'notification:email',
   async (job) => {
-    console.log(`[Email Worker] Processing job ${job.id}`)
 
     const { notification_id, recipient_ids } = job.data
 
@@ -142,13 +139,11 @@ export const emailWorker = new InMemoryWorker<EmailJobData>(
 export const smsWorker = new InMemoryWorker<SMSJobData>(
   'notification:sms',
   async (job) => {
-    console.log(`[SMS Worker] Processing job ${job.id}`)
 
     const { phone_numbers } = job.data
 
     try {
       // Placeholder implementation
-      console.log(`[SMS Worker] Would send SMS to ${phone_numbers.length} recipients`)
 
       await job.updateProgress(100)
 
@@ -172,13 +167,11 @@ export const smsWorker = new InMemoryWorker<SMSJobData>(
 export const pushWorker = new InMemoryWorker<PushJobData>(
   'notification:push',
   async (job) => {
-    console.log(`[Push Worker] Processing job ${job.id}`)
 
     const { recipient_ids } = job.data
 
     try {
       // Placeholder implementation
-      console.log(`[Push Worker] Would send push to ${recipient_ids.length} recipients`)
 
       await job.updateProgress(100)
 
@@ -202,7 +195,6 @@ export const pushWorker = new InMemoryWorker<PushJobData>(
 export const bulkWorker = new InMemoryWorker<BulkJobData>(
   'notification:bulk',
   async (job) => {
-    console.log(`[Bulk Worker] Processing job ${job.id}`)
 
     const {
       notification_id,
@@ -315,7 +307,6 @@ export const bulkWorker = new InMemoryWorker<BulkJobData>(
 export const analyticsWorker = new InMemoryWorker<AnalyticsJobData>(
   'notification:analytics',
   async (job) => {
-    console.log(`[Analytics Worker] Processing job ${job.id}`)
 
     const { job_type } = job.data
 
@@ -351,7 +342,6 @@ export const analyticsWorker = new InMemoryWorker<AnalyticsJobData>(
 export const cleanupWorker = new InMemoryWorker<CleanupJobData>(
   'notification:cleanup',
   async (job) => {
-    console.log(`[Cleanup Worker] Processing job ${job.id}`)
 
     const { job_type } = job.data
 
@@ -407,7 +397,6 @@ export const cleanupWorker = new InMemoryWorker<CleanupJobData>(
 
 // Email Worker Events
 emailWorker.on('completed', (job) => {
-  console.log(`[Email Worker] Job ${job.id} completed`)
 })
 
 emailWorker.on('failed', (job, err) => {
@@ -416,7 +405,6 @@ emailWorker.on('failed', (job, err) => {
 
 // SMS Worker Events
 smsWorker.on('completed', (job) => {
-  console.log(`[SMS Worker] Job ${job.id} completed`)
 })
 
 smsWorker.on('failed', (job, err) => {
@@ -425,7 +413,6 @@ smsWorker.on('failed', (job, err) => {
 
 // Bulk Worker Events
 bulkWorker.on('completed', (job) => {
-  console.log(`[Bulk Worker] Job ${job.id} completed`)
 })
 
 bulkWorker.on('failed', (job, err) => {
@@ -434,12 +421,10 @@ bulkWorker.on('failed', (job, err) => {
 
 // Analytics Worker Events
 analyticsWorker.on('completed', (job) => {
-  console.log(`[Analytics Worker] Job ${job.id} completed`)
 })
 
 // Cleanup Worker Events
 cleanupWorker.on('completed', (job) => {
-  console.log(`[Cleanup Worker] Job ${job.id} completed`)
 })
 
 // =====================================================
@@ -447,7 +432,6 @@ cleanupWorker.on('completed', (job) => {
 // =====================================================
 
 async function gracefulShutdown() {
-  console.log('[Workers] Shutting down gracefully...')
 
   await Promise.all([
     emailWorker.close(),
@@ -458,7 +442,6 @@ async function gracefulShutdown() {
     cleanupWorker.close()
   ])
 
-  console.log('[Workers] All workers closed')
 }
 
 // Only add process handlers in Node.js environment
@@ -485,12 +468,4 @@ export const workers = {
  * Call this from a separate worker process or server
  */
 export function startAllWorkers() {
-  console.log('[Workers] Starting all notification workers...')
-  console.log('[Workers] Email worker: Running (concurrency: 5)')
-  console.log('[Workers] SMS worker: Running (concurrency: 3)')
-  console.log('[Workers] Push worker: Running (concurrency: 10)')
-  console.log('[Workers] Bulk worker: Running (concurrency: 2)')
-  console.log('[Workers] Analytics worker: Running (concurrency: 1)')
-  console.log('[Workers] Cleanup worker: Running (concurrency: 1)')
-  console.log('[Workers] All workers started successfully')
 }

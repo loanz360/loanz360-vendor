@@ -200,7 +200,6 @@ class ProviderManager {
 
       this.initialized = true
       this.lastRefresh = new Date()
-      console.log(`[ProviderManager] Initialized with ${this.providers.size} providers`)
     } catch (error) {
       console.error('[ProviderManager] Initialization failed:', error)
       throw error

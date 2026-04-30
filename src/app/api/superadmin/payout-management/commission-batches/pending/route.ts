@@ -11,7 +11,7 @@ export async function GET() {
       .select('*')
       .eq('status', 'pending')
       .order('created_at', { ascending: false })
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 })
     return NextResponse.json({ batches: data || [] })
   } catch (err) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

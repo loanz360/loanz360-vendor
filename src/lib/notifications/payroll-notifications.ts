@@ -276,7 +276,6 @@ async function sendEmail(params: SendEmailParams): Promise<boolean> {
         }))
       })
 
-      console.log('[EMAIL] Sent via Resend:', { to: params.to, subject: params.subject })
       return true
     }
 
@@ -298,7 +297,6 @@ async function sendEmail(params: SendEmailParams): Promise<boolean> {
         }))
       })
 
-      console.log('[EMAIL] Sent via SendGrid:', { to: params.to, subject: params.subject })
       return true
     }
 

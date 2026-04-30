@@ -45,11 +45,9 @@ export async function getRedisClient() {
   })
 
   redisClient.on('connect', () => {
-    console.log('[Redis] Connected successfully')
   })
 
   redisClient.on('reconnecting', () => {
-    console.log('[Redis] Reconnecting...')
   })
 
   await redisClient.connect()
@@ -432,7 +430,6 @@ export async function invalidateAllNotificationCaches(): Promise<void> {
 
     if (keys.length > 0) {
       await redis.del(keys)
-      console.log(`[Cache] Invalidated ${keys.length} notification cache keys`)
     }
   } catch (error) {
     console.error('[Cache] Error invalidating all caches:', error)
@@ -481,7 +478,6 @@ export async function closeRedisConnection(): Promise<void> {
   try {
     if (redisClient && redisClient.isOpen) {
       await redisClient.quit()
-      console.log('[Redis] Connection closed')
     }
   } catch (error) {
     console.error('[Redis] Error closing connection:', error)
@@ -498,7 +494,6 @@ export async function closeRedisConnection(): Promise<void> {
  */
 export async function warmNotificationCache(): Promise<void> {
   try {
-    console.log('[Cache] Warming notification cache...')
 
     // This would be called from your app initialization
     // Add logic to pre-load hot data:
@@ -507,7 +502,6 @@ export async function warmNotificationCache(): Promise<void> {
     // - Analytics for current month
     // etc.
 
-    console.log('[Cache] Cache warmed successfully')
   } catch (error) {
     console.error('[Cache] Error warming cache:', error)
   }

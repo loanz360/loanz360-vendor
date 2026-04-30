@@ -151,7 +151,6 @@ export async function createOTP(params: {
           userId: params.customerId
         })
 
-        console.log(`[SMS] OTP sent to ${params.mobile} via template ${templateCode}`)
       } catch (smsError) {
         console.error('Failed to send OTP SMS:', smsError)
         // Don't fail the OTP creation if SMS fails
@@ -161,7 +160,6 @@ export async function createOTP(params: {
 
     // TODO: Send OTP via Email (when email is provided)
     if (params.email) {
-      console.log(`[DEV] Email OTP not yet implemented for ${params.email}`)
     }
 
     return {

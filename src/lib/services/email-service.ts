@@ -27,8 +27,6 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
     //   html: options.html
     // })
 
-    console.log('Email would be sent to:', options.to)
-    console.log('Subject:', options.subject)
 
     // For now, just return true to indicate success
     // In production, implement actual email sending

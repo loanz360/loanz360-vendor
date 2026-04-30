@@ -364,7 +364,6 @@ export class SmartNotificationService {
       if (error) {
         console.error('Failed to send notification:', error)
       } else {
-        console.log(`✅ Notification sent to user ${userId}: ${notification.title}`)
       }
 
       // Also send email/SMS for high-priority notifications

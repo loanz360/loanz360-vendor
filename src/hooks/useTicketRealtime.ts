@@ -67,7 +67,6 @@ export function useTicketRealtime(options: UseTicketRealtimeOptions) {
                 : undefined
             },
             (payload) => {
-              console.log('[Realtime] Ticket change:', payload)
 
               if (payload.eventType === 'INSERT' && options.onNewTicket) {
                 options.onNewTicket(payload.new)
@@ -79,7 +78,6 @@ export function useTicketRealtime(options: UseTicketRealtimeOptions) {
             }
           )
           .subscribe((status) => {
-            console.log('[Realtime] Ticket subscription status:', status)
             if (status === 'SUBSCRIBED') {
               setIsConnected(true)
               setError(null)
@@ -104,7 +102,6 @@ export function useTicketRealtime(options: UseTicketRealtimeOptions) {
                 filter: `ticket_id=eq.${options.ticketId}`
               },
               (payload) => {
-                console.log('[Realtime] New message:', payload)
                 if (options.onNewMessage) {
                   options.onNewMessage(payload.new)
                 }

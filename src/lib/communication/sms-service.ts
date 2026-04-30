@@ -369,7 +369,6 @@ class SMSService {
    * Update delivery status in database
    */
   private async updateDeliveryStatus(messageId: string, status: string): Promise<void> {
-    console.log(`[SMSService] Update status: ${messageId} -> ${status}`)
     // Update communication_log table
   }
 
@@ -377,7 +376,6 @@ class SMSService {
    * Handle delivery failure
    */
   private async handleDeliveryFailure(messageId: string, error: string): Promise<void> {
-    console.log(`[SMSService] Delivery failed: ${messageId}, error: ${error}`)
     // Update communication_log with failure reason
   }
 }

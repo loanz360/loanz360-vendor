@@ -134,7 +134,6 @@ export default function CoApplicantConsentSection({
 
         // For development, show the OTP
         if (data._devOTP) {
-          console.log(`[DEV] OTP for ${coApplicant.mobile_number}: ${data._devOTP}`)
         }
       } else {
         toast.error(data.error || 'Failed to send consent request')
@@ -170,7 +169,6 @@ export default function CoApplicantConsentSection({
 
         // For development, show the OTP
         if (data._devOTP) {
-          console.log(`[DEV] New OTP for ${coApplicant.mobile_number}: ${data._devOTP}`)
         }
       } else {
         toast.error(data.error || 'Failed to resend OTP')

@@ -331,14 +331,12 @@ class EmailService {
    */
   private async updateDeliveryStatus(messageId: string, status: string): Promise<void> {
     // Update communication_log table
-    console.log(`[EmailService] Update status: ${messageId} -> ${status}`)
   }
 
   /**
    * Track email opened
    */
   private async trackEmailOpened(messageId: string): Promise<void> {
-    console.log(`[EmailService] Email opened: ${messageId}`)
     // Update communication_log with opened_at timestamp
   }
 
@@ -346,7 +344,6 @@ class EmailService {
    * Track email link clicked
    */
   private async trackEmailClicked(messageId: string, link: string): Promise<void> {
-    console.log(`[EmailService] Email clicked: ${messageId}, link: ${link}`)
     // Update communication_log with clicked_at timestamp
   }
 
@@ -354,7 +351,6 @@ class EmailService {
    * Handle email bounce
    */
   private async handleBounce(messageId: string, reason: string): Promise<void> {
-    console.log(`[EmailService] Email bounced: ${messageId}, reason: ${reason}`)
     // Mark email as bounced, potentially unsubscribe if hard bounce
   }
 
@@ -362,7 +358,6 @@ class EmailService {
    * Handle spam complaint
    */
   private async handleComplaint(messageId: string): Promise<void> {
-    console.log(`[EmailService] Spam complaint: ${messageId}`)
     // Automatically unsubscribe user
   }
 }
