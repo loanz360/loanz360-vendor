@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Insufficient permissions' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const parsed = reassignSchema.safeParse(body)
     if (!parsed.success) {

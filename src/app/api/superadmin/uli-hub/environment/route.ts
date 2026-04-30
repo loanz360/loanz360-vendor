@@ -1,5 +1,6 @@
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: ULI Environment Configuration
  * GET   /api/superadmin/uli-hub/environment  — Get current config
@@ -48,7 +49,7 @@ export async function PATCH(request: NextRequest) {
   try {
     const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
     if (rateLimitResponse) return rateLimitResponse
-const { data: body, error: _valErr } = await parseBody(request)
+const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const supabase = createAdminClient()
 

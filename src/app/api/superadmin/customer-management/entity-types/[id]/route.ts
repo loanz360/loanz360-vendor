@@ -152,7 +152,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     // Parse and validate request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const validatedData = updateEntityTypeSchema.parse(body)
 

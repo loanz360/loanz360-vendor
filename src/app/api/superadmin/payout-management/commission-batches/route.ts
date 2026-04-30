@@ -1,5 +1,6 @@
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -21,7 +22,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const { data, error } = await supabase
       .from('commission_batches')

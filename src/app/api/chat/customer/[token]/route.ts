@@ -223,7 +223,7 @@ export async function POST(
       }, { status: 404 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const parsed = sendMessageSchema.safeParse(body)
     if (!parsed.success) {

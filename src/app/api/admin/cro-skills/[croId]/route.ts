@@ -234,7 +234,7 @@ export async function PATCH(
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const { data: body, error: _valErr2 } = await parseBody(request, z.object({}).passthrough())
     if (_valErr2) return _valErr2
 
     const { data: updatedSkills, error } = await supabase

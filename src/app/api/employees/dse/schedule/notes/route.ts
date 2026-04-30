@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: authResult.error }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const validatedData = createNoteSchema.parse(body)
 
@@ -234,7 +234,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Note ID is required' }, { status: 400 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const { data: body, error: _valErr2 } = await parseBody(request, z.object({}).passthrough())
     if (_valErr2) return _valErr2
     const validatedData = updateNoteSchema.parse(body)
 

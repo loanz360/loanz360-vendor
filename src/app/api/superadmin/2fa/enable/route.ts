@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     const { admin } = adminResult
 
     // Parse and validate request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const validation = enableTwoFactorSchema.safeParse(body)
 

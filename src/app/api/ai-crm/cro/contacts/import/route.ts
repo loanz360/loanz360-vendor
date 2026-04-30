@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
   const { user, supabase, requestId } = authResult.context
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const parsed = importSchema.safeParse(body)
 

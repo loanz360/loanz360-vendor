@@ -27,7 +27,7 @@ const supabase = await createClient()
     }
 
     // Validate with Zod
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const parseResult = CompareSchema.safeParse(body)
     if (!parseResult.success) {

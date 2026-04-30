@@ -224,7 +224,7 @@ export async function PATCH(request: NextRequest) {
     // Use admin client for data queries (bypasses RLS - auth already verified above)
     const adminClient = createSupabaseAdmin()
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const { data: body, error: _valErr2 } = await parseBody(request, z.object({}).passthrough())
     if (_valErr2) return _valErr2
     const validated = settlementActionSchema.safeParse(body)
     if (!validated.success) {

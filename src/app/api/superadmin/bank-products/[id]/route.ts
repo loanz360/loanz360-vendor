@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Bank Products Management API - Single Product Operations
  * GET: Get single product by ID
@@ -81,7 +82,7 @@ export async function PUT(
     if (authErr) return NextResponse.json({ success: false, error: authErr }, { status })
 
     const { id } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
 
     // Check product exists

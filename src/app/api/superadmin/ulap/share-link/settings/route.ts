@@ -1,5 +1,6 @@
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const { data, error } = await supabase.from('ulap_share_link_settings').upsert({ ...body, updated_by: user.id, updated_at: new Date().toISOString() }).select().maybeSingle()
     if (error) return NextResponse.json({ success: false, error: 'An unexpected error occurred' }, { status: 500 })

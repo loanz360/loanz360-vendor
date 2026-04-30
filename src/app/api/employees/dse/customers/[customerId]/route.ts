@@ -202,7 +202,7 @@ export async function PUT(
       return NextResponse.json({ success: false, error: access.error }, { status: access.status })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const validatedData = updateCustomerSchema.parse(body)
 

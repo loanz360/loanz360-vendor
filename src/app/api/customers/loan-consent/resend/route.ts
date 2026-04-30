@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
     if (rateLimitResponse) return rateLimitResponse
 // Parse and validate request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const validatedData = resendOTPSchema.parse(body)
 

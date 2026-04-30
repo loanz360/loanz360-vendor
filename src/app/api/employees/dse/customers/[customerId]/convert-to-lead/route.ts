@@ -113,7 +113,7 @@ export async function POST(
     // Proceed to create the lead.
     const customer = updated
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
     const validatedData = convertToLeadSchema.parse(body)
 

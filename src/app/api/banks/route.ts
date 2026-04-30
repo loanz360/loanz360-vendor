@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
 
     // Validate with Zod
@@ -209,7 +209,7 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const { data: body, error: _valErr2 } = await parseBody(request, z.object({}).passthrough())
     if (_valErr2) return _valErr2
 
     // Validate with Zod

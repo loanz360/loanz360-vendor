@@ -238,7 +238,7 @@ const supabase = await createClient()
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const { data: body, error: _valErr2 } = await parseBody(request, z.object({}).passthrough())
     if (_valErr2) return _valErr2
 
     // Validate request body with Zod

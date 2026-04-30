@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse and validate request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const { data: body, error: _valErr } = await parseBody(request, z.object({}).passthrough())
     if (_valErr) return _valErr
 
     // Sanitize inputs before validation

@@ -217,7 +217,7 @@ const supabase = await createClient()
       return NextResponse.json({ success: false, error: 'Note ID required' }, { status: 400 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const { data: body, error: _valErr2 } = await parseBody(request, z.object({}).passthrough())
     if (_valErr2) return _valErr2
 
     // Verify ownership
