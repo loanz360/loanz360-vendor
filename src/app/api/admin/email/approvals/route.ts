@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -19,7 +20,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin();
     const searchParams = request.nextUrl.searchParams;
     const status = searchParams.get('status') as 'pending' | 'approved' | 'denied' | 'cancelled' | 'expired' | null;
     const type = searchParams.get('type') || 'all';
@@ -88,7 +91,9 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin();
 
     // Get current user
     const { data: { user }, error: authError } = await supabase.auth.getUser();

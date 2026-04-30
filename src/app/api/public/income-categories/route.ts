@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { apiLogger } from '@/lib/utils/logger'
@@ -30,7 +31,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function GET(request: NextRequest) {
   try {
-    // Use service role client for public read access
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Use service role client for public read access
     const supabase = createServiceRoleClient()
 
     // Fetch all active income categories (simple query without joins for reliability)

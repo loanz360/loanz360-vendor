@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: ULI Environment Configuration
@@ -45,7 +46,9 @@ export async function GET() {
 // PATCH — Update environment configuration
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { data: body, error: _valErr } = await parseBody(request)
     if (_valErr) return _valErr
     const supabase = createAdminClient()
 

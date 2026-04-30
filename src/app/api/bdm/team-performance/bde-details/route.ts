@@ -9,6 +9,7 @@
  * ============================================================================
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import type {
@@ -35,7 +36,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    // =========================================================================
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// =========================================================================
     // 1. AUTHENTICATION & AUTHORIZATION
     // =========================================================================
 

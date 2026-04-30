@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
@@ -20,7 +21,9 @@ const sesClient = new SESClient({
 
 export async function POST(request: NextRequest) {
   try {
-    const { campaignId } = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const { campaignId } = await request.json()
 
     if (!campaignId) {
       return NextResponse.json({ success: false, error: 'Campaign ID is required' }, { status: 400 })

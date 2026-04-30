@@ -1,11 +1,14 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { handleApiError } from '@/lib/errors/api-errors'
 
 export async function GET(request: NextRequest) {
   try {
-    const authClient = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const authClient = await createClient()
     const { data: { user }, error: authError } = await authClient.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })

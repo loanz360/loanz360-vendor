@@ -6,6 +6,7 @@
  * Handles document uploads for ULAP lead applications
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadLeadDocument } from '@/lib/aws/document-upload';
 import { createServerClient } from '@/lib/supabase/server';
@@ -46,7 +47,9 @@ const DOCUMENT_CATEGORIES: Record<string, string> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.UPLOAD)
+    if (rateLimitResponse) return rateLimitResponse
+const formData = await request.formData();
 
     // Get form fields
     const file = formData.get('file') as File | null;

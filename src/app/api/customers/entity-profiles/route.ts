@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -25,7 +26,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function POST(request: NextRequest) {
   try {
-    // Verify customer authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify customer authentication
     const auth = await verifyUnifiedAuth(request, ['CUSTOMER'])
     if ('error' in auth) {
       return NextResponse.json({ success: false, error: auth.error }, { status: auth.status })
@@ -266,7 +269,9 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    // Verify customer authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify customer authentication
     const auth = await verifyUnifiedAuth(request, ['CUSTOMER'])
     if ('error' in auth) {
       return NextResponse.json({ success: false, error: auth.error }, { status: auth.status })

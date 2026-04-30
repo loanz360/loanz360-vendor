@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -18,7 +19,9 @@ const supabase = createClient(
 // GET - Fetch loan details
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const subcategoryId = searchParams.get('subcategory_id')
 
     let query = supabase
@@ -59,7 +62,9 @@ export async function GET(request: NextRequest) {
 // POST - Create or update loan details
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       subcategory_id: z.string().uuid(),
 
@@ -158,7 +163,9 @@ export async function POST(request: NextRequest) {
 // DELETE - Delete loan details
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
 
     if (!id) {

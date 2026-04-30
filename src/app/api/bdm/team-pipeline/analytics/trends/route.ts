@@ -6,6 +6,7 @@
  * Returns time-series data for trend analysis
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentBDMId, getBDEIds } from '@/lib/bdm/bde-utils'
@@ -18,7 +19,9 @@ type MetricType = 'conversion_rate' | 'lead_count' | 'pipeline_value' | 'avg_tat
 
 export async function GET(request: NextRequest) {
   try {
-    // 1. Verify user is BDM
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.ANALYTICS)
+    if (rateLimitResponse) return rateLimitResponse
+// 1. Verify user is BDM
     const bdmId = await getCurrentBDMId()
     if (!bdmId) {
       return NextResponse.json(

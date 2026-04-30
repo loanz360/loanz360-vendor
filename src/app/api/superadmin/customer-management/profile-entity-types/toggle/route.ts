@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 
 /**
@@ -34,7 +35,9 @@ const toggleSchema = z.object({
  */
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authentication
     const auth = await verifyUnifiedAuth(request)
     if (!auth.authorized) {
       return NextResponse.json(

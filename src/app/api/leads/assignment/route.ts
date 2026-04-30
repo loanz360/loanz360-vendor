@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -102,7 +103,9 @@ const dummyTeamMembers: TeamMember[] = [
 // GET - Fetch assignment rules and team workload
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const type = searchParams.get('type') || 'rules' // rules, team, queue
 
     if (type === 'rules') {
@@ -165,7 +168,9 @@ export async function GET(request: NextRequest) {
 // POST - Assign lead(s) manually or trigger auto-assignment
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       action: z.string(),
 
@@ -261,7 +266,9 @@ export async function POST(request: NextRequest) {
 // PUT - Create or update assignment rule
 export async function PUT(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       id: z.string().optional(),
 
@@ -305,7 +312,9 @@ export async function PUT(request: NextRequest) {
 // DELETE - Delete assignment rule
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const ruleId = searchParams.get('id')
 
     if (!ruleId) {

@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireCROAuth } from '@/lib/middleware/cro-auth'
@@ -33,7 +34,9 @@ function getGrade(score: number): string {
 
 export async function GET(request: NextRequest) {
   try {
-    // Authenticate using centralized CRO auth middleware
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Authenticate using centralized CRO auth middleware
     const authResult = await requireCROAuth(request, { logAccess: true })
     if ('response' in authResult) return authResult.response
     const { user } = authResult

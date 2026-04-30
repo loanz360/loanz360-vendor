@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -31,7 +32,9 @@ const ULAP_FORM_SOURCES = [
 // GET - Fetch ULAP leads from leads with filtering
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const status = searchParams.get('status');
     const formSource = searchParams.get('form_source');
     const loanType = searchParams.get('loan_type');
@@ -178,7 +181,9 @@ export async function GET(request: NextRequest) {
 // PATCH - Update ULAP lead status in leads
 export async function PATCH(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       id: z.string().uuid(),
 

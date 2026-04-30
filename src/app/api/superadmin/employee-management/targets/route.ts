@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
@@ -14,7 +15,9 @@ export const runtime = 'nodejs'
  */
 export async function GET(request: NextRequest) {
   try {
-    const auth = await verifyAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyAuth(request)
     if (!auth.authorized) {
       return NextResponse.json(
         { success: false, error: auth.error },
@@ -110,7 +113,9 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const auth = await verifyAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyAuth(request)
     if (!auth.authorized) {
       return NextResponse.json(
         { success: false, error: auth.error },

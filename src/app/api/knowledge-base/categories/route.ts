@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   KB_CATEGORIES,
@@ -11,7 +12,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const searchParams = request.nextUrl.searchParams
     const slug = searchParams.get('slug')
     const audience = searchParams.get('audience')
     const active = searchParams.get('active') === 'true'

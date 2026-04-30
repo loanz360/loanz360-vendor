@@ -4,6 +4,7 @@
  * Super Admin only - Manage company email signatures
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server';
 import { validateSignatureTemplate, previewSignature } from '@/lib/email/signature-renderer';
@@ -13,7 +14,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // GET /api/admin/email/signatures - List all signatures
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient();
 
     // Verify user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -86,7 +89,9 @@ export async function GET(request: NextRequest) {
 // POST /api/admin/email/signatures - Create new signature
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient();
 
     // Verify user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();

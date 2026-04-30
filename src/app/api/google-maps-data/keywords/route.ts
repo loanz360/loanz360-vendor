@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -13,7 +14,9 @@ const supabase = createClient(
 // GET - Fetch all keywords
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
     const limit = parseInt(searchParams.get('limit') || '100')
     const offset = parseInt(searchParams.get('offset') || '0')
@@ -53,7 +56,9 @@ export async function GET(request: NextRequest) {
 // POST - Add new keyword(s)
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       keywords: z.string().optional(),
 
@@ -112,7 +117,9 @@ export async function POST(request: NextRequest) {
 // DELETE - Delete keyword(s)
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
     const ids = searchParams.get('ids')
 
@@ -161,7 +168,9 @@ export async function DELETE(request: NextRequest) {
 // PATCH - Update keyword status
 export async function PATCH(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       status: z.string().optional(),
 

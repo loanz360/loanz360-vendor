@@ -5,6 +5,7 @@
  * GET /api/analytics/forecast - Get latest forecasts
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   generateRevenueForecast,
@@ -17,7 +18,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function POST(request: NextRequest) {
   try {
-    const body: RevenueForecastRequest = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.ANALYTICS)
+    if (rateLimitResponse) return rateLimitResponse
+const body: RevenueForecastRequest = await request.json()
 
     const period: ForecastPeriod = body.period || '30_days'
     const method: ForecastMethod = body.method || 'linear_regression'
@@ -40,7 +43,9 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.ANALYTICS)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const action = searchParams.get('action')
 
     // Generate all forecasts

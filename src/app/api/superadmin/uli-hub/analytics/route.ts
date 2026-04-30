@@ -3,6 +3,7 @@
  * GET /api/superadmin/uli-hub/analytics — Usage stats, cost breakdown, trends
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { apiLogger } from '@/lib/utils/logger'

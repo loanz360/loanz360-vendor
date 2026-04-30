@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { apiLogger } from '@/lib/utils/logger'
@@ -37,7 +38,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const profileId = searchParams.get('profile_id')
     const profileKey = searchParams.get('profile_key')
 

@@ -5,6 +5,7 @@
  * Admin only
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { requirePermission, Permission } from '@/lib/auth/rbac'
@@ -17,7 +18,9 @@ import {
 
 export async function GET(request: NextRequest) {
   try {
-    // Authenticate user
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Authenticate user
     const supabase = await createClient()
     const {
       data: { user },

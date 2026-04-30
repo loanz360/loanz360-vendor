@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { uploadToS3, generatePresignedUrl, deleteFromS3 } from '@/lib/aws/s3-client'
@@ -18,7 +19,9 @@ const DOCUMENT_TYPE_CATEGORY_MAP: Record<string, string> = {
 // GET - List all documents for the authenticated customer
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -109,7 +112,9 @@ export async function GET(request: NextRequest) {
 // POST - Upload a new document
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -283,7 +288,9 @@ export async function POST(request: NextRequest) {
 // DELETE - Delete a document
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser()

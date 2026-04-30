@@ -248,7 +248,7 @@ export async function PATCH(
       )
     }
 
-    let updateData: any = {
+    let updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

@@ -4,6 +4,7 @@
  * Super Admin only - Get, update, delete individual signature
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server';
 import { validateSignatureTemplate, previewSignature } from '@/lib/email/signature-renderer';

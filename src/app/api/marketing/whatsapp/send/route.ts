@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { apiLogger } from '@/lib/utils/logger'
@@ -26,7 +27,9 @@ interface SendMessageRequest {
 
 export async function POST(request: NextRequest) {
   try {
-    const body: SendMessageRequest = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const body: SendMessageRequest = await request.json()
     const {
       accountId,
       phoneNumber,
@@ -76,7 +79,7 @@ export async function POST(request: NextRequest) {
     const formattedPhone = phoneNumber.replace(/[^0-9]/g, '')
 
     // Build message payload based on type
-    let messagePayload: any = {
+    let messagePayload: Record<string, unknown> = {
       messaging_product: 'whatsapp',
       recipient_type: 'individual',
       to: formattedPhone,

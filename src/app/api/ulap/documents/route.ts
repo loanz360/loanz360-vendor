@@ -6,6 +6,7 @@
  * Lists all documents for a lead
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { generatePresignedUrl } from '@/lib/aws/s3-client';
@@ -13,7 +14,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const leadId = searchParams.get('leadId');
     const leadNumber = searchParams.get('leadNumber');
 

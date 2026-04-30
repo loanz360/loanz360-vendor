@@ -5,6 +5,7 @@
  * Used for sidebar badge counts and dashboard widgets
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -38,7 +39,9 @@ export interface PayoutStatsResponse {
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
 
     // 1. Authenticate and verify superadmin role
     const auth = await verifyUnifiedAuth(request)

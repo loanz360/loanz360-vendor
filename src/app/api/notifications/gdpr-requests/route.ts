@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 
@@ -45,7 +46,9 @@ async function checkSuperAdminSession(request: NextRequest): Promise<{ isValid: 
  */
 export async function GET(request: NextRequest) {
   try {
-    const superAdminCheck = await checkSuperAdminSession(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const superAdminCheck = await checkSuperAdminSession(request)
     let isSuperAdmin = superAdminCheck.isValid
 
     if (!isSuperAdmin) {

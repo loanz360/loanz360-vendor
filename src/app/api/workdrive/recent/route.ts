@@ -4,6 +4,7 @@
  * GET - List recent files
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getRecentFiles } from '@/lib/workdrive'
@@ -44,7 +45,9 @@ async function getUserQuotaInfo(userId: string) {
  */
 export async function GET(request: NextRequest) {
   try {
-    // Get user from session
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Get user from session
     const authHeader = request.headers.get('authorization')
     if (!authHeader) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })

@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getPerformanceGrade } from '@/lib/types/cpe-performance.types'
@@ -14,7 +15,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function POST(request: NextRequest) {
   try {
-    // Verify cron secret
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify cron secret
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET || 'your-secret-key-change-me'
 

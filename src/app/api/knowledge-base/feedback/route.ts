@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
@@ -7,7 +8,9 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       contentId: z.string().uuid().optional(),
 
@@ -93,7 +96,9 @@ export async function POST(request: NextRequest) {
 // Get feedback statistics
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const searchParams = request.nextUrl.searchParams
     const contentId = searchParams.get('contentId')
     const contentType = searchParams.get('contentType')
 

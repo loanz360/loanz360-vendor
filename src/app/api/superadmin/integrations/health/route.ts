@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
@@ -35,7 +36,9 @@ async function verifySuperAdmin() {
  */
 export async function GET(request: NextRequest) {
   try {
-    const auth = await verifySuperAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifySuperAdmin()
     if (!auth.user) {
       return NextResponse.json(
         { success: false, error: auth.error },
@@ -102,7 +105,9 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const auth = await verifySuperAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifySuperAdmin()
     if (!auth.user) {
       return NextResponse.json(
         { success: false, error: auth.error },

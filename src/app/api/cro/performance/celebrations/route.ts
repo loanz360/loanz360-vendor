@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { requireCROAuth } from '@/lib/middleware/cro-auth'
@@ -26,7 +27,9 @@ interface Celebration {
 
 export async function GET(request: NextRequest) {
   try {
-    const authResult = await requireCROAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const authResult = await requireCROAuth(request)
     if ('response' in authResult) return authResult.response
 
     const supabase = await createClient()

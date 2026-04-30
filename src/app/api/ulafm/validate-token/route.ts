@@ -8,6 +8,7 @@
  * This is a public endpoint (no authentication required).
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import type { ValidateTokenResponse } from '@/types/ulafm'
@@ -15,7 +16,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const token = searchParams.get('token')
 
     if (!token) {

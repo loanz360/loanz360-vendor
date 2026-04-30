@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -22,7 +23,9 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
 // GET: List all CRO skills with user information
 export async function GET(request: NextRequest) {
   try {
-    // Verify authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authentication
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '') || request.cookies.get('admin_token')?.value
 
@@ -120,7 +123,9 @@ export async function GET(request: NextRequest) {
 // POST: Initialize CRO skills for a new CRO
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authentication
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '') || request.cookies.get('admin_token')?.value
 

@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -13,7 +14,9 @@ const supabase = createClient(
 // POST - Duplicate a form configuration
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       id: z.string().uuid(),
 

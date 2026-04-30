@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -39,7 +40,9 @@ export async function GET() {
 // POST - Create new bank
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       name: z.string().optional(),
 
@@ -98,7 +101,9 @@ export async function POST(request: NextRequest) {
 // PATCH - Update bank
 export async function PATCH(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       id: z.string().optional(),
 
@@ -135,7 +140,9 @@ export async function PATCH(request: NextRequest) {
 // DELETE - Delete bank
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
 
     if (!id) {

@@ -6,13 +6,16 @@
  * Tracks when a user opens a shared link (updates form_status to OPENED)
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // 1. Parse request body
     const { short_code, trace_token } = await request.json()

@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { apiLogger } from '@/lib/utils/logger'
@@ -11,7 +12,9 @@ const supabase = createClient(
 // GET - Fetch all active applicant profiles with their sub-profiles
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const includeSubProfiles = searchParams.get('include_sub_profiles') !== 'false';
     const includeInactive = searchParams.get('include_inactive') === 'true';
 

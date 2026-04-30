@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 /**
@@ -13,7 +14,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // Get user's bookmarks
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const { searchParams } = new URL(request.url)
 
     const userId = searchParams.get('user_id')
@@ -72,7 +75,9 @@ export async function GET(request: NextRequest) {
 // Create bookmark
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const bodySchema = z.object({
 
       activity_id: z.string().uuid().optional(),
@@ -150,7 +155,9 @@ export async function POST(request: NextRequest) {
 // Update bookmark (notes, tags)
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const bodySchema2 = z.object({
 
       tags: z.string().optional(),
@@ -205,7 +212,9 @@ export async function PATCH(request: NextRequest) {
 // Delete bookmark
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const { searchParams } = new URL(request.url)
 
     const id = searchParams.get('id')

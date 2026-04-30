@@ -4,6 +4,7 @@
  * GET /api/analytics/dashboard - Get dashboard data for specific role
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type {
@@ -189,7 +190,9 @@ function createKPIValue(
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.ANALYTICS)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const dashboardType = searchParams.get('type') as DashboardType || 'ceo'
 
     let dashboardData

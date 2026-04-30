@@ -6,6 +6,7 @@
  * Returns BDE activity intensity by day and hour
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentBDMId, getBDEIds, getBDEsByIds } from '@/lib/bdm/bde-utils'
@@ -16,7 +17,9 @@ const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'F
 
 export async function GET(request: NextRequest) {
   try {
-    // 1. Verify user is BDM
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.ANALYTICS)
+    if (rateLimitResponse) return rateLimitResponse
+// 1. Verify user is BDM
     const bdmId = await getCurrentBDMId()
     if (!bdmId) {
       return NextResponse.json(

@@ -4,6 +4,7 @@
  * Verifies OTP and creates session with full audit trail
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyOTP, validateMobileNumber } from '@/lib/utils/otp'
 import { SignJWT } from 'jose'

@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 
 /**
@@ -29,7 +30,9 @@ const resendOTPSchema = z.object({
  */
 export async function POST(request: NextRequest) {
   try {
-    // Parse and validate request body
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+// Parse and validate request body
     const { data: body, error: _valErr } = await parseBody(request)
     if (_valErr) return _valErr
     const validatedData = resendOTPSchema.parse(body)

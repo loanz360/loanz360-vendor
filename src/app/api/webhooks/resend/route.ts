@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import crypto from 'crypto'
@@ -19,7 +20,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function POST(request: NextRequest) {
   try {
-    // Verify webhook signature
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify webhook signature
     const signature = request.headers.get('svix-signature')
     const timestamp = request.headers.get('svix-timestamp')
     const webhookId = request.headers.get('svix-id')

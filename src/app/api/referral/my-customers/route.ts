@@ -7,6 +7,7 @@
  * Old Customers: Previously referred leads (now closed or referred by someone else)
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { jwtVerify } from 'jose'
@@ -76,7 +77,9 @@ interface OldCustomer {
 
 export async function GET(request: NextRequest) {
   try {
-    // =====================================================
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// =====================================================
     // 1. VERIFY AUTHENTICATION
     // =====================================================
 

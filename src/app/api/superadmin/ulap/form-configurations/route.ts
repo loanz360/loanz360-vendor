@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -13,7 +14,9 @@ const supabase = createClient(
 // GET - Fetch all form configurations (including drafts) for admin
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const status = searchParams.get('status'); // 'draft', 'published', 'archived', or null for all
     const categoryId = searchParams.get('category_id');
     const includeFields = searchParams.get('include_fields') === 'true';
@@ -130,7 +133,9 @@ export async function GET(request: NextRequest) {
 // POST - Create a new form configuration with tabs and fields
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       name: z.string().optional(),
 
@@ -300,7 +305,9 @@ export async function POST(request: NextRequest) {
 // PUT - Update a form configuration
 export async function PUT(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       is_default: z.boolean().optional(),
 
@@ -468,7 +475,9 @@ export async function PUT(request: NextRequest) {
 // DELETE - Delete or archive a form configuration
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const hardDelete = searchParams.get('hard') === 'true';
 

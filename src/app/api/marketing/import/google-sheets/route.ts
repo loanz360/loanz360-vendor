@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -7,7 +8,9 @@ const GOOGLE_SHEETS_API_BASE = 'https://sheets.googleapis.com/v4/spreadsheets'
 
 export async function POST(request: NextRequest) {
   try {
-    const { sheetUrl, sheetName } = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { sheetUrl, sheetName } = await request.json()
 
     if (!sheetUrl) {
       return NextResponse.json({ success: false, error: 'Google Sheet URL is required' }, { status: 400 })
@@ -123,7 +126,9 @@ export async function POST(request: NextRequest) {
 // GET endpoint to fetch available sheets from a spreadsheet
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const sheetUrl = searchParams.get('url')
 
     if (!sheetUrl) {

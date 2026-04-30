@@ -9,6 +9,7 @@
  * 4. Inactivity-based lead follow-up triggers
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { apiLogger } from '@/lib/utils/logger'
@@ -16,7 +17,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    // Auth check
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Auth check
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET || 'your-secure-cron-secret-here'
     if (authHeader !== `Bearer ${cronSecret}`) {

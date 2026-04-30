@@ -4,6 +4,7 @@
  * Super Admin only - Create email accounts for multiple employees at once
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server';
 import { batchGenerateEmails, type EmailExistsChecker } from '@/lib/email/email-generator';
@@ -13,7 +14,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // POST /api/admin/email/accounts/bulk - Bulk create email accounts
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient();
 
     // Verify user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -221,7 +224,9 @@ export async function POST(request: NextRequest) {
 // GET /api/admin/email/accounts/bulk - Get employees without email accounts
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient();
 
     // Verify user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();

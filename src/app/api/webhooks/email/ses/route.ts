@@ -9,6 +9,7 @@
  * 4. Confirm the SNS subscription (handled automatically below)
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createSupabaseAdmin } from '@/lib/supabase/server';
 import { getSESService } from '@/lib/email/ses-service';

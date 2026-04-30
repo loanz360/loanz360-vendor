@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { runSLAMonitor, updateSLAStatistics } from '@/lib/cron/sla-monitor'
 import { apiLogger } from '@/lib/utils/logger'
@@ -14,7 +15,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function GET(request: NextRequest) {
   try {
-    // Verify cron authorization
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify cron authorization
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
 

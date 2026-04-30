@@ -6,6 +6,7 @@
  * Returns complete information about a single lead including timeline, documents, notes
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getCurrentBDMId, getBDEIds } from '@/lib/bdm/bde-utils'
@@ -13,7 +14,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    // 1. Verify user is BDM
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// 1. Verify user is BDM
     const bdmId = await getCurrentBDMId()
     if (!bdmId) {
       return NextResponse.json(

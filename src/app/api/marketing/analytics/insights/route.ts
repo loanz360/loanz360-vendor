@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,9 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
 export async function POST(request: NextRequest) {
   try {
-    const { analytics, dateRange } = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.ANALYTICS)
+    if (rateLimitResponse) return rateLimitResponse
+const { analytics, dateRange } = await request.json()
 
     if (!analytics) {
       return NextResponse.json({ success: false, error: 'Analytics data is required' }, { status: 400 })

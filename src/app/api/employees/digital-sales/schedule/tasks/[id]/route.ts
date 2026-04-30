@@ -166,7 +166,7 @@ export async function PUT(
     }
 
     // Handle sub_tasks update and calculate progress
-    let updateData: any = {
+    let updateData: Record<string, unknown> = {
       ...body,
       updated_at: new Date().toISOString()
     }

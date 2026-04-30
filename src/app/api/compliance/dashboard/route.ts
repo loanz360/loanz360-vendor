@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { handleApiError } from '@/lib/errors/api-errors'
 import { getComplianceStats } from '@/lib/compliance/compliance-service'
@@ -9,7 +10,9 @@ import { getComplianceStats } from '@/lib/compliance/compliance-service'
  */
 export async function GET(request: NextRequest) {
   try {
-    const stats = await getComplianceStats()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const stats = await getComplianceStats()
 
     if (!stats) {
       return NextResponse.json(

@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -25,7 +26,9 @@ function generateTicketNumber(): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = await cookies()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const cookieStore = await cookies()
     const authToken = cookieStore.get('sb-access-token')?.value
 
     if (!authToken) {

@@ -3,6 +3,7 @@
  * GET /api/superadmin/uli-hub/logs — Paginated, filterable API call history
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { apiLogger } from '@/lib/utils/logger'
@@ -10,7 +11,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = request.nextUrl
     const category = searchParams.get('category')
     const service_code = searchParams.get('service_code')
     const environment = searchParams.get('environment')

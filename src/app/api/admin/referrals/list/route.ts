@@ -4,6 +4,7 @@
  * Returns list of active referrals by type (BP/CP/Employee) for Change Referrer modal
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { jwtVerify } from 'jose'
@@ -18,7 +19,9 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
 
 export async function GET(request: NextRequest) {
   try {
-    // =====================================================
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// =====================================================
     // 1. VERIFY SUPER ADMIN AUTHENTICATION
     // =====================================================
 

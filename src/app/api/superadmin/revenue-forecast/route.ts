@@ -8,6 +8,7 @@
  * Returns: forecast summary, monthly trends (12 months), loan type pipeline breakdown
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -16,7 +17,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const auth = await verifyUnifiedAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyUnifiedAuth(request)
     if (!auth.authorized) {
       return NextResponse.json(
         { success: false, error: 'Authentication required' },

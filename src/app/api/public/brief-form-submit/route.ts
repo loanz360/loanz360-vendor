@@ -11,6 +11,7 @@
  * 5. Return customer IDs and next steps
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { decryptTraceToken, decryptCustomerTraceToken, detectTraceTokenType } from '@/lib/utils/trace-token'
@@ -33,7 +34,9 @@ const supabase = createClient(
  */
 export async function POST(request: NextRequest) {
   try {
-    const body: BriefFormRequest = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const body: BriefFormRequest = await request.json()
 
     // =====================================================
     // 1. VALIDATE REQUEST DATA

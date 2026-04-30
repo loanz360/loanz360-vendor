@@ -6,6 +6,7 @@
  * POST /api/webhooks/leads-updated
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { updateProgress } from '@/lib/incentives/progress-tracking'
@@ -53,7 +54,9 @@ function verifyWebhookSignature(request: NextRequest, body: string): boolean {
  */
 export async function POST(request: NextRequest) {
   try {
-    // Get raw body for signature verification
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Get raw body for signature verification
     const body = await request.text()
 
     // Verify signature

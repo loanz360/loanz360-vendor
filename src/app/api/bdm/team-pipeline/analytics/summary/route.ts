@@ -6,6 +6,7 @@
  * Returns 6 KPI cards with comparison data
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { getCurrentBDMId, getBDEIds } from '@/lib/bdm/bde-utils'
 import { formatCurrency, formatNumber, calculateGrowthRate } from '@/lib/bdm/analytics'
@@ -34,7 +35,9 @@ function getTrendFromPercentage(percentage: number): 'up' | 'down' | 'stable' {
 
 export async function GET(request: NextRequest) {
   try {
-    // 1. Verify user is BDM and get their ID
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.ANALYTICS)
+    if (rateLimitResponse) return rateLimitResponse
+// 1. Verify user is BDM and get their ID
     const bdmId = await getCurrentBDMId()
     if (!bdmId) {
       return NextResponse.json(

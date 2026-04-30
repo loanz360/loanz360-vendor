@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -43,7 +44,9 @@ export async function GET() {
 // POST - Create a new basic lead field
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       field_key: z.string().optional(),
 
@@ -140,7 +143,9 @@ export async function POST(request: NextRequest) {
 // PUT - Update a basic lead field
 export async function PUT(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       display_order: z.string().optional(),
 
@@ -232,7 +237,9 @@ export async function PUT(request: NextRequest) {
 // DELETE - Delete a basic lead field
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const hardDelete = searchParams.get('hard') === 'true';
 
@@ -287,7 +294,9 @@ export async function DELETE(request: NextRequest) {
 // PATCH - Reorder basic lead fields
 export async function PATCH(request: NextRequest) {
   try {
-    const bodySchema3 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema3 = z.object({
 
       fields: z.string().optional(),
 

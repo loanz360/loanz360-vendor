@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -13,7 +14,9 @@ const supabase = createClient(
 // GET - Fetch all proxies
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const active = searchParams.get('active')
     const type = searchParams.get('type')
 
@@ -50,7 +53,9 @@ export async function GET(request: NextRequest) {
 // POST - Add new proxy
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       proxy_type: z.string().optional(),
 
@@ -108,7 +113,9 @@ export async function POST(request: NextRequest) {
 // PATCH - Update proxy stats (called by Lambda)
 export async function PATCH(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       response_time_ms: z.string().optional(),
 
@@ -185,7 +192,9 @@ export async function PATCH(request: NextRequest) {
 // DELETE - Delete proxy
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
 
     if (!id) {

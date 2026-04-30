@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -12,7 +13,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createClient()
 
     // Verify super admin role
     const { data: { user } } = await supabase.auth.getUser()

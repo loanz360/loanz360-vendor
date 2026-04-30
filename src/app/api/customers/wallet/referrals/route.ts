@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -15,7 +16,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // GET - List customer's referrals
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
     const adminClient = createAdminClient()
     const { searchParams } = new URL(request.url)
 
@@ -96,7 +99,9 @@ export async function GET(request: NextRequest) {
 // POST - Create a new referral
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
     const adminClient = createAdminClient()
     const bodySchema = z.object({
 

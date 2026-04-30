@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/lib/monitoring/logger'
@@ -12,7 +13,9 @@ import logger from '@/lib/monitoring/logger'
  */
 export async function GET(request: NextRequest) {
   try {
-    // Verify cron secret for security
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify cron secret for security
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
 

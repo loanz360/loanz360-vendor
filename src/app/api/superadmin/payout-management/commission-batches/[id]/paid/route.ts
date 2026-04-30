@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 

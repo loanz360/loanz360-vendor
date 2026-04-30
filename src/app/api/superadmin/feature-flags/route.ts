@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 /**
@@ -40,7 +41,9 @@ export async function GET() {
 // POST — Create a new feature flag
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       flag_key: z.string().optional(),
 
@@ -99,7 +102,9 @@ export async function POST(request: NextRequest) {
 // PATCH — Update an existing feature flag
 export async function PATCH(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       is_enabled: z.boolean().optional(),
 
@@ -164,7 +169,9 @@ export async function PATCH(request: NextRequest) {
 // DELETE — Delete a feature flag
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = request.nextUrl
     const id = searchParams.get('id')
 
     if (!id) {

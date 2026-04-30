@@ -4,6 +4,7 @@
  * Allows customers to set their password after registration
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import bcrypt from 'bcryptjs'
@@ -19,7 +20,9 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
 
 export async function POST(request: NextRequest) {
   try {
-    const { customer_id, password } = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const { customer_id, password } = await request.json()
 
     // Validate
     if (!customer_id || !password) {

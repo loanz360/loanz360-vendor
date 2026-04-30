@@ -9,6 +9,7 @@
  * ============================================================================
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 // Local types defined below replace imported types that do not match route data shapes
@@ -128,7 +129,9 @@ interface LocalLeaderboardResponse {
 
 export async function GET(request: NextRequest) {
   try {
-    // =========================================================================
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// =========================================================================
     // 1. AUTHENTICATION & AUTHORIZATION
     // =========================================================================
 

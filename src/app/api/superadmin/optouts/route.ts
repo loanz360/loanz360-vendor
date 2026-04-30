@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 /**
@@ -55,7 +56,9 @@ interface BulkOptOutRequest {
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const { searchParams } = new URL(request.url)
 
     // Parse query params
@@ -205,7 +208,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const bodySchema = z.object({
 
       identifier: z.string().optional(),
@@ -313,7 +318,9 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const bodySchema2 = z.object({
 
       action: z.string().optional(),
@@ -420,7 +427,9 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const { searchParams } = new URL(request.url)
     const userId = request.headers.get('x-user-id')
 

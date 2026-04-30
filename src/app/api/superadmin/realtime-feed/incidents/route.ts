@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 /**
@@ -13,7 +14,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // Get all incidents
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const { searchParams } = new URL(request.url)
 
     const status = searchParams.get('status')
@@ -65,7 +68,9 @@ export async function GET(request: NextRequest) {
 // Create new incident
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const bodySchema = z.object({
 
       title: z.string().optional(),
@@ -162,7 +167,9 @@ export async function POST(request: NextRequest) {
 // Update incident (status changes, assignments, etc.)
 export async function PATCH(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const bodySchema2 = z.object({
 
       user_id: z.string().optional(),

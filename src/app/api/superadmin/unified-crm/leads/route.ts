@@ -11,6 +11,7 @@
  * - CAM processing leads
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import type {
@@ -109,7 +110,9 @@ function normalizeLead(lead: Record<string, unknown>): NormalizedLead {
  */
 export async function GET(request: NextRequest) {
   try {
-    // SECURITY FIX C1: Add authentication check
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// SECURITY FIX C1: Add authentication check
     const auth = await verifyUnifiedAuth(request, ['SUPER_ADMIN'])
     if (!auth.authorized) {
       return NextResponse.json(

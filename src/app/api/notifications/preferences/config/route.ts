@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -38,7 +39,9 @@ async function checkSuperAdminSession(request: NextRequest): Promise<{ isValid: 
  */
 export async function GET(request: NextRequest) {
   try {
-    const { isValid } = await checkSuperAdminSession(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { isValid } = await checkSuperAdminSession(request)
     if (!isValid) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
@@ -118,7 +121,9 @@ export async function GET(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    const { isValid, adminId } = await checkSuperAdminSession(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { isValid, adminId } = await checkSuperAdminSession(request)
     if (!isValid) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }

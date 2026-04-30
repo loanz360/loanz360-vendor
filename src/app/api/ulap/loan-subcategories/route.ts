@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { apiLogger } from '@/lib/utils/logger'
@@ -221,7 +222,9 @@ const DEFAULT_SUBCATEGORIES = [
 // GET - Fetch all active loan subcategories
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get('category_id');
 
     // Build query for loan subcategories - select all columns

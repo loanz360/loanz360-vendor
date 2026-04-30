@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -13,7 +14,9 @@ const supabase = createClient(
 // GET - Fetch all profiles (including inactive) for admin
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const includeSubProfiles = searchParams.get('include_sub_profiles') !== 'false';
 
     const { data: profiles, error } = await supabase
@@ -87,7 +90,9 @@ export async function GET(request: NextRequest) {
 // POST - Create a new profile
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       key: z.string().optional(),
 
@@ -162,7 +167,9 @@ export async function POST(request: NextRequest) {
 // PUT - Update a profile
 export async function PUT(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       color: z.string().optional(),
 
@@ -233,7 +240,9 @@ export async function PUT(request: NextRequest) {
 // DELETE - Delete a profile (soft delete by setting is_active = false)
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const hardDelete = searchParams.get('hard') === 'true';
 

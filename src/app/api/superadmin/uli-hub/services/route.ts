@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 /**
@@ -17,7 +18,9 @@ import { invalidateServiceCache } from '@/lib/uli/services/service-registry'
 // GET — List ULI services (optionally filtered by category)
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = request.nextUrl
     const category = searchParams.get('category')
     const enabledOnly = searchParams.get('enabled') === 'true'
 
@@ -55,7 +58,9 @@ export async function GET(request: NextRequest) {
 // POST — Create a new ULI service
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       service_code: z.string().optional(),
 
@@ -150,7 +155,9 @@ export async function POST(request: NextRequest) {
 // PATCH — Update an existing ULI service
 export async function PATCH(request: NextRequest) {
   try {
-    const bodySchema2 = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
       id: z.string().optional(),
 
@@ -212,7 +219,9 @@ export async function PATCH(request: NextRequest) {
 // DELETE — Delete a ULI service
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = request.nextUrl
     const id = searchParams.get('id')
 
     if (!id) {

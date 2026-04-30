@@ -4,6 +4,7 @@
  * GET - Search files with advanced filters
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { isSuperAdmin, isAdmin } from '@/lib/workdrive'
@@ -40,7 +41,9 @@ interface SearchFilters {
  */
 export async function GET(request: NextRequest) {
   try {
-    const authHeader = request.headers.get('authorization')
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const authHeader = request.headers.get('authorization')
     if (!authHeader) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }

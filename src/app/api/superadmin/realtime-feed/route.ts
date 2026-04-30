@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 /**
@@ -14,7 +15,9 @@ import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 
 export async function GET(request: NextRequest) {
   try {
-    // SECURITY FIX C7: Add authentication check
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// SECURITY FIX C7: Add authentication check
     const auth = await verifyUnifiedAuth(request, ['SUPER_ADMIN'])
     if (!auth.authorized) {
       return NextResponse.json(
@@ -154,7 +157,9 @@ export async function GET(request: NextRequest) {
 // Acknowledge or resolve an activity
 export async function PATCH(request: NextRequest) {
   try {
-    // SECURITY FIX C7: Add authentication check
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// SECURITY FIX C7: Add authentication check
     const auth = await verifyUnifiedAuth(request, ['SUPER_ADMIN'])
     if (!auth.authorized) {
       return NextResponse.json(

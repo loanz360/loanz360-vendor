@@ -8,6 +8,7 @@
  * Uses AWS S3 for storage with compression and metadata tracking.
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { uploadToS3, generateS3Key, getS3BucketName, getS3Region } from '@/lib/aws/s3-client'
@@ -82,7 +83,9 @@ const DOCUMENT_CATEGORIES: Record<string, string> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.UPLOAD)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // Get authenticated user
     const { data: { user }, error: authError } = await supabase.auth.getUser()

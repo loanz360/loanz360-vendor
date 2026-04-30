@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import ExcelJS from 'exceljs'
@@ -20,7 +21,9 @@ interface ValidationError {
 // POST - Bulk upload payout percentages from Excel
 export async function POST(request: NextRequest) {
   try {
-    const superAdminSession = request.cookies.get('super_admin_session')?.value
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const superAdminSession = request.cookies.get('super_admin_session')?.value
     if (!superAdminSession) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }

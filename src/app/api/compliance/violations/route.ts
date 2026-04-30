@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -11,7 +12,9 @@ import { handleApiError } from '@/lib/errors/api-errors'
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createSupabaseAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = createSupabaseAdmin()
     const searchParams = request.nextUrl.searchParams
 
     const status = searchParams.get('status')
@@ -58,7 +61,9 @@ export async function GET(request: NextRequest) {
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       violationId: z.string().uuid(),
 

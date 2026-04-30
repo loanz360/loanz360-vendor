@@ -9,6 +9,7 @@
  * Access: Lead generator (DSE/Partner), BDE (if assigned), Super Admin
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@/lib/supabase/server'
 import { createULAPPipelineService } from '@/lib/services/ulap-pipeline-service'

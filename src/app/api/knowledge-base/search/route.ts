@@ -1,11 +1,14 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchKnowledgeBase } from '@/lib/knowledge-base'
 import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('q') || ''
     const limit = parseInt(searchParams.get('limit') || '10', 10)
     const includeCategories = searchParams.get('categories') !== 'false'

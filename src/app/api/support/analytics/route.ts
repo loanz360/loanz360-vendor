@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
@@ -16,7 +17,9 @@ const supabase = createClient(
 
 export async function GET(request: NextRequest) {
   try {
-    const cookieStore = await cookies()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.ANALYTICS)
+    if (rateLimitResponse) return rateLimitResponse
+const cookieStore = await cookies()
     const authToken = cookieStore.get('sb-access-token')?.value
 
     if (!authToken) {

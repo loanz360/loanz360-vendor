@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { apiLogger } from '@/lib/utils/logger'
@@ -25,7 +26,9 @@ const DEFAULT_BASIC_FIELDS = [
 // POST - Seed basic lead fields
 export async function POST(request: NextRequest) {
   try {
-    // Verify authorization token
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authorization token
     const authHeader = request.headers.get('Authorization');
     const expectedToken = process.env.SEED_API_TOKEN || 'ulap-seed-token';
 

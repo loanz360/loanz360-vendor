@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -38,7 +39,9 @@ function sanitizeSearch(input: string): string {
  */
 export async function GET(request: NextRequest) {
   try {
-    const auth = await verifySuperAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifySuperAdmin()
     if (!auth.user) {
       return NextResponse.json(
         { success: false, error: auth.error },

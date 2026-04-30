@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
@@ -20,7 +21,9 @@ interface AssistantResponse {
 // GET - Fetch chat history (optional)
 export async function GET(request: NextRequest) {
   try {
-    const auth = await verifyUnifiedAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyUnifiedAuth(request)
 
     if (!auth.authorized) {
       return NextResponse.json({ success: false, error: auth.error || 'Unauthorized' }, { status: 401 })
@@ -45,7 +48,9 @@ export async function GET(request: NextRequest) {
 // POST - Process user message and generate response
 export async function POST(request: NextRequest) {
   try {
-    const auth = await verifyUnifiedAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyUnifiedAuth(request)
 
     if (!auth.authorized) {
       return NextResponse.json({ success: false, error: auth.error || 'Unauthorized' }, { status: 401 })

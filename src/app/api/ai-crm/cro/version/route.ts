@@ -4,6 +4,7 @@
  * Returns API version information and available features
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   API_VERSIONS,

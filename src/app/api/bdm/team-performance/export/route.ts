@@ -23,6 +23,7 @@
  * ============================================================================
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import ExcelJS from 'exceljs'
@@ -31,7 +32,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const searchParams = request.nextUrl.searchParams
     const format = searchParams.get('format') || 'excel'
     const month = parseInt(searchParams.get('month') || new Date().getMonth().toString())
     const year = parseInt(searchParams.get('year') || new Date().getFullYear().toString())

@@ -4,6 +4,7 @@
  * Super Admin only - Manage employee email accounts
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server';
 import { generateUniqueEmail, type EmailExistsChecker } from '@/lib/email/email-generator';
@@ -17,7 +18,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // GET /api/admin/email/accounts - List all email accounts
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient();
 
     // Verify user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -129,7 +132,9 @@ export async function GET(request: NextRequest) {
 // POST /api/admin/email/accounts - Create a new email account
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient();
 
     // Verify user is authenticated
     const { data: { user }, error: authError } = await supabase.auth.getUser();

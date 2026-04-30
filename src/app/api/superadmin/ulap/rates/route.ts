@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -18,7 +19,9 @@ const supabase = createClient(
 // GET - Fetch all bank rates with bank and subcategory info
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const subcategoryId = searchParams.get('subcategory_id')
     const bankId = searchParams.get('bank_id')
 
@@ -72,7 +75,9 @@ export async function GET(request: NextRequest) {
 // POST - Create or update bank rate
 export async function POST(request: NextRequest) {
   try {
-        const bodySchema = z.object({
+        const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+        if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
           bank_id: z.string().uuid().optional(),
 
@@ -210,7 +215,9 @@ export async function POST(request: NextRequest) {
 // PATCH - Update rate status (activate/deactivate)
 export async function PATCH(request: NextRequest) {
   try {
-        const bodySchema2 = z.object({
+        const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+        if (rateLimitResponse) return rateLimitResponse
+const bodySchema2 = z.object({
 
           is_active: z.boolean().optional(),
 
@@ -249,7 +256,9 @@ export async function PATCH(request: NextRequest) {
 // DELETE - Delete bank rate
 export async function DELETE(request: NextRequest) {
   try {
-        const { searchParams } = new URL(request.url)
+        const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+        if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
 
     if (!id) {

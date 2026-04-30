@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -8,7 +9,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // GET - Fetch all BA payout percentages with pagination and search
 export async function GET(request: NextRequest) {
   try {
-    const superAdminSession = request.cookies.get('super_admin_session')?.value
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const superAdminSession = request.cookies.get('super_admin_session')?.value
     if (!superAdminSession) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
@@ -80,7 +83,9 @@ export async function GET(request: NextRequest) {
 // PATCH - Update BA commission percentage (manual override)
 export async function PATCH(request: NextRequest) {
   try {
-    const superAdminSession = request.cookies.get('super_admin_session')?.value
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const superAdminSession = request.cookies.get('super_admin_session')?.value
     if (!superAdminSession) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }

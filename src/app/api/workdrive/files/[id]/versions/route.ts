@@ -5,6 +5,7 @@
  * POST /api/workdrive/files/[id]/versions - Upload a new version of the file
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { apiLogger } from '@/lib/utils/logger'

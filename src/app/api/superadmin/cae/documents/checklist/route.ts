@@ -4,6 +4,7 @@
  * Get document requirements and status for a lead/appraisal
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createDocumentIntelligenceService } from '@/lib/cae/document-intelligence'
@@ -11,7 +12,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const leadId = searchParams.get('lead_id')
     const loanTypeCode = searchParams.get('loan_type_code')
     const employmentType = searchParams.get('employment_type') || 'SALARIED'

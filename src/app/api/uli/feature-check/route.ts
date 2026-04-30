@@ -7,13 +7,16 @@
  * Returns simple { enabled: boolean } — no sensitive data.
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = request.nextUrl
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = request.nextUrl
     const featureKey = searchParams.get('service')
 
     if (!featureKey) {

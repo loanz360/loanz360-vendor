@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
@@ -9,7 +10,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // GET - Fetch notifications for the current partner
 export async function GET(request: NextRequest) {
   try {
-    let auth;
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+let auth;
     try {
       auth = await verifyUnifiedAuth(request)
     } catch {
@@ -168,7 +171,9 @@ export async function GET(request: NextRequest) {
 // POST - Create a new notification (SuperAdmin only)
 export async function POST(request: NextRequest) {
   try {
-    const auth = await verifyUnifiedAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyUnifiedAuth(request)
 
     if (!auth.authorized) {
       return NextResponse.json({ success: false, error: auth.error || 'Unauthorized' }, { status: 401 })
@@ -303,7 +308,9 @@ export async function POST(request: NextRequest) {
 // PATCH - Mark notification as read/dismissed
 export async function PATCH(request: NextRequest) {
   try {
-    const auth = await verifyUnifiedAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyUnifiedAuth(request)
 
     if (!auth.authorized) {
       return NextResponse.json({ success: false, error: auth.error || 'Unauthorized' }, { status: 401 })
@@ -425,7 +432,9 @@ export async function PATCH(request: NextRequest) {
 // DELETE - Delete a notification (SuperAdmin only)
 export async function DELETE(request: NextRequest) {
   try {
-    const auth = await verifyUnifiedAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyUnifiedAuth(request)
 
     if (!auth.authorized) {
       return NextResponse.json({ success: false, error: auth.error || 'Unauthorized' }, { status: 401 })

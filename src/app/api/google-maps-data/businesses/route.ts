@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -14,7 +15,9 @@ const supabase = createClient(
 // GET - Fetch scraped businesses
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const search = searchParams.get('search')
     const city = searchParams.get('city')
     const pincode = searchParams.get('pincode')
@@ -88,7 +91,9 @@ export async function GET(request: NextRequest) {
 // POST - Add scraped businesses (called by Lambda)
 export async function POST(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       businesses: z.array(z.unknown()).optional(),
 
@@ -232,7 +237,9 @@ export async function POST(request: NextRequest) {
 // DELETE - Delete business(es)
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
     const ids = searchParams.get('ids')
 

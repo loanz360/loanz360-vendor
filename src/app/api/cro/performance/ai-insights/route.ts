@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 
@@ -14,7 +15,9 @@ import { requireCROAuth } from '@/lib/middleware/cro-auth'
 
 export async function GET(request: NextRequest) {
   try {
-    const authResult = await requireCROAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const authResult = await requireCROAuth(request)
     if ('response' in authResult) return authResult.response
     const { user } = authResult
 
@@ -121,7 +124,9 @@ export async function GET(request: NextRequest) {
 // Mark insight as read
 export async function PATCH(request: NextRequest) {
   try {
-    const authResult = await requireCROAuth(request)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const authResult = await requireCROAuth(request)
     if ('response' in authResult) return authResult.response
     const { user } = authResult
 

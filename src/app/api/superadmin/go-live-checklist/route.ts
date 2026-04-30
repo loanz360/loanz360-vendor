@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 /**
@@ -63,7 +64,9 @@ export async function GET() {
 // POST — Run auto-checks in parallel
 export async function POST(request: NextRequest) {
   try {
-    const baseUrl = request.nextUrl.origin
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const baseUrl = request.nextUrl.origin
     const timeout = 10000 // 10 seconds per check
 
     const results = await Promise.allSettled(
@@ -132,7 +135,9 @@ export async function POST(request: NextRequest) {
 // PUT — Save checklist state
 export async function PUT(request: NextRequest) {
   try {
-    const bodySchema = z.object({
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const bodySchema = z.object({
 
       state: z.string().optional(),
 

@@ -5,6 +5,7 @@
  * POST /api/superadmin/payouts/batches - Create new batch
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createInAppNotification } from '@/lib/notifications/notification-service'
@@ -54,7 +55,9 @@ export interface CreateBatchResponse {
 // GET - List all batches
 export async function GET(request: NextRequest) {
   try {
-    // H8 FIX: Use unified auth with consistent role check
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// H8 FIX: Use unified auth with consistent role check
     const auth = await verifyUnifiedAuth(request, ['SUPER_ADMIN'])
     if (!auth.authorized) {
       return NextResponse.json(
@@ -113,7 +116,9 @@ export async function GET(request: NextRequest) {
 // POST - Create new batch
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // 1. Authenticate superadmin
     const {

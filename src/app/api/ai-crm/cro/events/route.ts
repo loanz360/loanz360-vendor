@@ -9,6 +9,7 @@
  * - Connection management
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 

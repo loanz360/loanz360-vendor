@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { googleCalendarService } from '@/lib/calendar/google-calendar-service'
 import { apiLogger } from '@/lib/utils/logger'
@@ -9,7 +10,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const { searchParams } = new URL(request.url)
     const user_id = searchParams.get('user_id')
     const date = searchParams.get('date')
     const duration_minutes = searchParams.get('duration_minutes')

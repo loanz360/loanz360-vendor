@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { ChatbotCreateInput } from '@/types/chatbot'
@@ -7,7 +8,9 @@ import { apiLogger } from '@/lib/utils/logger'
 // GET /api/chatbot - List all chatbots
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // Verify super admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -79,7 +82,9 @@ export async function GET(request: NextRequest) {
 // POST /api/chatbot - Create a new chatbot
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // Verify super admin authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()

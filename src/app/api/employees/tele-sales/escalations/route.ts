@@ -242,7 +242,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const now = new Date()
-    let updateData: any = { updated_at: now.toISOString() }
+    let updateData: Record<string, unknown> = { updated_at: now.toISOString() }
 
     switch (action) {
       case 'ACKNOWLEDGE':

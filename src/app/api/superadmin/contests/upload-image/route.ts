@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import logger from '@/lib/monitoring/logger'
@@ -6,7 +7,9 @@ import { CONTEST_UPLOAD_CONFIG } from '@/lib/constants/contest-config'
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.UPLOAD)
+    if (rateLimitResponse) return rateLimitResponse
+const supabase = await createClient()
 
     // Check authentication
     const {

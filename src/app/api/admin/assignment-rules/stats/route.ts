@@ -5,6 +5,7 @@
  * Admin access only
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { jwtVerify } from 'jose'
@@ -19,7 +20,9 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
 
 export async function GET(request: NextRequest) {
   try {
-    // Verify authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authentication
     const authHeader = request.headers.get('authorization')
     const token = authHeader?.replace('Bearer ', '') || request.cookies.get('admin_token')?.value
 

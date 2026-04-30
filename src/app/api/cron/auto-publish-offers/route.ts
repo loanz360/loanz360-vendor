@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -20,7 +21,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function POST(request: NextRequest) {
   try {
-    // Security check: Verify cron secret
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Security check: Verify cron secret
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
     if (!cronSecret) {
@@ -84,7 +87,9 @@ export async function POST(request: NextRequest) {
 // Also support GET for manual testing
 export async function GET(request: NextRequest) {
   try {
-    // Allow GET requests without auth for testing (can be disabled in production)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Allow GET requests without auth for testing (can be disabled in production)
     const isDevelopment = process.env.NODE_ENV === 'development'
 
     if (!isDevelopment) {

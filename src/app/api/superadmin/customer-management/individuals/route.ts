@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -6,7 +7,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function GET(request: NextRequest) {
   try {
-    const auth = await verifyUnifiedAuth(request, ['SUPER_ADMIN'])
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifyUnifiedAuth(request, ['SUPER_ADMIN'])
     if ('error' in auth) {
       return NextResponse.json({ success: false, error: auth.error }, { status: auth.status })
     }

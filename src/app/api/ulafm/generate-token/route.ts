@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 
 /**
@@ -59,7 +60,9 @@ function generateQRCodeDataURL(url: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    // Get authenticated user
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+// Get authenticated user
     const supabase = await createClient()
     const {
       data: { user },

@@ -4,6 +4,7 @@
  * Generates and sends OTP for customer login
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createOTP, validateMobileNumber } from '@/lib/utils/otp'
 import type { OTPRequest, OTPResponse } from '@/types/enterprise-leads'
@@ -11,7 +12,9 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function POST(request: NextRequest) {
   try {
-    const body: OTPRequest = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.AUTH)
+    if (rateLimitResponse) return rateLimitResponse
+const body: OTPRequest = await request.json()
 
     // Validate mobile number
     const validation = validateMobileNumber(body.mobile)

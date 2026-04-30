@@ -5,6 +5,7 @@
  * Marks batch as paid and updates all associated leads
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createInAppNotification } from '@/lib/notifications/notification-service'

@@ -210,7 +210,7 @@ export async function PUT(request: NextRequest) {
       }, { status: 400 })
     }
 
-    let updateData: any = { updated_at: new Date().toISOString() }
+    let updateData: Record<string, unknown> = { updated_at: new Date().toISOString() }
 
     switch (action) {
       case 'START_DIAL':

@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 
 /**
@@ -38,7 +39,9 @@ const createCategorySchema = z.object({
  */
 export async function GET(request: NextRequest) {
   try {
-    // Verify authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authentication
     const auth = await verifyUnifiedAuth(request)
     if (!auth.authorized) {
       return NextResponse.json(
@@ -130,7 +133,9 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authentication
     const auth = await verifyUnifiedAuth(request)
     if (!auth.authorized) {
       return NextResponse.json(

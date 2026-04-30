@@ -6,6 +6,7 @@
  * GET - Fetch all entity types for a profile with enabled/disabled status
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -27,7 +28,9 @@ const supabaseAdmin = createClient(
  */
 export async function GET(request: NextRequest) {
   try {
-    // Verify authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authentication
     const auth = await verifyUnifiedAuth(request)
     if (!auth.authorized) {
       return NextResponse.json(

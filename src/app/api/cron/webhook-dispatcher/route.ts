@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import crypto from 'crypto'
@@ -26,7 +27,9 @@ function generateSignature(payload: string, secret: string): string {
 
 export async function GET(request: NextRequest) {
   try {
-    // Verify cron authorization
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify cron authorization
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
 

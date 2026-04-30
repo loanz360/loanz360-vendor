@@ -1,3 +1,4 @@
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { parseBody } from '@/lib/utils/parse-body'
 import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
@@ -58,7 +59,9 @@ const UPDATE_ALLOWLIST = [
  */
 export async function GET(request: NextRequest) {
   try {
-    const auth = await verifySuperAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifySuperAdmin()
     if (!auth.user) {
       return NextResponse.json(
         { success: false, error: auth.error },
@@ -160,7 +163,9 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const auth = await verifySuperAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifySuperAdmin()
     if (!auth.user) {
       return NextResponse.json(
         { success: false, error: auth.error },
@@ -256,7 +261,9 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    const auth = await verifySuperAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifySuperAdmin()
     if (!auth.user) {
       return NextResponse.json(
         { success: false, error: auth.error },
@@ -373,7 +380,9 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   try {
-    const auth = await verifySuperAdmin()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+const auth = await verifySuperAdmin()
     if (!auth.user) {
       return NextResponse.json(
         { success: false, error: auth.error },

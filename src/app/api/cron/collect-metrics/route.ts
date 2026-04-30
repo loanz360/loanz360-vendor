@@ -13,6 +13,7 @@
  * }
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import MetricsCollector, { recordDailyMetrics } from '@/lib/monitoring/performance-metrics'
@@ -33,7 +34,9 @@ function verifyCronSecret(request: NextRequest): boolean {
  */
 export async function GET(request: NextRequest) {
   try {
-    // Verify authorization
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify authorization
     if (!verifyCronSecret(request)) {
       logger.warn('Unauthorized cron job attempt')
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })

@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { apiLogger } from '@/lib/utils/logger'
@@ -11,7 +12,9 @@ const supabase = createClient(
 // POST - Seed all subcategories to database
 export async function POST(request: NextRequest) {
   try {
-    // Check authorization
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Check authorization
     const authHeader = request.headers.get('authorization');
     const expectedToken = process.env.SEED_API_TOKEN || 'seed-categories-2024';
 

@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { checkAuth } from '@/lib/auth/check-auth'
 import { unifiedUploadService } from '@/services/database/unifiedUploadService'
@@ -10,7 +11,9 @@ import { apiLogger } from '@/lib/utils/logger'
  */
 export async function POST(request: NextRequest) {
   try {
-    // Check authentication
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.UPLOAD)
+    if (rateLimitResponse) return rateLimitResponse
+// Check authentication
     const authResult = await checkAuth(['SUPER_ADMIN'])
     if (!authResult.authorized) {
       return NextResponse.json(

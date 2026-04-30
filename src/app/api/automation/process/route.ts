@@ -8,6 +8,7 @@
  * Recommended schedule: Every hour (0 * * * *)
  */
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { processFollowUpRules } from '@/lib/automation/lead-follow-up'
 import { apiLogger } from '@/lib/utils/logger'
@@ -27,7 +28,9 @@ interface ProcessResponse {
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify the request is from a trusted source (cron job)
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)
+    if (rateLimitResponse) return rateLimitResponse
+// Verify the request is from a trusted source (cron job)
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
 

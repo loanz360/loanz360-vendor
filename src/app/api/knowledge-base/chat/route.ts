@@ -1,4 +1,5 @@
 
+import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -80,7 +81,9 @@ Remember: You represent Loanz360, a trusted loan aggregator helping customers fi
 
 export async function POST(request: NextRequest) {
   try {
-    const body: RequestBody = await request.json()
+    const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.WRITE)
+    if (rateLimitResponse) return rateLimitResponse
+const body: RequestBody = await request.json()
     const { message, loanType, history = [] } = body
 
     if (!message || !loanType) {
