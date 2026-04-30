@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -31,7 +32,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       additional_deals = 0,
       additional_revenue = 0,

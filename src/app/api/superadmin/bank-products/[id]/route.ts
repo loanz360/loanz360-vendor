@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Bank Products Management API - Single Product Operations
  * GET: Get single product by ID
@@ -80,7 +81,8 @@ export async function PUT(
     if (authErr) return NextResponse.json({ success: false, error: authErr }, { status })
 
     const { id } = await params
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Check product exists
     const { data: existing } = await supabase

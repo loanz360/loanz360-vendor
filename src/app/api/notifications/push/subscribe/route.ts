@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // Push Notification Subscription API
 // POST: Subscribe to push notifications
@@ -32,7 +33,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { subscription, device_name, device_type } = body
 
     if (!subscription || !validateSubscription(subscription)) {

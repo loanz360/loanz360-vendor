@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * BDM Team Targets - Custom Reports API
  * Generate custom performance reports with flexible parameters
@@ -32,7 +33,8 @@ async function generateCustomReportHandler(request: NextRequest) {
     const bdmUserId = auth.user!.id
 
     // Parse custom report configuration
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       reportName,
       dateRange,

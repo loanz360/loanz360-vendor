@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // PERFORMANCE REVIEWS API
@@ -123,7 +124,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       cycle_id,
       review_type, // SELF, MANAGER, PEER, SKIP_LEVEL

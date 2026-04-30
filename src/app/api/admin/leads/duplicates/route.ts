@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Lead Deduplication API
  * Provides endpoints for detecting and managing duplicate leads
@@ -115,7 +116,8 @@ async function checkDuplicatesHandler(request: NextRequest) {
 
     const supabase = createSupabaseAdmin()
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { customer_name, customer_mobile, customer_email, exclude_system, exclude_lead_id } = body
 
     if (!customer_name && !customer_mobile && !customer_email) {

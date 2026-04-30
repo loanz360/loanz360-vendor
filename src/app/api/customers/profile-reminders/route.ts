@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Profile Completion Reminder API
@@ -73,7 +74,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const body = await request.json().catch(() => ({}))
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr.catch(() => ({}))
     const { customerId, dryRun = false, limit = 100 } = body
 
     const supabase = await createClient()

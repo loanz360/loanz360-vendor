@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -43,7 +44,8 @@ export async function PUT(
     }
 
     const { id: declarationId } = await params
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, remarks } = body // action: 'approve' or 'reject'
 
     if (!action || (action !== 'approve' && action !== 'reject')) {

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // Template Version History API
 // GET: Get all versions of a template
@@ -101,7 +102,8 @@ export async function POST(
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { version_id, version_number } = body
 
     if (!version_id && !version_number) {

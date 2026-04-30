@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -145,7 +146,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, deal_ids, snooze_minutes } = body
 
     if (!action || !deal_ids || !Array.isArray(deal_ids)) {

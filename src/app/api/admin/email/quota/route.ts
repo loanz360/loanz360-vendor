@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Email Quota API Routes
@@ -93,7 +94,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
 
     if (!body.name) {
       return NextResponse.json({ success: false, error: 'Policy name is required' }, { status: 400 });
@@ -145,7 +147,8 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { accountId, policyId, storageQuotaMb, dailySendLimit } = body;
 
     if (!accountId) {

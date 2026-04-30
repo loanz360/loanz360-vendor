@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
@@ -32,7 +33,8 @@ export async function POST(request: NextRequest) {
     const roleCheck = await verifyDSERole(supabase, user.id)
     if (!roleCheck.isValid) return roleCheck.response
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validated = consentSchema.parse(body)
 
     // Verify customer exists and belongs to this DSE

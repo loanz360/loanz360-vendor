@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // Notification Tracking API
 // POST: Track notification interactions (opens, clicks, dismissals)
@@ -11,7 +12,8 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       notification_id,
       action,

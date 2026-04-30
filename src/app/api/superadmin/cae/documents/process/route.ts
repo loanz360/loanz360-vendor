@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * CAE Document Processing API
@@ -11,7 +12,8 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { document_id, lead_id, appraisal_id, document_category_code, file_url, file_type, file_size } = body
 
     if (!document_id || !lead_id || !document_category_code) {

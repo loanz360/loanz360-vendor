@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Activity Incidents API
  * Manage security incidents and operational issues
@@ -64,7 +65,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const {
       title,
@@ -130,7 +132,8 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const { id, action, user_id, ...updateData } = body
 

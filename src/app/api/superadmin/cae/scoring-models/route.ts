@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse, NextRequest } from 'next/server'
@@ -20,7 +21,8 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { data, error } = await supabase.from('cae_scoring_models').insert({ ...body, created_by: user.id }).select().single()
     if (error) return NextResponse.json({ success: false, error: 'An unexpected error occurred' }, { status: 500 })
     return NextResponse.json({ success: true, data })
@@ -34,7 +36,8 @@ export async function PATCH(request: NextRequest) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, ...updates } = body
     const { data, error } = await supabase.from('cae_scoring_models').update({ ...updates, updated_by: user.id, updated_at: new Date().toISOString() }).eq('id', id).select().single()
     if (error) return NextResponse.json({ success: false, error: 'An unexpected error occurred' }, { status: 500 })

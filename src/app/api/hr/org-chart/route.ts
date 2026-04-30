@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -89,7 +90,8 @@ export async function PATCH(request: NextRequest) {
     const hasAccess = await checkHRAccess(supabase)
     if (!hasAccess) return NextResponse.json({ success: false, error: 'HR access required' }, { status: 403 })
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { employee_id, manager_id } = body
     if (!employee_id || !manager_id) return NextResponse.json({ success: false, error: 'employee_id and manager_id are required' }, { status: 400 })
     if (employee_id === manager_id) return NextResponse.json({ success: false, error: 'Employee cannot be their own manager' }, { status: 400 })

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -185,7 +186,8 @@ export async function POST(request: NextRequest) {
       .eq('id', auth.userId)
       .maybeSingle()
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       notification_type,
       bank_name,
@@ -268,7 +270,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Profile not found' }, { status: 404 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { notification_id, action, mark_all } = body
 
     // Handle mark all as read

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // EXIT INTERVIEW API
@@ -124,7 +125,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { resignation_id, responses, interview_mode } = body
 
     if (!resignation_id || !responses) {

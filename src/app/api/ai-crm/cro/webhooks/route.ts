@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Webhook Management API
  *
@@ -119,7 +120,8 @@ export async function POST(request: NextRequest) {
 
   try {
     // Parse and validate request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const parseResult = createWebhookSchema.safeParse(body)
 
     if (!parseResult.success) {
@@ -210,7 +212,8 @@ export async function PUT(request: NextRequest) {
   const { user, supabase, requestId } = authResult.context
 
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, ...updateData } = body
 
     if (!id) {

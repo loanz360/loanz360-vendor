@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -165,7 +166,8 @@ export async function PUT(
     }
 
     const { id } = paramValidation.data
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate and sanitize input
     const validationResult = updatePermissionSchema.safeParse(body)
@@ -331,7 +333,8 @@ export async function POST(
     }
 
     const { id } = paramValidation.data
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate and sanitize bulk input
     const validationResult = bulkUpdatePermissionsSchema.safeParse(body)

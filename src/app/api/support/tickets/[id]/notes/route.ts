@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // TICKET INTERNAL NOTES API
@@ -91,7 +92,8 @@ export async function POST(
       return NextResponse.json({ success: false, error: 'Access denied. Only HR and Super Admin can add internal notes.' }, { status: 403 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { note } = body
 
     if (!note?.trim()) {

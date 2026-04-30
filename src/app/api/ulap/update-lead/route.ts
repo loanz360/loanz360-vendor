@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * API Route: ULAP Lead Update (Phase 2)
@@ -11,7 +12,8 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
 
     // Required: lead_id to update
     if (!body.lead_id) {

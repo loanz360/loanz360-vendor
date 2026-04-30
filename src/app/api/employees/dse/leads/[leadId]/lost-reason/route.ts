@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
@@ -83,7 +84,8 @@ export async function POST(
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validated = lostReasonSchema.parse(body)
 
     // Update lead stage to 'Lost' and record lost_reason

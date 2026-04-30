@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -107,7 +108,8 @@ export async function POST(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { title, description, category, delivery_mode, duration_hours, is_mandatory, target_roles, max_participants, facilitator } = body
 
     if (!title) return NextResponse.json({ success: false, error: 'Title is required' }, { status: 400 })
@@ -156,7 +158,8 @@ export async function PATCH(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const queryId = request.nextUrl.searchParams.get('id')
     const { id: bodyId, title, description, category, delivery_mode, duration_hours, is_mandatory, target_roles, max_participants, facilitator, status } = body
     const id = bodyId || queryId

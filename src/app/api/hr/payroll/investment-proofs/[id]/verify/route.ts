@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -44,7 +45,8 @@ export async function PUT(
     }
 
     const proofId = id
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, verified_amount, remarks } = body // action: 'verify' or 'reject'
 
     if (!action || (action !== 'verify' && action !== 'reject')) {

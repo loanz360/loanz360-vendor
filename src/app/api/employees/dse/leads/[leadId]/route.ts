@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
@@ -162,7 +163,8 @@ export async function PUT(
       return NextResponse.json({ success: false, error: access.error }, { status: access.status })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validatedData = updateLeadSchema.parse(body)
 
     // Check if stage is changing

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * BDM Team Targets - Set Individual BDE Target API
  * Allows BDM to set/update target for a single BDE
@@ -55,7 +56,8 @@ async function setIndividualTargetHandler(request: NextRequest) {
     // 2. PARSE REQUEST BODY
     // =====================================================
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       bdeId,
       month,

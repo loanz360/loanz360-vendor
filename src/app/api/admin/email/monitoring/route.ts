@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Email Monitoring API Routes
@@ -113,7 +114,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { action, providerId } = body;
 
     const monitoringService = getMonitoringService();

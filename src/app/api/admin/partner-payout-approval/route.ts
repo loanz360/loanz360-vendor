@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Super Admin - Partner Payout Approval API
  * Manages BA/BP payout application approval workflow (2nd authorization after Accounts verification)
@@ -159,7 +160,8 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { applicationId, applicationIds, action, notes, reason } = body
 
     // Support both single and bulk operations

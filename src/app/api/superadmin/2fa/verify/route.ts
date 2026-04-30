@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Super Admin 2FA Verification API
  * Verifies 2FA code during login
@@ -57,7 +58,8 @@ export async function POST(request: NextRequest) {
 
   try {
     // Parse and validate request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validation = verifyTwoFactorSchema.safeParse(body)
 
     if (!validation.success) {

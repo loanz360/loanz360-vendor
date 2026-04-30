@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Loan Consent OTP Verification API
@@ -31,7 +32,8 @@ const verifyConsentSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     // Parse and validate request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validatedData = verifyConsentSchema.parse(body)
 
     // Fetch consent request

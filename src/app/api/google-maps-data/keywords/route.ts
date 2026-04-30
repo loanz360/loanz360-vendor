@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -51,7 +52,8 @@ export async function GET(request: NextRequest) {
 // POST - Add new keyword(s)
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { keywords } = body
 
     // Handle single or bulk keywords
@@ -146,7 +148,8 @@ export async function DELETE(request: NextRequest) {
 // PATCH - Update keyword status
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, status, error_message } = body
 
     if (!id) {

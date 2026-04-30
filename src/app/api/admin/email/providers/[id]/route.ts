@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Email Provider Management API - Single Provider Operations
@@ -99,7 +100,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const providerService = getEmailProviderService();
 
     const result = await providerService.updateProvider(id, body, user.id);
@@ -203,7 +205,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { action } = body;
 
     const providerService = getEmailProviderService();

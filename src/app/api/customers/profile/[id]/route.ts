@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: Profile Detail
  * GET /api/customers/profile/[id] - Get profile details with documents
@@ -351,7 +352,8 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
   try {
     const { id } = await context.params
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { type, ...updateData } = body
 
     const supabase = await createClient()

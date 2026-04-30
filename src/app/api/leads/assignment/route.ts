@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { apiLogger } from '@/lib/utils/logger'
 import { NextRequest, NextResponse } from 'next/server'
@@ -163,7 +164,8 @@ export async function GET(request: NextRequest) {
 // POST - Assign lead(s) manually or trigger auto-assignment
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, leadIds, assignTo, reason } = body
 
     if (!action) {
@@ -244,7 +246,8 @@ export async function POST(request: NextRequest) {
 // PUT - Create or update assignment rule
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, ...ruleData } = body
 
     if (id) {

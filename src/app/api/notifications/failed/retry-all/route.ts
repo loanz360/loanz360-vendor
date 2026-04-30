@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -75,7 +76,8 @@ export async function POST(request: NextRequest) {
     // Parse optional type filter from body
     let typeFilter: string | undefined
     try {
-      const body = await request.json()
+      const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
       typeFilter = body?.type
     } catch {
       // No body or invalid JSON is fine

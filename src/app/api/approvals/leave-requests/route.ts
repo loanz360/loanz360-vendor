@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -74,7 +75,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { request_id, action, rejection_reason } = body
 
     if (!request_id || !action) {

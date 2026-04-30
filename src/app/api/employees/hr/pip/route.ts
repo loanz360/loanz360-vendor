@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // PERFORMANCE IMPROVEMENT PLAN (PIP) API
@@ -156,7 +157,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const parsed = pipCreateSchema.safeParse(body)
     if (!parsed.success) {
       return NextResponse.json(
@@ -289,7 +291,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const pipPatchSchema = z.object({
       pip_id: z.string().uuid('Invalid PIP ID'),

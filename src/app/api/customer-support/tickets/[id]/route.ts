@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -206,7 +207,8 @@ export async function PATCH(
     }
 
     const ticketId = params.id
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Get current ticket
     const { data: ticket } = await supabase

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Bank Products Management API - SuperAdmin / Admin
  * GET: List all products with advanced filtering (active + inactive)
@@ -154,7 +155,8 @@ export async function POST(request: NextRequest) {
     const { error: authErr, status, user } = await verifyAdminAccess(supabase)
     if (authErr) return NextResponse.json({ success: false, error: authErr }, { status })
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate required fields
     const requiredFields = ['bank_name', 'name', 'loan_type']

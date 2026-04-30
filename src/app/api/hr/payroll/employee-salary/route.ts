@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -157,7 +158,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       user_id,
       basic_salary,
@@ -322,7 +324,8 @@ export async function PUT(request: Request) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, updated_at: clientUpdatedAt } = body
 
     if (!id) {
@@ -468,7 +471,8 @@ export async function DELETE(request: Request) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const id = body.salary_id
 
     if (!id) {

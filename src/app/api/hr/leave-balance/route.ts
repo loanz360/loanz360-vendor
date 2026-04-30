@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from "next/server"
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -223,7 +224,8 @@ export async function POST(request: NextRequest) {
     const hrAccess = await checkHRAccess(supabase, user.id)
     if (!hrAccess.hasAccess) return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 })
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { employee_id, leave_type, adjustment_type, days, reason } = body
 
     // ── Validation ──

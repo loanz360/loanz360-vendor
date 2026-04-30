@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -80,7 +81,8 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Super Admin access required' }, { status: 403 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { setting_key, setting_value } = body
 
     if (!setting_key || !setting_value) {

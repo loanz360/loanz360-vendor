@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -30,7 +31,8 @@ export async function GET(request: NextRequest) {
 // Handle incoming webhooks (POST request)
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Log webhook for debugging
 

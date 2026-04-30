@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * BDM Team Targets - Target Templates API
  * GET: List all available templates
@@ -169,7 +170,8 @@ async function createTemplateHandler(request: NextRequest) {
     // 2. PARSE REQUEST BODY
     // =====================================================
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       templateName,
       templateDescription,

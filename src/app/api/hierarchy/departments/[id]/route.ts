@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
@@ -149,7 +150,8 @@ export async function PUT(
     const { id } = params;
 
     // Parse and validate request body
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const validatedData = departmentUpdateSchema.parse(body);
 
     // Check if department exists

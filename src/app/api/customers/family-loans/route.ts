@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Customer Family Loans API
  * CRUD for customer_family_members + customer_family_loans
@@ -76,7 +77,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { type, ...rest } = body
 
     if (type === 'member') {
@@ -138,7 +140,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { type, id, ...updates } = body
 
     if (!id) return NextResponse.json({ success: false, error: 'id is required' }, { status: 400 })

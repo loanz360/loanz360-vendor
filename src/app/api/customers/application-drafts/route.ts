@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Customer Application Drafts API
  * Save & resume loan application drafts
@@ -62,7 +63,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { loan_type, form_data, current_step, total_steps } = body
 
     if (!loan_type) {
@@ -98,7 +100,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, form_data, current_step } = body
 
     if (!id) return NextResponse.json({ success: false, error: 'id is required' }, { status: 400 })

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -203,7 +204,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       title,
       banner_text,
@@ -471,7 +473,8 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       id,
       title,
@@ -771,7 +774,8 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, bannerIds } = body
 
     // Validate action

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -172,7 +173,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json() as Partial<DraftNotification>
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr as Partial<DraftNotification>
 
     // Validate required fields
     if (!body.title || !body.message || !body.notification_type || !body.target_type) {
@@ -274,7 +276,8 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, ...updateData } = body
 
     if (!id) {

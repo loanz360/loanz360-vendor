@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Real-Time Activity Feed API
  * Main endpoint for fetching activity logs with filters
@@ -162,7 +163,8 @@ export async function PATCH(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // SECURITY FIX: Use authenticated user_id instead of trusting request body
     const { activity_id, action, notes } = body

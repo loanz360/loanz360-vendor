@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -129,7 +130,8 @@ export async function POST(request: Request) {
 
     const isHROrAdmin = profile && (profile.role === 'hr' || profile.role === 'superadmin')
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       user_id,
       financial_year,

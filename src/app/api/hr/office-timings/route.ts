@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -87,7 +88,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { name, check_in_time, check_out_time, grace_period_minutes, is_default } = body
 
     if (!name || !check_in_time || !check_out_time) {
@@ -187,7 +189,8 @@ export async function PUT(request: Request) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, name, check_in_time, check_out_time, grace_period_minutes, is_default } = body
 
     if (!id) {

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { logApiError } from '@/lib/monitoring/errorLogger'
@@ -179,7 +180,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { lead_ids, format = 'csv' } = body
 
     if (!lead_ids || !Array.isArray(lead_ids) || lead_ids.length === 0) {

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -111,7 +112,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate with Zod
     const validatedData = bankSchema.parse(body)
@@ -207,7 +209,8 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate with Zod
     const validatedData = updateBankSchema.parse(body)

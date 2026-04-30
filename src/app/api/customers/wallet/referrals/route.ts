@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Customer Wallet Referrals API
@@ -96,7 +97,8 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()
     const adminClient = createAdminClient()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const {
       referred_name,

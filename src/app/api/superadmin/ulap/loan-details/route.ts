@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * ULAP Loan Details Management API
@@ -57,7 +58,8 @@ export async function GET(request: NextRequest) {
 // POST - Create or update loan details
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const {
       subcategory_id,

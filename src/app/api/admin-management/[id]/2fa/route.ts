@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -169,7 +170,8 @@ export async function POST(
     }
 
     const { id } = paramValidation.data
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action } = body
 
     if (!action || !['setup', 'enable', 'disable', 'regenerate-backup-codes'].includes(action)) {
@@ -575,7 +577,8 @@ export async function PUT(
     }
 
     const { id } = paramValidation.data
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { token, trustDevice = false } = body
 
     if (!token) {

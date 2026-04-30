@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAuth, checkPermission } from '@/lib/auth/employee-mgmt-auth'
@@ -33,7 +34,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { employee_name, employee_id, work_email, mobile_number, temporary_password } = body
 
     if (!employee_name || !employee_id || !work_email || !mobile_number || !temporary_password) {

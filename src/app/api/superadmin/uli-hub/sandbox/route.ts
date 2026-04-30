@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: ULI Sandbox Tester
  * POST /api/superadmin/uli-hub/sandbox — Execute a test call to a ULI service
@@ -67,7 +68,8 @@ const MOCK_RESPONSES: Record<string, Record<string, unknown>> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { service_code, payload } = body
 
     if (!service_code) {

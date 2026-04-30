@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // HR FINAL SETTLEMENT API
@@ -130,7 +131,8 @@ export async function POST(request: NextRequest) {
     // Use admin client for data queries (bypasses RLS - auth already verified above)
     const adminClient = createSupabaseAdmin()
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { resignation_id } = body
 
     if (!resignation_id) {
@@ -212,7 +214,8 @@ export async function PATCH(request: NextRequest) {
     // Use admin client for data queries (bypasses RLS - auth already verified above)
     const adminClient = createSupabaseAdmin()
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validated = settlementActionSchema.safeParse(body)
     if (!validated.success) {
       return NextResponse.json(

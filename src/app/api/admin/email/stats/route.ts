@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Email Statistics API
@@ -196,7 +197,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { format = 'json', type = 'accounts' } = body;
 
     const adminSupabase = createSupabaseAdmin();

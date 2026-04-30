@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // SKILLS MANAGEMENT API
@@ -166,7 +167,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       skill_id,
       proficiency_level,
@@ -259,7 +261,8 @@ export async function PATCH(request: NextRequest) {
 
     const isHR = ['HR_EXECUTIVE', 'HR_MANAGER'].includes(employee.sub_role)
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { skill_id, action, ...updateData } = body
 
     if (!skill_id) {

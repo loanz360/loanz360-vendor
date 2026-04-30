@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: ULI Services Management
  * GET    /api/superadmin/uli-hub/services  — List services (optional ?category=)
@@ -53,7 +54,8 @@ export async function GET(request: NextRequest) {
 // POST — Create a new ULI service
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const supabase = createAdminClient()
 
     const { data, error } = await supabase
@@ -99,7 +101,8 @@ export async function POST(request: NextRequest) {
 // PATCH — Update an existing ULI service
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     if (!body.id) {
       return NextResponse.json(
         { success: false, error: 'Service ID is required' },

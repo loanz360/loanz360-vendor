@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Email Approval Workflow Single Item API Routes
@@ -73,7 +74,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const workflowService = getApprovalWorkflowService();
 
     const result = await workflowService.updateWorkflow(id, body, user.id);

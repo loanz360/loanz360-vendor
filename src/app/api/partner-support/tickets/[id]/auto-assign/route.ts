@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { autoAssignTicket, AssignmentStrategy } from '@/lib/tickets/auto-assignment'
@@ -39,7 +40,8 @@ export async function POST(
     }
 
     // Get strategy from request body
-    const body = await request.json().catch(() => ({}))
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr.catch(() => ({}))
     const strategy: AssignmentStrategy = body.strategy || 'workload_based'
 
     // Validate strategy

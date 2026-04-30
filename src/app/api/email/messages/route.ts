@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Employee Email Messages API
@@ -145,7 +146,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, message_ids, target_folder, label_id } = body
 
     if (!action || !message_ids || !Array.isArray(message_ids) || message_ids.length === 0) {

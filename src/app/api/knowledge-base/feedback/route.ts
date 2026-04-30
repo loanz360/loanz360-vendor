@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { apiLogger } from '@/lib/utils/logger'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -5,7 +6,8 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate required fields
     if (!body.contentId || !body.contentType || typeof body.isHelpful !== 'boolean') {

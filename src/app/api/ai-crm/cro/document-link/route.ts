@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
@@ -38,7 +39,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const parsed = generateLinkSchema.safeParse(body)
     if (!parsed.success) {
       return NextResponse.json(

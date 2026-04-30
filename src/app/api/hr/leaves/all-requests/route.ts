@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { checkHRAccess } from '@/lib/auth/hr-access'
@@ -195,7 +196,8 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Parse and validate body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, action, remarks } = body
 
     if (!id || !action || !['approve', 'reject'].includes(action)) {

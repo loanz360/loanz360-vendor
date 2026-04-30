@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
@@ -106,7 +107,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: auth.error }, { status: auth.status })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const updates: Partial<EscalationConfig> = {}
 
     // Validate and pick fields

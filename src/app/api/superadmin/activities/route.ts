@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * System Activities API Endpoint
@@ -180,7 +181,8 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { activityId, status } = body
 
     if (!activityId || !status) {
@@ -280,7 +282,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { startDate, endDate } = body
 
     // Get statistics

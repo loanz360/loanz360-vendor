@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * API Route: ULAP Module - Lead Submission
@@ -60,7 +61,8 @@ function getLeadGeneratorRole(sourceType: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Required fields validation
     if (!body.customer_name || !body.customer_mobile) {

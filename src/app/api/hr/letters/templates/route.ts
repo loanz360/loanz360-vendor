@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from "next/server"
@@ -53,7 +54,8 @@ export async function POST(request: Request) {
     if (authError || !user) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: "Access denied. HR only." }, { status: 403 })
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { name, letter_type, subject, body: templateBody, variables } = body
     if (!name || !letter_type || !templateBody)
       return NextResponse.json({ success: false, error: "name, letter_type, and body are required" }, { status: 400 })
@@ -86,7 +88,8 @@ export async function PATCH(request: Request) {
     if (authError || !user) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: "Access denied. HR only." }, { status: 403 })
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, ...updates } = body
     if (!id) return NextResponse.json({ success: false, error: "id is required" }, { status: 400 })
     const updatePayload: Record<string, unknown> = { updated_at: new Date().toISOString() }

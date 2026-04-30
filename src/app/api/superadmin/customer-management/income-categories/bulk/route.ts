@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Income Categories Bulk Operations API
@@ -49,7 +50,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse and validate request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validatedData = bulkOperationSchema.parse(body)
 
     const { operation, category_ids, reorder_data } = validatedData

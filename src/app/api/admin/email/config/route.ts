@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Email Provider Configuration API
@@ -229,7 +230,8 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const adminSupabase = createSupabaseAdmin();
 
     // Get existing config

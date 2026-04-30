@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -89,7 +90,8 @@ export async function POST(request: NextRequest) {
 
 
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const {
       template_name,
@@ -188,7 +190,8 @@ export async function PUT(request: NextRequest) {
 
 
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const {
       template_id,

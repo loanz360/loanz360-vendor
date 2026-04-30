@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Pipeline Retry/Trigger API
@@ -50,7 +51,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { lead_id, lead_number, from_step } = body
 
     if (!lead_id && !lead_number) {

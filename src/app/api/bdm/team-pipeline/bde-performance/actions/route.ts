@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * BDM Team Pipeline - BDE Actions API
@@ -217,7 +218,8 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       bdeId,
       title,
@@ -306,7 +308,8 @@ export async function PATCH(request: NextRequest) {
     }
 
     // 2. Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { actionId, status, notes } = body
 
     if (!actionId || !status) {

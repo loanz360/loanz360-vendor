@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { WhatsAppProvider } from '@/lib/communication/providers/whatsapp-provider'
@@ -31,7 +32,8 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Process webhook asynchronously
     WhatsAppProvider.handleWebhook(body).catch(error => {

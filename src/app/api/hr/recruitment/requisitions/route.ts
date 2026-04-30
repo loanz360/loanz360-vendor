@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -70,7 +71,8 @@ export async function POST(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { title, department_id, headcount, employment_type, experience_min, experience_max, salary_min, salary_max, priority, target_fill_date, job_description, requirements } = body
 
     if (!title?.trim()) return NextResponse.json({ success: false, error: 'Title is required' }, { status: 400 })
@@ -111,7 +113,8 @@ export async function PATCH(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id } = body
     if (!id) return NextResponse.json({ success: false, error: 'Requisition ID required' }, { status: 400 })
 

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * BDM Team Targets - What-If Scenario Modeling API
  * Simulates different performance scenarios to predict outcomes
@@ -31,7 +32,8 @@ async function getScenarioProjectionsHandler(request: NextRequest) {
     const bdmUserId = auth.user!.id
 
     // Parse request body for scenario parameters
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { month, year, bdeId, scenarioType, parameters } = body
 
     if (!month || !year || !bdeId || !scenarioType) {

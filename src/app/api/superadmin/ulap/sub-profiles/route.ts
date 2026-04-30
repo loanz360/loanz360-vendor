@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -73,7 +74,8 @@ export async function GET(request: NextRequest) {
 // POST - Create a new sub-profile
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { profile_id, key, name, description, icon, color, display_order, is_active } = body;
 
     if (!profile_id || !key || !name) {
@@ -142,7 +144,8 @@ export async function POST(request: NextRequest) {
 // PUT - Update a sub-profile
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { id, profile_id, key, name, description, icon, color, display_order, is_active } = body;
 
     if (!id) {

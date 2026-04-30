@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
@@ -117,7 +118,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate required fields
     if (!body.key || !body.name || !body.type) {
@@ -182,7 +184,8 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     if (!body.key) {
       return NextResponse.json(

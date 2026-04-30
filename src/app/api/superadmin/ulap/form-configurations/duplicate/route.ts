@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -11,7 +12,8 @@ const supabase = createClient(
 // POST - Duplicate a form configuration
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { id, new_name, target_category_id, target_loan_type_id, target_profile_id, target_sub_profile_id, created_by } = body;
 
     if (!id) {

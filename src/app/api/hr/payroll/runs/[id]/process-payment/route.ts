@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -39,7 +40,8 @@ export async function POST(
     }
 
     const payrollRunId = id
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { payment_date, payment_mode = 'bank_transfer', payment_reference } = body
 
     // Validate payment date

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from "next/server"
@@ -69,7 +70,8 @@ export async function PATCH(request: Request) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: "Access denied. HR only." }, { status: 403 })
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, status } = body
     if (!id || !status) return NextResponse.json({ success: false, error: "id and status are required" }, { status: 400 })
 

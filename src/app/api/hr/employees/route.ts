@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server';
@@ -214,7 +215,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
 
     // Validate and whitelist fields to prevent mass assignment
     const validated = createEmployeeSchema.safeParse(body);
@@ -332,7 +334,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 });
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { id, ...updateFields } = body;
 
     if (!id || typeof id !== 'string') {
@@ -430,7 +433,8 @@ export async function DELETE(request: NextRequest) {
     let employeeId = request.nextUrl.searchParams.get('id');
     if (!employeeId) {
       try {
-        const body = await request.json();
+        const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
         employeeId = body.id;
       } catch { /* no body provided */ }
     }

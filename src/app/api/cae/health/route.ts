@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: CAE Provider Health Status
  * GET /api/cae/health - Get health status of all providers
@@ -107,7 +108,8 @@ export async function POST(request: NextRequest) {
   if (rateLimitResponse) return rateLimitResponse
 
   try {
-    const body = await request.json().catch(() => ({}))
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr.catch(() => ({}))
     const providerKey = body.provider
 
 

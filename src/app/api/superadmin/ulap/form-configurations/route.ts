@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -128,7 +129,8 @@ export async function GET(request: NextRequest) {
 // POST - Create a new form configuration with tabs and fields
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const {
       name,
       description,
@@ -269,7 +271,8 @@ export async function POST(request: NextRequest) {
 // PUT - Update a form configuration
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const {
       id,
       name,

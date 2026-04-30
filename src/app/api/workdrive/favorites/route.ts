@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * WorkDrive Favorites API
@@ -106,7 +107,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     // Support both old format (file_id) and new format (resource_type/resource_id)
     let resource_type = body.resource_type as ResourceType
     let resource_id = body.resource_id as string
@@ -169,7 +171,8 @@ export async function DELETE(request: NextRequest) {
     // Fallback: try reading from request body for backwards compatibility
     if (!resourceType || !resourceId) {
       try {
-        const body = await request.json()
+        const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
         if (!resourceType && body.resource_type) resourceType = body.resource_type as ResourceType
         if (!resourceId && body.resource_id) resourceId = body.resource_id
         // Backwards compat with file_id

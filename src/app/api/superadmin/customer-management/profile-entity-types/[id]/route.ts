@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Profile Entity Type Detail API
@@ -204,7 +205,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     // Parse and validate request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validatedData = updateProfileEntityTypeSchema.parse(body)
 
     // Check if mapping exists

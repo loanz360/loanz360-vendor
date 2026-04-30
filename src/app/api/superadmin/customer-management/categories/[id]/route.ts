@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Customer Category Management API - Single Category Operations
@@ -158,7 +159,8 @@ export async function PUT(
     const { id } = params
 
     // Parse and validate request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validatedData = updateCategorySchema.parse(body)
 
     // Check if category exists

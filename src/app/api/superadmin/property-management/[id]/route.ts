@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth } from '@/lib/auth/employee-mgmt-auth'
@@ -63,7 +64,8 @@ export async function PUT(
     }
 
     const propertyId = params.id
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const supabase = createSupabaseAdmin()
 
     // Check property exists

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // EMPLOYEE RECOGNITION API
@@ -131,7 +132,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       employee_id, // Who is being recognized
       recognition_type, // SPOT_AWARD, MONTHLY_STAR, PEER_APPRECIATION, etc.

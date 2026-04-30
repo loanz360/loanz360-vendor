@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: ULI Health Check
  * GET  /api/superadmin/uli-hub/health — Get health status of all services
@@ -47,7 +48,8 @@ export async function GET() {
 // TODO: Replace with real RBIH API ping when ULI integration is live
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { service_id } = body
 
     if (!service_id) {

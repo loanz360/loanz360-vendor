@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from "next/server"
@@ -25,7 +26,8 @@ export async function POST(request: Request) {
     if (!isHR) return NextResponse.json({ success: false, error: "Access denied. HR only." }, { status: 403 })
     const { data: profile } = await adminClient.from("employee_profile").select("first_name, last_name").eq("user_id", user.id).maybeSingle()
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { template_id, employee_id, variable_values } = body
     if (!template_id || !employee_id)
       return NextResponse.json({ success: false, error: "template_id and employee_id are required" }, { status: 400 })

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: ULI Environment Configuration
  * GET   /api/superadmin/uli-hub/environment  — Get current config
@@ -44,7 +45,8 @@ export async function GET() {
 // PATCH — Update environment configuration
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const supabase = createAdminClient()
 
     // First get the existing row ID

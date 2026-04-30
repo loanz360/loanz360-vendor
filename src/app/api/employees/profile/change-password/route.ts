@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
@@ -66,7 +67,8 @@ export async function POST(request: NextRequest) {
     const userId = sessionData.userId
 
     // Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { currentPassword, newPassword, confirmPassword } = body
 
     if (!currentPassword || !newPassword || !confirmPassword) {

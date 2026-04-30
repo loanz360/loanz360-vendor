@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -60,7 +61,8 @@ export async function GET(request: NextRequest) {
 // POST - Create and start a new scraping job
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, job_id } = body
 
     if (action === 'start') {
@@ -207,7 +209,8 @@ export async function POST(request: NextRequest) {
 // PATCH - Update job progress (called by Lambda)
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       job_id,
       processed_keywords,

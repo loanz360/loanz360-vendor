@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -111,7 +112,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { name, date, type, description, is_mandatory } = body
 
     // Validate required fields
@@ -205,7 +207,8 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Only HR and Super Admin can update holidays' }, { status: 403 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, name, date, type, description, is_mandatory } = body
 
     if (!id || !name || !date) {

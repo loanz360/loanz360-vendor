@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -48,7 +49,8 @@ export async function GET(request: NextRequest) {
 // POST - Add new proxy
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { proxy_type, proxy_url, proxy_host, proxy_port, proxy_username, proxy_password } = body
 
     const { data, error } = await supabase
@@ -83,7 +85,8 @@ export async function POST(request: NextRequest) {
 // PATCH - Update proxy stats (called by Lambda)
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { id, success, response_time_ms } = body
 
     if (!id) {

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: Follow-up Automation
  * GET /api/automation/follow-ups - Get pending follow-ups
@@ -153,7 +154,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate required fields
     const requiredFields = ['leadId', 'leadNumber', 'customerName', 'customerMobile', 'bdeId', 'bdeName', 'scheduledDate', 'followUpType']
@@ -219,7 +221,8 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     if (!body.scheduleId || !body.outcome) {
       return NextResponse.json(

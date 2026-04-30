@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -36,7 +37,8 @@ export async function PUT(
     const roleCheck = await verifyDSERole(supabase, user.id)
     if (!roleCheck.isValid) return roleCheck.response
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { status, snoozed_until } = body
 
     if (!status || !['Completed', 'Snoozed'].includes(status)) {

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Superadmin ULAP Leads API
@@ -176,7 +177,8 @@ export async function GET(request: NextRequest) {
 // PATCH - Update ULAP lead status in leads
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { id, status, lead_status, internal_notes, remarks, updated_by_name } = body;
 
     if (!id) {

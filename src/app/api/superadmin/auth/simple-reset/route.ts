@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * SIMPLE Super Admin Password Reset
  * Minimal dependencies version for troubleshooting
@@ -41,7 +42,8 @@ export async function POST(request: NextRequest) {
 
   try {
     // Parse request
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { email, newPassword, emergencyKey } = body
 
     // Validate inputs

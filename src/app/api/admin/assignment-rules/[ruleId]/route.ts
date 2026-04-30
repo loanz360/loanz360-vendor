@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Assignment Rule Detail API
@@ -117,7 +118,8 @@ export async function PUT(
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { name, description, strategy, priority, is_active, criteria } = body
 
     // Validate required fields
@@ -198,7 +200,8 @@ export async function PATCH(
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate strategy if provided
     if (body.strategy) {

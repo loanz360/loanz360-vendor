@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
@@ -176,7 +177,8 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Access denied. Manager only.' }, { status: 403 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { applicationId, applicationType, assignToUserId, notes } = body
 
     if (!applicationId || !applicationType || !assignToUserId) {

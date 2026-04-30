@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -26,7 +27,8 @@ export async function POST(
     }
 
     const ticketId = params.id
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     // Support both 'message' and 'content' field names for compatibility
     const message = body.message || body.content
     const is_internal = body.is_internal || false

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -217,7 +218,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { offer_id, audit_log_id, rollback_reason } = body
 
     if (!offer_id || !audit_log_id || !rollback_reason) {
@@ -303,7 +305,8 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const retentionDays = body.retention_days || 365
 
     const { data, error } = await supabase.rpc('archive_old_audit_logs', {

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * User Login API
@@ -69,7 +70,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse and validate request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     // SECURITY FIX: Sanitize inputs BEFORE validation
     const sanitizedBody = sanitizeAuthInput(body)
     const validation = loginSchema.safeParse(sanitizedBody)

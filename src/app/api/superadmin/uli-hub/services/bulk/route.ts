@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: ULI Bulk Service Operations
  * PATCH /api/superadmin/uli-hub/services/bulk — Bulk enable/disable services
@@ -10,7 +11,8 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { ids, is_enabled, category } = body
 
     const supabase = createAdminClient()

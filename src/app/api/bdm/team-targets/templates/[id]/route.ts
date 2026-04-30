@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -8,7 +9,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { data, error } = await supabase
       .from('target_templates')
       .update({ ...body, updated_at: new Date().toISOString() })

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -147,7 +148,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { ip_address, ip_range_start, ip_range_end, description } = body
 
     // Validate IP address format
@@ -298,7 +300,8 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { enabled } = body
 
     if (typeof enabled !== 'boolean') {

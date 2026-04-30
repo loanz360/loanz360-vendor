@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Single Incident API
  * Get incident details and manage comments
@@ -73,7 +74,8 @@ export async function POST(
   try {
     const { id } = await params
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const { content, author_id, author_name } = body
 

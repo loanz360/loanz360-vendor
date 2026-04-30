@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -53,7 +54,8 @@ async function importPartnersHandler(request: NextRequest) {
     }
 
     // Parse CSV data from request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { data: csvData, validateOnly = false } = body
 
     if (!csvData || !Array.isArray(csvData) || csvData.length === 0) {

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -59,7 +60,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'BP profile not found' }, { status: 404 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const rows: ParsedRow[] = body.rows
 
     if (!rows || !Array.isArray(rows) || rows.length === 0) {

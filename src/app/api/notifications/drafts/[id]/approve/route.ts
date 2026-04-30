@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -59,7 +60,8 @@ export async function POST(
       )
     }
 
-    const body = await request.json() as ApprovalAction
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr as ApprovalAction
 
     if (!body.action || !['approve', 'reject'].includes(body.action)) {
       return NextResponse.json(

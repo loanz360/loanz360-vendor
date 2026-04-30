@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * BDM Team Pipeline - Real-time Alerts API
@@ -184,7 +185,8 @@ export async function PATCH(request: NextRequest) {
     }
 
     // 2. Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { alertId, action } = body // action: 'mark_read' | 'mark_resolved'
 
     if (!alertId || !action) {

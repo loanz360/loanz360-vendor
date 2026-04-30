@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // HR ONBOARDING MANAGEMENT API
@@ -156,7 +157,8 @@ export async function PATCH(request: NextRequest) {
     // Use admin client for data queries (bypasses RLS - auth already verified above)
     const adminClient = createSupabaseAdmin()
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, employee_id, task_id, hr_assigned, buddy_assigned, task_status, hr_notes } = body
 
     if (!action) {

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
@@ -41,7 +42,8 @@ export async function POST(request: NextRequest) {
 
     const { supabase, userId, profile } = auth
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validated = bulkSchema.parse(body)
 
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://loanz360.com'

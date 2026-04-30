@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * ULAP Banks Management API
@@ -37,7 +38,8 @@ export async function GET() {
 // POST - Create new bank
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const { name, short_code, logo_url, type, website_url, display_order } = body
 
@@ -77,7 +79,8 @@ export async function POST(request: NextRequest) {
 // PATCH - Update bank
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const { id, ...updates } = body
 

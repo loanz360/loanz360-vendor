@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth, checkPermission } from '@/lib/auth/employee-mgmt-auth'
@@ -103,7 +104,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate
     const requiredFields = ['template_name', 'sub_role', 'default_metrics']
@@ -196,7 +198,8 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { template_id, employee_ids, target_period, start_date, end_date } = body
 
     if (!template_id || !employee_ids || !Array.isArray(employee_ids)) {

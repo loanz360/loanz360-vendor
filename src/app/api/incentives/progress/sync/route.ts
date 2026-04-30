@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * API Route for Syncing Incentive Progress from Leads/Deals
@@ -24,7 +25,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json().catch(() => ({}))
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr.catch(() => ({}))
     const { userId } = body
 
     // Check if user has permission to sync

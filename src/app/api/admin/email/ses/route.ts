@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Amazon SES Configuration & Management API
  * Admin endpoints for managing SES settings, templates, and monitoring
@@ -111,7 +112,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { action, ...params } = body;
 
     const sesService = await initializeSESService();

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -41,7 +42,8 @@ export async function GET() {
 // POST - Create a new basic lead field
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const {
       field_key,
       label,
@@ -109,7 +111,8 @@ export async function POST(request: NextRequest) {
 // PUT - Update a basic lead field
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const {
       id,
       field_key,
@@ -229,7 +232,8 @@ export async function DELETE(request: NextRequest) {
 // PATCH - Reorder basic lead fields
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const { fields } = body; // Array of { id, display_order }
 
     if (!fields || !Array.isArray(fields)) {

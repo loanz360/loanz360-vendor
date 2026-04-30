@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Single Activity Detail API
  * Get, update, or bookmark individual activities
@@ -71,7 +72,8 @@ export async function PATCH(
   try {
     const { id } = await params
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const { action, user_id, notes, tags } = body
 

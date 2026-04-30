@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Super Admin 2FA Disable API
@@ -52,7 +53,8 @@ export async function POST(request: NextRequest) {
     const { admin } = adminResult
 
     // Parse and validate request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validation = disableTwoFactorSchema.safeParse(body)
 
     if (!validation.success) {

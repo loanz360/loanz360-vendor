@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * CRO Skills Detail API
@@ -117,7 +118,8 @@ export async function PUT(
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const {
       loan_types,
       languages,
@@ -200,7 +202,8 @@ export async function PATCH(
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const { data: updatedSkills, error } = await supabase
       .from('cro_skills')

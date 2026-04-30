@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 import { apiLogger } from '@/lib/utils/logger'
 import { NextRequest, NextResponse } from 'next/server'
@@ -53,7 +54,8 @@ export async function PUT(
     }
 
     const { id } = params
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     if (!id) {
       return NextResponse.json({ success: false, error: 'Lead ID is required' }, { status: 400 })
     }
@@ -87,7 +89,8 @@ export async function PATCH(
     }
 
     const { id } = params
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action, ...data } = body
 
     if (!id) {

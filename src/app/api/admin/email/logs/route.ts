@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Email Activity Logs API
@@ -161,7 +162,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = await request.json();
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr;
     const action = body.action;
 
     if (action === 'get_action_types') {

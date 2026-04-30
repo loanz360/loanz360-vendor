@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 // =====================================================
 // EMPLOYEE TAX DECLARATIONS API (Security Fix - C2)
@@ -112,7 +113,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Validate with Zod schema including section limits
     const parsed = taxDeclarationSchema.safeParse(body)

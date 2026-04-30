@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Contact Import API - Import contacts from SuperAdmin pool
  *
@@ -37,7 +38,8 @@ export async function POST(request: NextRequest) {
   const { user, supabase, requestId } = authResult.context
 
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const parsed = importSchema.safeParse(body)
 
     if (!parsed.success) {

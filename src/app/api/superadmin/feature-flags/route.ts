@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: Super Admin Feature Flags Management
  * GET    /api/superadmin/feature-flags  — List all flags
@@ -38,7 +39,8 @@ export async function GET() {
 // POST — Create a new feature flag
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const supabase = createAdminClient()
 
     const { data, error } = await supabase
@@ -72,7 +74,8 @@ export async function POST(request: NextRequest) {
 // PATCH — Update an existing feature flag
 export async function PATCH(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     if (!body.id) {
       return NextResponse.json(
         { success: false, error: 'Flag ID is required' },

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: Run Single Verification
  * POST /api/cae/verify/[type]
@@ -79,7 +80,8 @@ export async function POST(
     }
 
     // Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     if (!body.lead_id) {
       return NextResponse.json(

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * API Route: Lead Scoring
@@ -13,7 +14,8 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     // Check if bulk scoring
     if (body.lead_ids && Array.isArray(body.lead_ids)) {

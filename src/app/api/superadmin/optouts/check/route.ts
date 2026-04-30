@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Opt-Out Check API
  * Real-time validation before sending messages
@@ -21,7 +22,8 @@ export const runtime = 'nodejs'
 export async function POST(request: NextRequest) {
   try {
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const { identifier, identifiers, channel = 'all' } = body
 

@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * Credits API
  * Enterprise credit balance management
@@ -78,7 +79,8 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
 
     const { providerId, creditType, amount, transactionType, description } = body
 

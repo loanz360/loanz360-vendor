@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * Customer Segment Individual Operations API
@@ -110,7 +111,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const validatedData = updateSegmentSchema.parse(body)
 
     // Update segment

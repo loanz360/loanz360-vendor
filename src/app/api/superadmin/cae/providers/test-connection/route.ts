@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * CAE Provider Connection Test API
@@ -13,7 +14,8 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
 
     // Parse request body
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { provider_id, api_endpoint, api_key, health_check_url } = body
 
     if (!provider_id && !api_endpoint) {

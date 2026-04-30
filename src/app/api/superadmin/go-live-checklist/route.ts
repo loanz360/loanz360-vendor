@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 /**
  * API Route: Super Admin Go-Live Checklist
  * GET  — Returns saved checklist state
@@ -130,7 +131,8 @@ export async function POST(request: NextRequest) {
 // PUT — Save checklist state
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const supabase = createAdminClient()
 
     // Upsert the checklist state into feature_flags as a special entry

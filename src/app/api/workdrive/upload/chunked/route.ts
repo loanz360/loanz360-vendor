@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * WorkDrive Chunked Upload API
@@ -155,7 +156,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Handle JSON requests (init and complete)
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { action } = body
 
     if (action === 'init') {

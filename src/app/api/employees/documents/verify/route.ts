@@ -1,3 +1,4 @@
+import { parseBody } from '@/lib/utils/parse-body'
 
 /**
  * POST /api/employees/documents/verify
@@ -140,7 +141,8 @@ export async function POST(request: NextRequest) {
     const isHR = currentEmployee?.sub_role &&
       ['HR_EXECUTIVE', 'HR_MANAGER', 'SUPER_ADMIN', 'ADMIN'].includes(currentEmployee.sub_role)
 
-    const body = await request.json()
+    const { data: body, error: _valErr } = await parseBody(request)
+    if (_valErr) return _valErr
     const { document_id, document_number, employee_name, date_of_birth, father_name } = body
 
     if (!document_id) {
