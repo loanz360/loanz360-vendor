@@ -525,7 +525,7 @@ export interface LoadBalancingRecommendation {
 export interface BDEActionRequest {
   actionType: 'reassign' | 'set_target' | 'send_message' | 'pause' | 'resume' | 'adjust_capacity'
   bdeId: string
-  data: unknown  reason: string
+  data: unknown; reason: string
 }
 
 export interface ReassignLeadsRequest {
@@ -810,7 +810,7 @@ export interface ExportResponse {
 
 export interface RealtimeEvent {
   type: 'LEAD_UPDATED' | 'BDE_PERFORMANCE_UPDATED' | 'ALERT_CREATED' | 'STATUS_CHANGED'
-  payload: unknown  timestamp: string
+  payload: unknown; timestamp: string
 }
 
 export interface SubscriptionConfig {
@@ -874,7 +874,7 @@ export interface AIRecommendation {
   priority: Priority
   title: string
   description: string
-  data: unknown  confidenceLevel: number
+  data: unknown; confidenceLevel: number
   expectedImpact: string
   createdAt: string
 }

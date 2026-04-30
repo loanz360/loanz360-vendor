@@ -328,11 +328,11 @@ export interface SanitizedContestData {
   target_all_partners: boolean
   start_date: string
   end_date: string
-  evaluation_criteria: unknown  evaluation_frequency: 'realtime' | 'hourly' | 'daily'
+  evaluation_criteria: unknown; evaluation_frequency: 'realtime' | 'hourly' | 'daily'
   auto_evaluate: boolean
   reward_details?: Record<string, unknown>
   winner_count: number
-  reward_tiers?: unknown  enable_leaderboard: boolean
+  reward_tiers?: unknown; enable_leaderboard: boolean
   leaderboard_visibility: 'public' | 'private' | 'rank_only'
   show_scores: boolean
   notification_enabled: boolean

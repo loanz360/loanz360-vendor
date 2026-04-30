@@ -11,7 +11,7 @@ import BDELeaderboard from './analytics/BDELeaderboard'
 import ConversionFunnel from './analytics/ConversionFunnel'
 
 interface AnalyticsData {
-  kpis: unknown  trends: unknown[]
+  kpis: unknown; trends: unknown[]
   leaderboard: unknown[]
   funnel: unknown}
 

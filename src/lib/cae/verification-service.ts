@@ -118,7 +118,7 @@ export interface VerificationOptions {
 export interface VerificationResult {
   verification_type: VerificationType
   status: VerificationStatus
-  result?: unknown  error?: {
+  result?: unknown; error?: {
     code: string
     message: string
   }

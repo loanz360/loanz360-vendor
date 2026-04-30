@@ -6,7 +6,7 @@ import MemberCard, { MemberData } from '../../shared/MemberCard'
 import MemberFormModal from '../../shared/MemberFormModal'
 
 interface TrusteesStepEnhancedProps {
-  data: unknown  errors: Record<string, string>
+  data: unknown; errors: Record<string, string>
   onUpdate: (updates: unknown) => void
 }
 

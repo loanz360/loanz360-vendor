@@ -108,7 +108,7 @@ function KanbanSkeleton() {
 // ============================================================================
 
 interface LeadCardProps {
-  lead: unknown  onLeadClick: (id: string) => void
+  lead: unknown; onLeadClick: (id: string) => void
   onDragStart: (e: React.DragEvent, leadId: string, stage: string) => void
   onDragEnd: (e: React.DragEvent) => void
   isDragging: boolean

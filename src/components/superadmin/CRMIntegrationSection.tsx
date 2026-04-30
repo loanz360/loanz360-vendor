@@ -201,7 +201,7 @@ export default function CRMIntegrationSection({
 interface MetricOption {
   value: string;
   label: string;
-  icon: unknown  description: string;
+  icon: unknown; description: string;
   applicableRoles: string[];
 }
 

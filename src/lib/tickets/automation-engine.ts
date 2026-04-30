@@ -54,7 +54,7 @@ export type ConditionOperator =
 export interface WorkflowCondition {
   field: string
   operator: ConditionOperator
-  value: unknown  logical?: 'AND' | 'OR'
+  value: unknown; logical?: 'AND' | 'OR'
 }
 
 export interface WorkflowAction {

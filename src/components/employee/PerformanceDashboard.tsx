@@ -217,7 +217,7 @@ function CRMMetricsSection({
 interface MetricCardProps {
   label: string;
   value: number | string;
-  icon: unknown  color: string;
+  icon: unknown; color: string;
   trend?: 'up' | 'down' | 'neutral';
   subtitle?: string;
 }

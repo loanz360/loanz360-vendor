@@ -28,7 +28,7 @@ export type WebhookEvent =
 
 export interface WebhookPayload {
   event: WebhookEvent
-  data: unknown  timestamp: string
+  data: unknown; timestamp: string
   id: string
 }
 

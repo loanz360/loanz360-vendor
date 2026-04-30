@@ -249,7 +249,7 @@ export interface BDENote {
   customer_response?: CustomerResponse
   next_follow_up_date?: string
   priority?: NotePriority
-  attachments?: unknown  created_at: string
+  attachments?: unknown; created_at: string
   updated_at: string
 }
 
@@ -341,7 +341,7 @@ export interface LeadDocument {
   encryption_key_id?: string
   thumbnail_s3_key?: string
   thumbnail_url?: string
-  metadata?: unknown  tags?: string[]
+  metadata?: unknown; tags?: string[]
   upload_ip?: string
   upload_user_agent?: string
   created_at: string
@@ -374,7 +374,7 @@ export interface CustomerProfileDocument {
   is_active: boolean
   replaced_by_id?: string
   replaced_at?: string
-  metadata?: unknown  created_at: string
+  metadata?: unknown; created_at: string
   updated_at: string
 }
 

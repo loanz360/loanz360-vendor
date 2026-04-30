@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Upload, FileText, CheckCircle, XCircle, Loader2, Trash2 } from 'lucide-react';
 
 interface DocumentUploadStepProps {
-  onboardingData: unknown  onComplete: () => void;
+  onboardingData: unknown; onComplete: () => void;
 }
 
 interface DocumentType {

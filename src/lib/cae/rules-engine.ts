@@ -14,12 +14,12 @@ export type RuleAction = 'APPROVE' | 'REJECT' | 'REFER' | 'ADD_CONDITION' | 'ADJ
 export interface RuleCondition {
   field: string
   operator: RuleOperator
-  value: unknown  valueEnd?: any // For 'between' operator
+  value: unknown; valueEnd?: any // For 'between' operator
 }
 
 export interface RuleActionConfig {
   action: RuleAction
-  value?: unknown  message?: string
+  value?: unknown; message?: string
   severity?: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
 }
 

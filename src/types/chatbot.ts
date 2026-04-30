@@ -518,7 +518,7 @@ export interface ChatMessage {
   content: string | null
   node_id: string | null
   field_name: string | null
-  response_value: unknown  file_url: string | null
+  response_value: unknown; file_url: string | null
   file_name: string | null
   file_size: number | null
   file_type: string | null
@@ -533,7 +533,7 @@ export interface ChatMessageCreateInput {
   content?: string
   node_id?: string
   field_name?: string
-  response_value?: unknown  file_url?: string
+  response_value?: unknown; file_url?: string
   file_name?: string
   file_size?: number
   file_type?: string

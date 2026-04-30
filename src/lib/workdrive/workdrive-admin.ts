@@ -603,7 +603,7 @@ export async function getAdminSettings(): Promise<{
  */
 export async function updateAdminSetting(params: {
   key: string
-  value: unknown  updatedBy: string
+  value: unknown; updatedBy: string
 }): Promise<{ success: boolean; error?: string }> {
   try {
     const stringValue = typeof params.value === 'string'

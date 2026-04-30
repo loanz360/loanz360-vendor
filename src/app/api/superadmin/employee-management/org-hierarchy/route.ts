@@ -15,7 +15,7 @@ interface HierarchyNode {
   sub_role: string
   work_email: string
   profile_photo_url: string | null
-  department: unknown  is_active: boolean
+  department: unknown; is_active: boolean
   reporting_manager_id: string | null
   direct_reports_count: number
   hierarchy_level: number

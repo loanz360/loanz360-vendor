@@ -12,7 +12,7 @@ import { apiLogger } from '@/lib/utils/logger'
 interface ValidationError {
   row: number
   field: string
-  value: unknown  error: string
+  value: unknown; error: string
 }
 
 interface ImportResult {

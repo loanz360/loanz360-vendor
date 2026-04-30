@@ -36,7 +36,7 @@ export interface ValidationError {
   field: string
   message: string
   severity: 'ERROR' | 'WARNING'
-  value?: unknown  rule?: string
+  value?: unknown; rule?: string
 }
 
 export interface ValidationResult {

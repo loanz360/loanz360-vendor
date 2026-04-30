@@ -15,7 +15,7 @@ interface ChatMessage {
 // Structured response from our "AI" assistant
 interface AssistantResponse {
   answer: string
-  data?: unknown  suggestions?: string[]
+  data?: unknown; suggestions?: string[]
 }
 
 // GET - Fetch chat history (optional)

@@ -25,7 +25,7 @@ export interface EmailAttachment {
 export interface EmailResponse {
   success: boolean
   message_id?: string
-  provider_response?: unknown  error?: string
+  provider_response?: unknown; error?: string
   error_code?: string
 }
 

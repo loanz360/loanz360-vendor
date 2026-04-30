@@ -484,7 +484,7 @@ export interface AutomationCondition {
 
 export interface AutomationAction {
   type: ActionType
-  value?: unknown  template?: string
+  value?: unknown; template?: string
   channel?: string
 }
 

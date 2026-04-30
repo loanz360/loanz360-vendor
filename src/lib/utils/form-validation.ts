@@ -10,7 +10,7 @@ import { isValidPAN, isValidAadhaar, isValidUAN, isValidBankAccount, isValidIFSC
  */
 export type ValidationRule = {
   type: 'required' | 'email' | 'number' | 'min' | 'max' | 'pattern' | 'custom' | 'pan' | 'aadhaar' | 'uan' | 'bankAccount' | 'ifsc'
-  value?: unknown  message: string
+  value?: unknown; message: string
 }
 
 /**

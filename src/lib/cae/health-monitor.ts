@@ -30,7 +30,7 @@ export interface HealthCheckResult {
   response_time_ms: number
   error_message?: string
   endpoint_tested: string
-  test_payload?: unknown  response_payload?: unknown}
+  test_payload?: unknown; response_payload?: unknown}
 
 export class ProviderHealthMonitor {
   private checkInterval: NodeJS.Timeout | null = null

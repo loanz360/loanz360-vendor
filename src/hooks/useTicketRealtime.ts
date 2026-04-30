@@ -10,7 +10,7 @@ import { RealtimeChannel } from '@supabase/supabase-js'
 export interface TicketRealtimeEvent {
   event: 'INSERT' | 'UPDATE' | 'DELETE'
   ticketId: string
-  ticket: unknown  timestamp: string
+  ticket: unknown; timestamp: string
 }
 
 export interface UseTicketRealtimeOptions {

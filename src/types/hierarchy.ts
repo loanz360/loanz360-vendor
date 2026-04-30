@@ -178,7 +178,7 @@ export interface HierarchyVersion {
   version_number: number;
   version_name: string | null;
   description: string | null;
-  hierarchy_snapshot: unknown  is_published: boolean;
+  hierarchy_snapshot: unknown; is_published: boolean;
   published_at: string | null;
   is_active: boolean;
   created_at: string;

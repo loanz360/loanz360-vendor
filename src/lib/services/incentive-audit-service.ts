@@ -48,7 +48,7 @@ export interface AuditLogEntry {
   performedByRole?: string
   performedByIP?: string
   userAgent?: string
-  oldValues?: unknown  newValues?: unknown  changedFields?: string[]
+  oldValues?: unknown; newValues?: unknown; changedFields?: string[]
   reason?: string
   requestId?: string
   sessionId?: string
@@ -64,7 +64,7 @@ export interface AuditHistoryEntry {
   performedByName: string
   performedByRole: string
   changedFields: string[]
-  oldValues: unknown  newValues: unknown  reason?: string
+  oldValues: unknown; newValues: unknown; reason?: string
   performedAt: string
   checksumValid: boolean
 }

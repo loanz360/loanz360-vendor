@@ -2,9 +2,9 @@ import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
 interface AnalyticsData {
-  overview: unknown  partner_distribution: unknown  current_month_metrics: unknown  top_partners: unknown[]
+  overview: unknown; partner_distribution: unknown; current_month_metrics: unknown; top_partners: unknown[]
   recent_recruitments: unknown[]
-  target_achievement: unknown  last_updated: string
+  target_achievement: unknown; last_updated: string
 }
 
 interface HistoryData {

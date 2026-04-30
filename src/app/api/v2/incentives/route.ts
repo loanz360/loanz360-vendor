@@ -77,7 +77,7 @@ const CreateIncentiveSchemaV2 = z.object({
  * Check user permissions
  */
 async function checkPermissions(supabase: unknown): Promise<{
-  user: unknown  isSuperAdmin: boolean;
+  user: unknown; isSuperAdmin: boolean;
   isHR: boolean;
   error?: NextResponse;
 }> {

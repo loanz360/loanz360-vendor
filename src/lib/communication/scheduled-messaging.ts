@@ -37,7 +37,7 @@ export interface ScheduledMessage {
   message_type: string
   template_code: string
   recipient_type: string
-  recipients: unknown  variables: Record<string, string>
+  recipients: unknown; variables: Record<string, string>
   scheduled_at: string
   timezone: string
   recurrence_pattern?: string
