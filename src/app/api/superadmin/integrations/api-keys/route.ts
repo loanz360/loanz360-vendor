@@ -4,7 +4,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import crypto from 'crypto'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * Verify the request is from a super_admin user.

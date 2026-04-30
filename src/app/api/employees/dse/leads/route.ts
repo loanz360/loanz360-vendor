@@ -7,7 +7,6 @@ import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { calculateLeadScore, validatePagination } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 // Validation schema for lead
 const leadSchema = z.object({

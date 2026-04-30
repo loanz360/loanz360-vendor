@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/contests/:id/advanced-analytics

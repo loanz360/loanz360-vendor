@@ -10,7 +10,6 @@ import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 export const revalidate = 0 // No caching, always fresh
 
 export interface PayoutStatsResponse {

@@ -4,7 +4,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { logApiError } from '@/lib/monitoring/errorLogger'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   // Apply rate limiting

@@ -14,7 +14,6 @@ import {
 } from '@/lib/api/ai-crm-middleware'
 import { sanitizeSearchForPostgrest } from '@/lib/constants/sales-pipeline'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)

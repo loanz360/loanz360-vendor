@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * API Route for Syncing Incentive Progress from Leads/Deals

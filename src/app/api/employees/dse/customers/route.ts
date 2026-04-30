@@ -7,7 +7,6 @@ import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { validatePagination } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 // Maximum number of keys allowed in custom_fields
 const MAX_CUSTOM_FIELDS_KEYS = 20

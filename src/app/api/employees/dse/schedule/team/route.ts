@@ -4,7 +4,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSMAuth } from '@/lib/auth/dse-auth'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/employees/dse/schedule/team

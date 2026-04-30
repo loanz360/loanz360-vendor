@@ -15,7 +15,6 @@ import { NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // ─── Loan Product Definitions ────────────────────────────────────────────────
 

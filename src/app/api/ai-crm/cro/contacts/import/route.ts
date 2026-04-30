@@ -18,7 +18,6 @@ import { z } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
 import { getTodayStartIST } from '@/lib/constants/sales-pipeline'
 
-export const dynamic = 'force-dynamic'
 
 const importSchema = z.object({
   contact_ids: z.array(z.string().uuid()).min(1, 'Select at least one contact').max(100, 'Maximum 100 contacts per import'),

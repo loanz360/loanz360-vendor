@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * API Route: ULAP Share Link - List

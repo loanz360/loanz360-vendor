@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Entity Types API for Customers

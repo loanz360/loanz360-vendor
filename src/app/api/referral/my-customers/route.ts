@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * My Customers API for Referrals

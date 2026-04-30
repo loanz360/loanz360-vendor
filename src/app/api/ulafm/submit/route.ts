@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Universal Loan Application Form - Submit API

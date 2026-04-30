@@ -11,7 +11,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { caeService } from '@/lib/cae'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface RetryRequest {
   appraisal_id: string

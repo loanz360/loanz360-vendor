@@ -7,7 +7,6 @@ import {
 } from '@/lib/api/ai-crm-middleware'
 import { toEndOfDay } from '@/lib/constants/sales-pipeline'
 
-export const dynamic = 'force-dynamic'
 
 /** Validate ISO date string (YYYY-MM-DD) */
 function isValidISODate(dateStr: string): boolean {

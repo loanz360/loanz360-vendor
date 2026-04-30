@@ -60,5 +60,4 @@ export async function GET(request: NextRequest) {
 }
 
 // Disable body parsing for cron routes
-export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'

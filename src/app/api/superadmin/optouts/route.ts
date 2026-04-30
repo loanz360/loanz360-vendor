@@ -15,7 +15,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 // =====================================================
 // TYPES

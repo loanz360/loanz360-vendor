@@ -9,7 +9,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {

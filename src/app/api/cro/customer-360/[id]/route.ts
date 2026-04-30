@@ -4,7 +4,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { maskRecord } from '@/lib/utils/data-masking'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/cro/customer-360/[id]

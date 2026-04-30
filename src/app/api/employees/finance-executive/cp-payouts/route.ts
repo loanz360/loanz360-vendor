@@ -5,7 +5,6 @@ import { notifyStatusChange, type CPPayoutStatus } from '@/lib/notifications/cp-
 import { notifyPartnerPayoutStatusChange } from '@/lib/notifications/partner-payout-notifications'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/employees/finance-executive/cp-payouts

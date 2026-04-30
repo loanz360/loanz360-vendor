@@ -4,7 +4,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { z } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 const reassignSchema = z.object({
   departingCroId: z.string().uuid(),

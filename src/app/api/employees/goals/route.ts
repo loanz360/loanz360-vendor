@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // =====================================================
 // EMPLOYEE GOALS API (OKRs/KPIs)

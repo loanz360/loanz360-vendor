@@ -13,7 +13,6 @@ import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { readRateLimiter, writeRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   return readRateLimiter(request, async (req) => {

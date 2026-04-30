@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Bulk Email Account Creation API

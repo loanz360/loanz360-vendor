@@ -4,7 +4,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { sendLeadNotification } from '@/lib/notifications/ulap-lead-notifications'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 interface LeadRow {
   id: string

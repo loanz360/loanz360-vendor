@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * API Route: BP Commission History

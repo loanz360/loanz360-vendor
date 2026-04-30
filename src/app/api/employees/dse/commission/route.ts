@@ -5,7 +5,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { isValidUUID, calculateCommission } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 interface DealRecord {
   id: string

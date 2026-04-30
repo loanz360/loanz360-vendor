@@ -6,7 +6,6 @@ import { getTodayStartIST } from '@/lib/constants/sales-pipeline'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // GET /api/crm/followups - List follow-ups with filters
 export async function GET(request: NextRequest) {

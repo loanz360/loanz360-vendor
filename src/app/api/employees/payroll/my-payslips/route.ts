@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // =====================================================
 // EMPLOYEE MY PAYSLIPS API (Security Fix - C2)

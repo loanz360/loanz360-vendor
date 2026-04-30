@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyCROStateManagerAuth, getTeamLeaderIds } from '@/lib/api/cro-manager-middleware'

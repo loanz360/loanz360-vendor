@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * CAE Document Processing API

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // =====================================================
 // EMPLOYEE INVESTMENT PROOFS API (Security - Employee only)

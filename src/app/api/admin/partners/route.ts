@@ -3,7 +3,6 @@ import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {

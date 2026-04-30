@@ -7,7 +7,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 const BUCKET_NAME = process.env.AWS_S3_BUCKET || 'loanz360-documents'
 

@@ -12,7 +12,6 @@ import crypto from 'crypto'
 import { apiLogger } from '@/lib/utils/logger'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 const UNSUBSCRIBE_SECRET = process.env.UNSUBSCRIBE_SECRET || 'default-unsubscribe-key-change-in-prod'
 

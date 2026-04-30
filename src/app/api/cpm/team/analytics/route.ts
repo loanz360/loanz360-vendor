@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import type { CPMTeamAnalyticsResponse, CPMTeamAnalytics } from '@/lib/types/cpm-team-performance.types'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/cpm/team/analytics

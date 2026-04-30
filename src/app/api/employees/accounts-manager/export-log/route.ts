@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 const DAILY_EXPORT_LIMIT = 10
 

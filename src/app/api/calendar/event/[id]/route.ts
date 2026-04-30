@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { googleCalendarService } from '@/lib/calendar/google-calendar-service'

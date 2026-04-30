@@ -10,7 +10,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { auditLogger } from '@/lib/cae/security'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface HealthResponse {
   success: boolean

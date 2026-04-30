@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Customer Category Management API - Single Category Operations

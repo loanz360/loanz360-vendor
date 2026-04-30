@@ -5,7 +5,6 @@ import crypto from 'crypto'
 import { z } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 const generateLinkSchema = z.object({
   lead_id: z.string().uuid(),

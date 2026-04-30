@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Email Approval Request Single Item API Routes

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Profile Entity Type Detail API

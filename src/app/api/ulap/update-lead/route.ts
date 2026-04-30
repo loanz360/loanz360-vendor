@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * API Route: ULAP Lead Update (Phase 2)

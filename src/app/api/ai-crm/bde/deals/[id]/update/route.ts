@@ -6,7 +6,6 @@ import { z, ZodError } from 'zod'
 import type { DealStage, DealStatus, ActivityType, InteractionWith, InteractionMode, UpdateSource, SupportedLanguage, PendingItem } from '@/types/ai-crm'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // Validation schema for deal update
 const dealUpdateSchema = z.object({

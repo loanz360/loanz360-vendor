@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Email Provider Management API - Single Provider Operations

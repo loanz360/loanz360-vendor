@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // Single Provider API
 // GET: Get provider details

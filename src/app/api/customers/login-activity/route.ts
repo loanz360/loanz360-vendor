@@ -12,7 +12,6 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.READ)

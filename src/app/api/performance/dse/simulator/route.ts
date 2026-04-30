@@ -3,7 +3,6 @@ import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import type { CommissionSimulatorResult } from '@/lib/types/dse-enhanced-performance.types'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * POST /api/performance/dse/simulator

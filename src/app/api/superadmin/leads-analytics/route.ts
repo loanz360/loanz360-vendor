@@ -19,7 +19,6 @@ import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // ---------------------------------------------------------------------------
 // Helper: period string => { from: Date, to: Date, prevFrom: Date, prevTo: Date }

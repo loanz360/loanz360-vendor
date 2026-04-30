@@ -5,7 +5,6 @@ import { bulkLogActivities } from '@/lib/services/employee-audit'
 import { logger } from '@/lib/utils/logger'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * POST /api/superadmin/employee-management/targets/bulk

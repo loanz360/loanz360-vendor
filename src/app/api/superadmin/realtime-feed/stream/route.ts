@@ -7,7 +7,6 @@ import { NextRequest } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
 // Track connected clients for cleanup

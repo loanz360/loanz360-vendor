@@ -5,7 +5,6 @@ import { logEmployeeActivity, logStatusChange } from '@/lib/services/employee-au
 import { logger } from '@/lib/utils/logger'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/employee-management/[id]

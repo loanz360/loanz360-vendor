@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * WorkDrive Share Approval Workflow API

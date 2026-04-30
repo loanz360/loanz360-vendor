@@ -4,7 +4,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { createOCRService, type DocumentCategory } from '@/lib/cae/ocr-service'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 export const maxDuration = 120
 
 /**

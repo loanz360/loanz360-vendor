@@ -10,7 +10,6 @@ import {
   type CustomerHealthInput,
 } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 // ---------------------------------------------------------------------
 // Types

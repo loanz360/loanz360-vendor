@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Emergency Super Admin Password Reset API

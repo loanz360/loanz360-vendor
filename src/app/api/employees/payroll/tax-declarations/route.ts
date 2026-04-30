@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // =====================================================
 // EMPLOYEE TAX DECLARATIONS API (Security Fix - C2)

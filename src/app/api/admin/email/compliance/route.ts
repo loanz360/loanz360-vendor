@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Email Compliance API Routes

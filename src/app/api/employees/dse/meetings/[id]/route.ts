@@ -6,7 +6,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { verifyDSEAuth } from '@/lib/auth/dse-auth'
 
-export const dynamic = 'force-dynamic'
 
 // Validation schema for updating meeting
 const updateMeetingSchema = z.object({

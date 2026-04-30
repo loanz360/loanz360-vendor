@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 
-export const dynamic = 'force-dynamic'
 
 // UUID validation
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i

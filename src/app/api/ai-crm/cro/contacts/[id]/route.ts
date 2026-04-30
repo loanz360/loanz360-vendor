@@ -6,7 +6,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { maskRecord, shouldMaskForRole } from '@/lib/utils/data-masking'
 import { CONTACT_STATUSES } from '@/lib/constants/sales-pipeline'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(
   request: NextRequest,

@@ -11,7 +11,6 @@ import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { writeRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface ChangeReferrerRequest {
   lead_id: string // UUID of the lead

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 import { apiLogger } from '@/lib/utils/logger'
 import { NextRequest, NextResponse } from 'next/server'

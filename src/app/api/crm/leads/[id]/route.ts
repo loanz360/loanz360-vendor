@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { LEAD_FIELD_MAPPING } from '@/lib/constants/sales-pipeline'
 
-export const dynamic = 'force-dynamic'
 
 // GET /api/crm/leads/[id] - Get single lead by ID
 export async function GET(

@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import type { CurrentMonthPerformance, SalesAgentMonthlyTargets, SalesAgentDailyMetrics, MetricCard } from '@/lib/types/performance.types'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/performance/sales-agent/current-month

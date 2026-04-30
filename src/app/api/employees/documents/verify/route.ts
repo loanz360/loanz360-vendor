@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * POST /api/employees/documents/verify

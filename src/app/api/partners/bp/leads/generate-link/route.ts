@@ -15,7 +15,6 @@ import { generateUniqueShortCode, buildShortUrl } from '@/lib/utils/short-code'
 import type { GenerateLinkRequest, GenerateLinkResponse } from '@/types/partner-leads'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   // Apply rate limiting (ADDED)

@@ -5,7 +5,6 @@ import { z } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
 import { calculateEMI, formatIndianCurrency } from '@/lib/utils/emi-calculations'
 
-export const dynamic = 'force-dynamic'
 
 const checkSchema = z.object({
   monthlyIncome: z.number().min(1000, 'Minimum income is ₹1,000'),

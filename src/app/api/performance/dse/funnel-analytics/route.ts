@@ -4,7 +4,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { FUNNEL_STAGES } from '@/lib/types/dse-enhanced-performance.types'
 import type { FunnelAnalytics, FunnelStageMetrics } from '@/lib/types/dse-enhanced-performance.types'
 
-export const dynamic = 'force-dynamic'
 
 /** Stage labels for display */
 const STAGE_LABELS: Record<string, string> = {

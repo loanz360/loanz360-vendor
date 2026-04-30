@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * WorkDrive Trash Folder Permanent Delete API

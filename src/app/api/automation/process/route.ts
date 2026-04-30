@@ -12,7 +12,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { processFollowUpRules } from '@/lib/automation/lead-follow-up'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 export const maxDuration = 60 // 60 seconds max
 
 interface ProcessResponse {

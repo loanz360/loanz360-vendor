@@ -33,7 +33,6 @@ import {
 } from '@/lib/validations/ai-crm-schemas'
 import { sanitizeSearchForPostgrest } from '@/lib/constants/sales-pipeline'
 
-export const dynamic = 'force-dynamic'
 
 // =============================================================================
 // POST - Create new lead

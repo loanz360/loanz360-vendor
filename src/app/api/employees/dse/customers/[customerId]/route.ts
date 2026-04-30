@@ -5,7 +5,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 
-export const dynamic = 'force-dynamic'
 
 // Validation schema for updating customer
 const updateCustomerSchema = z.object({

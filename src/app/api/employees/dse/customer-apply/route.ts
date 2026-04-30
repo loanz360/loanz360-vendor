@@ -4,7 +4,6 @@ import { z } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 const customerApplySchema = z.object({
   customer_name: z.string().min(2).max(255),

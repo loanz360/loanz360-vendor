@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { autoAssignTicket, AssignmentStrategy } from '@/lib/tickets/auto-assignment'

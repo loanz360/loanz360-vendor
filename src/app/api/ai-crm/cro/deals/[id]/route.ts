@@ -12,7 +12,6 @@ import {
   createErrorResponse,
 } from '@/lib/api/ai-crm-middleware'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(
   request: NextRequest,

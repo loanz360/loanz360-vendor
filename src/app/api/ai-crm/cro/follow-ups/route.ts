@@ -5,7 +5,6 @@ import { createFollowUpTasks, FOLLOW_UP_SEQUENCES } from '@/lib/automation/follo
 import { apiLogger } from '@/lib/utils/logger'
 import { verifyCROAuth } from '@/lib/api/ai-crm-middleware'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * AI-CRM Follow-up SEQUENCES API

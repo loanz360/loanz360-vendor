@@ -34,7 +34,6 @@ import { triggerLeadCreated } from '@/lib/webhooks/trigger'
 import { notifyLeadCreated } from '@/lib/notifications/ulap-lead-notifications'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // ============================================================================
 // GET - List all leads for Business Partner

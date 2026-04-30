@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Entity Document Upload API

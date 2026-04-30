@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * Optimized Dashboard Metrics API

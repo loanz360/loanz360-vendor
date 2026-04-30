@@ -20,7 +20,6 @@ import {
   logAuditTrail,
 } from '@/lib/api/ai-crm-middleware'
 
-export const dynamic = 'force-dynamic'
 
 // Valid event types
 const VALID_EVENTS = [

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Super Admin 2FA Backup Codes Regeneration API

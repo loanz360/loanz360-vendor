@@ -13,7 +13,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 import { encryptLeadPII } from '@/lib/security/encryption-pii'
 
-export const dynamic = 'force-dynamic'
 
 const MOBILE_REGEX = /^[6-9]\d{9}$/
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

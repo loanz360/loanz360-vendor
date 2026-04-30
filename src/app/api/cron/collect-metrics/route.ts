@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Cron Job: Collect Performance Metrics

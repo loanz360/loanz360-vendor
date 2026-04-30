@@ -19,7 +19,6 @@ import {
 } from '@/lib/api/ai-crm-middleware'
 import { maskDataForRole } from '@/lib/utils/data-masking'
 
-export const dynamic = 'force-dynamic'
 
 // Search query schema
 const searchQuerySchema = z.object({

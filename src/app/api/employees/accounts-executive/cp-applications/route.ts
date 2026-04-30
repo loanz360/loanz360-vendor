@@ -4,7 +4,6 @@ import { logger } from '@/lib/utils/logger'
 import { notifyStatusChange, type CPPayoutStatus } from '@/lib/notifications/cp-payout-notifications'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 /** Sanitize search input - strip PostgREST operators and special chars */
 const sanitizeSearch = (input: string): string => {

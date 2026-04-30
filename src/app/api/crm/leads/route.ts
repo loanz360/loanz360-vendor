@@ -7,7 +7,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 import { LEAD_SORT_WHITELIST, isValidSortColumn, LEAD_FIELD_MAPPING } from '@/lib/constants/sales-pipeline'
 
-export const dynamic = 'force-dynamic'
 
 // GET /api/crm/leads - List leads with search, filter, and pagination
 export async function GET(request: NextRequest) {

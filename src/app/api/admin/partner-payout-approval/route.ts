@@ -12,7 +12,6 @@ import { logger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { notifyPartnerPayoutStatusChange, notifyPartnerPayoutInternalTeam } from '@/lib/notifications/partner-payout-notifications'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {

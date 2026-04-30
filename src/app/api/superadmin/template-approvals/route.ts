@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Template Approval Workflow API

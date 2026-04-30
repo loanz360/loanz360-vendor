@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * CRO Skills Detail API

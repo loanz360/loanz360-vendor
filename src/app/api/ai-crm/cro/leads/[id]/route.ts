@@ -10,7 +10,6 @@ import {
 } from '@/lib/api/ai-crm-middleware'
 import { maskRecord, shouldMaskForRole } from '@/lib/utils/data-masking'
 
-export const dynamic = 'force-dynamic'
 
 const LEAD_SELECT_COLUMNS = `
   id,

@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 // Helper function to verify DSM role
 async function verifyDSMRole(supabase: any, userId: string) {

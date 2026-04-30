@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'

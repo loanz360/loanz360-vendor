@@ -3,7 +3,6 @@ import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // GET - Fetch notifications for the current partner
 export async function GET(request: NextRequest) {

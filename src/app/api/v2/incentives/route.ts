@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Incentives API v2.0

@@ -17,7 +17,6 @@ import {
 } from '@/lib/cae/verification-service'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // Map URL params to verification types
 const typeMapping: Record<string, VerificationType> = {

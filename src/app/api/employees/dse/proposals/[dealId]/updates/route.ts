@@ -6,7 +6,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { validatePagination } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 

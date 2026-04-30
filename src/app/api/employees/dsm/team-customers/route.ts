@@ -4,7 +4,6 @@ import { z, ZodError } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 // Validation schema for creating customer on behalf of DSE
 const customerSchema = z.object({

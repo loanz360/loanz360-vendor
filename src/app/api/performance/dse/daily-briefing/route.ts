@@ -3,7 +3,6 @@ import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import type { DailyBriefing, BriefingFocusArea, BriefingOpportunity, PaceIndicator } from '@/lib/types/dse-enhanced-performance.types'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/performance/dse/daily-briefing

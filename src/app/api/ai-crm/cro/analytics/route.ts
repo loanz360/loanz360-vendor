@@ -21,7 +21,6 @@ import {
   getMonthStartIST,
 } from '@/lib/constants/sales-pipeline'
 
-export const dynamic = 'force-dynamic'
 
 // =============================================================================
 // DATE HELPERS (only keeping what's NOT in shared constants)

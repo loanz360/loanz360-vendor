@@ -3,7 +3,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSE } from '@/lib/middleware/verify-dse-role'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET - DSE-specific dashboard stats

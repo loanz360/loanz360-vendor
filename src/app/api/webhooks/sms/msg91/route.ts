@@ -8,7 +8,6 @@ import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 interface MSG91WebhookPayload {
   requestId?: string

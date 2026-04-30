@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * BDM Team Pipeline - Kanban Board API

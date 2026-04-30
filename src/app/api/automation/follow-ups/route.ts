@@ -16,7 +16,6 @@ import {
 } from '@/lib/automation/lead-follow-up'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface FollowUpResponse {
   success: boolean

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * CAE Provider Connection Test API

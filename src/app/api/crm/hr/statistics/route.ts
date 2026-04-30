@@ -5,7 +5,6 @@ import { logApiError } from '@/lib/monitoring/errorLogger'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // GET /api/crm/hr/statistics - Get CRO-wise statistics for HR dashboard
 export async function GET(request: NextRequest) {

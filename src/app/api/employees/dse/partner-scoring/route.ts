@@ -4,7 +4,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSE } from '@/lib/middleware/verify-dse-role'
 import { calculatePartnerScore, analyzeChurnRisk, type PartnerMetrics } from '@/lib/utils/partner-scoring'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/employees/dse/partner-scoring

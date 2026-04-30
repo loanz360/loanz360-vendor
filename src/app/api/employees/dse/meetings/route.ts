@@ -7,7 +7,6 @@ import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { verifyDSEAuth } from '@/lib/auth/dse-auth'
 import { validatePagination } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 // HH:mm format regex
 const TIME_REGEX = /^([01]\d|2[0-3]):([0-5]\d)$/

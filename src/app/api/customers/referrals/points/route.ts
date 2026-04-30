@@ -10,7 +10,6 @@ import { createClient } from '@/lib/supabase/server'
 import type { PointsBalanceResponse } from '@/types/customer-referrals'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {

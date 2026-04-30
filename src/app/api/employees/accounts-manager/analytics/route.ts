@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 function getISTStartOfDay(dateStr: string): string {
   return `${dateStr}T00:00:00+05:30`

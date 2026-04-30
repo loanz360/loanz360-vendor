@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Income Categories Bulk Operations API

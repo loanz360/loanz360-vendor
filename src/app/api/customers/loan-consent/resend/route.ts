@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Loan Consent Resend OTP API

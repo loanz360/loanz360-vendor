@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * ULAP Lead Phase 2 Submission API

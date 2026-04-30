@@ -11,7 +11,6 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { apiLogger } from '@/lib/utils/logger'
 import { invalidateServiceCache } from '@/lib/uli/services/service-registry'
 
-export const dynamic = 'force-dynamic'
 
 // GET — List ULI services (optionally filtered by category)
 export async function GET(request: NextRequest) {

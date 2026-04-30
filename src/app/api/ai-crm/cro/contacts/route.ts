@@ -21,7 +21,6 @@ import { sanitizeSearchForPostgrest } from '@/lib/constants/sales-pipeline'
 import { contactsQuerySchema } from '@/lib/validations/ai-crm-schemas'
 import { maskDataForRole } from '@/lib/utils/data-masking'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   // Apply rate limiting

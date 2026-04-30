@@ -6,7 +6,6 @@ import { VENDOR_SUB_ROLES } from '@/config/roles'
 import { encodeHtmlEntities } from '@/lib/utils/sanitize'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/vendor-management/subroles

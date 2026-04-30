@@ -6,7 +6,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiSuccess, apiError, apiUnauthorized, apiForbidden } from '@/lib/utils/api-response'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/property-management

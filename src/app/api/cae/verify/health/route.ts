@@ -11,7 +11,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verificationService } from '@/lib/cae/verification-service'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface HealthCheckResponse {
   success: boolean

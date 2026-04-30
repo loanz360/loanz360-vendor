@@ -5,7 +5,6 @@ import { logger } from '@/lib/utils/logger'
 import { apiSuccess, apiError, apiUnauthorized, apiForbidden, apiNotFound } from '@/lib/utils/api-response'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/property-management/[id]

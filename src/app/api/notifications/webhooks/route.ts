@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // Delivery Webhooks Handler
 // POST: Handle delivery status updates from providers

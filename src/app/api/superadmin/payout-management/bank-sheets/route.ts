@@ -15,7 +15,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { createInAppNotification } from '@/lib/notifications/notification-service'
 import ExcelJS from 'exceljs'
 
-export const dynamic = 'force-dynamic'
 
 // =====================================================
 // GET: List all uploaded bank payout sheets

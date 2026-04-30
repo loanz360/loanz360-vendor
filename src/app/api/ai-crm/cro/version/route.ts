@@ -14,7 +14,6 @@ import {
   addVersionHeaders,
 } from '@/lib/api/versioning'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   const requestedVersion = extractApiVersion(request)

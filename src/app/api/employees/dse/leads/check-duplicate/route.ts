@@ -12,7 +12,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 
-export const dynamic = 'force-dynamic'
 
 const MOBILE_REGEX = /^\+?91?[6-9]\d{9}$/
 

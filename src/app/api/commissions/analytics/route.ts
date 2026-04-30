@@ -57,7 +57,6 @@ interface AnalyticsByDimension {
   }[]
 }
 
-export const dynamic = 'force-dynamic'
 
 // GET - Fetch analytics for the partner
 export async function GET(request: NextRequest) {

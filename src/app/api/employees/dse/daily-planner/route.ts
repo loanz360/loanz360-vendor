@@ -6,7 +6,6 @@ import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { calculateCommission } from '@/lib/validations/dse-validation'
 import { STAGE_SLA_HOURS } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/employees/dse/daily-planner

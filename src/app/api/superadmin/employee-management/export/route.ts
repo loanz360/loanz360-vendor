@@ -4,7 +4,6 @@ import { verifyAuth, checkPermission, getAccessibleDepartments } from '@/lib/aut
 import { logger } from '@/lib/utils/logger'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/employee-management/export

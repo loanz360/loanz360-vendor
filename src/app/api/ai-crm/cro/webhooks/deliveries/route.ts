@@ -13,7 +13,6 @@ import {
   createErrorResponse,
 } from '@/lib/api/ai-crm-middleware'
 
-export const dynamic = 'force-dynamic'
 
 const deliveriesQuerySchema = z.object({
   webhook_id: z.string().uuid(),

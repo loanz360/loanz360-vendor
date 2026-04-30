@@ -5,7 +5,6 @@ import { logApiError } from '@/lib/monitoring/errorLogger'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // POST /api/crm/leads/assign - Bulk assign leads to CRO
 export async function POST(request: NextRequest) {

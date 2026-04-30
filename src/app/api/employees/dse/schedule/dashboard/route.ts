@@ -5,7 +5,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSEAuth } from '@/lib/auth/dse-auth'
 import { SLA_RULES, getTodayDateString } from '@/lib/types/dse-schedule.types'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/employees/dse/schedule/dashboard

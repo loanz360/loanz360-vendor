@@ -5,7 +5,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { encodeHtmlEntities } from '@/lib/utils/sanitize'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/vendor-management/subroles/[id]

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Customer Profile Selection API (Simplified 2-Step Flow)

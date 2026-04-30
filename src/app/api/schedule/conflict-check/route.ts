@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * Validation schema for conflict check request

@@ -6,7 +6,6 @@ import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 import { validateSortColumn, validatePagination } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 const VALID_SORT_COLUMNS = ['created_at', 'customer_name', 'estimated_value', 'lead_stage'] as const
 

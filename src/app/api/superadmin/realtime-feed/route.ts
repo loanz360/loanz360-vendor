@@ -9,7 +9,6 @@ import { ActivityFilters, RealtimeActivity } from '@/lib/realtime-feed/types'
 import { apiLogger } from '@/lib/utils/logger'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {

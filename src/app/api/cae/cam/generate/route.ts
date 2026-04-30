@@ -24,7 +24,6 @@ import { createUniversalCAMGenerator } from '@/lib/cae/universal-cam'
 import { createAutoAssignmentEngine } from '@/lib/cae/auto-assignment-engine'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // IMPORTANT: CAM is a confidential internal document
 // Only BDE (for assigned leads) and Super Admin can access

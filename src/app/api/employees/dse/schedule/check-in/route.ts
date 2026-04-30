@@ -5,7 +5,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSEAuth } from '@/lib/auth/dse-auth'
 
-export const dynamic = 'force-dynamic'
 
 const checkInSchema = z.object({
   meeting_id: z.string().uuid(),

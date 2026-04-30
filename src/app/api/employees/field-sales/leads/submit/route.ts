@@ -19,7 +19,6 @@ import { notifyLeadCreated } from '@/lib/notifications/ulap-lead-notifications'
 import { encryptLeadPII } from '@/lib/security/encryption-pii'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // UUID validation regex
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i

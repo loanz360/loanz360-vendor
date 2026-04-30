@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Pipeline Retry/Trigger API

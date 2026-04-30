@@ -6,7 +6,6 @@ import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { validatePagination } from '@/lib/validations/dse-validation'
 import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET - List all proposals (deals) for the logged-in DSE

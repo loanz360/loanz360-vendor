@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Document Requirement Individual Operations API

@@ -12,7 +12,6 @@ import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { readRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface Lead {
   id: string

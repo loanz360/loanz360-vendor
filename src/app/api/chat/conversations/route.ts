@@ -5,7 +5,6 @@ import { z } from 'zod'
 import { sanitizeSearchInput } from '@/lib/validations/input-sanitization'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 const createConversationSchema = z.object({
   customerPhone: z.string().min(10).max(15),

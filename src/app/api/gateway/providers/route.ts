@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // Gateway Providers API
 // GET: List all providers

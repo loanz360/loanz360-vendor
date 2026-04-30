@@ -6,7 +6,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { isValidUUID } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 // Validation schema for lost deal analysis
 const lostReasonSchema = z.object({

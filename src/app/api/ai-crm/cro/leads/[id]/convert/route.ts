@@ -25,7 +25,6 @@ import {
 import { convertLeadToDealSchema, type ConvertLeadToDealInput } from '@/lib/validations/ai-crm-schemas'
 import { z } from 'zod'
 
-export const dynamic = 'force-dynamic'
 
 // Schema for the conversion request
 const conversionRequestSchema = z.object({

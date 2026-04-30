@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Attendance ↔ Payroll LOP (Loss of Pay) Integration API

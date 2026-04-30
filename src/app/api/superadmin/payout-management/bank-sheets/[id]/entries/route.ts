@@ -10,7 +10,6 @@ import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // =====================================================
 // GET: List entries for a specific sheet

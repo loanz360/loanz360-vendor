@@ -5,7 +5,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSE } from '@/lib/middleware/verify-dse-role'
 import { generateSecureShortCode } from '@/lib/utils/short-code'
 
-export const dynamic = 'force-dynamic'
 
 const bulkEntrySchema = z.object({
   mobile_number: z.string().min(10).max(15),

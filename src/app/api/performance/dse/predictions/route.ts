@@ -3,7 +3,6 @@ import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import type { DSEPerformancePrediction, DailyTargetBreakdown, PredictionRecommendation, PaceIndicator } from '@/lib/types/dse-enhanced-performance.types'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/performance/dse/predictions

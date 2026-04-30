@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
 import { notifyStatusChange, type CPPayoutStatus } from '@/lib/notifications/cp-payout-notifications'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/admin/cp-payout-approval

@@ -9,7 +9,6 @@ import crypto from 'crypto'
 import { apiLogger } from '@/lib/utils/logger'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 // Resend webhook events
 type ResendEventType =

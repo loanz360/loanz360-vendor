@@ -5,7 +5,6 @@ import { writeRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import { logPartnerCreated, sanitizeForAudit } from '@/lib/audit/audit-logger'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface ValidationError {
   row: number

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Employee Email Single Draft API

@@ -16,7 +16,6 @@ import {
 } from '@/lib/cae/verification-service'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface VerifyRequestBody {
   lead_id: string

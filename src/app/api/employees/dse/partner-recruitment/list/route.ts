@@ -4,7 +4,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSE } from '@/lib/middleware/verify-dse-role'
 import { buildSearchFilter } from '@/lib/utils/search-sanitizer'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {

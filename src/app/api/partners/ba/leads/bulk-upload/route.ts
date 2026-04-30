@@ -4,7 +4,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 import { createInAppNotification } from '@/lib/notifications/notification-service'
 
-export const dynamic = 'force-dynamic'
 
 const CSV_TEMPLATE = 'customer_name,customer_mobile,customer_email,customer_city,customer_pincode,loan_type,estimated_amount\nJohn Doe,9876543210,john@email.com,Mumbai,400001,New Personal Loan,500000\n'
 

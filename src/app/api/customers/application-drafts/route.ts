@@ -7,7 +7,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)

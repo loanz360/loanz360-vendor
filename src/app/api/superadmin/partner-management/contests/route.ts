@@ -4,7 +4,6 @@ import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { readRateLimiter, writeRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import logger from '@/lib/monitoring/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/partner-management/contests

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // Notification Tracking API
 // POST: Track notification interactions (opens, clicks, dismissals)

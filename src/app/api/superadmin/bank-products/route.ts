@@ -9,7 +9,6 @@ import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // Allowed roles for bank product management
 const ALLOWED_ROLES = ['SUPER_ADMIN', 'ADMIN']

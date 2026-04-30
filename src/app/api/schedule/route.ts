@@ -7,7 +7,6 @@ import {
 import type { ScheduleWithDetails } from '@/lib/types/schedule.types'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * Helper function to verify user authorization

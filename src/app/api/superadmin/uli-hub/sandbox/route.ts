@@ -7,7 +7,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // Mock response templates for sandbox testing
 const MOCK_RESPONSES: Record<string, Record<string, unknown>> = {

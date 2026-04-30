@@ -4,7 +4,6 @@ import { createServiceRoleClient } from '@/lib/supabase/service-role'
 import { apiLogger } from '@/lib/utils/logger'
 import { timingSafeEqual } from 'crypto'
 
-export const dynamic = 'force-dynamic'
 
 /** Compare two strings using timing-safe comparison to prevent timing attacks */
 function safeCompare(a: string, b: string): boolean {

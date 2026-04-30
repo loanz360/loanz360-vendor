@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-export const dynamic = 'force-dynamic'
 
 const VALID_ACTIONS = ['verify', 'reject', 'hold', 'escalate'] as const
 const VALID_PARTNER_TYPES = ['CP', 'BA', 'BP'] as const

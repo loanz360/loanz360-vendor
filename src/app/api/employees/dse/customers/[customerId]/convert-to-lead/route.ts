@@ -6,7 +6,6 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyDSERole } from '@/lib/auth/verify-dse-role'
 import { calculateLeadScore } from '@/lib/validations/dse-validation'
 
-export const dynamic = 'force-dynamic'
 
 // Validation schema for lead conversion
 const convertToLeadSchema = z.object({

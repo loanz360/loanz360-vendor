@@ -23,7 +23,6 @@ import {
 } from '@/lib/api/ai-crm-middleware'
 import { updateContactCallSchema, type UpdateContactCallInput } from '@/lib/validations/ai-crm-schemas'
 
-export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   // Apply rate limiting

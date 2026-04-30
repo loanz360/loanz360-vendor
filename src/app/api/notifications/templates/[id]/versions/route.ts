@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // Template Version History API
 // GET: Get all versions of a template

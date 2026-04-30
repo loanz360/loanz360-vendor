@@ -5,7 +5,6 @@ import { logPartnerCreated, sanitizeForAudit } from '@/lib/audit/audit-logger'
 import { readRateLimiter, writeRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/partner-management/partners

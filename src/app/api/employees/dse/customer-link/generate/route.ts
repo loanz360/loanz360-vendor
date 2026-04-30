@@ -5,7 +5,6 @@ import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { generateSecureShortCode, buildShortUrl } from '@/lib/utils/short-code'
 
-export const dynamic = 'force-dynamic'
 
 const generateLinkSchema = z.object({
   customer_name: z.string().max(255).optional().nullable(),

@@ -41,7 +41,6 @@ function generateTemporaryPassword(): string {
 }
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/superadmin/employee-management

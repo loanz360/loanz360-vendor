@@ -34,7 +34,6 @@ const createLeadSchema = z.object({
   tags: z.array(z.string()).optional(),
 })
 
-export const dynamic = 'force-dynamic'
 
 // ============================================================================
 // GET - List all leads for Business Associate

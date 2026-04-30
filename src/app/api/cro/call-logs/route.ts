@@ -5,7 +5,6 @@ import { z } from 'zod'
 import { maskRecord, maskDataForRole } from '@/lib/utils/data-masking'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // Validation schema for creating a call log
 const createCallLogSchema = z.object({

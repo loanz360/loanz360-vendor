@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Metrics Dashboard API

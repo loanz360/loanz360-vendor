@@ -18,7 +18,6 @@ import { generateTraceToken } from '@/lib/utils/trace-token'
 import { notifyLeadCreated } from '@/lib/notifications/ulap-lead-notifications'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 // Type definitions for the request
 interface CoApplicant {

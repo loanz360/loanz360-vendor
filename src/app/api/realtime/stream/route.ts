@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import { NextRequest } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 
 /**

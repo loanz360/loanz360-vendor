@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import { updateScheduleSchema } from '@/lib/validations/schedule.validation'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/schedule/[id]

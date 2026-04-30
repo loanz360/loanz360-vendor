@@ -4,7 +4,6 @@ import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { readRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 const VALID_TIMEFRAMES = ['7d', '30d', '90d']
 

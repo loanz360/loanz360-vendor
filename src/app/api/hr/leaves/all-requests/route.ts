@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { checkHRAccess } from '@/lib/auth/hr-access'

@@ -4,7 +4,6 @@ import { getCurrentBDMId } from '@/lib/bdm/bde-utils'
 import { parseDateRangeParams } from '@/lib/bdm/date-utils'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 interface BankPerformance {
   bankId: string

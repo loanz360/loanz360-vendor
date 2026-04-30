@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { verifyCROAuth } from '@/lib/api/ai-crm-middleware'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * GET /api/cro/followups-upcoming?until=ISO_DATE

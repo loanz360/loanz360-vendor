@@ -6,7 +6,6 @@ import {
   createErrorResponse,
 } from '@/lib/api/ai-crm-middleware'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   const rateLimitResponse = await rateLimit(request, RATE_LIMIT_CONFIGS.DEFAULT)

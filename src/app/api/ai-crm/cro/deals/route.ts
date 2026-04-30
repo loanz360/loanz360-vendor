@@ -20,7 +20,6 @@ import {
 import { sanitizeSearchForPostgrest } from '@/lib/constants/sales-pipeline'
 import { dealsQuerySchema } from '@/lib/validations/ai-crm-schemas'
 
-export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   // Apply rate limiting

@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 /**
  * Single Email Signature Management API

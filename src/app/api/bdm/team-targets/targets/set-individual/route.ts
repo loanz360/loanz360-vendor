@@ -12,7 +12,6 @@ import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { writeRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   return writeRateLimiter(request, async (req) => {

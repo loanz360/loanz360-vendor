@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 
 // Push Notification Subscription API
 // POST: Subscribe to push notifications

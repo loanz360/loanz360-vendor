@@ -13,7 +13,6 @@ import { generateUniqueShortCode, buildShortUrl } from '@/lib/utils/short-code'
 import type { GenerateReferralLinkRequest, GenerateReferralLinkResponse } from '@/types/customer-referrals'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   // Apply rate limiting

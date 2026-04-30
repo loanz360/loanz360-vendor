@@ -4,7 +4,6 @@ import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
 import { writeRateLimiter } from '@/lib/rate-limit/rate-limiter'
 import { apiLogger } from '@/lib/utils/logger'
 
-export const dynamic = 'force-dynamic'
 
 /**
  * PATCH /api/superadmin/payout-management/bp-percentages/settings
