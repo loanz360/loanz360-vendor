@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -44,7 +45,15 @@ export async function PUT(
     }
 
     const { id: declarationId } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action: z.string().optional(),
+
+      remarks: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action, remarks } = body // action: 'approve' or 'reject'
 

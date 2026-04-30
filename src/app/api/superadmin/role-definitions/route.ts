@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
@@ -118,7 +119,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      key: z.string(),
+
+
+      name: z.string().optional(),
+
+
+      type: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      isActive: z.string().optional(),
+
+
+      permissions: z.array(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields
@@ -184,7 +209,16 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      key: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     if (!body.key) {

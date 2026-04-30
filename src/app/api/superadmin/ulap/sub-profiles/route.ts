@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -74,7 +75,29 @@ export async function GET(request: NextRequest) {
 // POST - Create a new sub-profile
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      profile_id: z.string().uuid().optional(),
+
+      key: z.string().optional(),
+
+      name: z.string().optional(),
+
+      description: z.string().optional(),
+
+      icon: z.string().optional(),
+
+      color: z.string().optional(),
+
+      display_order: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const { profile_id, key, name, description, icon, color, display_order, is_active } = body;
 
@@ -144,7 +167,29 @@ export async function POST(request: NextRequest) {
 // PUT - Update a sub-profile
 export async function PUT(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      color: z.string().optional(),
+
+      name: z.string().optional(),
+
+      icon: z.string().optional(),
+
+      key: z.string().optional(),
+
+      description: z.string().optional(),
+
+      profile_id: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+      display_order: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2;
     const { id, profile_id, key, name, description, icon, color, display_order, is_active } = body;
 

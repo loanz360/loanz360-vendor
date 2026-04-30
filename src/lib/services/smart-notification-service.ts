@@ -24,7 +24,7 @@ export interface SmartNotification {
   priority: 'low' | 'medium' | 'high' | 'urgent'
   action_url?: string
   action_label?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   icon?: string
   color?: string
 }

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { logger } from '@/lib/utils/logger'
@@ -165,7 +166,22 @@ export async function POST(request: NextRequest) {
     if (deny) return deny
     const auth = { authorized: true, userId: authUser.id }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_id: z.string().uuid().optional(),
+
+
+      action: z.string().optional(),
+
+
+      notes: z.array(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { employee_id, action, notes } = body
 

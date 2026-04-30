@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive Admin User Quota API
@@ -46,7 +47,22 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      storage_limit_bytes: z.string().optional(),
+
+
+      storage_limit_gb: z.string().optional(),
+
+
+      reason: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { storage_limit_bytes, storage_limit_gb, reason } = body
 

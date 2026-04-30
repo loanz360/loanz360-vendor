@@ -130,7 +130,7 @@ export async function checkAuth(
  * This allows checkAuth to work without explicit request parameter
  */
 export function withAuthContext(handler: Function) {
-  return async (request: NextRequest, context?: any) => {
+  return async (request: NextRequest, context?: unknown) => {
     try {
       return await handler(request, context)
     } finally {

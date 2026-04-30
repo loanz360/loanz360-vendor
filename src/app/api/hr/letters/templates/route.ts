@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from "next/server"
@@ -54,7 +55,21 @@ export async function POST(request: Request) {
     if (authError || !user) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: "Access denied. HR only." }, { status: 403 })
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      name: z.string().optional(),
+
+      letter_type: z.string().optional(),
+
+      subject: z.string().optional(),
+
+      variables: z.string().optional(),
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { name, letter_type, subject, body: templateBody, variables } = body
     if (!name || !letter_type || !templateBody)
@@ -88,7 +103,13 @@ export async function PATCH(request: Request) {
     if (authError || !user) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: "Access denied. HR only." }, { status: 403 })
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, ...updates } = body
     if (!id) return NextResponse.json({ success: false, error: "id is required" }, { status: 400 })

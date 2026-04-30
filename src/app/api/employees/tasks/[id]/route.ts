@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -18,9 +19,33 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      status: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      title: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      due_date: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
-    const updates: any = {}
+    const updates: Record<string, unknown> = {}
 
     if (body.status) updates.status = body.status
     if (body.priority) updates.priority = body.priority

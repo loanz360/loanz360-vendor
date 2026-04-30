@@ -101,7 +101,7 @@ export async function GET(request: NextRequest) {
 /**
  * Collect system health metrics
  */
-async function collectSystemMetrics(supabase: any) {
+async function collectSystemMetrics(supabase: unknown) {
   try {
     // Database connection health
     const { error: pingError } = await supabase.from('incentives').select('id').limit(1)
@@ -157,7 +157,7 @@ async function collectSystemMetrics(supabase: any) {
 /**
  * Store metrics in database for historical tracking
  */
-async function storeMetricsInDatabase(supabase: any, summary: any) {
+async function storeMetricsInDatabase(supabase: unknown, summary: unknown) {
   try {
     // Check if metrics table exists (optional feature)
     const { error: tableError } = await supabase

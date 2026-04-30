@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -42,7 +43,35 @@ export async function GET() {
 // POST - Create a new basic lead field
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      field_key: z.string().optional(),
+
+      label: z.string().optional(),
+
+      field_type: z.string().optional(),
+
+      placeholder: z.string().optional(),
+
+      helper_text: z.string().optional(),
+
+      is_required: z.boolean().optional(),
+
+      is_default: z.boolean().optional(),
+
+      display_order: z.string().optional(),
+
+      validation_rules: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+      id: z.string().uuid(),
+
+      fields: z.array(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const {
       field_key,
@@ -111,7 +140,33 @@ export async function POST(request: NextRequest) {
 // PUT - Update a basic lead field
 export async function PUT(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      display_order: z.string().optional(),
+
+      field_type: z.string().optional(),
+
+      is_default: z.boolean().optional(),
+
+      label: z.string().optional(),
+
+      validation_rules: z.string().optional(),
+
+      helper_text: z.string().optional(),
+
+      field_key: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+      is_required: z.boolean().optional(),
+
+      placeholder: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2;
     const {
       id,
@@ -232,7 +287,13 @@ export async function DELETE(request: NextRequest) {
 // PATCH - Reorder basic lead fields
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr3 } = await parseBody(request)
+    const bodySchema3 = z.object({
+
+      fields: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr3 } = await parseBody(request, bodySchema3)
     if (_valErr3) return _valErr3;
     const { fields } = body; // Array of { id, display_order }
 

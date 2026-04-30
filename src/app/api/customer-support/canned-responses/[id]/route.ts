@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
@@ -64,12 +65,36 @@ export async function PATCH(
       .eq('id', user.id)
       .maybeSingle()
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      title: z.string().optional(),
+
+
+      content: z.string().optional(),
+
+
+      category: z.string().optional(),
+
+
+      department: z.string().optional(),
+
+
+      is_active: z.boolean().optional(),
+
+
+      is_global: z.boolean().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { title, content, category, department, is_active, is_global } = body
 
     // Build update object
-    const updates: any = { updated_at: new Date().toISOString() }
+    const updates: Record<string, unknown> = { updated_at: new Date().toISOString() }
 
     if (title !== undefined) updates.title = title.trim()
     if (content !== undefined) updates.content = content.trim()

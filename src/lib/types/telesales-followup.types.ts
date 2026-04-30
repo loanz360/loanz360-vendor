@@ -37,7 +37,7 @@ export interface TSFollowupStep {
   delay_hours: number
   description: string
   template?: string
-  config?: Record<string, any>
+  config?: Record<string, unknown>
 }
 
 export type TSFollowupActionType = 'CALL' | 'SMS' | 'EMAIL' | 'WHATSAPP' | 'TASK'

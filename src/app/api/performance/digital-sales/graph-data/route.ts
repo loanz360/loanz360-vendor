@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     const averagesByDate = calculateDailyAverages(allMetrics || [])
 
     // Format graph data
-    const graphData: GraphDataPoint[] = (userMetrics || []).map((dailyMetric: any) => {
+    const graphData: GraphDataPoint[] = (userMetrics || []).map((dailyMetric: unknown) => {
       const date = dailyMetric.metric_date
       const average = averagesByDate[date] || {}
 
@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper function to calculate daily averages
-function calculateDailyAverages(allMetrics: any[]): Record<string, any> {
+function calculateDailyAverages(allMetrics: unknown[]): Record<string, unknown> {
   const groupedByDate: Record<string, any[]> = {}
 
   allMetrics.forEach((metric) => {
@@ -126,7 +126,7 @@ function calculateDailyAverages(allMetrics: any[]): Record<string, any> {
     groupedByDate[date].push(metric)
   })
 
-  const averages: Record<string, any> = {}
+  const averages: Record<string, unknown> = {}
 
   Object.keys(groupedByDate).forEach((date) => {
     const metrics = groupedByDate[date]

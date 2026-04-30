@@ -178,7 +178,7 @@ export interface PipelineAlert {
   expiresAt?: string
   isRead: boolean
   isResolved: boolean
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface AnalyticsDashboardData {
@@ -278,7 +278,7 @@ export interface TimelineEvent {
   performedByRole: string
   icon: string
   color: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface DocumentRequirement {
@@ -518,16 +518,14 @@ export interface LoadBalancingRecommendation {
   actions: {
     label: string
     action: string
-    data?: any
-  }[]
+    data?: unknown  }[]
   createdAt: string
 }
 
 export interface BDEActionRequest {
   actionType: 'reassign' | 'set_target' | 'send_message' | 'pause' | 'resume' | 'adjust_capacity'
   bdeId: string
-  data: any
-  reason: string
+  data: unknown  reason: string
 }
 
 export interface ReassignLeadsRequest {
@@ -765,8 +763,7 @@ export interface APIResponse<T> {
   error?: {
     code: string
     message: string
-    details?: any
-  }
+    details?: unknown  }
   metadata?: {
     total: number
     page: number
@@ -791,7 +788,7 @@ export interface PaginatedResponse<T> {
 
 export interface ExportRequest {
   format: 'excel' | 'pdf' | 'csv'
-  data: any[]
+  data: unknown[]
   filename: string
   columns?: string[]
   options?: {
@@ -813,15 +810,14 @@ export interface ExportResponse {
 
 export interface RealtimeEvent {
   type: 'LEAD_UPDATED' | 'BDE_PERFORMANCE_UPDATED' | 'ALERT_CREATED' | 'STATUS_CHANGED'
-  payload: any
-  timestamp: string
+  payload: unknown  timestamp: string
 }
 
 export interface SubscriptionConfig {
   channel: string
   event: string
   filter?: string
-  callback: (payload: any) => void
+  callback: (payload: Record<string, unknown>) => void
 }
 
 // ============================================================================
@@ -839,7 +835,7 @@ export interface CustomReport {
   sortBy: { field: string; direction: 'asc' | 'desc' }[]
   aggregations: Record<string, 'sum' | 'avg' | 'count' | 'min' | 'max'>
   chartType?: 'table' | 'bar' | 'line' | 'pie' | 'donut' | 'area'
-  chartConfig?: Record<string, any>
+  chartConfig?: Record<string, unknown>
   isScheduled: boolean
   scheduleFrequency?: 'daily' | 'weekly' | 'monthly'
   scheduleDay?: number
@@ -878,8 +874,7 @@ export interface AIRecommendation {
   priority: Priority
   title: string
   description: string
-  data: any
-  confidenceLevel: number
+  data: unknown  confidenceLevel: number
   expectedImpact: string
   createdAt: string
 }

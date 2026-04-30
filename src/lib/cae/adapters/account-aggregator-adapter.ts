@@ -555,7 +555,7 @@ export class AccountAggregatorAdapter {
     }
   }
 
-  private parseConsentResponse(response: any): ConsentResponse {
+  private parseConsentResponse(response: Record<string, unknown>): ConsentResponse {
     if (response.error) {
       return {
         success: false,
@@ -576,7 +576,7 @@ export class AccountAggregatorAdapter {
     }
   }
 
-  private parseDataResponse(response: any, sessionId: string): DataFetchResponse {
+  private parseDataResponse(response: unknown, sessionId: string): DataFetchResponse {
     if (response.error) {
       return {
         success: false,

@@ -363,7 +363,7 @@ export interface ConditionNodeContent extends BaseNodeContent {
 export interface ActionNodeContent extends BaseNodeContent {
   type: 'action'
   actionType: 'end_chat' | 'transfer' | 'api_call' | 'set_variable' | 'send_notification'
-  config: Record<string, any>
+  config: Record<string, unknown>
 }
 
 // End node
@@ -459,7 +459,7 @@ export interface ChatSession {
   status: SessionStatus
   current_node_id: string | null
   progress_percentage: number
-  visitor_data: Record<string, any>
+  visitor_data: Record<string, unknown>
   utm_source: string | null
   utm_medium: string | null
   utm_campaign: string | null
@@ -518,12 +518,11 @@ export interface ChatMessage {
   content: string | null
   node_id: string | null
   field_name: string | null
-  response_value: any
-  file_url: string | null
+  response_value: unknown  file_url: string | null
   file_name: string | null
   file_size: number | null
   file_type: string | null
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
   sent_at: string
 }
 
@@ -534,8 +533,7 @@ export interface ChatMessageCreateInput {
   content?: string
   node_id?: string
   field_name?: string
-  response_value?: any
-  file_url?: string
+  response_value?: unknown  file_url?: string
   file_name?: string
   file_size?: number
   file_type?: string
@@ -571,7 +569,7 @@ export interface OnlineLead {
   business_type: string | null
   years_in_business: number | null
   credit_score: number | null
-  custom_fields: Record<string, any>
+  custom_fields: Record<string, unknown>
   status: OnlineLeadStatus
   stage: OnlineLeadStage
   priority: LeadPriority
@@ -582,7 +580,7 @@ export interface OnlineLead {
   assigned_at: string | null
   assignment_method: string | null
   source: string
-  source_details: Record<string, any>
+  source_details: Record<string, unknown>
   utm_source: string | null
   utm_medium: string | null
   utm_campaign: string | null
@@ -641,7 +639,7 @@ export interface OnlineLeadNote {
   created_by_name: string
   created_at: string
   event?: string
-  details?: Record<string, any>
+  details?: Record<string, unknown>
 }
 
 export interface OnlineLeadDocument {
@@ -674,7 +672,7 @@ export interface OnlineLeadCreateInput {
   monthly_income?: number
   business_name?: string
   business_type?: string
-  custom_fields?: Record<string, any>
+  custom_fields?: Record<string, unknown>
   source?: string
   utm_source?: string
   utm_medium?: string

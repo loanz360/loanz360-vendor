@@ -37,8 +37,7 @@ interface ExportLogEntry {
 }
 
 interface Props {
-  dashboardData?: any
-}
+  dashboardData?: unknown}
 
 type ExportType = 'pdf' | 'team' | 'financial' | 'analytics'
 

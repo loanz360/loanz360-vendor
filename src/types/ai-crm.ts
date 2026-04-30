@@ -86,8 +86,7 @@ export interface Note {
 
   // For System Events
   event?: string // 'status_changed', 'document_uploaded', 'assigned_to_bde', etc.
-  details?: any
-
+  details?: unknown
   created_by: string // User ID
   created_by_name: string // User name
   created_at: string
@@ -194,7 +193,7 @@ export interface MasterContact {
   is_converted_to_deal: boolean // Moved to deals
 
   // Metadata
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   created_at: string
   updated_at: string
 }
@@ -928,7 +927,7 @@ export interface DealStageHistory {
   update_id?: string
 
   notes?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 
   created_at: string
 }

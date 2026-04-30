@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -96,7 +97,130 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      full_name: z.string().optional(),
+
+
+      date_of_birth: z.string().optional(),
+
+
+      gender: z.string().optional(),
+
+
+      father_name: z.string().optional(),
+
+
+      mother_name: z.string().optional(),
+
+
+      marital_status: z.string().optional(),
+
+
+      email: z.string().email().optional(),
+
+
+      mobile_primary: z.string().optional(),
+
+
+      mobile_secondary: z.string().optional(),
+
+
+      current_address_line1: z.string().optional(),
+
+
+      current_address_line2: z.string().optional(),
+
+
+      current_city: z.string().optional(),
+
+
+      current_state: z.string().optional(),
+
+
+      current_pincode: z.string().optional(),
+
+
+      current_address_proof_type: z.string().optional(),
+
+
+      current_address_proof_url: z.string().optional(),
+
+
+      permanent_same_as_current: z.string().optional(),
+
+
+      permanent_address_line1: z.string().optional(),
+
+
+      permanent_address_line2: z.string().optional(),
+
+
+      permanent_city: z.string().optional(),
+
+
+      permanent_state: z.string().optional(),
+
+
+      permanent_pincode: z.string().optional(),
+
+
+      permanent_address_proof_type: z.string().optional(),
+
+
+      permanent_address_proof_url: z.string().optional(),
+
+
+      pan_number: z.string().optional(),
+
+
+      pan_verified: z.string().optional(),
+
+
+      pan_document_url: z.string().optional(),
+
+
+      pan_holder_name: z.string().optional(),
+
+
+      aadhaar_number: z.string().optional(),
+
+
+      aadhaar_verified: z.string().optional(),
+
+
+      aadhaar_document_url: z.string().optional(),
+
+
+      aadhaar_holder_name: z.string().optional(),
+
+
+      profile_photo_url: z.string().optional(),
+
+
+      kyc_status: z.string().optional(),
+
+
+      mark_complete: z.string().optional(),
+
+
+      profile_completed: z.string().optional(),
+
+
+      primary_category: z.string().optional(),
+
+
+      sub_category: z.string().optional(),
+
+
+      customer_type: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const supabaseAdmin = createSupabaseAdmin()
 

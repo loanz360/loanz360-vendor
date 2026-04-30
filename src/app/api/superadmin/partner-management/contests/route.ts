@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -93,9 +94,9 @@ async function getContestsHandler(request: NextRequest) {
     }
 
     // Fix N+1 query: Fetch all participants in a single query instead of one query per contest
-    let allParticipants: any[] = []
+    let allParticipants: unknown[] = []
     if (contests && contests.length > 0) {
-      const contestIds = contests.map((c: any) => c.id)
+      const contestIds = contests.map((c: unknown) => c.id)
 
       const { data: participantsData, error: participantsError } = await supabase
         .from('partner_contest_participants')
@@ -113,7 +114,7 @@ async function getContestsHandler(request: NextRequest) {
     }
 
     // Group participants by contest_id for efficient lookup
-    const participantsByContest = allParticipants.reduce((acc: any, participant: any) => {
+    const participantsByContest = allParticipants.reduce((acc: unknown, participant: unknown) => {
       if (!acc[participant.contest_id]) {
         acc[participant.contest_id] = []
       }
@@ -125,7 +126,7 @@ async function getContestsHandler(request: NextRequest) {
     }, {})
 
     // Map contests with their leaderboard data
-    const contestsWithLeaderboard = contests?.map((contest: any) => {
+    const contestsWithLeaderboard = contests?.map((contest: unknown) => {
       const participants = participantsByContest[contest.id] || []
 
       return {
@@ -147,7 +148,7 @@ async function getContestsHandler(request: NextRequest) {
         status: contest.status,
         total_participants: contest.total_participants || 0,
         created_at: contest.created_at,
-        leaderboard: participants.map((p: any) => ({
+        leaderboard: participants.map((p: unknown) => ({
           rank: p.rank,
           partner_id: p.partner_id,
           partner_name: p.partner_name,
@@ -216,7 +217,55 @@ async function createContestHandler(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      title: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      target_partner_type: z.string().optional(),
+
+
+      start_date: z.string().optional(),
+
+
+      end_date: z.string().optional(),
+
+
+      contest_metrics: z.string().optional(),
+
+
+      prizes: z.string().optional(),
+
+
+      total_prize_pool: z.string().optional(),
+
+
+      image_url: z.string().optional(),
+
+
+      target_geography_states: z.string().optional(),
+
+
+      target_geography_cities: z.string().optional(),
+
+
+      rules: z.string().optional(),
+
+
+      terms_conditions: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Use admin client for database queries

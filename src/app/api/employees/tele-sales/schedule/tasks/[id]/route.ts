@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Verify user is TeleSales
  */
-async function verifyTeleSalesUser(supabase: any, userId: string) {
+async function verifyTeleSalesUser(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')
@@ -121,7 +122,15 @@ export async function PUT(
     }
 
     const { id } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      sub_tasks: z.array(z.unknown()).optional(),
+
+      status: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Verify ownership
@@ -138,7 +147,7 @@ export async function PUT(
     }
 
     // Build update data
-    const updateData: Record<string, any> = {}
+    const updateData: Record<string, unknown> = {}
     const allowedFields = [
       'title', 'description', 'category', 'priority', 'status',
       'due_date', 'due_time', 'sub_tasks', 'tags', 'attachments'
@@ -152,7 +161,7 @@ export async function PUT(
 
     // Calculate progress percentage from sub-tasks
     if (body.sub_tasks) {
-      const completed = body.sub_tasks.filter((st: any) => st.is_completed).length
+      const completed = body.sub_tasks.filter((st: unknown) => st.is_completed).length
       const total = body.sub_tasks.length
       updateData.progress_percentage = total > 0 ? Math.round((completed / total) * 100) : 0
     }

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
@@ -287,7 +288,97 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      designation: z.string().optional(),
+
+
+      professionalMail: z.string().optional(),
+
+
+      location: z.string().optional(),
+
+
+      languagesKnown: z.string().optional(),
+
+
+      reportingManagerName: z.string().optional(),
+
+
+      reportingManagerId: z.string().uuid().optional(),
+
+
+      departmentJoinDate: z.string().optional(),
+
+
+      professionalMobile: z.string().optional(),
+
+
+      dateOfBirth: z.string().optional(),
+
+
+      gender: z.string().optional(),
+
+
+      bloodGroup: z.string().optional(),
+
+
+      aadhaarNumber: z.string().optional(),
+
+
+      emergencyContactPhone: z.string().optional(),
+
+
+      emergencyContactRelationship: z.string().optional(),
+
+
+      reference1Contact: z.string().optional(),
+
+
+      reference1Relationship: z.string().optional(),
+
+
+      reference2Name: z.string().optional(),
+
+
+      reference2Contact: z.string().optional(),
+
+
+      reference2Relationship: z.string().optional(),
+
+
+      bankName: z.string().optional(),
+
+
+      bankBranch: z.string().optional(),
+
+
+      bankIfscCode: z.string().optional(),
+
+
+      bankMicrCode: z.string().optional(),
+
+
+      addressPermanent: z.string().optional(),
+
+
+      permanentAddressProofUrl: z.string().optional(),
+
+
+      panCardCopyUrl: z.string().optional(),
+
+
+      aadhaarCardCopyUrl: z.string().optional(),
+
+
+      cancelledChequeUrl: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       // Professional details

@@ -310,8 +310,7 @@ class SMSService {
    */
   async handleWebhook(
     provider: 'custom' | 'twilio' | 'msg91',
-    payload: any
-  ): Promise<{ processed: boolean; event: string }> {
+    payload: unknown  ): Promise<{ processed: boolean; event: string }> {
     if (provider === 'twilio') {
       return this.handleTwilioWebhook(payload)
     } else if (provider === 'msg91') {
@@ -324,7 +323,7 @@ class SMSService {
   /**
    * Handle Twilio webhook
    */
-  private async handleTwilioWebhook(payload: any): Promise<{ processed: boolean; event: string }> {
+  private async handleTwilioWebhook(payload: Record<string, unknown>): Promise<{ processed: boolean; event: string }> {
     const messageId = payload.MessageSid
     const status = payload.MessageStatus
     const to = payload.To
@@ -345,7 +344,7 @@ class SMSService {
   /**
    * Handle MSG91 webhook
    */
-  private async handleMSG91Webhook(payload: any): Promise<{ processed: boolean; event: string }> {
+  private async handleMSG91Webhook(payload: Record<string, unknown>): Promise<{ processed: boolean; event: string }> {
     const messageId = payload.requestId
     const status = payload.status
     const mobile = payload.mobile

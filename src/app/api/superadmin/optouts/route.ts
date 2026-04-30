@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Opt-Out Management API
  * Enterprise-grade GDPR/DND compliance
@@ -36,7 +37,7 @@ interface OptOutRecord {
   optedOutAt: string
   optedInAt?: string
   notes?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   createdBy?: string
   updatedBy?: string
 }
@@ -205,7 +206,29 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      identifier: z.string().optional(),
+
+      channel: z.string().optional(),
+
+      reason: z.string().optional(),
+
+      source: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      metadata: z.record(z.unknown()).optional(),
+
+      id: z.string().uuid(),
+
+      action: z.string().optional(),
+
+      identifiers: z.array(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const userId = request.headers.get('x-user-id')
 
@@ -291,7 +314,21 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      action: z.string().optional(),
+
+      channel: z.string().optional(),
+
+      identifier: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const userId = request.headers.get('x-user-id')
 
@@ -439,7 +476,7 @@ export async function DELETE(request: NextRequest) {
 // =====================================================
 
 async function handleBulkOptOut(
-  supabase: any,
+  supabase: unknown,
   request: BulkOptOutRequest,
   userId?: string | null
 ) {
@@ -535,9 +572,9 @@ function normalizePhone(phone: string): string {
 }
 
 async function logAudit(
-  supabase: any,
+  supabase: unknown,
   action: string,
-  details: Record<string, any>,
+  details: Record<string, unknown>,
   userId?: string | null
 ) {
   try {

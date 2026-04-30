@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * CRO Skills API
@@ -85,7 +86,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform data to include user info at root level
-    const transformedSkills = (skills || []).map((skill: any) => ({
+    const transformedSkills = (skills || []).map((skill: unknown) => ({
       cro_id: skill.cro_id,
       cro_name: skill.users.name,
       cro_email: skill.users.email,
@@ -162,7 +163,29 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      cro_id: z.string().uuid().optional(),
+
+      loan_types: z.string().optional(),
+
+      languages: z.string().optional(),
+
+      min_loan_amount: z.string().optional(),
+
+      max_loan_amount: z.string().optional(),
+
+      max_leads_per_day: z.string().optional(),
+
+      max_pending_leads: z.string().optional(),
+
+      geography_coverage: z.string().optional(),
+
+      is_available: z.boolean().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       cro_id,

@@ -162,7 +162,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform reminders to include meeting details
-    const remindersWithDetails = reminders.map((reminder: any) => ({
+    const remindersWithDetails = reminders.map((reminder: unknown) => ({
       ...reminder,
       schedule_title: reminder.meeting?.title,
       schedule_date: reminder.meeting?.scheduled_date,

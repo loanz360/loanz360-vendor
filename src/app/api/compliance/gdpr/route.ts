@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type')
     const overdueOnly = searchParams.get('overdue_only') === 'true'
 
-    const filters: any = {}
+    const filters: Record<string, unknown> = {}
     if (status) filters.status = status
     if (type) filters.request_type = type
     if (overdueOnly) filters.is_overdue = true
@@ -55,7 +56,21 @@ export async function POST(request: NextRequest) {
 
   try {
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      request_type: z.string().optional(),
+
+      requester_email: z.string().email().optional(),
+
+      requester_name: z.string().optional(),
+
+      request_details: z.string().optional(),
+
+      lead_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { request_type, requester_email, requester_name, request_details, lead_id } = body

@@ -143,7 +143,7 @@ export function sanitizeString(input: string): string {
 /**
  * Sanitize object recursively
  */
-export function sanitizeObject<T extends Record<string, any>>(obj: T): T {
+export function sanitizeObject<T extends Record<string, unknown>>(obj: T): T {
   const sanitized = {} as T;
 
   for (const [key, value] of Object.entries(obj)) {
@@ -476,7 +476,7 @@ export interface SecurityMiddlewareOptions {
 export async function securityMiddleware(
   request: NextRequest,
   options: SecurityMiddlewareOptions = {}
-): Promise<{ error: NextResponse | null; sanitizedBody?: any }> {
+): Promise<{ error: NextResponse | null; sanitizedBody?: unknown}> {
   const {
     enableCSRF = true,
     enableRateLimit = true,

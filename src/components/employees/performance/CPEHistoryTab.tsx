@@ -127,7 +127,7 @@ export default function CPEHistoryTab({ userId }: CPEHistoryTabProps) {
   const partnerBreakdown = data.partnerBreakdown || []
 
   // Filter partners based on search and type
-  const filteredPartners = partnerBreakdown.filter((partner: any) => {
+  const filteredPartners = partnerBreakdown.filter((partner: unknown) => {
     const matchesSearch = partner.partner_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       partner.partner_code.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesType = filterType === 'all' || partner.partner_type === filterType ||
@@ -241,7 +241,7 @@ export default function CPEHistoryTab({ userId }: CPEHistoryTabProps) {
               <p className="text-sm text-gray-400 mb-1">Avg Performance</p>
               <h3 className="text-3xl font-bold text-white">
                 {monthlyHistory.length > 0
-                  ? (monthlyHistory.reduce((sum: number, m: any) => sum + (m.overallScore || 0), 0) / monthlyHistory.length).toFixed(1)
+                  ? (monthlyHistory.reduce((sum: number, m: unknown) => sum + (m.overallScore || 0), 0) / monthlyHistory.length).toFixed(1)
                   : 0}
               </h3>
             </div>
@@ -292,7 +292,7 @@ export default function CPEHistoryTab({ userId }: CPEHistoryTabProps) {
           </h3>
           {monthlyHistory.length > 0 ? (
             <div className="space-y-4">
-              {monthlyHistory.map((month: any) => (
+              {monthlyHistory.map((month: unknown) => (
                 <div
                   key={`${month.month}-${month.year}`}
                   className="bg-gray-800/30 rounded-lg p-5 hover:bg-gray-800/50 transition-all border border-gray-700/50"
@@ -448,7 +448,7 @@ export default function CPEHistoryTab({ userId }: CPEHistoryTabProps) {
               </thead>
               <tbody>
                 {paginatedPartners.length > 0 ? (
-                  paginatedPartners.map((partner: any) => (
+                  paginatedPartners.map((partner: unknown) => (
                     <tr
                       key={partner.partner_id}
                       className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors"

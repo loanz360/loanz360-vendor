@@ -574,7 +574,7 @@ export async function getAdminSettings(): Promise<{
     }
 
     // Convert to GlobalSettings object
-    const settings: any = {}
+    const settings: Record<string, unknown> = {}
     data?.forEach((setting) => {
       let value = setting.setting_value
       // Parse JSON values
@@ -603,8 +603,7 @@ export async function getAdminSettings(): Promise<{
  */
 export async function updateAdminSetting(params: {
   key: string
-  value: any
-  updatedBy: string
+  value: unknown  updatedBy: string
 }): Promise<{ success: boolean; error?: string }> {
   try {
     const stringValue = typeof params.value === 'string'

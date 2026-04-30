@@ -19,7 +19,7 @@ interface SendMessageRequest {
   content?: string
   templateName?: string
   templateLanguage?: string
-  templateComponents?: any[]
+  templateComponents?: unknown[]
   mediaUrl?: string
   mediaCaption?: string
 }

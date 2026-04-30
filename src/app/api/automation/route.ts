@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -34,7 +35,7 @@ export async function GET(request: NextRequest) {
     // Mode: Get rules
     if (mode === 'rules') {
       const activeOnly = searchParams.get('active_only') === 'true'
-      const triggerType = searchParams.get('trigger_type') as any
+      const triggerType = searchParams.get('trigger_type') as unknown
       const source = searchParams.get('source') as 'EMPLOYEE' | 'CUSTOMER' | 'PARTNER' | undefined
 
       const rules = await getWorkflowRules({
@@ -50,7 +51,7 @@ export async function GET(request: NextRequest) {
     if (mode === 'executions') {
       const ruleId = searchParams.get('rule_id') || undefined
       const ticketId = searchParams.get('ticket_id') || undefined
-      const status = searchParams.get('status') as any
+      const status = searchParams.get('status') as unknown
       const limit = parseInt(searchParams.get('limit') || '50')
 
       const executions = await getWorkflowExecutions({
@@ -94,7 +95,61 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      name: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      trigger_type: z.string().optional(),
+
+
+      conditions: z.string().optional(),
+
+
+      actions: z.array(z.unknown()).optional(),
+
+
+      sources: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      stop_processing_rules: z.string().optional(),
+
+
+      ticket_id: z.string().uuid().optional(),
+
+
+      ticket_source: z.string().optional(),
+
+
+      ticket_data: z.string().optional(),
+
+
+      trigger_data: z.string().optional(),
+
+
+      template_index: z.string().optional(),
+
+
+      overrides: z.string().optional(),
+
+
+      rule_id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action } = body
 
@@ -202,7 +257,16 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      rule_id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { rule_id, ...updates } = body
 

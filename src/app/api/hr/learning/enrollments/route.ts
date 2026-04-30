@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -115,7 +116,37 @@ export async function POST(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_id: z.string().uuid(),
+
+
+      program_id: z.string().uuid(),
+
+
+      id: z.string().uuid(),
+
+
+      action: z.string().optional(),
+
+
+      progress_percent: z.string().optional(),
+
+
+      score: z.number().optional(),
+
+
+      feedback: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { employee_id, program_id } = body
 
@@ -191,7 +222,31 @@ export async function PATCH(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      feedback: z.string().optional(),
+
+
+      score: z.number().optional(),
+
+
+      progress_percent: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, action, progress_percent, score, feedback, status } = body
 

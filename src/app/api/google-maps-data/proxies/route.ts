@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -49,7 +50,29 @@ export async function GET(request: NextRequest) {
 // POST - Add new proxy
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      proxy_type: z.string().optional(),
+
+      proxy_url: z.string().optional(),
+
+      proxy_host: z.string().optional(),
+
+      proxy_port: z.string().optional(),
+
+      proxy_username: z.string().optional(),
+
+      proxy_password: z.string().optional(),
+
+      id: z.string().uuid(),
+
+      success: z.string().optional(),
+
+      response_time_ms: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { proxy_type, proxy_url, proxy_host, proxy_port, proxy_username, proxy_password } = body
 
@@ -85,7 +108,17 @@ export async function POST(request: NextRequest) {
 // PATCH - Update proxy stats (called by Lambda)
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      response_time_ms: z.string().optional(),
+
+      success: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, success, response_time_ms } = body
 
@@ -109,7 +142,7 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       last_used_at: new Date().toISOString()
     }
 

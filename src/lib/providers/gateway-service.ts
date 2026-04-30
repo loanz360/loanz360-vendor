@@ -8,7 +8,7 @@ interface ProviderConfig {
   id: string
   type: 'sms' | 'email'
   provider_name: string
-  config: Record<string, any>
+  config: Record<string, unknown>
   is_active: boolean
   priority: number
   rate_limit_per_minute?: number

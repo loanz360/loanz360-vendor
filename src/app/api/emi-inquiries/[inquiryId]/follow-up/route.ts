@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -25,7 +26,39 @@ export async function POST(
     }
 
     const { inquiryId } = params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      follow_up_type: z.string(),
+
+      contact_method: z.string().optional(),
+
+      call_duration_seconds: z.string().optional(),
+
+      conversation_summary: z.string().optional(),
+
+      customer_response: z.string().optional(),
+
+      customer_interest_level: z.string().optional(),
+
+      customer_concerns: z.string().optional(),
+
+      action_taken: z.string().optional(),
+
+      next_action_required: z.string().optional(),
+
+      next_follow_up_scheduled_at: z.string().optional(),
+
+      outcome: z.string().optional(),
+
+      competitor_mentioned: z.string().optional(),
+
+      reminder_set: z.boolean().optional().default(false),
+
+      competitor_rate_offered: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {
@@ -99,7 +132,7 @@ export async function POST(
     }
 
     // Update the inquiry with latest information
-    const inquiryUpdates: any = {
+    const inquiryUpdates: Record<string, unknown> = {
       last_activity_at: new Date().toISOString()
     }
 

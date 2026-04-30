@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -11,7 +12,29 @@ import { apiLogger } from '@/lib/utils/logger'
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action: z.string(),
+
+      bdeId: z.string().uuid(),
+
+      leadId: z.string().uuid().optional(),
+
+      reason: z.string(),
+
+      newBdeId: z.string().uuid().optional(),
+
+      fromBdeId: z.string().uuid().optional(),
+
+      leadIds: z.array(z.unknown()).optional(),
+
+      targetBdeId: z.string().uuid().optional(),
+
+      autoDistribute: z.boolean().optional().default(false),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { action, bdeId, leadId, reason, newBdeId } = body
@@ -69,7 +92,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Pause a BDE from receiving new assignments
-async function pauseBDE(supabase: any, bdmId: string, bdeId: string, reason: string) {
+async function pauseBDE(supabase: unknown, bdmId: string, bdeId: string, reason: string) {
   if (!bdeId) {
     return NextResponse.json({ success: false, error: 'BDE ID is required' }, { status: 400 })
   }
@@ -138,7 +161,7 @@ async function pauseBDE(supabase: any, bdmId: string, bdeId: string, reason: str
 }
 
 // Resume a BDE to start receiving assignments
-async function resumeBDE(supabase: any, bdmId: string, bdeId: string) {
+async function resumeBDE(supabase: unknown, bdmId: string, bdeId: string) {
   if (!bdeId) {
     return NextResponse.json({ success: false, error: 'BDE ID is required' }, { status: 400 })
   }
@@ -203,7 +226,7 @@ async function resumeBDE(supabase: any, bdmId: string, bdeId: string) {
 }
 
 // Manually assign a lead to a specific BDE
-async function manualAssignLead(supabase: any, bdmId: string, leadId: string, bdeId: string, reason: string) {
+async function manualAssignLead(supabase: unknown, bdmId: string, leadId: string, bdeId: string, reason: string) {
   if (!leadId || !bdeId) {
     return NextResponse.json({ success: false, error: 'Lead ID and BDE ID are required' }, { status: 400 })
   }
@@ -314,7 +337,7 @@ async function manualAssignLead(supabase: any, bdmId: string, leadId: string, bd
 }
 
 // Reassign a lead from one BDE to another
-async function reassignLead(supabase: any, bdmId: string, leadId: string, newBdeId: string, reason: string) {
+async function reassignLead(supabase: unknown, bdmId: string, leadId: string, newBdeId: string, reason: string) {
   if (!leadId || !newBdeId) {
     return NextResponse.json({ success: false, error: 'Lead ID and new BDE ID are required' }, { status: 400 })
   }
@@ -428,7 +451,7 @@ async function reassignLead(supabase: any, bdmId: string, leadId: string, newBde
 }
 
 // Bulk reassign leads from one BDE to others
-async function bulkReassign(supabase: any, bdmId: string, body: any) {
+async function bulkReassign(supabase: unknown, bdmId: string, body: unknown) {
   const { fromBdeId, leadIds, targetBdeId, reason, autoDistribute = false } = body
 
   if (!leadIds || leadIds.length === 0) {
@@ -445,11 +468,11 @@ async function bulkReassign(supabase: any, bdmId: string, body: any) {
     return NextResponse.json({ success: false, error: 'Either targetBdeId or autoDistribute must be specified' }, { status: 400 })
   }
 
-  const successful: any[] = []
-  const failed: any[] = []
+  const successful: unknown[] = []
+  const failed: unknown[] = []
 
   // Get available BDEs if auto-distributing
-  let availableBDEs: any[] = []
+  let availableBDEs: unknown[] = []
   if (autoDistribute) {
     const { data: bdes, error: bdeError } = await supabase
       .from('users')
@@ -476,7 +499,7 @@ async function bulkReassign(supabase: any, bdmId: string, body: any) {
     }
 
     // Filter BDEs with available capacity
-    availableBDEs = bdes.filter((bde: any) => {
+    availableBDEs = bdes.filter((bde: unknown) => {
       const settings = bde.bde_assignment_settings
       return settings.current_lead_count < settings.max_concurrent_leads
     })
@@ -486,7 +509,7 @@ async function bulkReassign(supabase: any, bdmId: string, body: any) {
     }
 
     // Sort by last_assigned_at for round-robin
-    availableBDEs.sort((a: any, b: any) => {
+    availableBDEs.sort((a: unknown, b: unknown) => {
       const aTime = a.bde_assignment_settings.last_assigned_at
         ? new Date(a.bde_assignment_settings.last_assigned_at).getTime()
         : 0
@@ -517,11 +540,11 @@ async function bulkReassign(supabase: any, bdmId: string, body: any) {
 
       // Determine target BDE
       let assignToBdeId = targetBdeId
-      let selectedBDE: any = null
+      let selectedBDE: unknown = null
 
       if (autoDistribute) {
         // Filter by matching loan type
-        const matchingBDEs = availableBDEs.filter((bde: any) => bde.assigned_loan_type === lead.loan_type)
+        const matchingBDEs = availableBDEs.filter((bde: unknown) => bde.assigned_loan_type === lead.loan_type)
         if (matchingBDEs.length === 0) {
           failed.push({ leadId, reason: `No BDEs available for loan type ${lead.loan_type}` })
           continue

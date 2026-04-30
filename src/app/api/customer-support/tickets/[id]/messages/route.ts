@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -27,7 +28,21 @@ export async function POST(
     }
 
     const ticketId = params.id
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      message: z.string().optional(),
+
+      content: z.string().optional(),
+
+      is_internal: z.boolean().optional(),
+
+      message_type: z.string().optional(),
+
+      attachment_ids: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     // Support both 'message' and 'content' field names for compatibility
     const message = body.message || body.content
@@ -121,7 +136,7 @@ export async function POST(
     }
 
     // Update ticket status if needed
-    const updates: any = {}
+    const updates: Record<string, unknown> = {}
 
     // Set first response time if this is the first employee response
     if (isEmployee && !ticket.first_response_at) {

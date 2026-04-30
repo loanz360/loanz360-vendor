@@ -2,18 +2,14 @@ import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
 interface AnalyticsData {
-  overview: any
-  partner_distribution: any
-  current_month_metrics: any
-  top_partners: any[]
-  recent_recruitments: any[]
-  target_achievement: any
-  last_updated: string
+  overview: unknown  partner_distribution: unknown  current_month_metrics: unknown  top_partners: unknown[]
+  recent_recruitments: unknown[]
+  target_achievement: unknown  last_updated: string
 }
 
 interface HistoryData {
-  history: any[]
-  partnerBreakdown: any[]
+  history: unknown[]
+  partnerBreakdown: unknown[]
   totalPartnersRecruited: number
   activePartnersCount: number
 }
@@ -69,7 +65,7 @@ export function exportAnalyticsToPDF(data: AnalyticsData, userName: string) {
     margin: { left: 14, right: 14 }
   })
 
-  yPosition = (doc as any).lastAutoTable.finalY + 15
+  yPosition = (doc as unknown).lastAutoTable.finalY + 15
 
   // Partner Distribution
   doc.setFontSize(14)
@@ -104,7 +100,7 @@ export function exportAnalyticsToPDF(data: AnalyticsData, userName: string) {
     margin: { left: 14, right: 14 }
   })
 
-  yPosition = (doc as any).lastAutoTable.finalY + 15
+  yPosition = (doc as unknown).lastAutoTable.finalY + 15
 
   // Check if we need a new page
   if (yPosition > 250) {
@@ -150,7 +146,7 @@ export function exportAnalyticsToPDF(data: AnalyticsData, userName: string) {
     margin: { left: 14, right: 14 }
   })
 
-  yPosition = (doc as any).lastAutoTable.finalY + 15
+  yPosition = (doc as unknown).lastAutoTable.finalY + 15
 
   // New page for Top Partners
   doc.addPage()
@@ -187,7 +183,7 @@ export function exportAnalyticsToPDF(data: AnalyticsData, userName: string) {
   })
 
   // Target Achievement
-  yPosition = (doc as any).lastAutoTable.finalY + 15
+  yPosition = (doc as unknown).lastAutoTable.finalY + 15
 
   doc.setFontSize(14)
   doc.text('Target Achievement', 14, yPosition)
@@ -290,7 +286,7 @@ export function exportHistoryToPDF(data: HistoryData, userName: string) {
     margin: { left: 14, right: 14 }
   })
 
-  yPosition = (doc as any).lastAutoTable.finalY + 15
+  yPosition = (doc as unknown).lastAutoTable.finalY + 15
 
   // Monthly History
   doc.setFontSize(14)

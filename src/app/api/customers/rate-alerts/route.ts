@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Customer Rate Alerts API
  * CRUD operations for customer_rate_alerts table
@@ -49,7 +50,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      loan_type: z.string().optional(),
+
+
+      target_rate: z.string().optional(),
+
+
+      alert_channels: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { loan_type, target_rate, alert_channels } = body
 
@@ -87,7 +106,16 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, ...updates } = body
 

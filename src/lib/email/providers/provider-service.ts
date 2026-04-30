@@ -676,7 +676,7 @@ export class EmailProviderService {
     return {
       id: data.id as string,
       providerName: data.provider_name as EmailProviderType,
-      providerType: data.provider_type as any,
+      providerType: data.provider_type as unknown,
       displayName: data.display_name as string,
       description: data.description as string | undefined,
 
@@ -722,7 +722,7 @@ export class EmailProviderService {
       isActive: data.is_active as boolean,
       isPrimary: data.is_primary as boolean,
       isVerified: data.is_verified as boolean,
-      healthStatus: data.health_status as any,
+      healthStatus: data.health_status as unknown,
       priority: data.priority as number,
     };
   }

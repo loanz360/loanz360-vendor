@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -60,7 +61,25 @@ export async function POST(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_id: z.string().uuid(),
+
+
+      plan_id: z.string().uuid(),
+
+
+      effective_from: z.string(),
+
+
+      effective_to: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { employee_id, plan_id, effective_from, effective_to } = body
 

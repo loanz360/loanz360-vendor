@@ -192,7 +192,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function aggregateMetrics(metrics: any[]): {
+function aggregateMetrics(metrics: unknown[]): {
   revenue: number
   calls: number
   conversions: number
@@ -264,11 +264,10 @@ function calculatePredictedGrade(score: number): PerformanceGrade {
 }
 
 function calculatePromotionReadiness(
-  currentMetrics: any[],
-  historicalMetrics: any[],
-  currentTotals: any,
-  targets: any
-): number {
+  currentMetrics: unknown[],
+  historicalMetrics: unknown[],
+  currentTotals: unknown,
+  targets: unknown): number {
   let readiness = 0
 
   // Consistent performance (40 points)
@@ -303,7 +302,7 @@ function calculatePromotionReadiness(
   return Math.min(readiness, 100)
 }
 
-function analyzeOptimalCallTimes(historical: any[], current: any[]): {
+function analyzeOptimalCallTimes(historical: unknown[], current: unknown[]): {
   hour: number
   successRate: number
   recommendation: string
@@ -340,11 +339,11 @@ function analyzeOptimalCallTimes(historical: any[], current: any[]): {
 }
 
 function analyzeRiskFactors(
-  totals: any,
-  targets: any,
+  totals: unknown,
+  targets: unknown,
   daysWorked: number,
   daysRemaining: number,
-  metrics: any[]
+  metrics: unknown[]
 ): {
   riskLevel: 'low' | 'medium' | 'high'
   riskFactors: string[]
@@ -405,7 +404,7 @@ function analyzeRiskFactors(
   return { riskLevel, riskFactors, improvementActions }
 }
 
-function analyzeSkillGaps(totals: any, targets: any, metrics: any[]): {
+function analyzeSkillGaps(totals: unknown, targets: unknown, metrics: unknown[]): {
   skill: string
   currentScore: number
   targetScore: number
@@ -460,7 +459,7 @@ function analyzeSkillGaps(totals: any, targets: any, metrics: any[]): {
   return gaps.slice(0, 4) // Return top 4 gaps
 }
 
-function getTopPerformerBehaviors(totals: any, targets: any): string[] {
+function getTopPerformerBehaviors(totals: unknown, targets: unknown): string[] {
   const behaviors: string[] = []
 
   // Standard top performer behaviors
@@ -482,8 +481,7 @@ function generateWeeklyForecast(
   avgDailyRevenue: number,
   avgDailyCalls: number,
   daysRemaining: number,
-  currentTotals: any
-): {
+  currentTotals: unknown): {
   week: number
   predictedRevenue: number
   predictedCalls: number

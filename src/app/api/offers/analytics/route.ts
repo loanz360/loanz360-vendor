@@ -137,11 +137,11 @@ export async function GET(request: NextRequest) {
       recent_views: recentViewsResult.data || [],
 
       // Legacy format for backward compatibility
-      offers_by_bank: (bankPerfResult.data || []).map((bank: any) => ({
+      offers_by_bank: (bankPerfResult.data || []).map((bank: unknown) => ({
         bank: bank.bank_name,
         count: bank.total_offers
       })),
-      total_views: (bankPerfResult.data || []).reduce((sum: number, bank: any) =>
+      total_views: (bankPerfResult.data || []).reduce((sum: number, bank: unknown) =>
         sum + (bank.total_views || 0), 0
       ),
 

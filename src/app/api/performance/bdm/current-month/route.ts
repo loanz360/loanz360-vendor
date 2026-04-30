@@ -235,7 +235,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function aggregateBDMMetrics(dailyMetrics: any[]): any {
+function aggregateBDMMetrics(dailyMetrics: unknown[]): unknown {
   if (dailyMetrics.length === 0) {
     return {
       total_partnerships_initiated: 0,
@@ -300,7 +300,7 @@ function aggregateBDMMetrics(dailyMetrics: any[]): any {
   }
 }
 
-function calculateBDMPerformanceScore(current: any, targets: BDMMonthlyTargets): number {
+function calculateBDMPerformanceScore(current: unknown, targets: BDMMonthlyTargets): number {
   const weights = {
     partnerships_initiated: 0.10,
     partnerships_closed: 0.15,

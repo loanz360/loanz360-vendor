@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
     const lastDayOfMonth = new Date(currentYear, currentMonth, 0)
 
     // Try to fetch daily metrics - handle gracefully if table doesn't exist
-    let dailyMetrics: any[] = []
+    let dailyMetrics: unknown[] = []
     try {
       const { data, error } = await supabase
         .from('cpm_daily_metrics')
@@ -247,7 +247,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function aggregateCPMMetrics(metrics: any[]): any {
+function aggregateCPMMetrics(metrics: unknown[]): unknown {
   if (metrics.length === 0) {
     return {
       total_active_partners: 0,
@@ -279,7 +279,7 @@ function aggregateCPMMetrics(metrics: any[]): any {
   }
 }
 
-function calculateCPMPerformanceScore(current: any, targets: CPMMonthlyTargets): number {
+function calculateCPMPerformanceScore(current: unknown, targets: CPMMonthlyTargets): number {
   const weights = {
     active_partners: 0.15,
     new_partners: 0.10,
@@ -309,7 +309,7 @@ function calculateCPMPerformanceScore(current: any, targets: CPMMonthlyTargets):
   return Math.round(score)
 }
 
-function calculateAverage(metrics: any[], field: string): number {
+function calculateAverage(metrics: unknown[], field: string): number {
   const validMetrics = metrics.filter(m => m[field] !== null && m[field] !== undefined)
   if (validMetrics.length === 0) return 0
   const sum = validMetrics.reduce((acc, m) => acc + (m[field] || 0), 0)

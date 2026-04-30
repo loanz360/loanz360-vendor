@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -145,7 +146,7 @@ async function getPartnersHandler(request: NextRequest) {
     }
 
     // Format response
-    const formattedPartners = partners?.map((partner: any) => ({
+    const formattedPartners = partners?.map((partner: unknown) => ({
       id: partner.id,
       partner_id: partner.partner_id,
       full_name: partner.full_name,
@@ -226,7 +227,46 @@ async function createPartnerHandler(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      partner_type: z.string().optional(),
+
+
+      full_name: z.string().optional(),
+
+
+      mobile_number: z.string().min(10).optional(),
+
+
+      work_email: z.string().email().optional(),
+
+
+      personal_email: z.string().email().optional(),
+
+
+      present_address: z.string().optional(),
+
+
+      city: z.string().optional(),
+
+
+      state: z.string().optional(),
+
+
+      pincode: z.string().optional(),
+
+
+      address_proof_url: z.string().optional(),
+
+
+      address_proof_type: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields

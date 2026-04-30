@@ -72,7 +72,7 @@ interface IncentiveProgress {
   days_remaining: number;
   start_date: string;
   end_date: string;
-  all_tiers: any[];
+  all_tiers: unknown[];
 }
 
 interface PerformanceData {
@@ -84,7 +84,7 @@ interface PerformanceData {
   period_end: string;
   crm_metrics: CRMMetrics;
   incentive_progress: IncentiveProgress[];
-  recent_events: any[];
+  recent_events: unknown[];
 }
 
 export default function PerformanceDashboard({
@@ -217,8 +217,7 @@ function CRMMetricsSection({
 interface MetricCardProps {
   label: string;
   value: number | string;
-  icon: any;
-  color: string;
+  icon: unknown  color: string;
   trend?: 'up' | 'down' | 'neutral';
   subtitle?: string;
 }
@@ -322,7 +321,7 @@ function IncentiveCard({ incentive }: { incentive: IncentiveProgress }) {
 
         {/* Tier Visualization */}
         <div className="grid grid-cols-5 gap-2">
-          {incentive.all_tiers.slice(0, 5).map((tier: any) => {
+          {incentive.all_tiers.slice(0, 5).map((tier: unknown) => {
             const achieved = incentive.progress_percentage >= tier.target_percentage;
             return (
               <div
@@ -361,7 +360,7 @@ function IncentiveCard({ incentive }: { incentive: IncentiveProgress }) {
 }
 
 // Recent Activity Section
-function RecentActivitySection({ events }: { events: any[] }) {
+function RecentActivitySection({ events }: { events: unknown[] }) {
   return (
     <Card>
       <CardHeader>

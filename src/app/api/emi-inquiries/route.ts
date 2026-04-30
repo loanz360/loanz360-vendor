@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -35,7 +36,70 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      principal_amount: z.string().optional(),
+
+
+      interest_rate: z.string().optional(),
+
+
+      tenure_months: z.string().optional(),
+
+
+      monthly_emi: z.string().optional(),
+
+
+      total_interest: z.string().optional(),
+
+
+      total_amount: z.string().optional(),
+
+
+      customer_name: z.string().optional(),
+
+
+      customer_email: z.string().email().optional(),
+
+
+      customer_phone: z.string().optional(),
+
+
+      loan_type: z.string().optional(),
+
+
+      customer_requirements: z.string().optional(),
+
+
+      internal_notes: z.string().optional(),
+
+
+      inquiry_source: z.string().optional(),
+
+
+      meeting_type: z.string().optional(),
+
+
+      customer_income_range: z.string().optional(),
+
+
+      customer_credit_score_range: z.string().optional(),
+
+
+      tags: z.array(z.unknown()).optional(),
+
+
+      hot_lead: z.string().optional(),
+
+
+      customer_consent_given: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields

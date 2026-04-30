@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -148,7 +149,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      ip_address: z.string().optional(),
+
+      ip_range_start: z.string().optional(),
+
+      ip_range_end: z.string().optional(),
+
+      description: z.string().optional(),
+
+      enabled: z.boolean().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { ip_address, ip_range_start, ip_range_end, description } = body
 
@@ -300,7 +315,13 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      enabled: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { enabled } = body
 

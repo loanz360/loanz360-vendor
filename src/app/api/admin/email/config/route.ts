@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Email Provider Configuration API
@@ -230,7 +231,49 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      provider: z.string().optional(),
+
+
+      domain: z.string().optional(),
+
+
+      api_client_id: z.string().uuid().optional(),
+
+
+      imap_host: z.string().optional(),
+
+
+      imap_port: z.string().optional(),
+
+
+      imap_use_ssl: z.string().optional(),
+
+
+      smtp_host: z.string().optional(),
+
+
+      smtp_port: z.string().optional(),
+
+
+      smtp_use_ssl: z.string().optional(),
+
+
+      daily_send_limit_per_user: z.string().optional(),
+
+
+      max_attachment_size_mb: z.string().optional(),
+
+
+      max_recipients_per_email: z.string().email().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const adminSupabase = createSupabaseAdmin();
 

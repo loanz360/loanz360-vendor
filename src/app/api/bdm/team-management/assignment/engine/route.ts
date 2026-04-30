@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -11,7 +12,17 @@ import { apiLogger } from '@/lib/utils/logger'
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      loanType: z.string().optional(),
+
+      leadSource: z.string().optional(),
+
+      limit: z.number().optional().default(50),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Optional filters
@@ -76,8 +87,8 @@ export async function POST(request: NextRequest) {
     const engineRunStartTime = new Date().toISOString()
 
     // Process each lead for assignment
-    const assignments: any[] = []
-    const skipped: any[] = []
+    const assignments: unknown[] = []
+    const skipped: unknown[] = []
 
     for (const lead of pendingLeads) {
       try {
@@ -112,13 +123,13 @@ export async function POST(request: NextRequest) {
         }
 
         // Filter BDEs by pincode match
-        const matchingBDEs = eligibleBDEs?.filter((bde: any) => {
+        const matchingBDEs = eligibleBDEs?.filter((bde: unknown) => {
           const pincodes = bde.assigned_pincode_ranges || []
           return pincodes.includes(lead.pincode)
         }) || []
 
         // Further filter by workload capacity
-        const availableBDEs = matchingBDEs.filter((bde: any) => {
+        const availableBDEs = matchingBDEs.filter((bde: unknown) => {
           const settings = bde.bde_assignment_settings
           return settings.current_lead_count < settings.max_concurrent_leads
         })
@@ -134,7 +145,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Round-robin: Sort by last_assigned_at (oldest gets next lead)
-        availableBDEs.sort((a: any, b: any) => {
+        availableBDEs.sort((a: unknown, b: unknown) => {
           const aTime = a.bde_assignment_settings.last_assigned_at
             ? new Date(a.bde_assignment_settings.last_assigned_at).getTime()
             : 0
@@ -292,7 +303,7 @@ export async function GET(request: NextRequest) {
       .eq('current_stage', 'NEW')
 
     const pendingByLoanType: Record<string, number> = {}
-    pendingStats?.forEach((lead: any) => {
+    pendingStats?.forEach((lead: unknown) => {
       pendingByLoanType[lead.loan_type] = (pendingByLoanType[lead.loan_type] || 0) + 1
     })
 
@@ -311,7 +322,7 @@ export async function GET(request: NextRequest) {
       .eq('assignment_status', 'active')
 
     const capacityByLoanType: Record<string, { available: number; total: number; bdes: number }> = {}
-    bdeCapacity?.forEach((bde: any) => {
+    bdeCapacity?.forEach((bde: unknown) => {
       const loanType = bde.users.assigned_loan_type
       if (!capacityByLoanType[loanType]) {
         capacityByLoanType[loanType] = { available: 0, total: 0, bdes: 0 }

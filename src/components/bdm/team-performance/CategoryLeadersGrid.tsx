@@ -83,7 +83,7 @@ export default function CategoryLeadersGrid({ leaders, onBDEClick }: CategoryLea
 }
 
 function getIconComponent(iconName: string) {
-  const icons: Record<string, any> = {
+  const icons: Record<string, unknown> = {
     Trophy,
     DollarSign,
     Target,

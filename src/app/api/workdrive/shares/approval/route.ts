@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive Share Approval Workflow API
@@ -184,7 +185,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      fileId: z.string().uuid().optional(),
+
+
+      folderId: z.string().uuid().optional(),
+
+
+      shareType: z.string().optional(),
+
+
+      sharedWithEmails: z.string().email().optional(),
+
+
+      reason: z.string().optional(),
+
+
+      expiresInDays: z.string().optional(),
+
+
+      requestId: z.string().uuid(),
+
+
+      action: z.string().optional(),
+
+
+      reviewNotes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       fileId,
@@ -308,7 +342,7 @@ export async function POST(request: NextRequest) {
     // Log audit
     await logAudit({
       userId: user.id,
-      action: 'share' as any,
+      action: 'share' as unknown,
       resourceType: fileId ? 'file' : 'folder',
       resourceId: fileId || folderId!,
       resourceName,
@@ -356,7 +390,22 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Only administrators can approve share requests' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      reviewNotes: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+      requestId: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { requestId, action, reviewNotes } = body
 
@@ -448,7 +497,7 @@ export async function PUT(request: NextRequest) {
     // Log audit
     await logAudit({
       userId: user.id,
-      action: 'share' as any,
+      action: 'share' as unknown,
       resourceType: shareRequest.file_id ? 'file' : 'folder',
       resourceId: shareRequest.file_id || shareRequest.folder_id,
       resourceName,

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -145,7 +146,40 @@ export async function PATCH(
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      status: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      assigned_to_partner_support_id: z.string().uuid().optional(),
+
+
+      routed_to_department: z.string().optional(),
+
+
+      routed_to_employee_id: z.string().uuid().optional(),
+
+
+      routing_note: z.string().optional(),
+
+
+      escalation_level: z.string().optional(),
+
+
+      escalated_to_id: z.string().uuid().optional(),
+
+
+      escalation_reason: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       status,
@@ -212,7 +246,7 @@ export async function PATCH(
     }
 
     // Build update object
-    const updates: any = { updated_at: new Date().toISOString() }
+    const updates: Record<string, unknown> = { updated_at: new Date().toISOString() }
 
     if (status) {
       updates.status = status

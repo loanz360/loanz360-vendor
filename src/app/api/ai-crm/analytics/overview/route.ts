@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       .order('ai_score', { ascending: false })
       .limit(5)
 
-    const topCROs = croMetrics?.map((m: any) => ({
+    const topCROs = croMetrics?.map((m: unknown) => ({
       id: m.user_id,
       name: m.users.full_name,
       callsMade: m.calls_made || 0,
@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
       .order('deals_sanctioned', { ascending: false })
       .limit(5)
 
-    const topBDEs = bdeMetrics?.map((m: any) => ({
+    const topBDEs = bdeMetrics?.map((m: unknown) => ({
       id: m.user_id,
       name: m.users.full_name,
       dealsInProgress: m.deals_in_progress || 0,

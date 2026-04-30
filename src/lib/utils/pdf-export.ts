@@ -84,7 +84,7 @@ export const exportAttendanceReport = (
   })
 
   // Add footer
-  const pageCount = (doc as any).internal.getNumberOfPages()
+  const pageCount = (doc as unknown).internal.getNumberOfPages()
   doc.setFontSize(8)
   doc.text(
     `Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`,
@@ -152,7 +152,7 @@ export const exportLeaveReport = (
   })
 
   // Add footer
-  const pageCount = (doc as any).internal.getNumberOfPages()
+  const pageCount = (doc as unknown).internal.getNumberOfPages()
   doc.setFontSize(8)
   doc.text(
     `Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`,
@@ -244,7 +244,7 @@ export const exportMonthlyReport = (
   }
 
   // Add footer
-  const pageCount = (doc as any).internal.getNumberOfPages()
+  const pageCount = (doc as unknown).internal.getNumberOfPages()
   doc.setFontSize(8)
   doc.text(
     `Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`,
@@ -514,7 +514,7 @@ export const exportProposalToPDF = (proposal: ProposalDetailForPDF) => {
       }
     })
 
-    yPos = (doc as any).lastAutoTable.finalY + 10
+    yPos = (doc as unknown).lastAutoTable.finalY + 10
   }
 
   // Stage History Table
@@ -547,7 +547,7 @@ export const exportProposalToPDF = (proposal: ProposalDetailForPDF) => {
   }
 
   // Add footer
-  const pageCount = (doc as any).internal.getNumberOfPages()
+  const pageCount = (doc as unknown).internal.getNumberOfPages()
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i)
     doc.setFontSize(8)

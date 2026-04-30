@@ -264,7 +264,7 @@ export async function GET(request: NextRequest) {
     const changedLeadIds = changedLeads?.map((c) => c.lead_id) || []
 
     // Fetch details for changed leads
-    let changedLeadDetails: any[] = []
+    let changedLeadDetails: unknown[] = []
     if (changedLeadIds.length > 0) {
       const { data: changedDetails } = await supabase
         .from('leads')

@@ -68,7 +68,7 @@ interface DepartmentTicketsViewProps {
   department: 'finance' | 'accounts' | 'payout_specialist' | 'technical_support' | 'compliance'
   departmentName: string
   detailBasePath?: string
-  useRealtimeHook?: (onNewTicket?: (ticket: any) => void, onTicketUpdate?: (ticket: any) => void) => { isConnected: boolean }
+  useRealtimeHook?: (onNewTicket?: (ticket: unknown) => void, onTicketUpdate?: (ticket: unknown) => void) => { isConnected: boolean }
 }
 
 export default function DepartmentTicketsView({
@@ -121,7 +121,7 @@ export default function DepartmentTicketsView({
   } | null>(null)
 
   // Stable callbacks for realtime hook (BUG-09 fix)
-  const handleNewTicket = useCallback((newTicket: any) => {
+  const handleNewTicket = useCallback((newTicket: unknown) => {
     setTickets(prev => [newTicket, ...prev])
     setCounts(prev => ({
       ...prev,
@@ -130,7 +130,7 @@ export default function DepartmentTicketsView({
     }))
   }, [])
 
-  const handleTicketUpdate = useCallback((updatedTicket: any) => {
+  const handleTicketUpdate = useCallback((updatedTicket: unknown) => {
     setTickets(prev =>
       prev.map(t => t.id === updatedTicket.id ? { ...t, ...updatedTicket } : t)
     )

@@ -578,7 +578,7 @@ export class MCAAdapter {
     }
   }
 
-  private parseCompanyResponse(response: any): CompanyVerificationResult {
+  private parseCompanyResponse(response: Record<string, unknown>): CompanyVerificationResult {
     if (response.error) {
       return {
         success: false,
@@ -599,7 +599,7 @@ export class MCAAdapter {
     }
   }
 
-  private parseDirectorResponse(response: any): DirectorVerificationResult {
+  private parseDirectorResponse(response: Record<string, unknown>): DirectorVerificationResult {
     if (response.error) {
       return {
         success: false,

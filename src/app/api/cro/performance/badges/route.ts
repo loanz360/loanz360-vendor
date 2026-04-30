@@ -326,7 +326,7 @@ export async function GET(request: NextRequest) {
  * Calculate current month performance values for badge progress
  */
 function calculateCurrentValues(
-  dailyMetrics: any[]
+  dailyMetrics: unknown[]
 ): Record<string, number> {
   if (dailyMetrics.length === 0) {
     return {

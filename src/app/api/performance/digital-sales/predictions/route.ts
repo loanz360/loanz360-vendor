@@ -310,7 +310,7 @@ function calculateStdDev(values: number[]): number {
 }
 
 // Helper function to analyze performance by day of week
-function analyzeDayOfWeekPerformance(metrics: any[]): any {
+function analyzeDayOfWeekPerformance(metrics: unknown[]): unknown {
   const dayStats: Record<number, { leads: number[], revenue: number[] }> = {
     0: { leads: [], revenue: [] }, // Sunday
     1: { leads: [], revenue: [] }, // Monday

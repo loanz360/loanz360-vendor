@@ -178,8 +178,7 @@ export interface HierarchyVersion {
   version_number: number;
   version_name: string | null;
   description: string | null;
-  hierarchy_snapshot: any;
-  is_published: boolean;
+  hierarchy_snapshot: unknown  is_published: boolean;
   published_at: string | null;
   is_active: boolean;
   created_at: string;
@@ -192,8 +191,8 @@ export interface HierarchyChangeLog {
   entity_type: 'department' | 'role' | 'sub_role' | 'kri' | 'kpi' | 'target' | 'location_mapping' | 'loan_type_mapping' | 'reporting_structure';
   entity_id: string;
   action: 'created' | 'updated' | 'deleted' | 'activated' | 'deactivated';
-  old_values: any | null;
-  new_values: any | null;
+  old_values: unknown | null;
+  new_values: unknown | null;
   changed_by: string | null;
   changed_at: string;
   change_reason: string | null;

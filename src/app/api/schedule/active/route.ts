@@ -66,20 +66,20 @@ export async function GET(request: NextRequest) {
     nextWeekEnd.setHours(23, 59, 59, 999)
 
     const grouped = {
-      today: schedules.filter((s: any) => {
+      today: schedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= now && scheduleDate <= endOfToday
       }),
-      tomorrow: schedules.filter((s: any) => {
+      tomorrow: schedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= tomorrow && scheduleDate < new Date(tomorrow.getTime() + 24 * 60 * 60 * 1000)
       }),
-      this_week: schedules.filter((s: any) => {
+      this_week: schedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         const tomorrowEnd = new Date(tomorrow.getTime() + 24 * 60 * 60 * 1000)
         return scheduleDate >= tomorrowEnd && scheduleDate <= endOfWeek
       }),
-      next_week: schedules.filter((s: any) => {
+      next_week: schedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= nextWeekStart && scheduleDate <= nextWeekEnd
       }),

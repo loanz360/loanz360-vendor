@@ -211,7 +211,7 @@ export function calculateProfileCompletion(data: EmployeeProfileData): ProfileCo
     let filled = 0
 
     for (const field of section.fields) {
-      if (isFieldFilled(data, field.key, (field as any).check)) {
+      if (isFieldFilled(data, field.key, (field as unknown).check)) {
         filled++
       } else {
         sectionMissing.push(field.label)

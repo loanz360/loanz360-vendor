@@ -152,7 +152,7 @@ export async function PATCH(
     if (_valErr) return _valErr
 
     // Prepare update data using shared field mapping
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

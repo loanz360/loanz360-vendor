@@ -76,7 +76,7 @@ export interface RewardDetails {
   voucher_type?: string
   gift_details?: string
   travel_destination?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface Incentive {
@@ -132,7 +132,7 @@ export interface IncentiveAllocation {
   allocation_status: AllocationStatus
   achieved_at?: string | null
   earned_amount: number
-  earned_reward_details?: any | null
+  earned_reward_details?: Record<string, unknown> | null
   created_at: string
   updated_at: string
   // Relationships
@@ -463,8 +463,7 @@ export interface IncentiveTimelineEvent {
   date: string
   type: 'created' | 'activated' | 'progress_update' | 'achieved' | 'claimed' | 'paid' | 'expired'
   description: string
-  metadata?: any
-}
+  metadata?: unknown}
 
 // =====================================================
 // DATABASE FUNCTION TYPES

@@ -210,7 +210,7 @@ export async function GET(request: NextRequest) {
 
     // Process daily visits into trend data
     const visitTrend: Record<string, number> = {}
-    ;(dailyVisits || []).forEach((v: any) => {
+    ;(dailyVisits || []).forEach((v: unknown) => {
       visitTrend[v.visit_date] = (visitTrend[v.visit_date] || 0) + 1
     })
 
@@ -225,7 +225,7 @@ export async function GET(request: NextRequest) {
     stages.forEach(stage => {
       stageData[stage] = { count: 0, value: 0 }
     })
-    ;(leadsByStage || []).forEach((l: any) => {
+    ;(leadsByStage || []).forEach((l: unknown) => {
       if (stageData[l.lead_stage]) {
         stageData[l.lead_stage].count++
         stageData[l.lead_stage].value += l.estimated_value || 0
@@ -240,7 +240,7 @@ export async function GET(request: NextRequest) {
 
     // Process customers by source
     const sourceData: Record<string, number> = {}
-    ;(customersBySource || []).forEach((c: any) => {
+    ;(customersBySource || []).forEach((c: unknown) => {
       sourceData[c.source] = (sourceData[c.source] || 0) + 1
     })
 
@@ -256,13 +256,13 @@ export async function GET(request: NextRequest) {
 
     // Calculate total pipeline value
     const totalPipelineValue = (leadsByStage || [])
-      .filter((l: any) => !['Won', 'Lost'].includes(l.lead_stage))
-      .reduce((sum: number, l: any) => sum + (l.estimated_value || 0), 0)
+      .filter((l: unknown) => !['Won', 'Lost'].includes(l.lead_stage))
+      .reduce((sum: number, l: unknown) => sum + (l.estimated_value || 0), 0)
 
     // Calculate won value
     const wonValue = (leadsByStage || [])
-      .filter((l: any) => l.lead_stage === 'Won')
-      .reduce((sum: number, l: any) => sum + (l.estimated_value || 0), 0)
+      .filter((l: unknown) => l.lead_stage === 'Won')
+      .reduce((sum: number, l: unknown) => sum + (l.estimated_value || 0), 0)
 
     return NextResponse.json({
       success: true,

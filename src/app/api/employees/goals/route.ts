@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // EMPLOYEE GOALS API (OKRs/KPIs)
@@ -12,7 +13,7 @@ import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-async function getEmployeeId(supabase: any, userId: string) {
+async function getEmployeeId(supabase: unknown, userId: string) {
   const { data: employee } = await supabase
     .from('employees')
     .select('id')
@@ -89,12 +90,12 @@ export async function GET(request: NextRequest) {
     // Calculate summary statistics
     const stats = {
       total: goals.length,
-      completed: goals.filter((g: any) => g.status === 'COMPLETED').length,
-      on_track: goals.filter((g: any) => g.status === 'ON_TRACK').length,
-      at_risk: goals.filter((g: any) => g.status === 'AT_RISK').length,
-      behind: goals.filter((g: any) => g.status === 'BEHIND').length,
+      completed: goals.filter((g: unknown) => g.status === 'COMPLETED').length,
+      on_track: goals.filter((g: unknown) => g.status === 'ON_TRACK').length,
+      at_risk: goals.filter((g: unknown) => g.status === 'AT_RISK').length,
+      behind: goals.filter((g: unknown) => g.status === 'BEHIND').length,
       avg_completion: goals.length > 0
-        ? Math.round(goals.reduce((sum: number, g: any) => sum + (g.completion_percentage || 0), 0) / goals.length)
+        ? Math.round(goals.reduce((sum: number, g: unknown) => sum + (g.completion_percentage || 0), 0) / goals.length)
         : 0
     }
 
@@ -133,7 +134,61 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      goal_title: z.string().optional(),
+
+
+      goal_description: z.string().optional(),
+
+
+      goal_type: z.string().optional(),
+
+
+      goal_category: z.string().optional(),
+
+
+      parent_objective_id: z.string().uuid().optional(),
+
+
+      measurement_type: z.string().optional(),
+
+
+      target_value: z.string().optional(),
+
+
+      unit: z.string().optional(),
+
+
+      goal_period: z.string().optional(),
+
+
+      start_date: z.string().optional(),
+
+
+      end_date: z.string().optional(),
+
+
+      weightage: z.string().optional(),
+
+
+      is_stretch_goal: z.boolean().optional(),
+
+
+      aligned_with_company_okr: z.string().optional(),
+
+
+      goal_id: z.string().uuid().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       goal_title,
@@ -222,7 +277,19 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      goal_id: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { goal_id, action, ...updateData } = body
 

@@ -436,7 +436,7 @@ export class BankStatementAdapter {
   }
 
   private parseAnalysisResponse(
-    response: any,
+    response: unknown,
     requestId: string,
     startTime: number
   ): BankStatementAnalysisResult {

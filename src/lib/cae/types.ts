@@ -19,7 +19,7 @@ export interface CAEProviderConfig {
   priority: number
   timeout_ms: number
   retry_count: number
-  config?: Record<string, any>
+  config?: Record<string, unknown>
 }
 
 export interface CAERequest {
@@ -120,8 +120,7 @@ export interface CAEResult {
   conditions?: string[]
 
   // Raw provider response (for debugging)
-  raw_response?: any
-}
+  raw_response?: unknown}
 
 export interface CAEFlag {
   code: string
@@ -176,8 +175,8 @@ export interface CAEBusinessRule {
   rule_type: 'ELIGIBILITY' | 'RISK' | 'PRICING' | 'COMPLIANCE'
   loan_type?: string
   employment_type?: string
-  conditions: Record<string, any>
-  actions: Record<string, any>
+  conditions: Record<string, unknown>
+  actions: Record<string, unknown>
   priority: number
   is_active: boolean
 }

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // EMPLOYEE ONBOARDING API
@@ -120,7 +121,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      task_id: z.string().uuid().optional(),
+
+
+      status: z.string().optional(),
+
+
+      completion_notes: z.string().optional(),
+
+
+      completion_proof_url: z.string().optional(),
+
+
+      started_at: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { task_id, status, completion_notes, completion_proof_url } = body
 
@@ -155,7 +177,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Build update object
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       task_status: status,
       updated_at: new Date().toISOString()
     }

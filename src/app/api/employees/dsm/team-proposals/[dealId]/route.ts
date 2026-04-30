@@ -5,7 +5,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
 
 // Helper function to verify DSM role
-async function verifyDSMRole(supabase: any, userId: string) {
+async function verifyDSMRole(supabase: unknown, userId: string) {
   const { data: profile, error } = await supabase
     .from('users')
     .select('role, sub_role')

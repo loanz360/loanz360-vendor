@@ -6,7 +6,7 @@
 type LogLevel = 'info' | 'warn' | 'error' | 'debug'
 
 interface LogMetadata {
-  [key: string]: any
+  [key: string]: unknown
 }
 
 class Logger {

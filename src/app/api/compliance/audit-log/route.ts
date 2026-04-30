@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
@@ -67,7 +68,41 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      adminId: z.string().uuid().optional(),
+
+      adminEmail: z.string().email().optional(),
+
+      adminRole: z.string().optional(),
+
+      action: z.string().optional(),
+
+      resourceType: z.string().optional(),
+
+      resourceId: z.string().uuid().optional(),
+
+      beforeState: z.string().optional(),
+
+      afterState: z.string().optional(),
+
+      ipAddress: z.string().optional(),
+
+      userAgent: z.string().optional(),
+
+      sessionId: z.string().uuid().optional(),
+
+      severity: z.string().optional(),
+
+      status: z.string().optional(),
+
+      frameworks: z.string().optional(),
+
+      sensitivityLevel: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const sequenceNumber = await logAuditEvent({

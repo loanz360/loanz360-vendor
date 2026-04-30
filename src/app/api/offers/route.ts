@@ -306,7 +306,17 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      scheduled_publish_at: z.string().optional(),
+
+      timezone: z.string().optional(),
+
+      auto_publish_enabled: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate with Zod
@@ -441,7 +451,17 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      auto_publish_enabled: z.string().optional(),
+
+      timezone: z.string().optional(),
+
+      scheduled_publish_at: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     // Validate with Zod
@@ -457,7 +477,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Sanitize text inputs
-    const sanitizedData: any = {
+    const sanitizedData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

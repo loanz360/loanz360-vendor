@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 
     // --- Fetch targets ---
     // Try dse_targets first (20251123 migration, user_id), then dse_customer_targets (20251201, dse_user_id)
-    let targets: any = null
+    let targets: unknown = null
     const { data: t1, error: t1Err } = await adminClient
       .from('dse_targets')
       .select('*')
@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
     const lastDay = new Date(currentYear, currentMonth, 0).toISOString().split('T')[0]
 
     // Try dse_daily_metrics first (20251123, user_id, metric_date), then dse_daily_analytics (20251201, dse_user_id, analytics_date)
-    let dailyMetrics: any[] = []
+    let dailyMetrics: unknown[] = []
     let usingOldSchema = true
 
     const { data: dm1, error: dm1Err } = await adminClient
@@ -236,7 +236,7 @@ export async function GET(request: NextRequest) {
     const overallScore = calculateDSEPerformanceScore(currentMetrics, monthlyTargets)
 
     // --- Fetch monthly summary (try both user_id and dse_user_id) ---
-    let monthlySummary: any = null
+    let monthlySummary: unknown = null
     const { data: ms1, error: ms1Err } = await adminClient
       .from('dse_monthly_summary')
       .select('company_rank, total_employees, percentile, performance_grade, performance_score')
@@ -318,7 +318,7 @@ function safePercent(value: number, target: number): number {
  *   leads_generated, leads_converted, calls_made, meetings_scheduled, meetings_completed,
  *   potential_revenue, converted_revenue, unique_locations, total_distance_km
  */
-function aggregateDSEMetrics(dailyMetrics: any[], usingOldSchema: boolean): any {
+function aggregateDSEMetrics(dailyMetrics: unknown[], usingOldSchema: boolean): unknown {
   const empty = {
     total_field_visits: 0, total_meetings_scheduled: 0, total_meetings_attended: 0,
     total_travel_distance_km: 0, total_leads_generated: 0, total_conversions: 0,
@@ -376,16 +376,16 @@ function aggregateDSEMetrics(dailyMetrics: any[], usingOldSchema: boolean): any 
   let territory_coverage_percentage = 0
   if (usingOldSchema) {
     territory_coverage_percentage = dailyMetrics.length > 0
-      ? dailyMetrics.reduce((sum: number, m: any) => sum + (Number(m.territory_coverage) || 0), 0) / dailyMetrics.length : 0
+      ? dailyMetrics.reduce((sum: number, m: unknown) => sum + (Number(m.territory_coverage) || 0), 0) / dailyMetrics.length : 0
   } else {
     territory_coverage_percentage = dailyMetrics.length > 0
-      ? dailyMetrics.reduce((sum: number, m: any) => sum + (m.unique_locations || 0), 0) / dailyMetrics.length : 0
+      ? dailyMetrics.reduce((sum: number, m: unknown) => sum + (m.unique_locations || 0), 0) / dailyMetrics.length : 0
   }
 
   return { ...totals, field_conversion_rate, average_deal_size, territory_coverage_percentage }
 }
 
-function calculateDSEPerformanceScore(current: any, targets: DSEMonthlyTargets): number {
+function calculateDSEPerformanceScore(current: unknown, targets: DSEMonthlyTargets): number {
   const weights = {
     field_visits: 0.10, meetings: 0.10, leads: 0.15, conversions: 0.15,
     conversion_rate: 0.15, revenue: 0.20, deal_size: 0.05, territory: 0.05, demos: 0.05,

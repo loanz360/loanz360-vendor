@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Helper function to verify Digital Sales access
  */
-async function verifyDigitalSalesAccess(supabase: any, userId: string) {
+async function verifyDigitalSalesAccess(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')
@@ -118,7 +119,19 @@ export async function PUT(
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      snooze_minutes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Verify reminder belongs to user
@@ -138,7 +151,7 @@ export async function PUT(
     }
 
     // Update reminder
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       ...body,
       updated_at: new Date().toISOString()
     }
@@ -203,7 +216,19 @@ export async function PATCH(
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      snooze_minutes: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { action, snooze_minutes } = body
 

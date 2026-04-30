@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Verify user is TeleSales
  */
-async function verifyTeleSalesUser(supabase: any, userId: string) {
+async function verifyTeleSalesUser(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')
@@ -118,7 +119,23 @@ export async function PUT(
     }
 
     const { id } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      actual_start_time: z.string().optional(),
+
+      actual_end_time: z.string().optional(),
+
+      requires_follow_up: z.string().optional(),
+
+      follow_up_date: z.string().optional(),
+
+      status: z.string().optional(),
+
+      follow_up_notes: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Verify ownership
@@ -135,7 +152,7 @@ export async function PUT(
     }
 
     // Build update data (only include provided fields)
-    const updateData: Record<string, any> = {}
+    const updateData: Record<string, unknown> = {}
     const allowedFields = [
       'title', 'description', 'call_type', 'call_purpose', 'status',
       'scheduled_date', 'scheduled_time', 'duration_minutes',

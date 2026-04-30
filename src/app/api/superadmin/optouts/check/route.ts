@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Opt-Out Check API
  * Real-time validation before sending messages
@@ -22,7 +23,17 @@ export const runtime = 'nodejs'
 export async function POST(request: NextRequest) {
   try {
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      identifier: z.string().optional(),
+
+      identifiers: z.array(z.unknown()).optional(),
+
+      channel: z.string().optional().default('all'),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { identifier, identifiers, channel = 'all' } = body
@@ -70,7 +81,7 @@ export async function POST(request: NextRequest) {
 // =====================================================
 
 async function checkSingleOptOut(
-  supabase: any,
+  supabase: unknown,
   identifier: string,
   channel: string
 ) {
@@ -97,21 +108,21 @@ async function checkSingleOptOut(
   return {
     identifier: normalizedIdentifier,
     isOptedOut,
-    channels: isOptedOut ? data.map((d: any) => ({
+    channels: isOptedOut ? data.map((d: Record<string, unknown>) => ({
       channel: d.channel,
       reason: d.reason,
       optedOutAt: d.opted_out_at
     })) : [],
     canSend: {
-      sms: !data?.some((d: any) => d.channel === 'sms' || d.channel === 'all'),
-      email: !data?.some((d: any) => d.channel === 'email' || d.channel === 'all'),
-      whatsapp: !data?.some((d: any) => d.channel === 'whatsapp' || d.channel === 'all')
+      sms: !data?.some((d: Record<string, unknown>) => d.channel === 'sms' || d.channel === 'all'),
+      email: !data?.some((d: Record<string, unknown>) => d.channel === 'email' || d.channel === 'all'),
+      whatsapp: !data?.some((d: Record<string, unknown>) => d.channel === 'whatsapp' || d.channel === 'all')
     }
   }
 }
 
 async function checkBulkOptOut(
-  supabase: any,
+  supabase: unknown,
   identifiers: string[],
   channel: string
 ) {

@@ -85,7 +85,7 @@ export type NotificationType = 'info' | 'success' | 'warning' | 'error'
 export interface QueueNotificationParams {
   templateName: string
   recipientId: string
-  variables?: Record<string, any>
+  variables?: Record<string, unknown>
   scheduledFor?: Date
 }
 
@@ -99,7 +99,7 @@ export interface CreateInAppNotificationParams {
   actionLabel?: string
   icon?: string
   color?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   expiresAt?: Date
 }
 

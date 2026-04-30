@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -44,7 +45,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      month: z.number().optional(),
+
+
+      year: z.number().optional(),
+
+
+      format: z.string().optional().default('csv'),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { month, year, format = 'csv' } = body
 
@@ -117,9 +133,9 @@ export async function POST(request: NextRequest) {
 
 function generateCSV(
   userName: string,
-  summary: any,
-  dailyMetrics: any[],
-  targets: any,
+  summary: unknown,
+  dailyMetrics: unknown[],
+  targets: unknown,
   month: number,
   year: number
 ): string {

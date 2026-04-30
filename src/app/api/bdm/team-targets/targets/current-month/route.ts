@@ -241,12 +241,12 @@ async function getCurrentTargetsHandler(request: NextRequest) {
           createdAt: target.created_at,
           updatedAt: target.updated_at,
           createdBy: target.created_by_user ? {
-            name: (target.created_by_user as any).name,
-            email: (target.created_by_user as any).email,
+            name: (target.created_by_user as unknown).name,
+            email: (target.created_by_user as unknown).email,
           } : null,
           updatedBy: target.updated_by_user ? {
-            name: (target.updated_by_user as any).name,
-            email: (target.updated_by_user as any).email,
+            name: (target.updated_by_user as unknown).name,
+            email: (target.updated_by_user as unknown).email,
           } : null,
         } : null,
         current: {

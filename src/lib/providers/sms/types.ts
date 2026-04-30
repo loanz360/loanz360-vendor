@@ -6,14 +6,13 @@ export interface SMSMessage {
   sender_id?: string
   template_id?: string  // For DLT compliance (India)
   entity_id?: string    // For DLT compliance (India)
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface SMSResponse {
   success: boolean
   message_id?: string
-  provider_response?: any
-  error?: string
+  provider_response?: unknown  error?: string
   error_code?: string
   credits_used?: number
 }

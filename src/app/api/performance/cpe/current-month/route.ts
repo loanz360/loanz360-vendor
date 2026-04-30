@@ -264,7 +264,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper function to aggregate daily metrics
-function aggregateCPEMetrics(dailyMetrics: any[]): any {
+function aggregateCPEMetrics(dailyMetrics: unknown[]): unknown {
   if (dailyMetrics.length === 0) {
     return {
       total_partners_onboarded: 0,
@@ -329,7 +329,7 @@ function aggregateCPEMetrics(dailyMetrics: any[]): any {
 }
 
 // Helper function to calculate performance score
-function calculateCPEPerformanceScore(current: any, targets: CPEMonthlyTargets): number {
+function calculateCPEPerformanceScore(current: unknown, targets: CPEMonthlyTargets): number {
   const weights = {
     partners_onboarded: 0.15,
     active_partners: 0.10,

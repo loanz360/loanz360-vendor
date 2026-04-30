@@ -26,8 +26,7 @@ interface StatusResponse {
     recommendation?: string
     processing_time_ms?: number
     error_message?: string
-    result?: any
-    created_at: string
+    result?: unknown    created_at: string
     completed_at?: string
   }
   error?: string

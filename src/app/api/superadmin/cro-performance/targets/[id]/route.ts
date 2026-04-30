@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -89,7 +90,67 @@ export async function PUT(
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      target_calls_per_day: z.string().optional(),
+
+
+      target_call_duration_minutes: z.string().optional(),
+
+
+      target_logins_per_day: z.string().optional(),
+
+
+      target_leads_generated: z.string().optional(),
+
+
+      target_leads_converted: z.string().optional(),
+
+
+      target_conversion_rate: z.string().optional(),
+
+
+      target_revenue: z.string().optional(),
+
+
+      target_volume: z.string().optional(),
+
+
+      target_deals_per_day: z.string().optional(),
+
+
+      target_deals_per_month: z.string().optional(),
+
+
+      target_cases_sanctioned: z.string().optional(),
+
+
+      target_cases_disbursed: z.string().optional(),
+
+
+      target_response_time_minutes: z.string().optional(),
+
+
+      target_followup_completion_rate: z.string().optional(),
+
+
+      target_customer_satisfaction: z.string().optional(),
+
+
+      target_lead_closing_days: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { data: updatedTarget, error } = await supabase

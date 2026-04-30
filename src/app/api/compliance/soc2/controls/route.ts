@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
 
-    const filters: any = {}
+    const filters: Record<string, unknown> = {}
     if (category) filters.trust_service_category = category
 
     const controls = await soc2Service.getControls(filters)

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -128,7 +129,15 @@ export async function POST(
 ) {
   try {
     const { id: chatbotId } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      nodes: z.array(z.unknown()).optional(),
+
+      edges: z.array(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { nodes, edges } = body
 
@@ -211,7 +220,7 @@ export async function POST(
 
     // Insert nodes
     if (nodes && nodes.length > 0) {
-      const nodesToInsert = nodes.map((node: any, index: number) => ({
+      const nodesToInsert = nodes.map((node: unknown, index: number) => ({
         node_id: node.id,
         flow_id: flowId,
         node_type: node.type,
@@ -230,7 +239,7 @@ export async function POST(
 
     // Insert edges
     if (edges && edges.length > 0) {
-      const edgesToInsert = edges.map((edge: any) => ({
+      const edgesToInsert = edges.map((edge: unknown) => ({
         id: edge.id,
         flow_id: flowId,
         source_node_id: edge.source,

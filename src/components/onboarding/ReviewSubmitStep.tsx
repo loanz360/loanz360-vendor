@@ -6,8 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Send, User, Mail, Phone, MapPin, FileText } from 'lucide-react';
 
 interface ReviewSubmitStepProps {
-  onboardingData: any;
-  onSubmit: () => void;
+  onboardingData: unknown  onSubmit: () => void;
   loading: boolean;
 }
 

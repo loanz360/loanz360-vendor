@@ -33,8 +33,7 @@ export interface UploadResult {
   duplicateCount: number
   errors: Array<{
     row: number
-    data: any
-    error: string
+    data: unknown    error: string
     fieldName?: string
   }>
   estimatedTime?: number
@@ -61,7 +60,7 @@ export interface ContactData {
   linkedin_url?: string
   notes?: string
   tags?: string[]
-  custom_fields?: Record<string, any>
+  custom_fields?: Record<string, unknown>
 }
 
 class UnifiedUploadService {
@@ -189,7 +188,7 @@ class UnifiedUploadService {
    * Process contacts and insert into appropriate table
    */
   private async processContacts(
-    contacts: any[],
+    contacts: unknown[],
     options: UploadOptions,
     importId: string,
     storagePath: string
@@ -261,7 +260,7 @@ class UnifiedUploadService {
   /**
    * Normalize contact data for specific database type
    */
-  private normalizeContact(data: any, databaseType: DatabaseType): ContactData {
+  private normalizeContact(data: unknown, databaseType: DatabaseType): ContactData {
     const normalized: ContactData = {
       company: data.company || data.organization,
       designation: data.designation || data.title || data.job_title,
@@ -296,7 +295,7 @@ class UnifiedUploadService {
     // Handle custom fields
     const knownFields = ['email', 'name', 'phone', 'company', 'designation', 'location_city',
                          'location_state', 'website', 'linkedin_url', 'notes', 'tags']
-    const customFields: Record<string, any> = {}
+    const customFields: Record<string, unknown> = {}
 
     Object.keys(data).forEach(key => {
       if (!knownFields.includes(key) && data[key]) {
@@ -409,8 +408,7 @@ class UnifiedUploadService {
   private async insertEmailContact(
     contact: ContactData,
     strategy: DeduplicationStrategy,
-    metadata: any
-  ): Promise<{ inserted: boolean; updated: boolean; duplicate: boolean }> {
+    metadata: unknown  ): Promise<{ inserted: boolean; updated: boolean; duplicate: boolean }> {
     if (!contact.email) {
       return { inserted: false, updated: false, duplicate: false }
     }
@@ -490,8 +488,7 @@ class UnifiedUploadService {
   private async insertSmsContact(
     contact: ContactData,
     strategy: DeduplicationStrategy,
-    metadata: any
-  ): Promise<{ inserted: boolean; updated: boolean; duplicate: boolean }> {
+    metadata: unknown  ): Promise<{ inserted: boolean; updated: boolean; duplicate: boolean }> {
     if (!contact.mobile_number) {
       return { inserted: false, updated: false, duplicate: false }
     }

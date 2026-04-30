@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        data: (legacy || []).map((c: any) => ({
+        data: (legacy || []).map((c: unknown) => ({
           id: c.id,
           unique_id: `C-${c.id?.substring(0, 6)}`,
           full_name: c.full_name,
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get loan counts per customer
-    const customerIds = (customers || []).map((c: any) => c.id)
+    const customerIds = (customers || []).map((c: unknown) => c.id)
     let loanCounts: Record<string, number> = {}
     if (customerIds.length > 0) {
       try {
@@ -80,14 +80,14 @@ export async function GET(request: NextRequest) {
           .select('primary_applicant_id, status')
           .in('primary_applicant_id', customerIds)
         if (loans) {
-          loans.forEach((l: any) => {
+          loans.forEach((l: unknown) => {
             loanCounts[l.primary_applicant_id] = (loanCounts[l.primary_applicant_id] || 0) + 1
           })
         }
       } catch { /* loan_applications_v2 may not exist */ }
     }
 
-    const enriched = (customers || []).map((c: any) => ({
+    const enriched = (customers || []).map((c: unknown) => ({
       ...c,
       status: c.is_active ? 'ACTIVE' : 'INACTIVE',
       category: c.primary_category,

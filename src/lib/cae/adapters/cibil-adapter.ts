@@ -490,7 +490,7 @@ export class CIBILAdapter extends BaseCAEAdapter {
     return Math.round((annualIncome * multiplier) / 100000) * 100000
   }
 
-  private estimateMonthlyEmis(accounts: any[]): number {
+  private estimateMonthlyEmis(accounts: unknown[]): number {
     return accounts
       .filter((a) => a.AccountStatus === 'Current')
       .reduce((sum, a) => {
@@ -547,13 +547,13 @@ export class CIBILAdapter extends BaseCAEAdapter {
     }
   }
 
-  private countRecentEnquiries(enquiries: any[], months: number): number {
+  private countRecentEnquiries(enquiries: unknown[], months: number): number {
     const cutoff = new Date()
     cutoff.setMonth(cutoff.getMonth() - months)
     return enquiries.filter((e) => new Date(e.DateOfEnquiry) >= cutoff).length
   }
 
-  private countDPD(accounts: any[], days: number): number {
+  private countDPD(accounts: unknown[], days: number): number {
     return accounts.filter((a) => {
       const history = a.PaymentHistory || ''
       // X indicates missed payment, count consecutive Xs
@@ -562,7 +562,7 @@ export class CIBILAdapter extends BaseCAEAdapter {
     }).length
   }
 
-  private getOldestAccountAge(accounts: any[]): number {
+  private getOldestAccountAge(accounts: unknown[]): number {
     if (accounts.length === 0) return 0
     const oldest = accounts.reduce((min, a) => {
       const opened = new Date(a.DateOpened)
@@ -572,7 +572,7 @@ export class CIBILAdapter extends BaseCAEAdapter {
     return Math.floor(months)
   }
 
-  private generateFlags(creditScore: number, foir: number, accounts: any[], enquiries: any[]): CAEFlag[] {
+  private generateFlags(creditScore: number, foir: number, accounts: unknown[], enquiries: unknown[]): CAEFlag[] {
     const flags: CAEFlag[] = []
 
     if (creditScore < 600) {

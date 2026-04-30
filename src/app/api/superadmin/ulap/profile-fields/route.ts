@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -51,7 +52,35 @@ export async function GET(request: NextRequest) {
 // POST - Create new profile field
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      subcategory_id: z.string().uuid().optional(),
+
+      field_name: z.string().optional(),
+
+      field_label: z.string().optional(),
+
+      field_type: z.string().optional(),
+
+      placeholder: z.string().optional(),
+
+      is_required: z.boolean().optional(),
+
+      validation_rules: z.string().optional(),
+
+      options: z.record(z.unknown()).optional(),
+
+      display_order: z.string().optional(),
+
+      field_section: z.string().optional(),
+
+      is_base_field: z.boolean().optional(),
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const {
       subcategory_id,
@@ -107,7 +136,13 @@ export async function POST(request: NextRequest) {
 // PATCH - Update profile field
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2;
     const { id, ...updates } = body;
 

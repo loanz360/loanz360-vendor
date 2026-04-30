@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
 // DATA FETCHING
 // ============================================================================
 
-async function fetchExportData(supabase: any, month: number, year: number, tab: string) {
+async function fetchExportData(supabase: unknown, month: number, year: number, tab: string) {
   const startDate = new Date(year, month, 1)
   const endDate = new Date(year, month + 1, 0)
 
@@ -154,7 +154,7 @@ async function fetchExportData(supabase: any, month: number, year: number, tab: 
 // EXCEL GENERATION
 // ============================================================================
 
-async function generateExcelFile(data: any, month: number, year: number, tab: string): Promise<Buffer> {
+async function generateExcelFile(data: unknown, month: number, year: number, tab: string): Promise<Buffer> {
   const workbook = new ExcelJS.Workbook()
 
   // Set workbook properties
@@ -179,7 +179,7 @@ async function generateExcelFile(data: any, month: number, year: number, tab: st
   return Buffer.from(buffer)
 }
 
-async function addOverviewSheet(workbook: ExcelJS.Workbook, data: any) {
+async function addOverviewSheet(workbook: ExcelJS.Workbook, data: unknown) {
   const sheet = workbook.addWorksheet('Team Overview', {
     properties: { tabColor: { argb: 'FF4F46E5' } },
   })
@@ -227,7 +227,7 @@ async function addOverviewSheet(workbook: ExcelJS.Workbook, data: any) {
   // Group by BDE
   const bdePerformance = groupByBDE(data.bdeDaily)
 
-  Object.values(bdePerformance).forEach((bde: any) => {
+  Object.values(bdePerformance).forEach((bde: unknown) => {
     const conversionRate = bde.leads > 0 ? (bde.conversions / bde.leads) * 100 : 0
     const avgDealSize = bde.conversions > 0 ? bde.revenue / bde.conversions : 0
 
@@ -268,7 +268,7 @@ async function addOverviewSheet(workbook: ExcelJS.Workbook, data: any) {
   sheet.views = [{ state: 'frozen', xSplit: 0, ySplit: 4 }]
 }
 
-async function addBDEDetailsSheet(workbook: ExcelJS.Workbook, data: any) {
+async function addBDEDetailsSheet(workbook: ExcelJS.Workbook, data: unknown) {
   const sheet = workbook.addWorksheet('BDE Details', {
     properties: { tabColor: { argb: 'FF10B981' } },
   })
@@ -297,7 +297,7 @@ async function addBDEDetailsSheet(workbook: ExcelJS.Workbook, data: any) {
   headerRow.alignment = { horizontal: 'center', vertical: 'middle' }
 
   // Data rows
-  data.bdeDaily.forEach((record: any) => {
+  data.bdeDaily.forEach((record: Record<string, unknown>) => {
     const conversionRate = record.leads > 0 ? (record.conversions / record.leads) * 100 : 0
     const avgDealSize = record.conversions > 0 ? record.revenue / record.conversions : 0
 
@@ -336,7 +336,7 @@ async function addBDEDetailsSheet(workbook: ExcelJS.Workbook, data: any) {
   sheet.views = [{ state: 'frozen', xSplit: 0, ySplit: 3 }]
 }
 
-async function addLeaderboardSheet(workbook: ExcelJS.Workbook, data: any) {
+async function addLeaderboardSheet(workbook: ExcelJS.Workbook, data: unknown) {
   const sheet = workbook.addWorksheet('Leaderboard', {
     properties: { tabColor: { argb: 'FFF59E0B' } },
   })
@@ -364,14 +364,14 @@ async function addLeaderboardSheet(workbook: ExcelJS.Workbook, data: any) {
   // Calculate rankings
   const bdePerformance = groupByBDE(data.bdeDaily)
   const rankings = Object.values(bdePerformance)
-    .map((bde: any) => ({
+    .map((bde: unknown) => ({
       ...bde,
       score: (bde.conversions * 10) + (bde.revenue / 100000),
     }))
-    .sort((a: any, b: any) => b.score - a.score)
+    .sort((a: unknown, b: unknown) => b.score - a.score)
 
-  rankings.forEach((bde: any, index: number) => {
-    const targetData = data.bdeTargets?.find((t: any) => t.user_id === bde.id)
+  rankings.forEach((bde: unknown, index: number) => {
+    const targetData = data.bdeTargets?.find((t: unknown) => t.user_id === bde.id)
     const conversionTarget = targetData?.conversion_target || 0
     const status = bde.conversions >= conversionTarget ? 'On Track' :
                    bde.conversions >= conversionTarget * 0.8 ? 'At Risk' : 'Behind'
@@ -451,7 +451,7 @@ async function addLeaderboardSheet(workbook: ExcelJS.Workbook, data: any) {
 // PDF GENERATION
 // ============================================================================
 
-async function generatePDFFile(data: any, month: number, year: number, tab: string): Promise<Buffer> {
+async function generatePDFFile(data: unknown, month: number, year: number, tab: string): Promise<Buffer> {
   // Simple PDF generation - in production, use a proper PDF library like jsPDF or pdfkit
   // For now, return a simple text-based PDF
   const content = `BDM Team Performance Report
@@ -475,7 +475,7 @@ Generated on: ${new Date().toLocaleString('en-IN')}
 // CSV GENERATION
 // ============================================================================
 
-async function generateCSVFile(data: any, month: number, year: number, tab: string): Promise<Buffer> {
+async function generateCSVFile(data: unknown, month: number, year: number, tab: string): Promise<Buffer> {
   const rows: string[] = []
 
   // Header
@@ -497,7 +497,7 @@ async function generateCSVFile(data: any, month: number, year: number, tab: stri
   rows.push('BDE Name,Conversions,Revenue,Leads,Conversion Rate,Avg Deal Size')
 
   const bdePerformance = groupByBDE(data.bdeDaily)
-  Object.values(bdePerformance).forEach((bde: any) => {
+  Object.values(bdePerformance).forEach((bde: unknown) => {
     const conversionRate = bde.leads > 0 ? (bde.conversions / bde.leads) * 100 : 0
     const avgDealSize = bde.conversions > 0 ? bde.revenue / bde.conversions : 0
     rows.push(`${bde.name},${bde.conversions},${bde.revenue},${bde.leads},${conversionRate.toFixed(2)}%,${avgDealSize.toFixed(2)}`)
@@ -513,7 +513,7 @@ async function generateCSVFile(data: any, month: number, year: number, tab: stri
 // HELPER FUNCTIONS
 // ============================================================================
 
-function calculateTeamTotals(bdeDaily: any[], teamTargets: any) {
+function calculateTeamTotals(bdeDaily: unknown[], teamTargets: unknown) {
   const totals = {
     conversions: 0,
     revenue: 0,
@@ -529,8 +529,8 @@ function calculateTeamTotals(bdeDaily: any[], teamTargets: any) {
   return totals
 }
 
-function groupByBDE(bdeDaily: any[]) {
-  const grouped: Record<string, any> = {}
+function groupByBDE(bdeDaily: unknown[]) {
+  const grouped: Record<string, unknown> = {}
 
   bdeDaily.forEach(record => {
     const bdeId = record.user_id

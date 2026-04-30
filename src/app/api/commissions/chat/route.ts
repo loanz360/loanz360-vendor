@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -13,8 +14,7 @@ interface ChatMessage {
 // Structured response from our "AI" assistant
 interface AssistantResponse {
   answer: string
-  data?: any
-  suggestions?: string[]
+  data?: unknown  suggestions?: string[]
 }
 
 // GET - Fetch chat history (optional)
@@ -76,7 +76,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Invalid partner type' }, { status: 400 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      message: z.string().optional(),
+
+
+      context: z.array(z.unknown()).optional().default([]),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { message, context = [] } = body
 
@@ -96,7 +108,7 @@ export async function POST(request: NextRequest) {
 
 // Process user message and generate intelligent response
 async function processMessage(
-  supabase: any,
+  supabase: unknown,
   message: string,
   partnerType: string,
   context: ChatMessage[]
@@ -156,7 +168,7 @@ async function processMessage(
         .limit(5)
 
       if (bankRates && bankRates.length > 0) {
-        const ratesList = bankRates.map((r: any) =>
+        const ratesList = bankRates.map((r: Record<string, unknown>) =>
           `- ${r.location} | ${r.loan_type}: ${r.commission_percentage}%`
         ).join('\n')
 
@@ -183,7 +195,7 @@ async function processMessage(
       .limit(5)
 
     if (topRates && topRates.length > 0) {
-      const ratesList = topRates.map((r: any, i: number) =>
+      const ratesList = topRates.map((r: unknown, i: number) =>
         `${i + 1}. **${r.bank_name}** - ${r.location} | ${r.loan_type}: **${r.commission_percentage}%**`
       ).join('\n')
 
@@ -206,7 +218,7 @@ async function processMessage(
       .select('bank_name')
       .eq('is_current', true)
 
-    const uniqueBanks = [...new Set(banks?.map((b: any) => b.bank_name) || [])]
+    const uniqueBanks = [...new Set(banks?.map((b: unknown) => b.bank_name) || [])]
     const banksList = uniqueBanks.slice(0, 15).join(', ')
 
     return {
@@ -226,7 +238,7 @@ async function processMessage(
       .select('loan_type')
       .eq('is_current', true)
 
-    const uniqueLoanTypes = [...new Set(loanTypes?.map((l: any) => l.loan_type) || [])]
+    const uniqueLoanTypes = [...new Set(loanTypes?.map((l: unknown) => l.loan_type) || [])]
     const loanTypesList = uniqueLoanTypes.join(', ')
 
     return {
@@ -254,7 +266,7 @@ async function processMessage(
       .limit(5)
 
     if (recentChanges && recentChanges.length > 0) {
-      const changesList = recentChanges.map((c: any) => {
+      const changesList = recentChanges.map((c: unknown) => {
         const changeType = c.notification_type === 'rate_increase' ? '📈' : c.notification_type === 'rate_decrease' ? '📉' : '🆕'
         return `${changeType} **${c.bank_name}** - ${c.loan_type}: ${c.old_percentage || 'New'}% → ${c.new_percentage}%`
       }).join('\n')
@@ -302,8 +314,8 @@ async function processMessage(
         .eq('is_current', true)
 
       if (rates && rates.length > 0) {
-        const avgRate = rates.reduce((sum: number, r: any) => sum + r.commission_percentage, 0) / rates.length
-        const maxRate = Math.max(...rates.map((r: any) => r.commission_percentage))
+        const avgRate = rates.reduce((sum: number, r: unknown) => sum + r.commission_percentage, 0) / rates.length
+        const maxRate = Math.max(...rates.map((r: Record<string, unknown>) => r.commission_percentage))
 
         const avgCommission = (amount * avgRate) / 100
         const maxCommission = (amount * maxRate) / 100
@@ -383,7 +395,7 @@ async function processMessage(
 }
 
 // Extract entities (bank, location, loan type) from user message
-async function extractEntities(supabase: any, message: string, tableName: string) {
+async function extractEntities(supabase: unknown, message: string, tableName: string) {
   const lowerMessage = message.toLowerCase()
 
   // Get all unique values from the table for matching
@@ -394,9 +406,9 @@ async function extractEntities(supabase: any, message: string, tableName: string
 
   if (!allData) return { bank: null, location: null, loanType: null }
 
-  const banks = [...new Set(allData.map((d: any) => d.bank_name))]
-  const locations = [...new Set(allData.map((d: any) => d.location))]
-  const loanTypes = [...new Set(allData.map((d: any) => d.loan_type))]
+  const banks = [...new Set(allData.map((d: Record<string, unknown>) => d.bank_name))]
+  const locations = [...new Set(allData.map((d: Record<string, unknown>) => d.location))]
+  const loanTypes = [...new Set(allData.map((d: Record<string, unknown>) => d.loan_type))]
 
   // Find matches (case-insensitive)
   let bank = null

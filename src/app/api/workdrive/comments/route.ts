@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive Comments API
@@ -168,7 +169,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      fileId: z.string().uuid(),
+
+
+      content: z.string().optional(),
+
+
+      parentCommentId: z.string().uuid().optional(),
+
+
+      commentId: z.string().uuid(),
+
+
+      resolve: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { fileId, content, parentCommentId } = body
 
@@ -292,7 +314,22 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      content: z.string().optional(),
+
+
+      resolve: z.string().optional(),
+
+
+      commentId: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { commentId, content, resolve } = body
 

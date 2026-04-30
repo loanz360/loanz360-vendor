@@ -46,7 +46,7 @@ export enum ErrorCode {
 export interface ApiError {
   code: ErrorCode
   message: string
-  details?: string | Record<string, any>
+  details?: string | Record<string, unknown>
   statusCode: number
   timestamp: string
   path?: string
@@ -55,7 +55,7 @@ export interface ApiError {
 export class AppError extends Error {
   public readonly code: ErrorCode
   public readonly statusCode: number
-  public readonly details?: string | Record<string, any>
+  public readonly details?: string | Record<string, unknown>
   public readonly timestamp: string
   public readonly path?: string
 
@@ -63,7 +63,7 @@ export class AppError extends Error {
     code: ErrorCode,
     message: string,
     statusCode: number = 500,
-    details?: string | Record<string, any>
+    details?: string | Record<string, unknown>
   ) {
     super(message)
     this.name = 'AppError'
@@ -94,7 +94,7 @@ export class AppError extends Error {
  * Validation Error (400)
  */
 export class ValidationError extends AppError {
-  constructor(message: string = 'Validation failed', details?: string | Record<string, any>) {
+  constructor(message: string = 'Validation failed', details?: string | Record<string, unknown>) {
     super(ErrorCode.VALIDATION_ERROR, message, 400, details)
     this.name = 'ValidationError'
   }
@@ -104,7 +104,7 @@ export class ValidationError extends AppError {
  * Unauthorized Error (401)
  */
 export class UnauthorizedError extends AppError {
-  constructor(message: string = 'Unauthorized access', details?: string | Record<string, any>) {
+  constructor(message: string = 'Unauthorized access', details?: string | Record<string, unknown>) {
     super(ErrorCode.UNAUTHORIZED, message, 401, details)
     this.name = 'UnauthorizedError'
   }
@@ -114,7 +114,7 @@ export class UnauthorizedError extends AppError {
  * Forbidden Error (403)
  */
 export class ForbiddenError extends AppError {
-  constructor(message: string = 'Access forbidden', details?: string | Record<string, any>) {
+  constructor(message: string = 'Access forbidden', details?: string | Record<string, unknown>) {
     super(ErrorCode.FORBIDDEN, message, 403, details)
     this.name = 'ForbiddenError'
   }
@@ -124,7 +124,7 @@ export class ForbiddenError extends AppError {
  * Not Found Error (404)
  */
 export class NotFoundError extends AppError {
-  constructor(message: string = 'Resource not found', details?: string | Record<string, any>) {
+  constructor(message: string = 'Resource not found', details?: string | Record<string, unknown>) {
     super(ErrorCode.NOT_FOUND, message, 404, details)
     this.name = 'NotFoundError'
   }
@@ -134,7 +134,7 @@ export class NotFoundError extends AppError {
  * Conflict Error (409)
  */
 export class ConflictError extends AppError {
-  constructor(message: string = 'Resource conflict', details?: string | Record<string, any>) {
+  constructor(message: string = 'Resource conflict', details?: string | Record<string, unknown>) {
     super(ErrorCode.CONFLICT, message, 409, details)
     this.name = 'ConflictError'
   }
@@ -144,7 +144,7 @@ export class ConflictError extends AppError {
  * Business Logic Error (422)
  */
 export class BusinessLogicError extends AppError {
-  constructor(message: string = 'Business logic error', details?: string | Record<string, any>) {
+  constructor(message: string = 'Business logic error', details?: string | Record<string, unknown>) {
     super(ErrorCode.BUSINESS_LOGIC_ERROR, message, 422, details)
     this.name = 'BusinessLogicError'
   }
@@ -154,7 +154,7 @@ export class BusinessLogicError extends AppError {
  * Database Error (500)
  */
 export class DatabaseError extends AppError {
-  constructor(message: string = 'Database error', details?: string | Record<string, any>) {
+  constructor(message: string = 'Database error', details?: string | Record<string, unknown>) {
     super(ErrorCode.DATABASE_ERROR, message, 500, details)
     this.name = 'DatabaseError'
   }
@@ -164,7 +164,7 @@ export class DatabaseError extends AppError {
  * Rate Limit Error (429)
  */
 export class RateLimitError extends AppError {
-  constructor(message: string = 'Rate limit exceeded', details?: string | Record<string, any>) {
+  constructor(message: string = 'Rate limit exceeded', details?: string | Record<string, unknown>) {
     super(ErrorCode.RATE_LIMIT_EXCEEDED, message, 429, details)
     this.name = 'RateLimitError'
   }
@@ -225,7 +225,7 @@ export function isOperationalError(error: Error): boolean {
 /**
  * Parse Supabase error to AppError
  */
-export function parseSupabaseError(error: any): AppError {
+export function parseSupabaseError(error: unknown): AppError {
   // Supabase PostgresError codes
   if (error.code === '23505') {
     // Unique violation

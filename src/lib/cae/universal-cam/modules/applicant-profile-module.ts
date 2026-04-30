@@ -16,8 +16,7 @@ interface IdentityVerificationResult {
     last_4: string
     name: string
     dob: string
-    address: any
-    verified: boolean
+    address: unknown    verified: boolean
   }
   digilocker?: {
     connected: boolean
@@ -34,8 +33,7 @@ interface CustomerData {
   marital_status?: string
   pan?: string
   alternate_mobile?: string
-  address?: any
-}
+  address?: unknown}
 
 export class ApplicantProfileModule {
   /**
@@ -138,7 +136,7 @@ export class ApplicantProfileModule {
     }
   }
 
-  private buildAddress(customerAddress: any, aadhaarAddress: any): Address | null {
+  private buildAddress(customerAddress: unknown, aadhaarAddress: unknown): Address | null {
     const addr = customerAddress || aadhaarAddress
 
     if (!addr) return null
@@ -220,9 +218,7 @@ export class ApplicantProfileModule {
     return 'PENDING'
   }
 
-  private getVerificationStatus(
-    result: any
-  ): 'VERIFIED' | 'PENDING' | 'FAILED' | 'NOT_AVAILABLE' {
+  private getVerificationStatus(result: Record<string, unknown>): 'VERIFIED' | 'PENDING' | 'FAILED' | 'NOT_AVAILABLE' {
     if (!result) return 'NOT_AVAILABLE'
     if (result.verified) return 'VERIFIED'
     if (result.status === 'FAILED') return 'FAILED'

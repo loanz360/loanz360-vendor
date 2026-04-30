@@ -2,18 +2,14 @@ import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 
 interface AnalyticsData {
-  overview: any
-  partner_distribution: any
-  current_month_metrics: any
-  top_partners: any[]
-  recent_recruitments: any[]
-  target_achievement: any
-  last_updated: string
+  overview: unknown  partner_distribution: unknown  current_month_metrics: unknown  top_partners: unknown[]
+  recent_recruitments: unknown[]
+  target_achievement: unknown  last_updated: string
 }
 
 interface HistoryData {
-  history: any[]
-  partnerBreakdown: any[]
+  history: unknown[]
+  partnerBreakdown: unknown[]
   totalPartnersRecruited: number
   activePartnersCount: number
 }

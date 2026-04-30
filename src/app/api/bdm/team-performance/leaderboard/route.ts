@@ -320,7 +320,7 @@ export async function GET(request: NextRequest) {
         recentBadges: bdeBadges
           .sort((a, b) => new Date(b.earned_at).getTime() - new Date(a.earned_at).getTime())
           .slice(0, 3)
-          .map((b: any) => ({
+          .map((b: unknown) => ({
             id: b.badge.id,
             name: b.badge.name,
             icon: b.badge.icon_name,

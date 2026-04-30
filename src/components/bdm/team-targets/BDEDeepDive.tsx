@@ -47,13 +47,7 @@ interface TrendsResponse {
   trends: TrendData[]
   summary: {
     totalMonths: number
-    averages: any
-    overallGrowth: any
-    bestMonth: any
-    worstMonth: any
-    consistency: any
-    patterns: any
-  }
+    averages: unknown    overallGrowth: unknown    bestMonth: unknown    worstMonth: unknown    consistency: unknown    patterns: unknown  }
 }
 
 export default function BDEDeepDive({ month, year }: BDEDeepDiveProps) {
@@ -81,7 +75,7 @@ export default function BDEDeepDive({ month, year }: BDEDeepDiveProps) {
       const data = await response.json()
 
       if (data.success) {
-        const bdes = data.data.bdes.map((bde: any) => ({
+        const bdes = data.data.bdes.map((bde: unknown) => ({
           bdeId: bde.bdeId,
           bdeName: bde.bdeName,
           employeeCode: bde.employeeCode,

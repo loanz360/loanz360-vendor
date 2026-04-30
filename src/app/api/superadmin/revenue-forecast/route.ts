@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
       byLoanType: Record<string, { leads: number; pipeline: number }>
     }>()
 
-    monthlyLeads.forEach((lead: any) => {
+    monthlyLeads.forEach((lead: unknown) => {
       const month = new Date(lead.created_at).toISOString().slice(0, 7) // "YYYY-MM"
       if (!monthlyMap.has(month)) {
         monthlyMap.set(month, { leads: 0, converted: 0, pipeline: 0, revenue: 0, byLoanType: {} })
@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
 
     // Aggregate pipeline by loan type across all data
     const loanTypePipeline: Record<string, number> = {}
-    monthlyLeads.forEach((lead: any) => {
+    monthlyLeads.forEach((lead: unknown) => {
       const lt = lead.loan_type || 'Unknown'
       loanTypePipeline[lt] = (loanTypePipeline[lt] || 0) + (lead.required_loan_amount || 0)
     })

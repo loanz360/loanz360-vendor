@@ -10,8 +10,7 @@ export interface ChatMessage {
   timestamp: Date
   metadata?: {
     queryType?: string
-    contextData?: any
-    functionCalls?: string[]
+    contextData?: unknown    functionCalls?: string[]
   }
 }
 
@@ -19,8 +18,8 @@ export interface ChatbotContext {
   userId: string
   userName: string
   userRole: string
-  currentIncentives?: any[]
-  recentActivity?: any[]
+  currentIncentives?: unknown[]
+  recentActivity?: unknown[]
 }
 
 export class IncentiveChatbot {
@@ -73,7 +72,7 @@ export class IncentiveChatbot {
   /**
    * Analyze user intent from message
    */
-  private analyzeIntent(message: string): { type: string; entities: any } {
+  private analyzeIntent(message: string): { type: string; entities: unknown} {
     const lowerMessage = message.toLowerCase()
 
     // Progress queries
@@ -141,7 +140,7 @@ export class IncentiveChatbot {
   /**
    * Get relevant context data based on intent
    */
-  private async getRelevantContext(intent: { type: string; entities: any }): Promise<unknown> {
+  private async getRelevantContext(intent: { type: string; entities: unknown}): Promise<unknown> {
     switch (intent.type) {
       case 'progress_query':
         return await this.getProgressData()
@@ -165,9 +164,8 @@ export class IncentiveChatbot {
    */
   private async generateResponse(
     userMessage: string,
-    intent: { type: string; entities: any },
-    contextData: any
-  ): Promise<{ content: string; data?: any; functionsUsed?: string[] }> {
+    intent: { type: string; entities: unknown},
+    contextData: unknown  ): Promise<{ content: string; data?: unknown; functionsUsed?: string[] }> {
     switch (intent.type) {
       case 'progress_query':
         return this.generateProgressResponse(contextData)
@@ -216,7 +214,7 @@ export class IncentiveChatbot {
   /**
    * Generate progress response
    */
-  private generateProgressResponse(data: any): { content: string; data: any; functionsUsed: string[] } {
+  private generateProgressResponse(data: Record<string, unknown>): { content: string; data: unknown; functionsUsed: string[] } {
     const { activeIncentives, summary } = data
 
     if (!activeIncentives || activeIncentives.length === 0) {
@@ -227,9 +225,9 @@ export class IncentiveChatbot {
       }
     }
 
-    const inProgress = activeIncentives.filter((i: any) => i.progress_percentage > 0)
+    const inProgress = activeIncentives.filter((i: unknown) => i.progress_percentage > 0)
     const avgProgress = inProgress.length > 0
-      ? inProgress.reduce((sum: number, i: any) => sum + i.progress_percentage, 0) / inProgress.length
+      ? inProgress.reduce((sum: number, i: unknown) => sum + i.progress_percentage, 0) / inProgress.length
       : 0
 
     let response = `Here's your current progress:\n\n`
@@ -242,10 +240,10 @@ export class IncentiveChatbot {
     response += `- Potential earnings: ₹${summary.total_potential_earnings.toLocaleString()}\n\n`
 
     // Top 3 incentives
-    const sorted = [...activeIncentives].sort((a: any, b: any) => b.progress_percentage - a.progress_percentage)
+    const sorted = [...activeIncentives].sort((a: unknown, b: unknown) => b.progress_percentage - a.progress_percentage)
     response += `🎯 **Top Incentives:**\n`
 
-    sorted.slice(0, 3).forEach((incentive: any, index: number) => {
+    sorted.slice(0, 3).forEach((incentive: unknown, index: number) => {
       const emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'
       response += `${emoji} ${incentive.incentive_title}: ${incentive.progress_percentage}% (₹${incentive.reward_amount})\n`
     })
@@ -281,7 +279,7 @@ export class IncentiveChatbot {
   /**
    * Generate target response
    */
-  private generateTargetResponse(data: any): { content: string; data: any; functionsUsed: string[] } {
+  private generateTargetResponse(data: Record<string, unknown>): { content: string; data: unknown; functionsUsed: string[] } {
     const { activeIncentives } = data
 
     if (!activeIncentives || activeIncentives.length === 0) {
@@ -294,7 +292,7 @@ export class IncentiveChatbot {
 
     let response = `Here are your current targets:\n\n`
 
-    activeIncentives.forEach((incentive: any, index: number) => {
+    activeIncentives.forEach((incentive: unknown, index: number) => {
       const criteria = incentive.performance_criteria
       const current = incentive.current_progress?.metric_value || 0
       const target = criteria?.target_value || 100
@@ -331,7 +329,7 @@ export class IncentiveChatbot {
   /**
    * Generate rank response
    */
-  private generateRankResponse(data: any): { content: string; data: any; functionsUsed: string[] } {
+  private generateRankResponse(data: Record<string, unknown>): { content: string; data: unknown; functionsUsed: string[] } {
     const { leaderboard, userRank } = data
 
     if (!userRank) {
@@ -350,7 +348,7 @@ export class IncentiveChatbot {
     // Show top 3
     if (leaderboard && leaderboard.length > 0) {
       response += `**Top Performers:**\n`
-      leaderboard.slice(0, 3).forEach((leader: any, index: number) => {
+      leaderboard.slice(0, 3).forEach((leader: unknown, index: number) => {
         const emoji = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'
         response += `${emoji} ${leader.user_name}: ${leader.score} points\n`
       })
@@ -387,11 +385,11 @@ export class IncentiveChatbot {
   /**
    * Generate claim response
    */
-  private generateClaimResponse(data: any): { content: string; data: any; functionsUsed: string[] } {
+  private generateClaimResponse(data: Record<string, unknown>): { content: string; data: unknown; functionsUsed: string[] } {
     const { activeIncentives } = data
 
     const claimable = activeIncentives.filter(
-      (i: any) => i.allocation_status === 'achieved' && i.earned_amount > 0
+      (i: unknown) => i.allocation_status === 'achieved' && i.earned_amount > 0
     )
 
     if (claimable.length === 0) {
@@ -404,11 +402,11 @@ export class IncentiveChatbot {
 
     let response = `💰 **Rewards Ready to Claim:**\n\n`
 
-    claimable.forEach((incentive: any) => {
+    claimable.forEach((incentive: unknown) => {
       response += `✅ ${incentive.incentive_title}: ₹${incentive.earned_amount.toLocaleString()}\n`
     })
 
-    const totalClaimable = claimable.reduce((sum: number, i: any) => sum + i.earned_amount, 0)
+    const totalClaimable = claimable.reduce((sum: number, i: unknown) => sum + i.earned_amount, 0)
     response += `\n**Total Claimable:** ₹${totalClaimable.toLocaleString()}\n\n`
     response += `To claim, go to the "My Targets" tab and click the "Claim Reward" button!`
 
@@ -454,7 +452,7 @@ export class IncentiveChatbot {
   /**
    * Generate personalized advice
    */
-  private generateAdviceResponse(data: any): { content: string; data: any; functionsUsed: string[] } {
+  private generateAdviceResponse(data: Record<string, unknown>): { content: string; data: unknown; functionsUsed: string[] } {
     const { activeIncentives, summary } = data
 
     if (!activeIncentives || activeIncentives.length === 0) {
@@ -468,13 +466,13 @@ export class IncentiveChatbot {
     let response = `💡 **Personalized Tips for You:**\n\n`
 
     // Analyze progress patterns
-    const lowProgress = activeIncentives.filter((i: any) => i.progress_percentage < 30)
-    const highProgress = activeIncentives.filter((i: any) => i.progress_percentage >= 70)
+    const lowProgress = activeIncentives.filter((i: unknown) => i.progress_percentage < 30)
+    const highProgress = activeIncentives.filter((i: unknown) => i.progress_percentage >= 70)
 
     if (lowProgress.length > 0) {
       response += `⚠️ **Quick Wins:**\n`
       response += `Focus on these low-progress incentives for quick wins:\n`
-      lowProgress.slice(0, 2).forEach((i: any) => {
+      lowProgress.slice(0, 2).forEach((i: unknown) => {
         response += `- ${i.incentive_title} (${i.progress_percentage}%)\n`
       })
       response += `\n`
@@ -483,7 +481,7 @@ export class IncentiveChatbot {
     if (highProgress.length > 0) {
       response += `🎯 **Almost There:**\n`
       response += `Push hard on these - you're so close!\n`
-      highProgress.slice(0, 2).forEach((i: any) => {
+      highProgress.slice(0, 2).forEach((i: unknown) => {
         response += `- ${i.incentive_title} (${i.progress_percentage}%)\n`
       })
       response += `\n`

@@ -66,7 +66,7 @@ export function usePerformanceMetrics(): PerformanceMetrics {
     // Observe CLS
     let clsValue = 0
     const clsObserver = new PerformanceObserver((entryList) => {
-      for (const entry of entryList.getEntries() as any[]) {
+      for (const entry of entryList.getEntries() as unknown[]) {
         if (!entry.hadRecentInput) {
           clsValue += entry.value
           setMetrics(prev => ({ ...prev, cls: clsValue }))
@@ -200,7 +200,7 @@ export function useIntersectionObserver(
 // Request Animation Frame Throttle
 // ============================================================================
 
-export function useRAFThrottle<T extends (...args: any[]) => void>(
+export function useRAFThrottle<T extends (...args: unknown[]) => void>(
   callback: T
 ): T {
   const rafId = useRef<number | null>(null)
@@ -315,7 +315,7 @@ export function usePrefetch() {
 
     const promise = fetch(url, {
       ...options,
-      priority: 'low' as any
+      priority: 'low' as unknown
     }).then(res => res.json())
 
     prefetchCache.set(url, promise)
@@ -402,7 +402,7 @@ export function useMemoryPressure(): 'low' | 'moderate' | 'critical' | null {
     if (typeof window === 'undefined' || !('memory' in performance)) return
 
     const checkMemory = () => {
-      const memory = (performance as any).memory
+      const memory = (performance as unknown).memory
       if (!memory) return
 
       const usedRatio = memory.usedJSHeapSize / memory.jsHeapSizeLimit
@@ -448,7 +448,7 @@ export function useNetworkStatus(): NetworkStatus {
 
   useEffect(() => {
     const updateStatus = () => {
-      const connection = (navigator as any).connection
+      const connection = (navigator as unknown).connection
 
       setStatus({
         online: navigator.onLine,
@@ -464,7 +464,7 @@ export function useNetworkStatus(): NetworkStatus {
     window.addEventListener('online', updateStatus)
     window.addEventListener('offline', updateStatus)
 
-    const connection = (navigator as any).connection
+    const connection = (navigator as unknown).connection
     if (connection) {
       connection.addEventListener('change', updateStatus)
     }
@@ -496,8 +496,8 @@ export function useIdleCallback(
     let handle: number
 
     if ('requestIdleCallback' in window) {
-      handle = (window as any).requestIdleCallback(callback, options)
-      return () => (window as any).cancelIdleCallback(handle)
+      handle = (window as unknown).requestIdleCallback(callback, options)
+      return () => (window as unknown).cancelIdleCallback(handle)
     } else {
       // Fallback for browsers without requestIdleCallback
       handle = window.setTimeout(callback, 1)

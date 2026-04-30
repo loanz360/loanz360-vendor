@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * SIMPLE Super Admin Password Reset
  * Minimal dependencies version for troubleshooting
@@ -42,7 +43,17 @@ export async function POST(request: NextRequest) {
 
   try {
     // Parse request
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      email: z.string().email().optional(),
+
+      newPassword: z.string().optional(),
+
+      emergencyKey: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { email, newPassword, emergencyKey } = body
 
@@ -107,7 +118,7 @@ export async function POST(request: NextRequest) {
     await saveSuperAdminPasswordHistory(superAdmin.id, passwordHash)
 
     // Build update object dynamically based on what columns exist
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       password_hash: passwordHash,
       is_locked: false,
       is_active: true,

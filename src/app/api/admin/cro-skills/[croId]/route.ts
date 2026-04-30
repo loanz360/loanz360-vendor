@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * CRO Skills Detail API
@@ -118,7 +119,37 @@ export async function PUT(
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      loan_types: z.string().optional(),
+
+
+      languages: z.string().optional(),
+
+
+      min_loan_amount: z.string().optional(),
+
+
+      max_loan_amount: z.string().optional(),
+
+
+      max_leads_per_day: z.string().optional(),
+
+
+      max_pending_leads: z.string().optional(),
+
+
+      geography_coverage: z.string().optional(),
+
+
+      is_available: z.boolean().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       loan_types,

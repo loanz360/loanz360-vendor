@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -127,7 +128,67 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      date_of_birth: z.string().optional(),
+
+
+      gender: z.string().optional(),
+
+
+      marital_status: z.string().optional(),
+
+
+      alternate_mobile: z.string().optional(),
+
+
+      pan_number: z.string().optional(),
+
+
+      bank_ifsc_code: z.string().optional(),
+
+
+      bank_name: z.string().optional(),
+
+
+      bank_branch: z.string().optional(),
+
+
+      address_line_2: z.string().optional(),
+
+
+      landmark: z.string().optional(),
+
+
+      country: z.string().optional(),
+
+
+      primary_category: z.string().optional(),
+
+
+      sub_category: z.string().optional(),
+
+
+      specific_profile: z.string().optional(),
+
+
+      employment_type: z.string().optional(),
+
+
+      customer_type: z.string().optional(),
+
+
+      category_specific_data: z.string().optional(),
+
+
+      kyc_status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Use admin client to bypass RLS for profile operations

@@ -247,7 +247,7 @@ export function BDEDrilldownModal({ bdeId, isOpen, onClose }: BDEDrilldownModalP
               ].map(tab => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => setActiveTab(tab.id as unknown)}
                   className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors ${
                     activeTab === tab.id
                       ? 'border-b-2 border-blue-600 text-blue-600'

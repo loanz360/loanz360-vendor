@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: Super Admin Go-Live Checklist
  * GET  — Returns saved checklist state
@@ -131,7 +132,17 @@ export async function POST(request: NextRequest) {
 // PUT — Save checklist state
 export async function PUT(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      state: z.string().optional(),
+
+      savedBy: z.string().optional(),
+
+      version: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const supabase = createAdminClient()
 

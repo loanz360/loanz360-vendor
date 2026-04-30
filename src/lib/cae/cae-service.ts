@@ -116,8 +116,7 @@ export class CAEService {
    */
   async evaluateRules(
     request: CAERequest,
-    result?: any
-  ): Promise<RulesEngineResult> {
+    result?: unknown  ): Promise<RulesEngineResult> {
     const supabase = await createClient()
     const rulesEngine = createRulesEngine(supabase)
 
@@ -684,7 +683,7 @@ export class CAEService {
   /**
    * Build CAE request from lead data
    */
-  private buildCAERequest(lead: any): CAERequest {
+  private buildCAERequest(lead: unknown): CAERequest {
     return {
       lead_id: lead.lead_id,
       customer_name: lead.customer_name,
@@ -713,7 +712,7 @@ export class CAEService {
   private async logAPICall(
     leadId: string,
     provider: CAEProviderType,
-    request: any,
+    request: unknown,
     response: CAEResponse,
     duration: number
   ): Promise<void> {

@@ -182,7 +182,7 @@ export default function AnalyticsDashboard({
           {/* Date Range Selector */}
           <select
             value={dateRange}
-            onChange={(e) => setDateRange(e.target.value as any)}
+            onChange={(e) => setDateRange(e.target.value as unknown)}
             className="bg-black/50 text-white px-4 py-2 rounded-lg border border-white/10 focus:border-orange-500 focus:outline-none"
           >
             <option value="7d">Last 7 Days</option>

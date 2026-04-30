@@ -211,7 +211,7 @@ export async function GET(request: NextRequest) {
 
     // Get user names for prepared_by, reviewed_by, approved_by
     const userIds = new Set<string>()
-    cams?.forEach((cam: any) => {
+    cams?.forEach((cam: unknown) => {
       if (cam.prepared_by) userIds.add(cam.prepared_by)
       if (cam.reviewed_by) userIds.add(cam.reviewed_by)
       if (cam.approved_by) userIds.add(cam.approved_by)
@@ -224,13 +224,13 @@ export async function GET(request: NextRequest) {
         .select('id, full_name')
         .in('id', Array.from(userIds))
 
-      users?.forEach((u: any) => {
+      users?.forEach((u: unknown) => {
         userNames[u.id] = u.full_name
       })
     }
 
     // Transform data
-    const items: CAMListItem[] = (cams || []).map((cam: any) => ({
+    const items: CAMListItem[] = (cams || []).map((cam: unknown) => ({
       id: cam.id,
       cam_id: cam.cam_id,
       lead_id: cam.lead_id,
@@ -283,7 +283,7 @@ export async function GET(request: NextRequest) {
 }
 
 async function getAccessLevel(
-  supabase: any,
+  supabase: unknown,
   userId: string
 ): Promise<'FULL' | 'BDE_ONLY' | 'NONE'> {
   // Check super admin
@@ -327,7 +327,7 @@ async function getAccessLevel(
 }
 
 async function getCAMSummary(
-  supabase: any,
+  supabase: unknown,
   accessLevel: 'FULL' | 'BDE_ONLY',
   userId: string
 ) {
@@ -352,13 +352,13 @@ async function getCAMSummary(
     }
   }
 
-  const approvedCount = cams.filter((c: any) => c.recommendation === 'APPROVE').length
-  const rejectedCount = cams.filter((c: any) => c.recommendation === 'REJECT').length
-  const pendingCount = cams.filter((c: any) =>
+  const approvedCount = cams.filter((c: unknown) => c.recommendation === 'APPROVE').length
+  const rejectedCount = cams.filter((c: unknown) => c.recommendation === 'REJECT').length
+  const pendingCount = cams.filter((c: unknown) =>
     c.status === 'COMPLETED' && !['APPROVE', 'REJECT'].includes(c.recommendation)
   ).length
 
-  const riskScores = cams.filter((c: any) => c.risk_score).map((c: any) => c.risk_score)
+  const riskScores = cams.filter((c: unknown) => c.risk_score).map((c: unknown) => c.risk_score)
   const avgRiskScore = riskScores.length > 0
     ? Math.round(riskScores.reduce((a: number, b: number) => a + b, 0) / riskScores.length)
     : 0

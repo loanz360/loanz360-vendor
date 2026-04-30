@@ -26,7 +26,7 @@ export const sentryConfig = {
   debug: process.env.NODE_ENV === 'development',
 
   // Don't send PII to Sentry
-  beforeSend(event: any) {
+  beforeSend(event: Record<string, unknown>) {
     // Remove sensitive data
     if (event.request) {
       delete event.request.cookies
@@ -89,12 +89,12 @@ export function captureError(
   context?: {
     user?: { id: string; email?: string; role?: string }
     tags?: Record<string, string>
-    extra?: Record<string, any>
+    extra?: Record<string, unknown>
   }
 ) {
   // If Sentry is available, use it
-  if (typeof window !== 'undefined' && (window as any).Sentry) {
-    const Sentry = (window as any).Sentry
+  if (typeof window !== 'undefined' && (window as unknown).Sentry) {
+    const Sentry = (window as unknown).Sentry
 
     if (context?.user) {
       Sentry.setUser(context.user)
@@ -121,10 +121,10 @@ export function captureError(
 export function captureMessage(
   message: string,
   level: 'info' | 'warning' | 'error' = 'info',
-  context?: Record<string, any>
+  context?: Record<string, unknown>
 ) {
-  if (typeof window !== 'undefined' && (window as any).Sentry) {
-    const Sentry = (window as any).Sentry
+  if (typeof window !== 'undefined' && (window as unknown).Sentry) {
+    const Sentry = (window as unknown).Sentry
     Sentry.captureMessage(message, { level, extra: context })
   } else {
     console[level === 'warning' ? 'warn' : level](message, context)
@@ -139,8 +139,8 @@ export function setUserContext(user: {
   email?: string
   role?: string
 }) {
-  if (typeof window !== 'undefined' && (window as any).Sentry) {
-    const Sentry = (window as any).Sentry
+  if (typeof window !== 'undefined' && (window as unknown).Sentry) {
+    const Sentry = (window as unknown).Sentry
     Sentry.setUser(user)
   }
 }
@@ -149,8 +149,8 @@ export function setUserContext(user: {
  * Clear user context (on logout)
  */
 export function clearUserContext() {
-  if (typeof window !== 'undefined' && (window as any).Sentry) {
-    const Sentry = (window as any).Sentry
+  if (typeof window !== 'undefined' && (window as unknown).Sentry) {
+    const Sentry = (window as unknown).Sentry
     Sentry.setUser(null)
   }
 }
@@ -161,10 +161,10 @@ export function clearUserContext() {
 export function addBreadcrumb(
   message: string,
   category: string,
-  data?: Record<string, any>
+  data?: Record<string, unknown>
 ) {
-  if (typeof window !== 'undefined' && (window as any).Sentry) {
-    const Sentry = (window as any).Sentry
+  if (typeof window !== 'undefined' && (window as unknown).Sentry) {
+    const Sentry = (window as unknown).Sentry
     Sentry.addBreadcrumb({
       message,
       category,
@@ -178,8 +178,8 @@ export function addBreadcrumb(
  * Performance monitoring
  */
 export function startTransaction(name: string, op: string) {
-  if (typeof window !== 'undefined' && (window as any).Sentry) {
-    const Sentry = (window as any).Sentry
+  if (typeof window !== 'undefined' && (window as unknown).Sentry) {
+    const Sentry = (window as unknown).Sentry
     return Sentry.startTransaction({ name, op })
   }
   return null

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Super Admin - Partner Payout Approval API
  * Manages BA/BP payout application approval workflow (2nd authorization after Accounts verification)
@@ -160,7 +161,21 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      applicationId: z.string().uuid().optional(),
+
+      applicationIds: z.string().optional(),
+
+      action: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      reason: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { applicationId, applicationIds, action, notes, reason } = body
 

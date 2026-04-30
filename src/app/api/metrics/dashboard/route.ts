@@ -117,7 +117,7 @@ function getStartDate(period: string): Date {
 /**
  * Fetch historical metrics from database
  */
-async function fetchHistoricalMetrics(supabase: any, startDate: Date, endDate: Date) {
+async function fetchHistoricalMetrics(supabase: unknown, startDate: Date, endDate: Date) {
   try {
     const { data, error } = await supabase
       .from('system_performance_metrics')
@@ -142,7 +142,7 @@ async function fetchHistoricalMetrics(supabase: any, startDate: Date, endDate: D
 /**
  * Calculate overall system health score (0-100)
  */
-function calculateHealthScore(summary: any): number {
+function calculateHealthScore(summary: unknown): number {
   let score = 100
 
   // Deduct for high error rate
@@ -182,7 +182,7 @@ function getHealthStatus(score: number): string {
 /**
  * Detect performance issues
  */
-function detectIssues(summary: any): Array<{ type: string; severity: string; message: string }> {
+function detectIssues(summary: unknown): Array<{ type: string; severity: string; message: string }> {
   const issues: Array<{ type: string; severity: string; message: string }> = []
 
   // High error rate

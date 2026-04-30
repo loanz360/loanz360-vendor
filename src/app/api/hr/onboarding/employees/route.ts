@@ -44,7 +44,7 @@ const createEmployeeSchema = z.object({
 });
 
 // Helper function to check if user is HR or Super Admin
-async function isHROrAdmin(supabase: any): Promise<boolean> {
+async function isHROrAdmin(supabase: unknown): Promise<boolean> {
   const { checkHRAccess } = await import('@/lib/auth/hr-access');
   return checkHRAccess(supabase);
 }

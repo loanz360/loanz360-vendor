@@ -97,8 +97,8 @@ export default function AvailabilityChecker({
         .filter(p => p.profiles)
         .map(p => ({
           id: p.user_id,
-          name: (p.profiles as any).full_name || 'Unknown',
-          email: (p.profiles as any).email || '',
+          name: (p.profiles as unknown).full_name || 'Unknown',
+          email: (p.profiles as unknown).email || '',
           provider_id: p.id
         }))
 

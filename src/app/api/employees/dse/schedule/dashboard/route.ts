@@ -164,7 +164,7 @@ export async function GET(request: NextRequest) {
     const funnelPositive = allMonthMeetings.filter(m => m.status === 'Completed').length
 
     // SLA Alerts (BL-3) - check customers not contacted within SLA timeframe
-    let slaAlerts: any[] = []
+    let slaAlerts: unknown[] = []
     try {
       const { data: customers } = await supabase
         .from('dse_customers')
@@ -216,7 +216,7 @@ export async function GET(request: NextRequest) {
             }
           })
           .filter(Boolean)
-          .sort((a: any, b: any) => b.days_since_last_contact - a.days_since_last_contact)
+          .sort((a: unknown, b: unknown) => b.days_since_last_contact - a.days_since_last_contact)
           .slice(0, 10)
       }
     } catch (slaError) {
@@ -224,7 +224,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Suggested Meetings (BL-1) - leads that need follow-up
-    let suggestedMeetings: any[] = []
+    let suggestedMeetings: unknown[] = []
     try {
       const { data: leads } = await supabase
         .from('dse_leads')
@@ -263,7 +263,7 @@ export async function GET(request: NextRequest) {
             }
           })
           .filter(Boolean)
-          .sort((a: any, b: any) => b.days_since_last_contact - a.days_since_last_contact)
+          .sort((a: unknown, b: unknown) => b.days_since_last_contact - a.days_since_last_contact)
           .slice(0, 5)
       }
     } catch (suggestError) {

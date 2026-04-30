@@ -298,7 +298,7 @@ export class GoogleCalendarService {
           end_time: event.end_time,
           timezone: event.timezone || 'UTC',
           is_all_day: false,
-          attendees: event.attendees as any,
+          attendees: event.attendees as unknown,
           organizer_email: googleEventData.organizer?.email,
           meeting_link: googleEventData.hangoutLink,
           meeting_platform: 'google_meet',
@@ -346,7 +346,7 @@ export class GoogleCalendarService {
       const calendar = await this.getCalendarClient(existingEvent.calendar_provider_id)
 
       // Format updates for Google Calendar
-      const googleUpdates: any = {}
+      const googleUpdates: Record<string, unknown> = {}
       if (updates.title) googleUpdates.summary = updates.title
       if (updates.description) googleUpdates.description = updates.description
       if (updates.location) googleUpdates.location = updates.location
@@ -499,7 +499,7 @@ export class GoogleCalendarService {
             email: a.email!,
             name: a.displayName,
             status: a.responseStatus
-          })) as any,
+          })) as unknown,
           organizer_email: googleEvent.organizer?.email,
           meeting_link: googleEvent.hangoutLink,
           status: googleEvent.status === 'cancelled' ? 'cancelled' : 'confirmed',

@@ -65,7 +65,7 @@ export async function GET(
     // Fetch employee details for each allocation
     const userIds = allocations?.map(a => a.user_id) || []
 
-    let employees: any[] = []
+    let employees: unknown[] = []
     if (userIds.length > 0) {
       const { data: empData } = await supabase
         .from('employees')

@@ -199,24 +199,24 @@ export async function GET(request: NextRequest) {
     nextWeekEnd.setHours(23, 59, 59, 999)
 
     const grouped = {
-      today: enhancedSchedules.filter((s: any) => {
+      today: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= now && scheduleDate <= endOfToday
       }),
-      tomorrow: enhancedSchedules.filter((s: any) => {
+      tomorrow: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= tomorrow && scheduleDate < new Date(tomorrow.getTime() + 24 * 60 * 60 * 1000)
       }),
-      this_week: enhancedSchedules.filter((s: any) => {
+      this_week: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         const tomorrowEnd = new Date(tomorrow.getTime() + 24 * 60 * 60 * 1000)
         return scheduleDate >= tomorrowEnd && scheduleDate <= endOfWeek
       }),
-      next_week: enhancedSchedules.filter((s: any) => {
+      next_week: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= nextWeekStart && scheduleDate <= nextWeekEnd
       }),
-      later: enhancedSchedules.filter((s: any) => {
+      later: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate > nextWeekEnd
       }),
@@ -225,15 +225,15 @@ export async function GET(request: NextRequest) {
 
     // Calculate summary statistics
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-    const monthSchedules = enhancedSchedules.filter((s: any) => {
+    const monthSchedules = enhancedSchedules.filter((s: unknown) => {
       const scheduleDate = new Date(s.scheduled_date)
       return scheduleDate >= startOfMonth
     })
 
     // Calculate performance metrics
-    const completedSchedules = enhancedSchedules.filter((s: any) => s.status === 'COMPLETED')
-    const cancelledSchedules = enhancedSchedules.filter((s: any) => s.status === 'CANCELLED')
-    const noShowSchedules = enhancedSchedules.filter((s: any) => s.status === 'NO_SHOW')
+    const completedSchedules = enhancedSchedules.filter((s: unknown) => s.status === 'COMPLETED')
+    const cancelledSchedules = enhancedSchedules.filter((s: unknown) => s.status === 'CANCELLED')
+    const noShowSchedules = enhancedSchedules.filter((s: unknown) => s.status === 'NO_SHOW')
     const totalPastSchedules = completedSchedules.length + cancelledSchedules.length + noShowSchedules.length
 
     const completionRate = totalPastSchedules > 0
@@ -246,8 +246,8 @@ export async function GET(request: NextRequest) {
 
     // Per-employee statistics
     const employeeStats = reportingEmployees.map(emp => {
-      const empSchedules = enhancedSchedules.filter((s: any) => s.sales_executive_id === emp.user_id)
-      const empCompleted = empSchedules.filter((s: any) => s.status === 'COMPLETED')
+      const empSchedules = enhancedSchedules.filter((s: unknown) => s.sales_executive_id === emp.user_id)
+      const empCompleted = empSchedules.filter((s: unknown) => s.status === 'COMPLETED')
       const empTotal = empSchedules.length
 
       return {
@@ -256,7 +256,7 @@ export async function GET(request: NextRequest) {
         user_id: emp.user_id,
         total_schedules: empTotal,
         completed: empCompleted.length,
-        active: empSchedules.filter((s: any) =>
+        active: empSchedules.filter((s: unknown) =>
           ['SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'].includes(s.status)
         ).length,
         completion_rate: empTotal > 0 ? (empCompleted.length / empTotal) * 100 : 0

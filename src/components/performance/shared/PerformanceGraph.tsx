@@ -68,12 +68,12 @@ export function PerformanceGraph({
   }
 
   // Custom tooltip
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  const CustomTooltip = ({ active, payload, label }: unknown) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-semibold text-gray-900 mb-2">{formatDate(label)}</p>
-          {payload.map((entry: any, index: number) => (
+          {payload.map((entry: unknown, index: number) => (
             <div key={index} className="flex items-center justify-between gap-4 text-sm">
               <span className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }} />

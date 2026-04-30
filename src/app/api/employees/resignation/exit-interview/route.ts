@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // EXIT INTERVIEW API
@@ -80,7 +81,7 @@ export async function GET(request: NextRequest) {
       .maybeSingle()
 
     // Group questions by category
-    const questionsByCategory = questions.reduce((acc: any, q: any) => {
+    const questionsByCategory = questions.reduce((acc: unknown, q: unknown) => {
       if (!acc[q.question_category]) {
         acc[q.question_category] = []
       }
@@ -125,7 +126,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      resignation_id: z.string().uuid().optional(),
+
+
+      responses: z.string().optional(),
+
+
+      interview_mode: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { resignation_id, responses, interview_mode } = body
 

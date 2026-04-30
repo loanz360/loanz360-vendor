@@ -71,7 +71,7 @@ export function Header({ className, onMenuToggle, showMenuToggle = true }: Heade
 
   const handleLogout = async () => {
     // Store redirect path BEFORE signing out (user will be null after signOut)
-    const redirectPath = getLogoutRedirect(user?.role as any, user?.sub_role) || '/auth/login'
+    const redirectPath = getLogoutRedirect(user?.role as unknown, user?.sub_role) || '/auth/login'
     await signOut()
     // Use hard redirect to ensure complete state reset
     window.location.href = redirectPath

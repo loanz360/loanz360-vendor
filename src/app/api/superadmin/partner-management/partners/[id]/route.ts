@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -90,9 +91,9 @@ async function getPartnerDetailsHandler(
       .order('disbursement_date', { ascending: false })
 
     // Calculate month-wise performance
-    const monthWisePerformance: Record<string, any> = {}
+    const monthWisePerformance: Record<string, unknown> = {}
 
-    leads?.forEach((lead: any) => {
+    leads?.forEach((lead: unknown) => {
       const month = new Date(lead.created_at).toISOString().slice(0, 7) // YYYY-MM
       if (!monthWisePerformance[month]) {
         monthWisePerformance[month] = {
@@ -110,14 +111,14 @@ async function getPartnerDetailsHandler(
       if (lead.status === 'dropped') monthWisePerformance[month].dropped += 1
     })
 
-    loginHistory?.forEach((login: any) => {
+    loginHistory?.forEach((login: unknown) => {
       const month = new Date(login.login_timestamp).toISOString().slice(0, 7)
       if (monthWisePerformance[month]) {
         monthWisePerformance[month].logins += 1
       }
     })
 
-    const monthWiseData = Object.values(monthWisePerformance).sort((a: any, b: any) =>
+    const monthWiseData = Object.values(monthWisePerformance).sort((a: unknown, b: unknown) =>
       b.month.localeCompare(a.month)
     )
 
@@ -156,7 +157,7 @@ async function getPartnerDetailsHandler(
         lifetime_earnings: parseFloat(partner.lifetime_earnings || 0).toFixed(2),
         estimated_payout: parseFloat(partner.estimated_payout || 0).toFixed(2),
         actual_payout: parseFloat(partner.actual_payout || 0).toFixed(2),
-        disbursements: disbursements?.map((d: any) => ({
+        disbursements: disbursements?.map((d: Record<string, unknown>) => ({
           id: d.id,
           disbursement_number: d.disbursement_number,
           amount: parseFloat(d.amount).toFixed(2),
@@ -170,13 +171,13 @@ async function getPartnerDetailsHandler(
       },
       month_wise_performance: monthWiseData,
       recent_activity: {
-        recent_logins: loginHistory?.slice(0, 10).map((l: any) => ({
+        recent_logins: loginHistory?.slice(0, 10).map((l: unknown) => ({
           login_timestamp: l.login_timestamp,
           logout_timestamp: l.logout_timestamp,
           session_duration_minutes: l.session_duration_minutes,
           ip_address: l.ip_address
         })) || [],
-        recent_leads: leads?.slice(0, 10).map((l: any) => ({
+        recent_leads: leads?.slice(0, 10).map((l: unknown) => ({
           id: l.id,
           lead_number: l.lead_number,
           customer_name: l.customer_name,
@@ -240,7 +241,40 @@ async function updatePartnerHandler(
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      full_name: z.string().optional(),
+
+
+      mobile_number: z.string().min(10).optional(),
+
+
+      work_email: z.string().email().optional(),
+
+
+      personal_email: z.string().email().optional(),
+
+
+      present_address: z.string().optional(),
+
+
+      city: z.string().optional(),
+
+
+      state: z.string().optional(),
+
+
+      pincode: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Use admin client for database queries
@@ -365,7 +399,7 @@ async function updatePartnerHandler(
       }
     }
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
     if (full_name) updateData.full_name = full_name
     if (mobile_number) updateData.mobile_number = mobile_number

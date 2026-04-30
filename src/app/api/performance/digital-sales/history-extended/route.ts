@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Format based on groupBy parameter
-    let formattedData: any[] = []
+    let formattedData: unknown[] = []
 
     if (groupBy === 'month') {
       formattedData = (summaries || []).map(s => ({
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
         },
       }))
     } else if (groupBy === 'quarter') {
-      const quarterlyData: Record<string, any> = {}
+      const quarterlyData: Record<string, unknown> = {}
 
       (summaries || []).forEach(s => {
         const quarter = Math.ceil(s.month / 3)
@@ -272,7 +272,7 @@ function compareGrades(a: string | null, b: string | null): number {
   return (gradeOrder[a || 'N/A'] || 0) - (gradeOrder[b || 'N/A'] || 0)
 }
 
-function calculateYoYGrowth(summaries: any[]): any[] {
+function calculateYoYGrowth(summaries: unknown[]): unknown[] {
   const yearlyTotals: Record<number, { leads: number, revenue: number, months: number }> = {}
 
   summaries.forEach(s => {
@@ -285,7 +285,7 @@ function calculateYoYGrowth(summaries: any[]): any[] {
   })
 
   const years = Object.keys(yearlyTotals).map(Number).sort()
-  const growth: any[] = []
+  const growth: unknown[] = []
 
   for (let i = 1; i < years.length; i++) {
     const currentYear = years[i]
@@ -310,7 +310,7 @@ function calculateYoYGrowth(summaries: any[]): any[] {
   return growth
 }
 
-function calculateTrends(data: any[]): any {
+function calculateTrends(data: unknown[]): unknown {
   if (data.length < 3) {
     return { trend: 'insufficient_data', message: 'Need more data for trend analysis' }
   }
@@ -345,7 +345,7 @@ function calculateTrends(data: any[]): any {
   }
 }
 
-function calculatePersonalBests(summaries: any[]): any {
+function calculatePersonalBests(summaries: unknown[]): unknown {
   if (summaries.length === 0) return null
 
   const bestRevenue = summaries.reduce((best, s) =>
@@ -381,7 +381,7 @@ function calculatePersonalBests(summaries: any[]): any {
   }
 }
 
-function calculateCareerSummary(summaries: any[]): any {
+function calculateCareerSummary(summaries: unknown[]): unknown {
   if (summaries.length === 0) return null
 
   const totalRevenue = summaries.reduce((sum, s) => sum + (s.total_revenue || 0), 0)

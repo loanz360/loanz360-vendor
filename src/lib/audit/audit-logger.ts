@@ -63,9 +63,9 @@ export interface AuditLogEntry {
   entityId: string
   actorId: string
   actorType?: string
-  oldValues?: Record<string, any>
-  newValues?: Record<string, any>
-  metadata?: Record<string, any>
+  oldValues?: Record<string, unknown>
+  newValues?: Record<string, unknown>
+  metadata?: Record<string, unknown>
   severity?: AuditSeverity
   requestId?: string
   ipAddress?: string
@@ -114,7 +114,7 @@ export async function logAudit(entry: AuditLogEntry): Promise<string | null> {
  */
 export async function logPartnerCreated(
   partnerId: string,
-  partnerData: Record<string, any>,
+  partnerData: Record<string, unknown>,
   actorId: string,
   request?: NextRequest
 ): Promise<void> {
@@ -136,8 +136,8 @@ export async function logPartnerCreated(
  */
 export async function logPartnerUpdated(
   partnerId: string,
-  oldData: Record<string, any>,
-  newData: Record<string, any>,
+  oldData: Record<string, unknown>,
+  newData: Record<string, unknown>,
   actorId: string,
   request?: NextRequest
 ): Promise<void> {
@@ -170,7 +170,7 @@ export async function logPartnerUpdated(
  */
 export async function logPartnerDeleted(
   partnerId: string,
-  partnerData: Record<string, any>,
+  partnerData: Record<string, unknown>,
   actorId: string,
   request?: NextRequest
 ): Promise<void> {
@@ -192,7 +192,7 @@ export async function logPartnerDeleted(
  */
 export async function logContestCreated(
   contestId: string,
-  contestData: Record<string, any>,
+  contestData: Record<string, unknown>,
   actorId: string,
   request?: NextRequest
 ): Promise<void> {
@@ -214,7 +214,7 @@ export async function logContestCreated(
  */
 export async function logContestEvaluated(
   contestId: string,
-  evaluationData: Record<string, any>,
+  evaluationData: Record<string, unknown>,
   actorId: string,
   request?: NextRequest
 ): Promise<void> {
@@ -338,16 +338,16 @@ function generateRequestId(request: NextRequest): string {
  * Get only changed fields between two objects
  */
 function getChangedFields(
-  oldData: Record<string, any>,
-  newData: Record<string, any>
+  oldData: Record<string, unknown>,
+  newData: Record<string, unknown>
 ): {
   changed: string[]
-  old: Record<string, any>
-  new: Record<string, any>
+  old: Record<string, unknown>
+  new: Record<string, unknown>
 } {
   const changed: string[] = []
-  const oldValues: Record<string, any> = {}
-  const newValues: Record<string, any> = {}
+  const oldValues: Record<string, unknown> = {}
+  const newValues: Record<string, unknown> = {}
 
   // Check for modified fields
   for (const key in newData) {
@@ -364,7 +364,7 @@ function getChangedFields(
 /**
  * Sanitize sensitive data before logging
  */
-export function sanitizeForAudit(data: Record<string, any>): Record<string, any> {
+export function sanitizeForAudit(data: Record<string, unknown>): Record<string, unknown> {
   const sanitized = { ...data }
   const sensitiveFields = ['password', 'token', 'secret', 'api_key', 'private_key']
 

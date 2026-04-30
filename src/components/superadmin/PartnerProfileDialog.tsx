@@ -13,7 +13,7 @@ interface Partner {
   status: string
   city: string
   state: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 interface PartnerProfileDialogProps {

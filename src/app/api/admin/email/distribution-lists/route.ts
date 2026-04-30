@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Distribution Lists API Routes
  */
@@ -69,7 +70,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      emailAddress: z.string().email().optional(),
+
+
+      displayName: z.string().optional(),
+
+
+      listType: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
 
     if (!body.emailAddress || !body.displayName || !body.listType) {

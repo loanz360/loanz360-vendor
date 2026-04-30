@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from "next/server"
@@ -26,7 +27,25 @@ export async function POST(request: Request) {
     if (!isHR) return NextResponse.json({ success: false, error: "Access denied. HR only." }, { status: 403 })
     const { data: profile } = await adminClient.from("employee_profile").select("first_name, last_name").eq("user_id", user.id).maybeSingle()
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      template_id: z.string().uuid().optional(),
+
+
+      employee_id: z.string().uuid().optional(),
+
+
+      variable_values: z.string().optional(),
+
+
+      replace: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { template_id, employee_id, variable_values } = body
     if (!template_id || !employee_id)

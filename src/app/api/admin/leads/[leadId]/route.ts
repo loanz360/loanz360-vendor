@@ -178,7 +178,7 @@ async function getLeadDetailHandler(request: NextRequest, leadId: string) {
       .order('changed_at', { ascending: false })
 
     // Get referral names for history (OPTIMIZED - BATCH QUERIES)
-    let referralHistoryWithNames: any[] = []
+    let referralHistoryWithNames: unknown[] = []
 
     if (referralHistory && referralHistory.length > 0) {
       // Collect all unique referral IDs by type for batch fetching

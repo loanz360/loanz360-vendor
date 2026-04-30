@@ -258,7 +258,7 @@ export default function ComposeNotificationPanel({
             </label>
             <select
               value={priority}
-              onChange={(e) => setPriority(e.target.value as any)}
+              onChange={(e) => setPriority(e.target.value as unknown)}
               className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-orange-500 focus:outline-none"
               disabled={sending}
             >
@@ -344,7 +344,7 @@ export default function ComposeNotificationPanel({
               </label>
               <select
                 value={targetCategory}
-                onChange={(e) => setTargetCategory(e.target.value as any)}
+                onChange={(e) => setTargetCategory(e.target.value as unknown)}
                 className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-orange-500 focus:outline-none"
                 disabled={sending}
               >

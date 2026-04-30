@@ -10,19 +10,18 @@ import { RealtimeChannel } from '@supabase/supabase-js'
 export interface EmployeeTicketRealtimeEvent {
   event: 'INSERT' | 'UPDATE' | 'DELETE'
   ticketId: string
-  ticket: any
-  timestamp: string
+  ticket: unknown  timestamp: string
 }
 
 export interface UseEmployeeSupportRealtimeOptions {
   ticketId?: string // Subscribe to specific ticket
   employeeId?: string // Subscribe to employee's tickets
   assignedTo?: 'hr' | 'super_admin' | 'finance' | 'accounts' | 'payout_specialist' | 'technical_support' | 'compliance' | 'both' | 'all' // Subscribe to department tickets
-  onNewTicket?: (ticket: any) => void
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void
+  onTicketUpdate?: (ticket: unknown) => void
   onTicketDelete?: (ticketId: string) => void
-  onNewMessage?: (message: any) => void
-  onStatusChange?: (ticket: any, oldStatus: string) => void
+  onNewMessage?: (message: unknown) => void
+  onStatusChange?: (ticket: unknown, oldStatus: string) => void
 }
 
 /**
@@ -175,9 +174,9 @@ export function useEmployeeSupportRealtime(options: UseEmployeeSupportRealtimeOp
  */
 export function useEmployeeTicketDetailRealtime(
   ticketId: string,
-  onUpdate?: (ticket: any) => void,
-  onNewMessage?: (message: any) => void,
-  onStatusChange?: (ticket: any, oldStatus: string) => void
+  onUpdate?: (ticket: unknown) => void,
+  onNewMessage?: (message: unknown) => void,
+  onStatusChange?: (ticket: unknown, oldStatus: string) => void
 ) {
   return useEmployeeSupportRealtime({
     ticketId,
@@ -192,8 +191,8 @@ export function useEmployeeTicketDetailRealtime(
  */
 export function useMyEmployeeTicketsRealtime(
   employeeId: string,
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     employeeId,
@@ -206,8 +205,8 @@ export function useMyEmployeeTicketsRealtime(
  * Subscribe to HR assigned tickets
  */
 export function useHRTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'hr',
@@ -220,8 +219,8 @@ export function useHRTicketsRealtime(
  * Subscribe to Super Admin assigned tickets
  */
 export function useSuperAdminTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'super_admin',
@@ -234,8 +233,8 @@ export function useSuperAdminTicketsRealtime(
  * Subscribe to tickets assigned to both HR and Super Admin
  */
 export function useBothAssignedTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'both',
@@ -248,8 +247,8 @@ export function useBothAssignedTicketsRealtime(
  * Subscribe to Finance Department assigned tickets
  */
 export function useFinanceTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'finance',
@@ -262,8 +261,8 @@ export function useFinanceTicketsRealtime(
  * Subscribe to Accounts Department assigned tickets
  */
 export function useAccountsTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'accounts',
@@ -276,8 +275,8 @@ export function useAccountsTicketsRealtime(
  * Subscribe to Payout Specialist assigned tickets
  */
 export function usePayoutSpecialistTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'payout_specialist',
@@ -290,8 +289,8 @@ export function usePayoutSpecialistTicketsRealtime(
  * Subscribe to Technical Support assigned tickets
  */
 export function useTechnicalSupportTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'technical_support',
@@ -304,8 +303,8 @@ export function useTechnicalSupportTicketsRealtime(
  * Subscribe to Compliance Department assigned tickets
  */
 export function useComplianceTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'compliance',
@@ -318,8 +317,8 @@ export function useComplianceTicketsRealtime(
  * Subscribe to tickets assigned to all departments
  */
 export function useAllDepartmentsTicketsRealtime(
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useEmployeeSupportRealtime({
     assignedTo: 'all',

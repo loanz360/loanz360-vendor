@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Single Incident API
  * Get incident details and manage comments
@@ -40,7 +41,7 @@ export async function GET(
       .order('created_at', { ascending: false })
 
     // Get related activities
-    let relatedActivities: any[] = []
+    let relatedActivities: unknown[] = []
     if (incident.related_activity_ids?.length) {
       const { data: activities } = await supabase
         .from('realtime_activities')
@@ -74,7 +75,17 @@ export async function POST(
   try {
     const { id } = await params
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      content: z.string(),
+
+      author_id: z.string().uuid().optional(),
+
+      author_name: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { content, author_id, author_name } = body

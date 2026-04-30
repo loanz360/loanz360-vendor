@@ -232,7 +232,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     // 8. Return response
     return NextResponse.json({
       success: true,
-      data: updatedLead as any,
+      data: updatedLead as unknown,
     } as UpdateLeadResponse)
   } catch (error) {
     apiLogger.error('Update lead error', error)

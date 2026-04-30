@@ -325,7 +325,7 @@ export class TicketCountsService {
   }> {
     const cacheKey = `queue:${ticketSource}:${userId}:${department}`
 
-    const cached = getFromCache(cacheKey) as any
+    const cached = getFromCache(cacheKey) as unknown
     if (cached?.my_queue !== undefined) {
       return {
         my_queue: cached.my_queue,
@@ -391,7 +391,7 @@ export class TicketCountsService {
    * Calculate counts from ticket array
    */
   private calculateCounts(
-    tickets: any[],
+    tickets: unknown[],
     userId?: string,
     assignedField: string = 'assigned_user_id'
   ): TicketCountsResult {
@@ -422,7 +422,7 @@ export class TicketCountsService {
   /**
    * Calculate counts for partner tickets (has two assignment fields)
    */
-  private calculateCountsPartner(tickets: any[], userId?: string): TicketCountsResult {
+  private calculateCountsPartner(tickets: unknown[], userId?: string): TicketCountsResult {
     const counts = this.calculateCounts(tickets, userId, 'assigned_to_partner_support_id')
 
     // Override unassigned to check both fields

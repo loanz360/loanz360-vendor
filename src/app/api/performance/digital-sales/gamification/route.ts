@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     })) || []
 
     // Group by category
-    const achievementsByCategory = achievements.reduce((acc: any, achievement) => {
+    const achievementsByCategory = achievements.reduce((acc: unknown, achievement) => {
       if (!acc[achievement.category]) {
         acc[achievement.category] = { total: 0, unlocked: 0, items: [] }
       }
@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
       .select('*')
       .eq('user_id', user.id)
 
-    const streakData = streaks?.reduce((acc: any, streak) => {
+    const streakData = streaks?.reduce((acc: unknown, streak) => {
       acc[streak.streak_type] = {
         current: streak.current_streak,
         longest: streak.longest_streak,

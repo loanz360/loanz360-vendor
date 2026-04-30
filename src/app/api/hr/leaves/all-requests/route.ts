@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { checkHRAccess } from '@/lib/auth/hr-access'
@@ -196,7 +197,17 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Parse and validate body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      id: z.string().uuid().optional(),
+
+      action: z.string().optional(),
+
+      remarks: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { id, action, remarks } = body
 

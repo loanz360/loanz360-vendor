@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Initialize analytics object
-    const analytics: any = {
+    const analytics: Record<string, unknown> = {
       overview: {
         total_tickets: 0,
         open_tickets: 0,
@@ -71,8 +71,8 @@ export async function GET(request: NextRequest) {
       by_category: {},
       by_department: {},
       trends: {
-        daily: [] as any[],
-        weekly: [] as any[]
+        daily: [] as unknown[],
+        weekly: [] as unknown[]
       },
       sla: {
         total_tracked: 0,
@@ -85,12 +85,12 @@ export async function GET(request: NextRequest) {
         by_priority: {} as Record<string, number>,
         by_source: {} as Record<string, number>
       },
-      top_categories: [] as any[],
-      agent_performance: [] as any[]
+      top_categories: [] as unknown[],
+      agent_performance: [] as unknown[]
     }
 
     // Helper to apply date filter
-    const applyDateFilter = (query: any) => {
+    const applyDateFilter = (query: unknown) => {
       if (dateFilter) {
         return query.gte('created_at', dateFilter)
       }
@@ -108,14 +108,14 @@ export async function GET(request: NextRequest) {
 
       if (empTickets) {
         analytics.by_source.EMPLOYEE.total = count || 0
-        analytics.by_source.EMPLOYEE.open = empTickets.filter((t: any) =>
+        analytics.by_source.EMPLOYEE.open = empTickets.filter((t: unknown) =>
           ['open', 'in_progress', 'on_hold'].includes(t.status)
         ).length
-        analytics.by_source.EMPLOYEE.resolved = empTickets.filter((t: any) =>
+        analytics.by_source.EMPLOYEE.resolved = empTickets.filter((t: unknown) =>
           ['resolved', 'closed'].includes(t.status)
         ).length
 
-        empTickets.forEach((t: any) => {
+        empTickets.forEach((t: unknown) => {
           analytics.by_priority[t.priority] = (analytics.by_priority[t.priority] || 0) + 1
           analytics.by_status[t.status] = (analytics.by_status[t.status] || 0) + 1
           analytics.by_category[t.category] = (analytics.by_category[t.category] || 0) + 1
@@ -134,10 +134,10 @@ export async function GET(request: NextRequest) {
 
       if (custTickets) {
         analytics.by_source.CUSTOMER.total = count || 0
-        analytics.by_source.CUSTOMER.open = custTickets.filter((t: any) =>
+        analytics.by_source.CUSTOMER.open = custTickets.filter((t: unknown) =>
           ['new', 'in_progress', 'pending_customer'].includes(t.status)
         ).length
-        analytics.by_source.CUSTOMER.resolved = custTickets.filter((t: any) =>
+        analytics.by_source.CUSTOMER.resolved = custTickets.filter((t: unknown) =>
           ['resolved', 'closed'].includes(t.status)
         ).length
 
@@ -150,7 +150,7 @@ export async function GET(request: NextRequest) {
         let slaBreached = 0
         let slaMet = 0
 
-        custTickets.forEach((t: any) => {
+        custTickets.forEach((t: unknown) => {
           analytics.by_priority[t.priority] = (analytics.by_priority[t.priority] || 0) + 1
           analytics.by_status[t.status] = (analytics.by_status[t.status] || 0) + 1
           analytics.by_category[t.category] = (analytics.by_category[t.category] || 0) + 1
@@ -201,10 +201,10 @@ export async function GET(request: NextRequest) {
 
       if (partnerTickets) {
         analytics.by_source.PARTNER.total = count || 0
-        analytics.by_source.PARTNER.open = partnerTickets.filter((t: any) =>
+        analytics.by_source.PARTNER.open = partnerTickets.filter((t: unknown) =>
           ['new', 'assigned', 'in_progress', 'pending_partner', 'pending_internal'].includes(t.status)
         ).length
-        analytics.by_source.PARTNER.resolved = partnerTickets.filter((t: any) =>
+        analytics.by_source.PARTNER.resolved = partnerTickets.filter((t: unknown) =>
           ['resolved', 'closed'].includes(t.status)
         ).length
 
@@ -213,7 +213,7 @@ export async function GET(request: NextRequest) {
         let totalResolutionTime = 0
         let resolutionCount = 0
 
-        partnerTickets.forEach((t: any) => {
+        partnerTickets.forEach((t: unknown) => {
           analytics.by_priority[t.priority] = (analytics.by_priority[t.priority] || 0) + 1
           analytics.by_status[t.status] = (analytics.by_status[t.status] || 0) + 1
           analytics.by_category[t.category] = (analytics.by_category[t.category] || 0) + 1
@@ -266,7 +266,7 @@ export async function GET(request: NextRequest) {
     // Sort and limit top categories
     analytics.top_categories = Object.entries(analytics.by_category)
       .map(([category, count]) => ({ category, count }))
-      .sort((a: any, b: any) => b.count - a.count)
+      .sort((a: unknown, b: unknown) => b.count - a.count)
       .slice(0, 10)
 
     // Generate daily trends (last 30 days)
@@ -292,7 +292,7 @@ export async function GET(request: NextRequest) {
     if (agentStats) {
       // Aggregate by agent
       const agentMap = new Map()
-      agentStats.forEach((s: any) => {
+      agentStats.forEach((s: unknown) => {
         if (!agentMap.has(s.agent_id)) {
           agentMap.set(s.agent_id, {
             agent_id: s.agent_id,

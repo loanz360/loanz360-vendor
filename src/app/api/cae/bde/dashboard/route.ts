@@ -235,7 +235,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function calculateSummary(cams: any[]): BDEDashboard['summary'] {
+function calculateSummary(cams: unknown[]): BDEDashboard['summary'] {
   const statusCounts: Record<string, number> = {
     PENDING_ACTION: 0,
     PROCESSING: 0,
@@ -287,7 +287,7 @@ function calculateSummary(cams: any[]): BDEDashboard['summary'] {
   }
 }
 
-async function getTodayActivity(supabase: any, bdeUserId: string): Promise<BDEDashboard['today']> {
+async function getTodayActivity(supabase: unknown, bdeUserId: string): Promise<BDEDashboard['today']> {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const todayISO = today.toISOString()
@@ -330,7 +330,7 @@ async function getTodayActivity(supabase: any, bdeUserId: string): Promise<BDEDa
   }
 }
 
-function buildCAMSummaries(cams: any[]): CAMSummary[] {
+function buildCAMSummaries(cams: unknown[]): CAMSummary[] {
   return cams.map(cam => {
     const finalAssessment = cam.final_assessment || {}
     const lead = cam.partner_leads || {}
@@ -358,7 +358,7 @@ function buildCAMSummaries(cams: any[]): CAMSummary[] {
   })
 }
 
-function determinePriority(cam: any): 'HIGH' | 'MEDIUM' | 'LOW' {
+function determinePriority(cam: unknown): 'HIGH' | 'MEDIUM' | 'LOW' {
   // High priority: Pending action, assigned > 2 days ago
   const assignedAt = new Date(cam.assigned_at || cam.created_at)
   const daysSinceAssigned = Math.ceil((Date.now() - assignedAt.getTime()) / (1000 * 60 * 60 * 24))
@@ -379,7 +379,7 @@ function determinePriority(cam: any): 'HIGH' | 'MEDIUM' | 'LOW' {
   return 'LOW'
 }
 
-function extractPendingActions(cams: any[]): PendingAction[] {
+function extractPendingActions(cams: unknown[]): PendingAction[] {
   const actions: PendingAction[] = []
 
   for (const cam of cams) {
@@ -432,7 +432,7 @@ function extractPendingActions(cams: any[]): PendingAction[] {
     .slice(0, 20)
 }
 
-async function getPerformanceMetrics(supabase: any, bdeUserId: string): Promise<BDEDashboard['performance']> {
+async function getPerformanceMetrics(supabase: unknown, bdeUserId: string): Promise<BDEDashboard['performance']> {
   const thisMonth = new Date()
   thisMonth.setDate(1)
   thisMonth.setHours(0, 0, 0, 0)
@@ -453,7 +453,7 @@ async function getPerformanceMetrics(supabase: any, bdeUserId: string): Promise<
     .in('status', ['DISBURSED', 'COMPLETED'])
     .gte('updated_at', thisMonthISO)
 
-  const monthDisbursed = disbursed?.reduce((sum: number, d: any) => sum + (d.requested_amount || 0), 0) || 0
+  const monthDisbursed = disbursed?.reduce((sum: number, d: unknown) => sum + (d.requested_amount || 0), 0) || 0
 
   // Overall conversion rate
   const { count: totalClosed } = await supabase
@@ -479,7 +479,7 @@ async function getPerformanceMetrics(supabase: any, bdeUserId: string): Promise<
     .limit(50)
 
   const avgCamScore = scores && scores.length > 0
-    ? Math.round(100 - (scores.reduce((sum: number, s: any) => sum + (s.risk_score || 50), 0) / scores.length))
+    ? Math.round(100 - (scores.reduce((sum: number, s: unknown) => sum + (s.risk_score || 50), 0) / scores.length))
     : 0
 
   return {

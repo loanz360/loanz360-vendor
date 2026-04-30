@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { apiLogger } from '@/lib/utils/logger'
 import { NextRequest, NextResponse } from 'next/server'
@@ -164,7 +165,21 @@ export async function GET(request: NextRequest) {
 // POST - Assign lead(s) manually or trigger auto-assignment
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action: z.string(),
+
+      leadIds: z.array(z.unknown()).optional(),
+
+      assignTo: z.string().optional(),
+
+      reason: z.string().optional(),
+
+      id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action, leadIds, assignTo, reason } = body
 
@@ -246,7 +261,13 @@ export async function POST(request: NextRequest) {
 // PUT - Create or update assignment rule
 export async function PUT(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, ...ruleData } = body
 

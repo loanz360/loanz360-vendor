@@ -40,7 +40,7 @@ export async function GET(
     }
 
     // Format activities with performer name
-    const formattedActivities = (activities || []).map((activity: any) => ({
+    const formattedActivities = (activities || []).map((activity: unknown) => ({
       id: activity.id,
       action: activity.action,
       action_details: activity.action_details || {},

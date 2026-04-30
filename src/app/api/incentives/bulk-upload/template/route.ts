@@ -82,10 +82,10 @@ export async function GET(request: NextRequest) {
     })
 
     // Sheet 2: Column Descriptions
-    const columns = template.columns as any[]
+    const columns = template.columns as unknown[]
     const descriptionsSheet = workbook.addWorksheet('Column Descriptions')
     descriptionsSheet.addRow(['Column Name', 'Label', 'Type', 'Required', 'Description', 'Example'])
-    columns.forEach((col: any) => {
+    columns.forEach((col: unknown) => {
       descriptionsSheet.addRow([
         col.name,
         col.label,
@@ -98,16 +98,16 @@ export async function GET(request: NextRequest) {
 
     // Sheet 3: Data (empty template with headers)
     const dataSheet = workbook.addWorksheet('Data')
-    const headers = columns.map((col: any) => col.label)
+    const headers = columns.map((col: unknown) => col.label)
     dataSheet.addRow(headers)
 
     // Sheet 4: Sample Data
     if (template.sample_data && Array.isArray(template.sample_data) && template.sample_data.length > 0) {
       const sampleSheet = workbook.addWorksheet('Sample Data')
-      const sampleHeaders = columns.map((col: any) => col.label)
+      const sampleHeaders = columns.map((col: unknown) => col.label)
       sampleSheet.addRow(sampleHeaders)
-      ;(template.sample_data as any[]).forEach((sample: any) => {
-        const row = columns.map((col: any) => sample[col.name] || '')
+      ;(template.sample_data as unknown[]).forEach((sample: unknown) => {
+        const row = columns.map((col: unknown) => sample[col.name] || '')
         sampleSheet.addRow(row)
       })
     }

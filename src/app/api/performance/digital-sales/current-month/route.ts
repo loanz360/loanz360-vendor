@@ -264,7 +264,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper function to aggregate daily metrics
-function aggregateDigitalSalesMetrics(dailyMetrics: any[]): any {
+function aggregateDigitalSalesMetrics(dailyMetrics: unknown[]): unknown {
   if (dailyMetrics.length === 0) {
     return {
       total_website_leads: 0,
@@ -335,7 +335,7 @@ function aggregateDigitalSalesMetrics(dailyMetrics: any[]): any {
 }
 
 // Helper function to calculate performance score
-function calculateDigitalSalesPerformanceScore(current: any, targets: DigitalSalesMonthlyTargets): number {
+function calculateDigitalSalesPerformanceScore(current: unknown, targets: DigitalSalesMonthlyTargets): number {
   const weights = {
     website_leads: 0.15,
     social_leads: 0.10,

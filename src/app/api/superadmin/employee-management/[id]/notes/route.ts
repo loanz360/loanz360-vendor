@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth, checkPermission, hrCanManageEmployee } from '@/lib/auth/employee-mgmt-auth'
@@ -109,7 +110,23 @@ export async function POST(
     }
 
     const employeeId = params.id
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      note_id: z.string().uuid(),
+
+      note_text: z.string(),
+
+      note_type: z.string().optional(),
+
+      is_confidential: z.boolean().optional(),
+
+      visible_to_employee: z.string().optional(),
+
+      attachments: z.array(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     if (!body.note_text) {
@@ -228,7 +245,13 @@ export async function PATCH(
     }
 
     const employeeId = params.id
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      note_id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { note_id } = body
 

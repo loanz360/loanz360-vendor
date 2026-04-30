@@ -22,7 +22,7 @@ const convertToDealSchema = z.object({
 })
 
 // Helper function to verify DSE role
-async function verifyDSERole(supabase: any, userId: string) {
+async function verifyDSERole(supabase: unknown, userId: string) {
   const { data: profile, error } = await supabase
     .from('users')
     .select('role, sub_role, full_name')
@@ -133,7 +133,7 @@ export async function POST(
       .not('attachments', 'is', null)
 
     // Combine all attachments
-    const documents = leadDocuments?.reduce((acc: any[], note) => {
+    const documents = leadDocuments?.reduce((acc: unknown[], note) => {
       if (note.attachments && Array.isArray(note.attachments)) {
         return [...acc, ...note.attachments]
       }

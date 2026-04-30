@@ -24,7 +24,7 @@ import {
 // ============================================================================
 
 interface LeadsPipelineKanbanProps {
-  leads: any[]
+  leads: unknown[]
   onStageChange: (leadId: string, newStage: string) => Promise<void>
   onLeadClick: (leadId: string) => void
   isLoading?: boolean
@@ -108,8 +108,7 @@ function KanbanSkeleton() {
 // ============================================================================
 
 interface LeadCardProps {
-  lead: any
-  onLeadClick: (id: string) => void
+  lead: unknown  onLeadClick: (id: string) => void
   onDragStart: (e: React.DragEvent, leadId: string, stage: string) => void
   onDragEnd: (e: React.DragEvent) => void
   isDragging: boolean
@@ -224,7 +223,7 @@ function LeadCard({ lead, onLeadClick, onDragStart, onDragEnd, isDragging }: Lea
 
 interface KanbanColumnProps {
   stage: string
-  leads: any[]
+  leads: unknown[]
   totalValue: number
   onLeadClick: (id: string) => void
   onDragStart: (e: React.DragEvent, leadId: string, stage: string) => void
@@ -348,7 +347,7 @@ export default function LeadsPipelineKanban({
     const values: Record<string, number> = {}
     for (const stage of LEAD_STAGES) {
       values[stage] = (leadsByStage[stage] || []).reduce(
-        (sum: number, lead: any) => sum + (lead.loan_amount || 0),
+        (sum: number, lead: unknown) => sum + (lead.loan_amount || 0),
         0
       )
     }

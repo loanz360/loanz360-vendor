@@ -161,7 +161,7 @@ async function getLegacyAnalytics(supabase: ReturnType<typeof createSupabaseAdmi
     }
 
     // Count customers by sub_role
-    customers.forEach((customer: any) => {
+    customers.forEach((customer: unknown) => {
       const subRole = customer.users?.sub_role
       if (subRole && categories[subRole as keyof typeof categories]) {
         categories[subRole as keyof typeof categories].count++
@@ -173,7 +173,7 @@ async function getLegacyAnalytics(supabase: ReturnType<typeof createSupabaseAdmi
 
     Object.keys(categories).forEach(key => {
       const category = key as keyof typeof categories
-      const previousCount = customers.filter((c: any) => {
+      const previousCount = customers.filter((c: unknown) => {
         const subRole = c.users?.sub_role
         const createdAt = new Date(c.created_at)
         return subRole === category && createdAt < new Date(dateFilter || now) && createdAt >= previousPeriodStart
@@ -193,7 +193,7 @@ async function getLegacyAnalytics(supabase: ReturnType<typeof createSupabaseAdmi
       'SUPPORT_TICKET': { count: 0, growth: 0, trend: 'neutral' as 'up' | 'down' | 'neutral' },
     }
 
-    activities.forEach((activity: any) => {
+    activities.forEach((activity: unknown) => {
       const activityType = activity.activity_type
       if (activityType === 'REGISTRATION') {
         activityTypes.REGISTRATION.count++
@@ -209,35 +209,35 @@ async function getLegacyAnalytics(supabase: ReturnType<typeof createSupabaseAdmi
     })
 
     // Calculate KYC status distribution
-    const kycPending = customers.filter((c: any) => c.kyc_status === 'PENDING').length
-    const kycUnderReview = customers.filter((c: any) => c.kyc_status === 'UNDER_REVIEW').length
-    const kycApproved = customers.filter((c: any) => c.kyc_status === 'APPROVED').length
-    const kycRejected = customers.filter((c: any) => c.kyc_status === 'REJECTED').length
+    const kycPending = customers.filter((c: unknown) => c.kyc_status === 'PENDING').length
+    const kycUnderReview = customers.filter((c: unknown) => c.kyc_status === 'UNDER_REVIEW').length
+    const kycApproved = customers.filter((c: unknown) => c.kyc_status === 'APPROVED').length
+    const kycRejected = customers.filter((c: unknown) => c.kyc_status === 'REJECTED').length
 
     // Calculate loan application status
-    const loansDraft = loans.filter((l: any) => l.application_status === 'DRAFT').length
-    const loansSubmitted = loans.filter((l: any) => l.application_status === 'SUBMITTED').length
-    const loansUnderReview = loans.filter((l: any) => l.application_status === 'UNDER_REVIEW').length
-    const loansApproved = loans.filter((l: any) => l.application_status === 'APPROVED').length
-    const loansRejected = loans.filter((l: any) => l.application_status === 'REJECTED').length
-    const loansDisbursed = loans.filter((l: any) => l.application_status === 'DISBURSED').length
+    const loansDraft = loans.filter((l: unknown) => l.application_status === 'DRAFT').length
+    const loansSubmitted = loans.filter((l: unknown) => l.application_status === 'SUBMITTED').length
+    const loansUnderReview = loans.filter((l: unknown) => l.application_status === 'UNDER_REVIEW').length
+    const loansApproved = loans.filter((l: unknown) => l.application_status === 'APPROVED').length
+    const loansRejected = loans.filter((l: unknown) => l.application_status === 'REJECTED').length
+    const loansDisbursed = loans.filter((l: unknown) => l.application_status === 'DISBURSED').length
 
     // Calculate total loan amount
-    const totalLoanAmount = loans.reduce((sum: number, loan: any) => sum + (parseFloat(loan.loan_amount) || 0), 0)
+    const totalLoanAmount = loans.reduce((sum: number, loan: unknown) => sum + (parseFloat(loan.loan_amount) || 0), 0)
     const approvedLoanAmount = loans
-      .filter((l: any) => ['APPROVED', 'DISBURSED'].includes(l.application_status))
-      .reduce((sum: number, loan: any) => sum + (parseFloat(loan.loan_amount) || 0), 0)
+      .filter((l: unknown) => ['APPROVED', 'DISBURSED'].includes(l.application_status))
+      .reduce((sum: number, loan: unknown) => sum + (parseFloat(loan.loan_amount) || 0), 0)
 
     // Build analytics response
     const analytics = {
       overview: {
         total_customers: customers.length,
-        active_customers: customers.filter((c: any) => c.users?.status === 'ACTIVE').length,
-        new_customers_period: customers.filter((c: any) => {
+        active_customers: customers.filter((c: unknown) => c.users?.status === 'ACTIVE').length,
+        new_customers_period: customers.filter((c: unknown) => {
           const createdAt = new Date(c.created_at)
           return dateFilter ? createdAt >= new Date(dateFilter) : true
         }).length,
-        inactive_customers: customers.filter((c: any) => c.users?.status === 'INACTIVE').length,
+        inactive_customers: customers.filter((c: unknown) => c.users?.status === 'INACTIVE').length,
       },
       by_category: categories,
       by_activity_type: activityTypes,
@@ -261,7 +261,7 @@ async function getLegacyAnalytics(supabase: ReturnType<typeof createSupabaseAdmi
         approved_amount: approvedLoanAmount.toFixed(2),
         approval_rate: loans.length > 0 ? ((loansApproved / loans.length) * 100).toFixed(1) : '0',
       },
-      recent_activities: activities.slice(0, 50).map((activity: any) => ({
+      recent_activities: activities.slice(0, 50).map((activity: unknown) => ({
         id: activity.id,
         customer_name: activity.customer_name,
         customer_email: activity.customer_email,

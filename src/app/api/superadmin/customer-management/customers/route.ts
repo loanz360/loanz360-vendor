@@ -155,7 +155,7 @@ async function getCustomersHandler(request: NextRequest) {
     const customers = customersData || []
 
     // Process customer data with improved performance (avoid N+1)
-    const enrichedCustomers = customers.map((customer: any) => {
+    const enrichedCustomers = customers.map((customer: unknown) => {
       const customerLoans = customer.loan_applications || []
       const customerActivities = customer.customer_activities || []
 
@@ -172,23 +172,23 @@ async function getCustomersHandler(request: NextRequest) {
         last_login: customer.users?.last_login || null,
         loan_applications: {
           total: customerLoans.length,
-          active: customerLoans.filter((l: any) =>
+          active: customerLoans.filter((l: unknown) =>
             ['SUBMITTED', 'UNDER_REVIEW', 'APPROVED'].includes(l.application_status)
           ).length,
-          approved: customerLoans.filter((l: any) =>
+          approved: customerLoans.filter((l: unknown) =>
             l.application_status === 'APPROVED'
           ).length,
-          disbursed: customerLoans.filter((l: any) =>
+          disbursed: customerLoans.filter((l: unknown) =>
             l.application_status === 'DISBURSED'
           ).length,
-          total_amount: customerLoans.reduce((sum: number, l: any) =>
+          total_amount: customerLoans.reduce((sum: number, l: unknown) =>
             sum + (parseFloat(l.loan_amount) || 0), 0
           ),
         },
         recent_activities: customerActivities
-          .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .sort((a: unknown, b: unknown) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
           .slice(0, 5)
-          .map((a: any) => ({
+          .map((a: unknown) => ({
             activity_type: a.activity_type,
             activity_title: a.activity_title,
             created_at: a.created_at,

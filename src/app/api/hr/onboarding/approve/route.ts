@@ -24,7 +24,7 @@ const approvalSchema = z.object({
 });
 
 // Helper function to check if user is HR or Super Admin
-async function isHROrAdmin(supabase: any, adminClient: any): Promise<boolean> {
+async function isHROrAdmin(supabase: unknown, adminClient: unknown): Promise<boolean> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
 

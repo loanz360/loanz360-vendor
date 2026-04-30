@@ -4,7 +4,7 @@ import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
 
-async function verifyDSMRole(supabase: any, userId: string) {
+async function verifyDSMRole(supabase: unknown, userId: string) {
   const { data: profile, error } = await supabase
     .from('users')
     .select('role, sub_role')
@@ -60,8 +60,8 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    const dseIds = dseId ? [dseId] : teamDSEs.map((d: any) => d.id)
-    const dseMap = new Map(teamDSEs.map((d: any) => [d.id, d]))
+    const dseIds = dseId ? [dseId] : teamDSEs.map((d: Record<string, unknown>) => d.id)
+    const dseMap = new Map(teamDSEs.map((d: Record<string, unknown>) => [d.id, d]))
 
     // Query partners recruited by team DSEs
     let query = supabase
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
     if (queryError) throw queryError
 
     // Get lead counts for each partner
-    const partnerUserIds = (partners || []).map((p: any) => p.id)
+    const partnerUserIds = (partners || []).map((p: unknown) => p.id)
     let leadCounts: Record<string, { total: number; sanctioned: number }> = {}
 
     if (partnerUserIds.length > 0) {
@@ -101,8 +101,8 @@ export async function GET(request: NextRequest) {
         .in('id', partnerUserIds)
 
       if (allPartnerUserIds) {
-        const userIds = allPartnerUserIds.map((p: any) => p.user_id).filter(Boolean)
-        const partnerIdToUserId = new Map(allPartnerUserIds.map((p: any) => [p.id, p.user_id]))
+        const userIds = allPartnerUserIds.map((p: unknown) => p.user_id).filter(Boolean)
+        const partnerIdToUserId = new Map(allPartnerUserIds.map((p: unknown) => [p.id, p.user_id]))
 
         if (userIds.length > 0) {
           const { data: leads } = await supabase
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
             .in('partner_user_id', userIds)
 
           if (leads) {
-            const userIdToPartnerId = new Map(allPartnerUserIds.map((p: any) => [p.user_id, p.id]))
+            const userIdToPartnerId = new Map(allPartnerUserIds.map((p: unknown) => [p.user_id, p.id]))
             for (const lead of leads) {
               const pId = userIdToPartnerId.get(lead.partner_user_id)
               if (pId) {
@@ -128,7 +128,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Enrich partners with DSE name and lead counts
-    const enrichedPartners = (partners || []).map((p: any) => {
+    const enrichedPartners = (partners || []).map((p: unknown) => {
       const dse = dseMap.get(p.recruited_by_cpe)
       const leads = leadCounts[p.id] || { total: 0, sanctioned: 0 }
       return {
@@ -145,10 +145,10 @@ export async function GET(request: NextRequest) {
     const { data: allTeamPartners } = await supabase
       .from('partners')
       .select('id, is_active', { count: 'exact' })
-      .in('recruited_by_cpe', teamDSEs.map((d: any) => d.id))
+      .in('recruited_by_cpe', teamDSEs.map((d: Record<string, unknown>) => d.id))
 
     const totalPartners = allTeamPartners?.length || 0
-    const activePartners = allTeamPartners?.filter((p: any) => p.is_active).length || 0
+    const activePartners = allTeamPartners?.filter((p: unknown) => p.is_active).length || 0
 
     return NextResponse.json({
       success: true,
@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
         total_leads: Object.values(leadCounts).reduce((s, l) => s + l.total, 0),
         total_sanctioned: Object.values(leadCounts).reduce((s, l) => s + l.sanctioned, 0),
       },
-      dseList: teamDSEs.map((d: any) => ({ id: d.id, name: d.full_name, code: d.employee_code })),
+      dseList: teamDSEs.map((d: Record<string, unknown>) => ({ id: d.id, name: d.full_name, code: d.employee_code })),
       meta: {
         page,
         limit,

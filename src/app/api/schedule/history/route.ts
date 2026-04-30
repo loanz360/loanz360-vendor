@@ -59,13 +59,13 @@ export async function GET(request: NextRequest) {
 
     // Calculate summary statistics
     const summary = {
-      total_completed: schedules.filter((s: any) => s.status === 'COMPLETED').length,
-      total_cancelled: schedules.filter((s: any) => s.status === 'CANCELLED').length,
-      total_no_show: schedules.filter((s: any) => s.status === 'NO_SHOW').length,
+      total_completed: schedules.filter((s: unknown) => s.status === 'COMPLETED').length,
+      total_cancelled: schedules.filter((s: unknown) => s.status === 'CANCELLED').length,
+      total_no_show: schedules.filter((s: unknown) => s.status === 'NO_SHOW').length,
       completion_rate:
         schedules.length > 0
           ? Math.round(
-              (schedules.filter((s: any) => s.status === 'COMPLETED').length / schedules.length) *
+              (schedules.filter((s: unknown) => s.status === 'COMPLETED').length / schedules.length) *
                 100
             )
           : 0

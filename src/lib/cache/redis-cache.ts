@@ -552,7 +552,7 @@ export async function invalidateLeaderboardCache(): Promise<void> {
  * Warm up cache with frequently accessed data
  */
 export async function warmUpCache(
-  dataLoader: () => Promise<{ key: string; data: any; ttl?: number }[]>
+  dataLoader: () => Promise<{ key: string; data: unknown; ttl?: number }[]>
 ): Promise<void> {
   const cache = getCache();
   const items = await dataLoader();

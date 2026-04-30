@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Accounts Executive - BP Applications API
  * Manages BP payout application verification workflow
@@ -208,7 +209,19 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      applicationId: z.string().uuid(),
+
+      action: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      reason: z.string(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { applicationId, action, notes, reason } = body
 

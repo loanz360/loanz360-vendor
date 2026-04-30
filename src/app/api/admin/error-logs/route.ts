@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     // Get filtered errors
     let errors
     if (level) {
-      errors = getErrorsByLevel(level as any, limit)
+      errors = getErrorsByLevel(level as unknown, limit)
     } else if (endpoint) {
       errors = getErrorsByEndpoint(endpoint, limit)
     } else {

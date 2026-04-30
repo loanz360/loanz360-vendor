@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -108,17 +109,17 @@ export async function GET(request: NextRequest) {
         `)
 
       // Apply filters
-      if (statusFilter && VALID_STATUSES.includes(statusFilter as any)) {
+      if (statusFilter && VALID_STATUSES.includes(statusFilter as unknown)) {
         countQuery = countQuery.eq('status', statusFilter)
         dataQuery = dataQuery.eq('status', statusFilter)
       }
 
-      if (priorityFilter && VALID_PRIORITIES.includes(priorityFilter as any)) {
+      if (priorityFilter && VALID_PRIORITIES.includes(priorityFilter as unknown)) {
         countQuery = countQuery.eq('priority', priorityFilter)
         dataQuery = dataQuery.eq('priority', priorityFilter)
       }
 
-      if (typeFilter && VALID_BANNER_TYPES.includes(typeFilter as any)) {
+      if (typeFilter && VALID_BANNER_TYPES.includes(typeFilter as unknown)) {
         countQuery = countQuery.eq('banner_type', typeFilter)
         dataQuery = dataQuery.eq('banner_type', typeFilter)
       }
@@ -204,7 +205,51 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      title: z.string().optional(),
+
+      banner_text: z.string().optional(),
+
+      image_url: z.string().optional(),
+
+      image_source: z.string().optional(),
+
+      ai_prompt: z.string().optional(),
+
+      start_date: z.string().optional(),
+
+      end_date: z.string().optional(),
+
+      click_url: z.string().optional(),
+
+      display_order: z.string().optional(),
+
+      target_sub_roles: z.array(z.unknown()).optional(),
+
+      priority: z.string().optional(),
+
+      banner_type: z.string().optional(),
+
+      alt_text: z.string().optional(),
+
+      tags: z.array(z.unknown()).optional(),
+
+      scheduled_publish_at: z.string().optional(),
+
+      is_draft: z.boolean().optional(),
+
+      id: z.string().uuid(),
+
+      is_active: z.boolean().optional(),
+
+      action: z.string().optional(),
+
+      bannerIds: z.array(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       title,
@@ -473,7 +518,45 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      tags: z.string().optional(),
+
+      banner_text: z.string().optional(),
+
+      priority: z.string().optional(),
+
+      title: z.string().optional(),
+
+      scheduled_publish_at: z.string().optional(),
+
+      ai_prompt: z.string().optional(),
+
+      end_date: z.string().optional(),
+
+      image_source: z.string().optional(),
+
+      alt_text: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+      click_url: z.string().optional(),
+
+      target_sub_roles: z.string().optional(),
+
+      banner_type: z.string().optional(),
+
+      display_order: z.string().optional(),
+
+      image_url: z.string().optional(),
+
+      start_date: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const {
       id,
@@ -649,7 +732,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Build update object with only provided fields
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 
@@ -774,7 +857,15 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr3 } = await parseBody(request)
+    const bodySchema3 = z.object({
+
+      action: z.string().optional(),
+
+      bannerIds: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr3 } = await parseBody(request, bodySchema3)
     if (_valErr3) return _valErr3
     const { action, bannerIds } = body
 

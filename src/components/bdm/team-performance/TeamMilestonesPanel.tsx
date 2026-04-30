@@ -137,7 +137,7 @@ export default function TeamMilestonesPanel({ milestones }: TeamMilestonesPanelP
 }
 
 function getIconComponent(iconName: string) {
-  const icons: Record<string, any> = {
+  const icons: Record<string, unknown> = {
     Target,
     DollarSign,
     Award,

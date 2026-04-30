@@ -52,14 +52,14 @@ export function PerformanceProjectionsComponent({ month }: PerformanceProjection
   }
 
   const teamSummary = {
-    totalProjectedLeads: projections.reduce((sum: number, p: any) => sum + (p.projected_leads || 0), 0),
-    totalCurrentLeads: projections.reduce((sum: number, p: any) => sum + (p.current_leads || 0), 0),
-    totalProjectedConversions: projections.reduce((sum: number, p: any) => sum + (p.projected_conversions || 0), 0),
-    totalCurrentConversions: projections.reduce((sum: number, p: any) => sum + (p.current_conversions || 0), 0),
-    totalProjectedRevenue: projections.reduce((sum: number, p: any) => sum + (p.projected_revenue || 0), 0),
-    totalCurrentRevenue: projections.reduce((sum: number, p: any) => sum + (p.current_revenue || 0), 0),
+    totalProjectedLeads: projections.reduce((sum: number, p: unknown) => sum + (p.projected_leads || 0), 0),
+    totalCurrentLeads: projections.reduce((sum: number, p: unknown) => sum + (p.current_leads || 0), 0),
+    totalProjectedConversions: projections.reduce((sum: number, p: unknown) => sum + (p.projected_conversions || 0), 0),
+    totalCurrentConversions: projections.reduce((sum: number, p: unknown) => sum + (p.current_conversions || 0), 0),
+    totalProjectedRevenue: projections.reduce((sum: number, p: unknown) => sum + (p.projected_revenue || 0), 0),
+    totalCurrentRevenue: projections.reduce((sum: number, p: unknown) => sum + (p.current_revenue || 0), 0),
     avgConfidence: projections.length > 0
-      ? projections.reduce((sum: number, p: any) => sum + (p.confidence_score || 0), 0) / projections.length
+      ? projections.reduce((sum: number, p: unknown) => sum + (p.confidence_score || 0), 0) / projections.length
       : 0,
   }
 
@@ -167,7 +167,7 @@ export function PerformanceProjectionsComponent({ month }: PerformanceProjection
           <p className="text-center text-gray-500 py-8">No projections available for this month</p>
         ) : (
           <div className="space-y-4">
-            {projections.map((projection: any) => {
+            {projections.map((projection: unknown) => {
               const leadsProgress = calculateProgress(projection.current_leads, projection.projected_leads)
               const conversionsProgress = calculateProgress(projection.current_conversions, projection.projected_conversions)
               const revenueProgress = calculateProgress(projection.current_revenue, projection.projected_revenue)

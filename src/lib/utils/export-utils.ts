@@ -93,7 +93,7 @@ export function exportAnalyticsToPDF(data: AnalyticsExportData): void {
   })
 
   // Detailed Metrics Table
-  yPos = (doc as any).lastAutoTable.finalY + 15
+  yPos = (doc as unknown).lastAutoTable.finalY + 15
 
   // Check if we need a new page
   if (yPos > pageHeight - 60) {
@@ -335,7 +335,7 @@ export function exportClaimsToPDF(claims: ClaimExportData[], filterStatus?: stri
   })
 
   // Claims Table
-  yPos = (doc as any).lastAutoTable.finalY + 15
+  yPos = (doc as unknown).lastAutoTable.finalY + 15
 
   // Check if we need a new page
   if (yPos > pageHeight - 60) {
@@ -713,7 +713,7 @@ export function exportPayoutBatchesToPDF(batches: PayoutBatchExportData[]): void
   })
 
   // Batches Table
-  yPos = (doc as any).lastAutoTable.finalY + 15
+  yPos = (doc as unknown).lastAutoTable.finalY + 15
 
   doc.setFontSize(14)
   doc.setFont('helvetica', 'bold')
@@ -922,7 +922,7 @@ export function exportPayoutAnalyticsToPDF(data: PayoutAnalyticsExportData): voi
   })
 
   // Top Performers
-  yPos = (doc as any).lastAutoTable.finalY + 15
+  yPos = (doc as unknown).lastAutoTable.finalY + 15
 
   if (yPos > pageHeight - 80) {
     doc.addPage()
@@ -953,7 +953,7 @@ export function exportPayoutAnalyticsToPDF(data: PayoutAnalyticsExportData): voi
   })
 
   // Partner Breakdown
-  yPos = (doc as any).lastAutoTable.finalY + 15
+  yPos = (doc as unknown).lastAutoTable.finalY + 15
 
   if (yPos > pageHeight - 60) {
     doc.addPage()
@@ -983,7 +983,7 @@ export function exportPayoutAnalyticsToPDF(data: PayoutAnalyticsExportData): voi
   })
 
   // Product Breakdown
-  yPos = (doc as any).lastAutoTable.finalY + 15
+  yPos = (doc as unknown).lastAutoTable.finalY + 15
 
   if (yPos > pageHeight - 80) {
     doc.addPage()

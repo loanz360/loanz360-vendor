@@ -239,7 +239,7 @@ LOANZ360`
         short_link: shortLink,
         short_code: shortCode,
         whatsapp_url: whatsappUrl,
-        lead: lead as any,
+        lead: lead as unknown,
       },
     } as GenerateLinkResponse)
   } catch (error) {

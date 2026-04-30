@@ -95,7 +95,7 @@ async function getAnalyticsHandler(request: NextRequest) {
     }
 
     // Build base query with filters
-    const buildQuery = (table: any, dateField: string, startDate?: string, endDate?: string) => {
+    const buildQuery = (table: unknown, dateField: string, startDate?: string, endDate?: string) => {
       let query = table.select('*', { count: 'exact' })
 
       if (month && month !== 'all') {

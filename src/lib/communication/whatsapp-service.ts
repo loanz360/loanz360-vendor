@@ -136,7 +136,7 @@ async function sendViaMeta(config: WhatsAppConfig, message: WhatsAppMessage): Pr
   try {
     const metaUrl = `https://graph.facebook.com/v18.0/${config.phoneNumberId}/messages`
 
-    const payload: any = {
+    const payload: Record<string, unknown> = {
       messaging_product: 'whatsapp',
       to: message.to.replace('+', ''), // Meta doesn't use + prefix
       type: 'text',

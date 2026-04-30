@@ -54,13 +54,12 @@ export type ConditionOperator =
 export interface WorkflowCondition {
   field: string
   operator: ConditionOperator
-  value: any
-  logical?: 'AND' | 'OR'
+  value: unknown  logical?: 'AND' | 'OR'
 }
 
 export interface WorkflowAction {
   type: ActionType
-  config: Record<string, any>
+  config: Record<string, unknown>
   delay_seconds?: number
 }
 
@@ -88,12 +87,11 @@ export interface WorkflowExecution {
   ticket_id: string
   ticket_source: string
   trigger_type: TriggerType
-  trigger_data: Record<string, any>
+  trigger_data: Record<string, unknown>
   actions_executed: {
     action: WorkflowAction
     success: boolean
-    result?: any
-    error?: string
+    result?: unknown    error?: string
   }[]
   started_at: string
   completed_at?: string
@@ -232,7 +230,7 @@ export async function deleteWorkflowRule(ruleId: string): Promise<boolean> {
  */
 function evaluateConditions(
   conditions: WorkflowCondition[],
-  ticketData: Record<string, any>
+  ticketData: Record<string, unknown>
 ): boolean {
   if (conditions.length === 0) return true
 
@@ -255,15 +253,14 @@ function evaluateConditions(
   return result
 }
 
-function getNestedValue(obj: Record<string, any>, path: string): any {
+function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
   return path.split('.').reduce((current, key) => current?.[key], obj)
 }
 
 function evaluateSingleCondition(
-  fieldValue: any,
+  fieldValue: unknown,
   operator: ConditionOperator,
-  conditionValue: any
-): boolean {
+  conditionValue: unknown): boolean {
   const strFieldValue = String(fieldValue || '').toLowerCase()
   const strConditionValue = String(conditionValue || '').toLowerCase()
 
@@ -312,8 +309,8 @@ async function executeAction(
   action: WorkflowAction,
   ticketId: string,
   ticketSource: 'EMPLOYEE' | 'CUSTOMER' | 'PARTNER',
-  ticketData: Record<string, any>
-): Promise<{ success: boolean; result?: any; error?: string }> {
+  ticketData: Record<string, unknown>
+): Promise<{ success: boolean; result?: unknown; error?: string }> {
   const supabase = await createClient()
 
   const tableMap = {
@@ -347,7 +344,7 @@ async function executeAction(
 
       case 'change_status': {
         const { status } = action.config
-        const updates: Record<string, any> = {
+        const updates: Record<string, unknown> = {
           status,
           updated_at: new Date().toISOString()
         }
@@ -519,8 +516,8 @@ export async function processWorkflows(
   triggerType: TriggerType,
   ticketId: string,
   ticketSource: 'EMPLOYEE' | 'CUSTOMER' | 'PARTNER',
-  ticketData: Record<string, any>,
-  triggerData?: Record<string, any>
+  ticketData: Record<string, unknown>,
+  triggerData?: Record<string, unknown>
 ): Promise<WorkflowExecution[]> {
   const supabase = await createClient()
 

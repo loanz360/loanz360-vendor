@@ -271,7 +271,7 @@ export class SmartPingSMSProvider {
   /**
    * Parse SmartPing API response
    */
-  private parseResponse(data: any): SmartPingSMSResponse {
+  private parseResponse(data: Record<string, unknown>): SmartPingSMSResponse {
     const statusCode = data.statusCode || data.status || 5000
 
     // Success response
@@ -397,7 +397,7 @@ export class SmartPingSMSProvider {
         correlation_id: params.correlationId,
         error_code: params.response.success ? null : params.response.statusCode.toString(),
         error_message: params.response.success ? null : params.response.description,
-        provider_response: params.response as any,
+        provider_response: params.response as unknown,
         message_parts: params.response.pdu || 1,
         variables_used: {
           sender_id: params.senderId,

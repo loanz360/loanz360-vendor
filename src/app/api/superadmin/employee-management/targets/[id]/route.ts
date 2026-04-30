@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth, checkPermission, hrCanManageEmployee } from '@/lib/auth/employee-mgmt-auth'
@@ -111,7 +112,15 @@ export async function PUT(
     }
 
     const targetId = params.id
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      achieved_metrics: z.string().optional(),
+
+      target_metrics: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const supabase = createSupabaseAdmin()
@@ -142,7 +151,7 @@ export async function PUT(
     }
 
     // Prepare update data
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
     // Allowed fields for update
     const allowedFields = [

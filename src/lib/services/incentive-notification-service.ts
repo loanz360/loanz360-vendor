@@ -325,7 +325,7 @@ export async function sendExpiryReminderNotification(
       return false
     }
 
-    const emails = allocations.map((a: any) => a.user.email).filter(Boolean)
+    const emails = allocations.map((a: unknown) => a.user.email).filter(Boolean)
 
     if (emails.length === 0) {
       logger.warn('No valid emails found for expiry reminder')

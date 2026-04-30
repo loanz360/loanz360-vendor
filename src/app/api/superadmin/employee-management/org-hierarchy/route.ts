@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth, checkPermission, getAccessibleDepartments } from '@/lib/auth/employee-mgmt-auth'
@@ -13,8 +14,7 @@ interface HierarchyNode {
   sub_role: string
   work_email: string
   profile_photo_url: string | null
-  department: any
-  is_active: boolean
+  department: unknown  is_active: boolean
   reporting_manager_id: string | null
   direct_reports_count: number
   hierarchy_level: number
@@ -175,7 +175,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Get department summaries
-    const departmentSummary: Record<string, any> = {}
+    const departmentSummary: Record<string, unknown> = {}
     employeeNodes.forEach(node => {
       const deptId = node.department.id
       if (!departmentSummary[deptId]) {
@@ -194,7 +194,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Convert Set to count
-    Object.values(departmentSummary).forEach((dept: any) => {
+    Object.values(departmentSummary).forEach((dept: unknown) => {
       dept.hierarchy_depth = dept.hierarchy_levels.size
       delete dept.hierarchy_levels
     })
@@ -244,7 +244,19 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_id: z.string().uuid(),
+
+
+      new_manager_id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { employee_id, new_manager_id } = body
 

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * ULAP Banks Management API
@@ -38,7 +39,25 @@ export async function GET() {
 // POST - Create new bank
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      name: z.string().optional(),
+
+      short_code: z.string().optional(),
+
+      logo_url: z.string().optional(),
+
+      type: z.string().optional(),
+
+      website_url: z.string().optional(),
+
+      display_order: z.string().optional(),
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { name, short_code, logo_url, type, website_url, display_order } = body
@@ -79,7 +98,13 @@ export async function POST(request: NextRequest) {
 // PATCH - Update bank
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     const { id, ...updates } = body

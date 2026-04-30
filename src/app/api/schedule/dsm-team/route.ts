@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -216,33 +217,33 @@ export async function GET(request: NextRequest) {
     nextWeekEnd.setHours(23, 59, 59, 999)
 
     const grouped = {
-      today: enhancedSchedules.filter((s: any) => {
+      today: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= nowDate && scheduleDate <= endOfToday &&
                ['SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'].includes(s.status)
       }),
-      tomorrow: enhancedSchedules.filter((s: any) => {
+      tomorrow: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= tomorrow && scheduleDate < new Date(tomorrow.getTime() + 24 * 60 * 60 * 1000) &&
                ['SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'].includes(s.status)
       }),
-      this_week: enhancedSchedules.filter((s: any) => {
+      this_week: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         const tomorrowEnd = new Date(tomorrow.getTime() + 24 * 60 * 60 * 1000)
         return scheduleDate >= tomorrowEnd && scheduleDate <= endOfWeek &&
                ['SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'].includes(s.status)
       }),
-      next_week: enhancedSchedules.filter((s: any) => {
+      next_week: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate >= nextWeekStart && scheduleDate <= nextWeekEnd &&
                ['SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'].includes(s.status)
       }),
-      later: enhancedSchedules.filter((s: any) => {
+      later: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate > nextWeekEnd &&
                ['SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'].includes(s.status)
       }),
-      expired: enhancedSchedules.filter((s: any) => {
+      expired: enhancedSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate < nowDate && ['SCHEDULED', 'CONFIRMED'].includes(s.status)
       }),
@@ -251,15 +252,15 @@ export async function GET(request: NextRequest) {
 
     // Calculate summary statistics
     const startOfMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1)
-    const monthSchedules = enhancedSchedules.filter((s: any) => {
+    const monthSchedules = enhancedSchedules.filter((s: unknown) => {
       const scheduleDate = new Date(s.scheduled_date)
       return scheduleDate >= startOfMonth
     })
 
     // Calculate performance metrics
-    const completedSchedules = enhancedSchedules.filter((s: any) => s.status === 'COMPLETED')
-    const cancelledSchedules = enhancedSchedules.filter((s: any) => s.status === 'CANCELLED')
-    const noShowSchedules = enhancedSchedules.filter((s: any) => s.status === 'NO_SHOW')
+    const completedSchedules = enhancedSchedules.filter((s: unknown) => s.status === 'COMPLETED')
+    const cancelledSchedules = enhancedSchedules.filter((s: unknown) => s.status === 'CANCELLED')
+    const noShowSchedules = enhancedSchedules.filter((s: unknown) => s.status === 'NO_SHOW')
     const expiredSchedules = grouped.expired
     const totalPastSchedules = completedSchedules.length + cancelledSchedules.length + noShowSchedules.length
 
@@ -273,9 +274,9 @@ export async function GET(request: NextRequest) {
 
     // Per-employee statistics
     const employeeStats = reportingEmployees.map(emp => {
-      const empSchedules = enhancedSchedules.filter((s: any) => s.sales_executive_id === emp.user_id)
-      const empCompleted = empSchedules.filter((s: any) => s.status === 'COMPLETED')
-      const empExpired = empSchedules.filter((s: any) => {
+      const empSchedules = enhancedSchedules.filter((s: unknown) => s.sales_executive_id === emp.user_id)
+      const empCompleted = empSchedules.filter((s: unknown) => s.status === 'COMPLETED')
+      const empExpired = empSchedules.filter((s: unknown) => {
         const scheduleDate = new Date(s.scheduled_date)
         return scheduleDate < nowDate && ['SCHEDULED', 'CONFIRMED'].includes(s.status)
       })
@@ -288,7 +289,7 @@ export async function GET(request: NextRequest) {
         employee_status: emp.status,
         total_schedules: empTotal,
         completed: empCompleted.length,
-        active: empSchedules.filter((s: any) =>
+        active: empSchedules.filter((s: unknown) =>
           ['SCHEDULED', 'CONFIRMED', 'IN_PROGRESS'].includes(s.status)
         ).length,
         expired: empExpired.length,
@@ -389,7 +390,33 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      sales_executive_id: z.string().uuid().optional(),
+
+      title: z.string().optional(),
+
+      description: z.string().optional(),
+
+      meeting_type: z.string().optional(),
+
+      scheduled_date: z.string().optional(),
+
+      duration_minutes: z.string().optional(),
+
+      location: z.string().optional(),
+
+      is_virtual: z.boolean().optional(),
+
+      meeting_link: z.string().optional(),
+
+      customer_id: z.string().uuid().optional(),
+
+      participant_name: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       sales_executive_id,

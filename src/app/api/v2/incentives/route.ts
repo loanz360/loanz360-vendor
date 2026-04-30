@@ -76,9 +76,8 @@ const CreateIncentiveSchemaV2 = z.object({
 /**
  * Check user permissions
  */
-async function checkPermissions(supabase: any): Promise<{
-  user: any;
-  isSuperAdmin: boolean;
+async function checkPermissions(supabase: unknown): Promise<{
+  user: unknown  isSuperAdmin: boolean;
   isHR: boolean;
   error?: NextResponse;
 }> {
@@ -136,10 +135,10 @@ async function checkPermissions(supabase: any): Promise<{
  * Emit event to event stream
  */
 async function emitEvent(
-  supabase: any,
+  supabase: unknown,
   eventType: string,
   aggregateId: string,
-  eventData: any,
+  eventData: unknown,
   userId: string
 ): Promise<void> {
   try {
@@ -160,7 +159,7 @@ async function emitEvent(
  * Create allocations for eligible employees
  */
 async function createAllocations(
-  supabase: any,
+  supabase: unknown,
   incentiveId: string,
   targetAll: boolean,
   targetSubroles: string[],
@@ -188,7 +187,7 @@ async function createAllocations(
     }
 
     // Create allocations
-    const allocations = employees.map((emp: any) => {
+    const allocations = employees.map((emp: unknown) => {
       const joinDate = new Date(); // Should get actual join date
       const prorationFactor = calculateProration(startDate, endDate, joinDate);
 

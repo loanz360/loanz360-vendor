@@ -67,7 +67,7 @@ export function TargetSettingWizard({ onComplete, onCancel }: TargetSettingWizar
 
   const bdes = bdesData?.data?.bdes || []
   const templates = templatesData?.data?.templates || []
-  const selectedTemplate = templates.find((t: any) => t.id === selectedTemplateId)
+  const selectedTemplate = templates.find((t: unknown) => t.id === selectedTemplateId)
 
   const steps = [
     { id: 'select-bdes', label: 'Select BDEs', icon: Users },
@@ -110,7 +110,7 @@ export function TargetSettingWizard({ onComplete, onCancel }: TargetSettingWizar
 
   const selectTemplate = (templateId: string) => {
     setSelectedTemplateId(templateId)
-    const template = templates.find((t: any) => t.id === templateId)
+    const template = templates.find((t: unknown) => t.id === templateId)
     if (template) {
       setTargetValues({
         leads_target: template.leads_target || 100,
@@ -174,7 +174,7 @@ export function TargetSettingWizard({ onComplete, onCancel }: TargetSettingWizar
               </div>
             ) : (
               <div className="space-y-2">
-                {bdes.map((bde: any) => (
+                {bdes.map((bde: unknown) => (
                   <div
                     key={bde.id}
                     onClick={() => toggleBde(bde.id)}
@@ -224,7 +224,7 @@ export function TargetSettingWizard({ onComplete, onCancel }: TargetSettingWizar
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-4">
-                {templates.map((template: any) => (
+                {templates.map((template: unknown) => (
                   <div
                     key={template.id}
                     onClick={() => selectTemplate(template.id)}
@@ -331,7 +331,7 @@ export function TargetSettingWizard({ onComplete, onCancel }: TargetSettingWizar
                 <h4 className="font-semibold mb-2">Selected BDEs ({selectedBdeIds.length})</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedBdeIds.map(id => {
-                    const bde = bdes.find((b: any) => b.id === id)
+                    const bde = bdes.find((b: unknown) => b.id === id)
                     return (
                       <span key={id} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
                         {bde?.full_name || 'BDE'}

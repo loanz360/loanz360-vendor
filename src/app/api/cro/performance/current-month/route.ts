@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper function to aggregate daily metrics
-function aggregateMetrics(dailyMetrics: any[]) {
+function aggregateMetrics(dailyMetrics: unknown[]) {
   if (dailyMetrics.length === 0) {
     return {
       total_logins: 0,
@@ -161,10 +161,9 @@ function aggregateMetrics(dailyMetrics: any[]) {
 
 // Helper function to calculate metrics with targets
 function calculateMetricsWithTargets(
-  current: any,
-  targets: any,
-  prevMonth: any
-): PerformanceMetricWithTarget[] {
+  current: unknown,
+  targets: unknown,
+  prevMonth: unknown): PerformanceMetricWithTarget[] {
   const metrics: PerformanceMetricWithTarget[] = []
 
   // Define metric mappings

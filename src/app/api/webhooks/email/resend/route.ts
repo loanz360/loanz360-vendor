@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
     const emailId = payload.data.email_id
 
     // Update delivery log
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString(),
       provider_response_payload: payload
     }

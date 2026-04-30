@@ -248,7 +248,7 @@ export function validateArrayLength<T>(
  * Validate object depth (prevent deeply nested payloads)
  */
 export function validateObjectDepth(
-  obj: any,
+  obj: unknown,
   maxDepth: number = 10,
   currentDepth: number = 0
 ): boolean {

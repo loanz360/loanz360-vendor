@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // EMPLOYEE RESIGNATION API
@@ -101,7 +102,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      last_working_day: z.string(),
+
+
+      resignation_reason: z.string().optional(),
+
+
+      detailed_reason: z.string().optional(),
+
+
+      new_employer: z.string().optional(),
+
+
+      resignation_letter_url: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+      resignation_id: z.string().uuid().optional(),
+
+
+      withdrawal_reason: z.string().optional(),
+
+
+      response: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       last_working_day,
@@ -220,7 +254,22 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      withdrawal_reason: z.string().optional(),
+
+
+      resignation_id: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { action, resignation_id, withdrawal_reason } = body
 

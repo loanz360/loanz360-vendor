@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
@@ -93,7 +94,25 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden: CRO access required' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      entityId: z.string().uuid().optional(),
+
+
+      entityType: z.string().optional(),
+
+
+      documentId: z.string().uuid().optional(),
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { entityId, entityType, documentId, status } = body
 

@@ -226,7 +226,7 @@ export function parseCursorPaginationParams(
 /**
  * Create cursor pagination metadata
  */
-export function createCursorPaginationMeta<T extends { id: string; [key: string]: any }>(
+export function createCursorPaginationMeta<T extends { id: string; [key: string]: unknown }>(
   data: T[],
   limit: number,
   timestampField: string = 'created_at'
@@ -247,7 +247,7 @@ export function createCursorPaginationMeta<T extends { id: string; [key: string]
 /**
  * Create cursor-based paginated response
  */
-export function createCursorPaginatedResponse<T extends { id: string; [key: string]: any }>(
+export function createCursorPaginatedResponse<T extends { id: string; [key: string]: unknown }>(
   data: T[],
   limit: number,
   timestampField: string = 'created_at'

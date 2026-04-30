@@ -153,7 +153,7 @@ interface AlertEvent {
   type: AlertType
   severity: AlertSeverity
   message: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   user_id?: string
   ip_address?: string
   user_agent?: string

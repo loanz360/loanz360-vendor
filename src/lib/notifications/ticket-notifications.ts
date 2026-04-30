@@ -110,7 +110,7 @@ export async function notifyNewTicket(ticketData: TicketNotificationData) {
 
       if (!prefs || !prefs.notify_new_ticket) continue
 
-      const employee = emp.profiles as any
+      const employee = emp.profiles as unknown
 
       // In-app notification
       if (prefs.in_app_enabled) {
@@ -560,7 +560,7 @@ export async function notifySLABreach(ticketData: TicketNotificationData) {
 
       if (managers) {
         for (const manager of managers) {
-          const managerProfile = manager.profiles as any
+          const managerProfile = manager.profiles as unknown
 
           // In-app notification (always)
           await createInAppNotification(

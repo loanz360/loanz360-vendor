@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Bank Products Management API - SuperAdmin / Admin
  * GET: List all products with advanced filtering (active + inactive)
@@ -155,7 +156,127 @@ export async function POST(request: NextRequest) {
     const { error: authErr, status, user } = await verifyAdminAccess(supabase)
     if (authErr) return NextResponse.json({ success: false, error: authErr }, { status })
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      bank_name: z.string().optional(),
+
+
+      bank_code: z.string().optional(),
+
+
+      bank_logo_url: z.string().optional(),
+
+
+      name: z.string().optional(),
+
+
+      loan_type: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      product_code: z.string().optional(),
+
+
+      min_amount: z.string().optional(),
+
+
+      max_amount: z.string().optional(),
+
+
+      min_interest_rate: z.string().optional(),
+
+
+      max_interest_rate: z.string().optional(),
+
+
+      interest_rate_type: z.string().optional(),
+
+
+      processing_fee: z.number().optional(),
+
+
+      processing_fee_percentage: z.string().optional(),
+
+
+      processing_fee_min: z.string().optional(),
+
+
+      processing_fee_max: z.string().optional(),
+
+
+      min_tenure: z.string().optional(),
+
+
+      max_tenure: z.string().optional(),
+
+
+      min_cibil: z.string().optional(),
+
+
+      min_income: z.string().optional(),
+
+
+      min_age: z.string().optional(),
+
+
+      max_age: z.string().optional(),
+
+
+      employment_types: z.string().optional(),
+
+
+      has_collateral: z.string().optional(),
+
+
+      max_ltv: z.string().optional(),
+
+
+      prepayment_allowed: z.string().optional(),
+
+
+      prepayment_charges: z.string().optional(),
+
+
+      foreclosure_charges: z.string().optional(),
+
+
+      top_up_available: z.string().optional(),
+
+
+      balance_transfer_available: z.string().optional(),
+
+
+      tax_benefit_eligible: z.string().optional(),
+
+
+      tax_sections: z.string().optional(),
+
+
+      display_order: z.string().optional(),
+
+
+      featured: z.string().optional(),
+
+
+      is_active: z.boolean().optional(),
+
+
+      effective_from: z.string().optional(),
+
+
+      effective_until: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields

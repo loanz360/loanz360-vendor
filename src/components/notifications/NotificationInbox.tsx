@@ -31,7 +31,7 @@ interface Notification {
   is_archived: boolean
   image_url?: string
   thumbnail_url?: string
-  attachments?: any[]
+  attachments?: unknown[]
   allow_replies: boolean
   reply_count: number
   action_url?: string

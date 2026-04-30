@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -65,7 +66,58 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      metric_date: z.string().optional(),
+
+
+      total_calls: z.string().optional(),
+
+
+      connected_calls: z.string().optional(),
+
+
+      missed_calls: z.string().optional(),
+
+
+      voicemail_left: z.string().email().optional(),
+
+
+      callbacks_scheduled: z.string().optional(),
+
+
+      callbacks_completed: z.string().optional(),
+
+
+      total_talk_time: z.string().optional(),
+
+
+      average_call_duration: z.string().optional(),
+
+
+      longest_call: z.string().optional(),
+
+
+      conversions: z.string().optional(),
+
+
+      leads_qualified: z.string().optional(),
+
+
+      leads_rejected: z.string().optional(),
+
+
+      revenue_generated: z.string().optional(),
+
+
+      quality_score: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const today = new Date().toISOString().split('T')[0]
 

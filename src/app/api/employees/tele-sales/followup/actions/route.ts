@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -67,7 +68,23 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action_id: z.string().uuid().optional(),
+
+      action_status: z.string().optional(),
+
+      outcome: z.string().optional(),
+
+      outcome_notes: z.string().optional(),
+
+      related_call_id: z.string().uuid().optional(),
+
+      related_task_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -100,7 +117,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update the action
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       status: action_status,
       updated_at: new Date().toISOString()
     }
@@ -125,7 +142,7 @@ export async function PUT(request: NextRequest) {
 
     // Update instance progress
     if (action_status === 'EXECUTED') {
-      const instance = existingAction.instance as any
+      const instance = existingAction.instance as unknown
 
       // Get next pending action
       const { data: nextAction } = await supabase
@@ -137,7 +154,7 @@ export async function PUT(request: NextRequest) {
         .limit(1)
         .maybeSingle()
 
-      const instanceUpdates: any = {
+      const instanceUpdates: Record<string, unknown> = {
         current_step: existingAction.step_number,
         total_attempts: (instance.total_attempts || 0) + 1,
         updated_at: new Date().toISOString()

@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     // Get options from form data
     const folderId = formData.get('folder_id') as string | null
-    const deduplicationStrategy = (formData.get('deduplication_strategy') as any) || 'skip'
+    const deduplicationStrategy = (formData.get('deduplication_strategy') as unknown) || 'skip'
 
     // Upload using unified service
     const result = await unifiedUploadService.uploadFile(file, {

@@ -5,7 +5,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
 
 // Helper function to verify DSM role
-async function verifyDSMRole(supabase: any, userId: string) {
+async function verifyDSMRole(supabase: unknown, userId: string) {
   const { data: profile, error } = await supabase
     .from('users')
     .select('role, sub_role')
@@ -24,7 +24,7 @@ async function verifyDSMRole(supabase: any, userId: string) {
 }
 
 // Helper function to get DSM's team member IDs
-async function getTeamMemberIds(supabase: any, dsmUserId: string) {
+async function getTeamMemberIds(supabase: unknown, dsmUserId: string) {
   const { data: teamMembers, error } = await supabase
     .from('users')
     .select('id')

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -88,7 +89,31 @@ export async function POST(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      name: z.string().optional(),
+
+
+      check_in_time: z.string().optional(),
+
+
+      check_out_time: z.string().optional(),
+
+
+      grace_period_minutes: z.string().optional(),
+
+
+      is_default: z.boolean().optional(),
+
+
+      id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { name, check_in_time, check_out_time, grace_period_minutes, is_default } = body
 
@@ -189,7 +214,31 @@ export async function PUT(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      check_in_time: z.string().optional(),
+
+
+      is_default: z.boolean().optional(),
+
+
+      name: z.string().optional(),
+
+
+      check_out_time: z.string().optional(),
+
+
+      id: z.string().optional(),
+
+
+      grace_period_minutes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, name, check_in_time, check_out_time, grace_period_minutes, is_default } = body
 

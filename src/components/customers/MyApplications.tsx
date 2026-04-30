@@ -90,7 +90,7 @@ export default function MyApplications() {
   }
 
   const getStatusInfo = (status: string) => {
-    const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
+    const statusConfig: Record<string, { color: string; icon: unknown; label: string }> = {
       NEW: { color: 'bg-blue-100 text-blue-800', icon: ClockIcon, label: 'New Application' },
       IN_PROGRESS: { color: 'bg-yellow-100 text-yellow-800', icon: ChartBarIcon, label: 'In Progress' },
       UNDER_REVIEW: { color: 'bg-purple-100 text-purple-800', icon: DocumentTextIcon, label: 'Under Review' },

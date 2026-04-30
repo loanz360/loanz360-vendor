@@ -132,7 +132,7 @@ export async function PATCH(
     }
 
     // Prepare update data
-    const updateData: Record<string, any> = {}
+    const updateData: Record<string, unknown> = {}
 
     if (body.name !== undefined) updateData.name = body.name.trim()
     if (body.description !== undefined) updateData.description = body.description?.trim() || null

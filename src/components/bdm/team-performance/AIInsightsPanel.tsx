@@ -137,7 +137,7 @@ export default function AIInsightsPanel({ insights }: AIInsightsPanelProps) {
 }
 
 function getInsightIcon(iconName: string) {
-  const icons: Record<string, any> = {
+  const icons: Record<string, unknown> = {
     Trophy,
     AlertTriangle,
     Lightbulb,

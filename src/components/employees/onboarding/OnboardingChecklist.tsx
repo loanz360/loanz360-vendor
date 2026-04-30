@@ -21,8 +21,7 @@ interface Task {
 }
 
 interface OnboardingData {
-  employee: any
-  session: {
+  employee: unknown  session: {
     completion_percentage: number
     total_tasks: number
     completed_tasks: number

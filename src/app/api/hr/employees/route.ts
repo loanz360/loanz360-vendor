@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Strip sensitive fields (password) from response and enrich with BGV status
-    const enriched = (employees || []).map((e: any) => {
+    const enriched = (employees || []).map((e: unknown) => {
       const { password, ...safeEmployee } = e;
       return {
         ...safeEmployee,
@@ -215,7 +215,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
 
     // Validate and whitelist fields to prevent mass assignment
@@ -296,7 +305,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Strip sensitive fields from response
-    const { password: _pw, ...safeNewEmployee } = newEmployee as any;
+    const { password: _pw, ...safeNewEmployee } = newEmployee as unknown;
 
     return NextResponse.json({
       success: true,
@@ -334,7 +343,16 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 });
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2;
     const { id, ...updateFields } = body;
 
@@ -388,7 +406,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Strip sensitive fields from response
-    const { password: _pw, ...safeUpdated } = updated as any;
+    const { password: _pw, ...safeUpdated } = updated as unknown;
 
     return NextResponse.json({
       success: true,
@@ -433,7 +451,13 @@ export async function DELETE(request: NextRequest) {
     let employeeId = request.nextUrl.searchParams.get('id');
     if (!employeeId) {
       try {
-        const { data: body, error: _valErr3 } = await parseBody(request)
+        const bodySchema3 = z.object({
+
+          id: z.string().optional(),
+
+        })
+
+        const { data: body, error: _valErr3 } = await parseBody(request, bodySchema3)
     if (_valErr3) return _valErr3;
         employeeId = body.id;
       } catch { /* no body provided */ }

@@ -105,7 +105,7 @@ export async function checkPolicyCompliance(
   action: string,
   adminId: string,
   resourceType?: string,
-  context?: Record<string, any>
+  context?: Record<string, unknown>
 ): Promise<
   Array<{
     policy_id: string

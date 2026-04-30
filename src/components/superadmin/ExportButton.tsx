@@ -13,7 +13,7 @@ import { Download, FileText, FileSpreadsheet, FileJson, Loader2 } from 'lucide-r
 interface ExportButtonProps {
   endpoint: string
   filename?: string
-  filters?: Record<string, any>
+  filters?: Record<string, unknown>
   label?: string
   className?: string
 }

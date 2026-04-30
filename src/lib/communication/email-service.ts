@@ -250,8 +250,7 @@ class EmailService {
    */
   async handleWebhook(
     provider: 'resend' | 'sendgrid',
-    payload: any
-  ): Promise<{ processed: boolean; event: string }> {
+    payload: unknown  ): Promise<{ processed: boolean; event: string }> {
     if (provider === 'resend') {
       return this.handleResendWebhook(payload)
     } else if (provider === 'sendgrid') {
@@ -264,7 +263,7 @@ class EmailService {
   /**
    * Handle Resend webhook
    */
-  private async handleResendWebhook(payload: any): Promise<{ processed: boolean; event: string }> {
+  private async handleResendWebhook(payload: Record<string, unknown>): Promise<{ processed: boolean; event: string }> {
     const event = payload.type
     const messageId = payload.data?.email_id
 
@@ -295,7 +294,7 @@ class EmailService {
   /**
    * Handle SendGrid webhook
    */
-  private async handleSendGridWebhook(payload: any): Promise<{ processed: boolean; event: string }> {
+  private async handleSendGridWebhook(payload: Record<string, unknown>): Promise<{ processed: boolean; event: string }> {
     // SendGrid sends events as an array
     const events = Array.isArray(payload) ? payload : [payload]
 

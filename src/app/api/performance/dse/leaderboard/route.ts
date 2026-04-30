@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch monthly summaries for all DSEs — try user_id first (old schema), then dse_user_id (new schema)
-    let monthlySummaries: any[] = []
+    let monthlySummaries: unknown[] = []
 
     const { data: ms1, error: ms1Err } = await adminClient
       .from('dse_monthly_summary')

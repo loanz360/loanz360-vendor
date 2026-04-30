@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -87,7 +88,17 @@ export async function GET(request: NextRequest) {
 // POST - Add scraped businesses (called by Lambda)
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      businesses: z.array(z.unknown()).optional(),
+
+      job_id: z.string().uuid().optional(),
+
+      keyword_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { businesses, job_id, keyword_id } = body
 
@@ -100,7 +111,7 @@ export async function POST(request: NextRequest) {
 
     let inserted = 0
     let duplicates = 0
-    const duplicateRecords: any[] = []
+    const duplicateRecords: unknown[] = []
 
     for (const business of businesses) {
       // Check for duplicates by place_id

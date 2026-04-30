@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
@@ -52,7 +53,7 @@ export async function GET(request: NextRequest) {
         : [status]
 
     // Fetch CP applications
-    let cpApplications: any[] = []
+    let cpApplications: unknown[] = []
     if (type === 'cp' || type === 'all') {
       let cpQuery = supabase
         .from('cp_applications')
@@ -80,7 +81,7 @@ export async function GET(request: NextRequest) {
           ...app,
           _source: 'cp' as const,
           partner_type: 'CP',
-          partner_name: (app.cp_user as any)?.full_name || 'CP Partner',
+          partner_name: (app.cp_user as unknown)?.full_name || 'CP Partner',
           disbursed_amount: app.loan_amount_disbursed,
           commission_percentage: app.expected_payout_percentage,
           expected_commission_amount: app.expected_payout_amount,
@@ -89,7 +90,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch BA/BP partner payout applications
-    let partnerApplications: any[] = []
+    let partnerApplications: unknown[] = []
     if (type === 'ba_bp' || type === 'all') {
       let partnerQuery = supabase
         .from('partner_payout_applications')
@@ -219,7 +220,35 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      applicationId: z.string().uuid().optional(),
+
+      action: z.string().optional(),
+
+      applicationType: z.string(),
+
+      paymentDate: z.string().optional(),
+
+      paymentAmount: z.string().optional(),
+
+      paymentMode: z.string().optional(),
+
+      paymentNotes: z.string().optional(),
+
+      cpAccountNumber: z.string().optional(),
+
+      cpIfscCode: z.string().optional(),
+
+      cpBankName: z.string().optional(),
+
+      cpAccountHolderName: z.string().optional(),
+
+      transactionId: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       applicationId,
@@ -288,9 +317,8 @@ export async function PUT(request: NextRequest) {
 }
 
 async function handleCPPayout(
-  supabase: any, applicationId: string, action: string,
-  body: any, user: any, userData: any
-) {
+  supabase: unknown, applicationId: string, action: string,
+  body: unknown, user: unknown, userData: unknown) {
   const { transactionId, paymentDate, paymentAmount, paymentMode, paymentNotes,
           cpAccountNumber, cpIfscCode, cpBankName, cpAccountHolderName } = body
 
@@ -308,7 +336,7 @@ async function handleCPPayout(
     return NextResponse.json({ success: false, error: 'CP application not found' }, { status: 404 })
   }
 
-  let updateData: Record<string, any> = {}
+  let updateData: Record<string, unknown> = {}
   let newStatus: string
   const previousStatus = application.status
 
@@ -408,7 +436,7 @@ async function handleCPPayout(
   })
 
   // CP notifications
-  const cpUser = application.cp_user as any
+  const cpUser = application.cp_user as unknown
   if (cpUser) {
     try {
       await notifyStatusChange(
@@ -449,9 +477,8 @@ async function handleCPPayout(
 }
 
 async function handlePartnerPayout(
-  supabase: any, applicationId: string, action: string,
-  body: any, user: any, userData: any
-) {
+  supabase: unknown, applicationId: string, action: string,
+  body: unknown, user: unknown, userData: unknown) {
   const { transactionId, paymentDate, paymentAmount, paymentMode, paymentNotes } = body
 
   const { data: app, error: appError } = await supabase

@@ -37,8 +37,7 @@ export interface ScheduledMessage {
   message_type: string
   template_code: string
   recipient_type: string
-  recipients: any
-  variables: Record<string, string>
+  recipients: unknown  variables: Record<string, string>
   scheduled_at: string
   timezone: string
   recurrence_pattern?: string
@@ -53,7 +52,7 @@ export interface MessageSegment {
   id: string
   name: string
   description: string
-  filters: Record<string, any>
+  filters: Record<string, unknown>
   recipient_count: number
 }
 
@@ -430,11 +429,11 @@ export class ScheduledMessagingService {
   async createSegment(params: {
     name: string
     description: string
-    filters: Record<string, any>
+    filters: Record<string, unknown>
   }) {
     try {
       // Calculate recipient count
-      const recipients = await this.getSegmentRecipients(params.filters as any)
+      const recipients = await this.getSegmentRecipients(params.filters as unknown)
 
       const { data, error } = await this.supabase
         .from('message_segments')

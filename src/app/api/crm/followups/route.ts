@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { logApiError } from '@/lib/monitoring/errorLogger'
@@ -219,7 +220,37 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      lead_id: z.string().uuid().optional(),
+
+      scheduled_at: z.string().optional(),
+
+      purpose: z.string().optional(),
+
+      title: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      reminder_enabled: z.string().optional(),
+
+      reminder_minutes_before: z.string().optional(),
+
+      is_recurring: z.boolean().optional(),
+
+      recurrence_pattern: z.string().optional(),
+
+      recurrence_end_date: z.string().optional(),
+
+      recurrence_ends_at: z.string().optional(),
+
+      id: z.string().uuid().optional(),
+
+      status: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields
@@ -255,7 +286,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare follow-up data
-    const followupData: any = {
+    const followupData: Record<string, unknown> = {
       lead_id: body.lead_id,
       scheduled_at: body.scheduled_at,
       owner_id: user.id,
@@ -354,7 +385,15 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      status: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const followupId = body.id
 
@@ -379,7 +418,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

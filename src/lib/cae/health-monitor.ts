@@ -30,9 +30,7 @@ export interface HealthCheckResult {
   response_time_ms: number
   error_message?: string
   endpoint_tested: string
-  test_payload?: any
-  response_payload?: any
-}
+  test_payload?: unknown  response_payload?: unknown}
 
 export class ProviderHealthMonitor {
   private checkInterval: NodeJS.Timeout | null = null
@@ -206,7 +204,7 @@ export class ProviderHealthMonitor {
   /**
    * Perform actual health check (can be overridden for specific providers)
    */
-  private async performHealthCheck(providerType: CAEProviderType, testRequest: any): Promise<unknown> {
+  private async performHealthCheck(providerType: CAEProviderType, testRequest: unknown): Promise<unknown> {
     // For MOCK provider, just return success
     if (providerType === 'MOCK') {
       return { success: true, provider: 'MOCK', health: 'OK' }
@@ -225,7 +223,7 @@ export class ProviderHealthMonitor {
   /**
    * Get test request for provider health check
    */
-  private getTestRequest(providerType: CAEProviderType): any {
+  private getTestRequest(providerType: CAEProviderType): unknown {
     // Minimal test data for health check
     return {
       lead_id: 'HEALTH_CHECK',

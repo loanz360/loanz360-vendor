@@ -356,7 +356,7 @@ export class TTLCache<T = any> {
   /**
    * Private: Estimate size of value in bytes
    */
-  private estimateSize(value: any): number {
+  private estimateSize(value: unknown): number {
     try {
       return JSON.stringify(value).length * 2 // Approximate: 2 bytes per char
     } catch {
@@ -423,7 +423,7 @@ export const analyticsCache = new TTLCache({
  *   (providerId) => `provider:${providerId}`
  * )
  */
-export function withCache<T extends (...args: any[]) => Promise<unknown>>(
+export function withCache<T extends (...args: unknown[]) => Promise<unknown>>(
   fn: T,
   cache: TTLCache,
   keyFn: (...args: Parameters<T>) => string,

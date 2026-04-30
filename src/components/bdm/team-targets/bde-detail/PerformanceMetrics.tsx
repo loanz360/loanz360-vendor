@@ -5,8 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { TrendingUp, Users, DollarSign, Target } from 'lucide-react'
 
 interface PerformanceMetricsProps {
-  summary: any
-}
+  summary: unknown}
 
 export default function PerformanceMetrics({ summary }: PerformanceMetricsProps) {
   const metrics = [

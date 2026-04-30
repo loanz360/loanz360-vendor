@@ -54,7 +54,7 @@ export async function PUT(
 
     const { data: body, error: _valErr } = await parseBody(request)
     if (_valErr) return _valErr
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

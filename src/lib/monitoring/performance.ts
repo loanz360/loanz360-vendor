@@ -16,7 +16,7 @@ export interface PerformanceMetric {
   operation: string
   duration_ms: number
   timestamp: Date
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface PerformanceStats {
@@ -41,9 +41,9 @@ const RETENTION_MS = 60 * 60 * 1000 // 1 hour
 export class PerformanceTimer {
   private startTime: number
   private operation: string
-  private metadata: Record<string, any>
+  private metadata: Record<string, unknown>
 
-  constructor(operation: string, metadata: Record<string, any> = {}) {
+  constructor(operation: string, metadata: Record<string, unknown> = {}) {
     this.operation = operation
     this.metadata = metadata
     this.startTime = performance.now()
@@ -179,7 +179,7 @@ export function cleanupOldMetrics(): number {
 export async function measureAsync<T>(
   operation: string,
   fn: () => Promise<T>,
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): Promise<T> {
   const timer = new PerformanceTimer(operation, metadata)
 
@@ -199,7 +199,7 @@ export async function measureAsync<T>(
 export function measureSync<T>(
   operation: string,
   fn: () => T,
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): T {
   const timer = new PerformanceTimer(operation, metadata)
 

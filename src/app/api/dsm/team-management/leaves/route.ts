@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform the data
-    const leaves = (leaveRequests || []).map((leave: any) => ({
+    const leaves = (leaveRequests || []).map((leave: unknown) => ({
       id: leave.id,
       employeeId: leave.user_id,
       employeeName: leave.users?.full_name || 'Unknown',

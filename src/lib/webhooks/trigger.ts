@@ -28,8 +28,7 @@ export type WebhookEvent =
 
 export interface WebhookPayload {
   event: WebhookEvent
-  data: any
-  timestamp: string
+  data: unknown  timestamp: string
   id: string
 }
 
@@ -51,7 +50,7 @@ function generateSignature(payload: string, secret: string): string {
  * @param event - The event type (e.g., 'lead.created')
  * @param data - The event data
  */
-export async function triggerWebhook(event: WebhookEvent, data: any): Promise<void> {
+export async function triggerWebhook(event: WebhookEvent, data: unknown): Promise<void> {
   try {
     // 1. Fetch active webhook endpoints subscribed to this event
     const { data: endpoints, error: fetchError } = await supabase
@@ -153,7 +152,7 @@ export async function triggerWebhook(event: WebhookEvent, data: any): Promise<vo
 // Convenience Functions for Common Events
 // ============================================================================
 
-export async function triggerLeadCreated(leadData: any): Promise<void> {
+export async function triggerLeadCreated(leadData: unknown): Promise<void> {
   await triggerWebhook('lead.created', leadData)
 }
 
@@ -179,7 +178,7 @@ export async function triggerLeadStatusChanged(
   })
 }
 
-export async function triggerFormSubmitted(leadId: string, formData: any): Promise<void> {
+export async function triggerFormSubmitted(leadId: string, formData: unknown): Promise<void> {
   await triggerWebhook('lead.form_submitted', {
     lead_id: leadId,
     form_data: formData,
@@ -194,7 +193,7 @@ export async function triggerFormCompleted(leadId: string): Promise<void> {
   })
 }
 
-export async function triggerLeadConverted(leadId: string, conversionData: any): Promise<void> {
+export async function triggerLeadConverted(leadId: string, conversionData: unknown): Promise<void> {
   await triggerWebhook('lead.converted', {
     lead_id: leadId,
     conversion_data: conversionData,

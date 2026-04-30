@@ -211,7 +211,7 @@ export class TicketAIService {
           category,
           department: rules.department,
           score,
-          priority: rules.basePriority as any
+          priority: rules.basePriority as unknown
         }
       }
     }
@@ -287,7 +287,7 @@ export class TicketAIService {
     if (urgencyIndicators.length >= 3) currentIndex = Math.min(currentIndex + 2, 4)
     else if (urgencyIndicators.length >= 1) currentIndex = Math.min(currentIndex + 1, 4)
 
-    return priorityLevels[currentIndex] as any
+    return priorityLevels[currentIndex] as unknown
   }
 
   /**
@@ -566,7 +566,7 @@ export class TicketAIService {
   /**
    * Extract key points from messages
    */
-  private extractKeyPoints(messages: any[]): string[] {
+  private extractKeyPoints(messages: unknown[]): string[] {
     const keyPoints: string[] = []
 
     for (const msg of messages) {
@@ -593,7 +593,7 @@ export class TicketAIService {
   /**
    * Extract action items from messages
    */
-  private extractActionItems(messages: any[]): string[] {
+  private extractActionItems(messages: unknown[]): string[] {
     const actionItems: string[] = []
 
     for (const msg of messages) {
@@ -623,7 +623,7 @@ export class TicketAIService {
   /**
    * Determine resolution status
    */
-  private determineResolutionStatus(ticket: any, messages: any[]): string {
+  private determineResolutionStatus(ticket: unknown, messages: unknown[]): string {
     if (ticket.status === 'resolved' || ticket.status === 'closed') {
       return ticket.resolution_notes ? 'Resolved with notes' : 'Resolved'
     }
@@ -641,7 +641,7 @@ export class TicketAIService {
   /**
    * Generate summary text
    */
-  private generateSummary(ticket: any, messages: any[], keyPoints: string[]): string {
+  private generateSummary(ticket: unknown, messages: unknown[], keyPoints: string[]): string {
     const messageCount = messages.length
     const daysSinceCreation = Math.floor(
       (Date.now() - new Date(ticket.created_at).getTime()) / (1000 * 60 * 60 * 24)

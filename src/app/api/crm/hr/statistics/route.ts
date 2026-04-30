@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { logApiError } from '@/lib/monitoring/errorLogger'
@@ -147,7 +148,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      target_date: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const target_date = body.target_date || new Date().toISOString().split('T')[0]
 

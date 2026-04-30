@@ -31,9 +31,9 @@ export interface Contest {
   evaluation_criteria: EvaluationCriteria | null
   evaluation_frequency: string
   auto_evaluate: boolean
-  reward_details: Record<string, any> | null
+  reward_details: Record<string, unknown> | null
   winner_count: number
-  reward_tiers: Record<string, any> | null
+  reward_tiers: Record<string, unknown> | null
   enable_leaderboard: boolean
   leaderboard_visibility: string
   show_scores: boolean
@@ -68,7 +68,7 @@ export interface ContestParticipant {
   current_score: number
   current_rank: number | null
   last_rank: number | null
-  performance_data: Record<string, any> | null
+  performance_data: Record<string, unknown> | null
   progress_percentage: number
   participation_status: 'eligible' | 'participating' | 'disqualified' | 'winner' | 'completed'
   joined_at: string | null
@@ -89,9 +89,9 @@ export interface LeaderboardEntry {
   rank_change: number
   highest_rank_achieved: number
   total_score: number
-  score_breakdown: Record<string, any> | null
+  score_breakdown: Record<string, unknown> | null
   badges_earned: string[]
-  achievements: Record<string, any> | null
+  achievements: Record<string, unknown> | null
   milestone_reached: string | null
   last_updated_at: string
 }
@@ -126,7 +126,7 @@ const STATUS_MAP: Record<string, ContestStatus> = {
  * Normalize contest data from database to standard format
  * Handles both old and new schema formats
  */
-export function normalizeContest(data: any): Contest {
+export function normalizeContest(data: Record<string, unknown>): Contest {
   return {
     id: data.id,
     contest_title: data.contest_title || data.title || 'Untitled Contest',

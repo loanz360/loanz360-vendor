@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: Profile Detail
  * GET /api/customers/profile/[id] - Get profile details with documents
@@ -40,8 +41,8 @@ export async function GET(request: NextRequest, context: RouteContext) {
       )
     }
 
-    let profile: any = null
-    let documents: any[] = []
+    let profile: unknown = null
+    let documents: unknown[] = []
 
     if (profileType === 'INDIVIDUAL') {
       // Fetch individual profile from individuals table
@@ -352,7 +353,13 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
   try {
     const { id } = await context.params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      type: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { type, ...updateData } = body
 
@@ -371,7 +378,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       )
     }
 
-    let profile: any = null
+    let profile: unknown = null
 
     if (type === 'INDIVIDUAL') {
       // Verify ownership - check individuals table (where the ID comes from)
@@ -415,7 +422,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       const customerProfilesFields = ['profile_photo_url']
 
       // Prepare updates for individuals table
-      const individualsUpdates: any = { updated_at: new Date().toISOString() }
+      const individualsUpdates: Record<string, unknown> = { updated_at: new Date().toISOString() }
       for (const field of individualsFields) {
         if (updateData[field] !== undefined) {
           individualsUpdates[field] = updateData[field]
@@ -439,7 +446,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       }
 
       // Update customer_profiles table if needed (for profile_photo_url)
-      const customerProfilesUpdates: any = {}
+      const customerProfilesUpdates: Record<string, unknown> = {}
       for (const field of customerProfilesFields) {
         if (updateData[field] !== undefined) {
           customerProfilesUpdates[field] = updateData[field]
@@ -491,7 +498,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         'logo_url': 'logo_url',
       }
 
-      const updates: any = { updated_at: new Date().toISOString() }
+      const updates: Record<string, unknown> = { updated_at: new Date().toISOString() }
       for (const [frontendField, dbField] of Object.entries(fieldMapping)) {
         if (updateData[frontendField] !== undefined) {
           updates[dbField] = updateData[frontendField]

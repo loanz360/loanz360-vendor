@@ -21,7 +21,7 @@ interface CRMIntegrationSectionProps {
     crmMetric: string;
     updateFrequency: 'real-time' | 'hourly' | 'daily';
   };
-  onChange: (value: any) => void;
+  onChange: (value: unknown) => void;
   targetRole?: string;
 }
 
@@ -45,7 +45,7 @@ export default function CRMIntegrationSection({
   };
 
   const handleFrequencyChange = (frequency: string) => {
-    setUpdateFrequency(frequency as any);
+    setUpdateFrequency(frequency as unknown);
     onChange({ enabled, crmMetric, updateFrequency: frequency });
   };
 
@@ -201,8 +201,7 @@ export default function CRMIntegrationSection({
 interface MetricOption {
   value: string;
   label: string;
-  icon: any;
-  description: string;
+  icon: unknown  description: string;
   applicableRoles: string[];
 }
 

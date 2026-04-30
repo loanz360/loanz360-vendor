@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -109,7 +110,43 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      entityId: z.string().uuid(),
+
+
+      individualId: z.string().uuid().optional(),
+
+
+      role_key: z.string().optional(),
+
+
+      role_name: z.string().optional(),
+
+
+      canSignDocuments: z.string().optional(),
+
+
+      canApplyForLoans: z.string().optional(),
+
+
+      canManageEntity: z.string().optional(),
+
+
+      memberId: z.string().uuid().optional(),
+
+
+      isPrimary: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { entityId, individualId, role_key, role_name, canSignDocuments, canApplyForLoans, canManageEntity } = body
 
@@ -232,7 +269,40 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      role_name: z.string().optional(),
+
+
+      memberId: z.string().optional(),
+
+
+      canManageEntity: z.string().optional(),
+
+
+      canSignDocuments: z.string().optional(),
+
+
+      isPrimary: z.string().optional(),
+
+
+      role_key: z.string().optional(),
+
+
+      canApplyForLoans: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+      entityId: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { memberId, entityId, role_key, role_name, canSignDocuments, canApplyForLoans, canManageEntity, isPrimary, status } = body
 

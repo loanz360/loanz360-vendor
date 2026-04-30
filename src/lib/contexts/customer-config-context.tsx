@@ -185,7 +185,7 @@ export function CustomerConfigProvider({ children, subroleKey: propSubroleKey }:
 
   // Determine subrole key from prop or user
   const subroleKey = propSubroleKey || user?.sub_role || null
-  const profileKey = (user as any)?.profile_key || null
+  const profileKey = (user as unknown)?.profile_key || null
 
   const loadConfig = useCallback(async () => {
     if (!subroleKey) {

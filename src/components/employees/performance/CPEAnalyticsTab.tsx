@@ -372,7 +372,7 @@ export default function CPEAnalyticsTab({ userId }: CPEAnalyticsTabProps) {
                 </tr>
               </thead>
               <tbody>
-                {topPartners.map((partner: any, index: number) => (
+                {topPartners.map((partner: unknown, index: number) => (
                   <tr key={partner.partner_id} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition-colors">
                     <td className="py-3 px-4">
                       <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
@@ -416,7 +416,7 @@ export default function CPEAnalyticsTab({ userId }: CPEAnalyticsTabProps) {
         </h3>
         {recentRecruitments.length > 0 ? (
           <div className="space-y-3">
-            {recentRecruitments.map((partner: any) => (
+            {recentRecruitments.map((partner: unknown) => (
               <div
                 key={partner.partner_id}
                 className="flex items-center justify-between p-4 bg-gray-800/30 rounded-lg hover:bg-gray-800/50 transition-colors"

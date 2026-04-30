@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     const teamMemberIds = teamMembers?.map((m) => m.id) || []
 
     // Fetch attendance/activity records for the specified date if there are team members
-    let attendanceRecords: any[] = []
+    let attendanceRecords: unknown[] = []
     if (teamMemberIds.length > 0) {
       const { data, error: attendanceError } = await supabase
         .from('attendance')
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     }
 
     const activities = (teamMembers || []).map((member) => {
-      const attendanceRecord = attendanceRecords?.find((a: any) => a.user_id === member.id)
+      const attendanceRecord = attendanceRecords?.find((a: unknown) => a.user_id === member.id)
 
       const hasCheckedIn = !!attendanceRecord?.check_in_time
       const hasCheckedOut = !!attendanceRecord?.check_out_time

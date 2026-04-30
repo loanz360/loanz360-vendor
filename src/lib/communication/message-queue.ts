@@ -38,7 +38,7 @@ export interface QueuedMessage {
   providerId?: string
   externalMessageId?: string
   errorMessage?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   createdAt: Date
   updatedAt: Date
   processedAt?: Date
@@ -51,7 +51,7 @@ export interface EnqueueOptions {
   maxRetries?: number
   templateCode?: string
   variables?: Record<string, string>
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface ProcessingResult {
@@ -293,7 +293,7 @@ class MessageQueueService {
   /**
    * Send a single message
    */
-  private async sendMessage(message: any): Promise<{
+  private async sendMessage(message: unknown): Promise<{
     success: boolean
     providerId?: string
     externalId?: string
@@ -337,7 +337,7 @@ class MessageQueueService {
    * Call provider API (simplified - actual implementation in provider services)
    */
   private async callProviderAPI(
-    provider: any,
+    provider: unknown,
     recipient: string,
     content: string,
     subject?: string
@@ -384,7 +384,7 @@ class MessageQueueService {
   /**
    * Handle message failure
    */
-  private async handleFailure(message: any, error: string): Promise<void> {
+  private async handleFailure(message: unknown, error: string): Promise<void> {
     const supabase = createSupabaseAdmin()
     const newRetryCount = (message.retry_count || 0) + 1
 
@@ -461,7 +461,7 @@ class MessageQueueService {
     const supabase = createSupabaseAdmin()
 
     const statuses = ['queued', 'processing', 'sent', 'failed', 'dead_letter']
-    const stats: any = {}
+    const stats: Record<string, unknown> = {}
 
     for (const status of statuses) {
       const { count } = await supabase

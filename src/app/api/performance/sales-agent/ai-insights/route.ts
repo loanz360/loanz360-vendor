@@ -188,7 +188,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function formatInsight(dbInsight: any): AIInsight {
+function formatInsight(dbInsight: unknown): AIInsight {
   return {
     id: dbInsight.id,
     type: dbInsight.insight_type,

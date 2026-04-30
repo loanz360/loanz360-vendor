@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // 360 DEGREE FEEDBACK API
@@ -11,7 +12,7 @@ import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-async function getEmployeeId(supabase: any, userId: string) {
+async function getEmployeeId(supabase: unknown, userId: string) {
   const { data: employee } = await supabase
     .from('employees')
     .select('id')
@@ -129,7 +130,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      request_id: z.string().uuid().optional(),
+
+
+      employee_id: z.string().uuid().optional(),
+
+
+      DIRECT_REPORT: z.string().optional(),
+
+
+      MANAGER: z.string().optional(),
+
+
+      what_works_well: z.string().optional(),
+
+
+      what_could_improve: z.string().optional(),
+
+
+      specific_examples: z.string().optional(),
+
+
+      additional_comments: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       request_id,

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -156,7 +157,28 @@ async function addCustomerTagHandler(request: NextRequest, customerId: string) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      tag_name: z.string().optional(),
+
+
+      tag_category: z.string().optional(),
+
+
+      tag_value: z.string().optional(),
+
+
+      confidence_score: z.string().optional(),
+
+
+      expires_at: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { tag_name, tag_category, tag_value, confidence_score, expires_at } = body
 

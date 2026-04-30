@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * POST /api/employees/documents/verify
@@ -104,8 +105,8 @@ export async function GET(request: NextRequest) {
       data: {
         document: doc,
         verification_logs: logs || [],
-        is_verifiable: (doc as any).document_type?.type_code
-          ? VERIFIABLE_DOC_TYPES.includes((doc as any).document_type.type_code)
+        is_verifiable: (doc as unknown).document_type?.type_code
+          ? VERIFIABLE_DOC_TYPES.includes((doc as unknown).document_type.type_code)
           : false,
       },
     })
@@ -141,7 +142,28 @@ export async function POST(request: NextRequest) {
     const isHR = currentEmployee?.sub_role &&
       ['HR_EXECUTIVE', 'HR_MANAGER', 'SUPER_ADMIN', 'ADMIN'].includes(currentEmployee.sub_role)
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      document_id: z.string().uuid(),
+
+
+      document_number: z.string().optional(),
+
+
+      employee_name: z.string().optional(),
+
+
+      date_of_birth: z.string().optional(),
+
+
+      father_name: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { document_id, document_number, employee_name, date_of_birth, father_name } = body
 
@@ -186,7 +208,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const typeCode = (doc as any).document_type?.type_code
+    const typeCode = (doc as unknown).document_type?.type_code
     if (!typeCode) {
       return NextResponse.json(
         { success: false, error: 'Could not determine document type' },

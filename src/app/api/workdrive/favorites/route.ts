@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive Favorites API
@@ -107,7 +108,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      resource_type: z.string().optional(),
+
+
+      resource_id: z.string().uuid().optional(),
+
+
+      file_id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     // Support both old format (file_id) and new format (resource_type/resource_id)
     let resource_type = body.resource_type as ResourceType
@@ -171,7 +187,17 @@ export async function DELETE(request: NextRequest) {
     // Fallback: try reading from request body for backwards compatibility
     if (!resourceType || !resourceId) {
       try {
-        const { data: body, error: _valErr2 } = await parseBody(request)
+        const bodySchema2 = z.object({
+
+          resource_id: z.string().optional(),
+
+          resource_type: z.string().optional(),
+
+          file_id: z.string().optional(),
+
+        })
+
+        const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
         if (!resourceType && body.resource_type) resourceType = body.resource_type as ResourceType
         if (!resourceId && body.resource_id) resourceId = body.resource_id

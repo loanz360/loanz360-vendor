@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Activity Incidents API
  * Manage security incidents and operational issues
@@ -65,7 +66,37 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      title: z.string().optional(),
+
+      description: z.string().optional(),
+
+      severity: z.string().optional(),
+
+      incident_type: z.string().optional(),
+
+      affected_module: z.string().optional(),
+
+      related_activity_ids: z.string().optional(),
+
+      root_cause_activity_id: z.string().uuid().optional(),
+
+      assigned_to: z.string().optional(),
+
+      assigned_team: z.string().optional(),
+
+      created_by: z.string().optional(),
+
+      id: z.string().uuid(),
+
+      action: z.string().optional(),
+
+      user_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {
@@ -132,7 +163,17 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      user_id: z.string().optional(),
+
+      action: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     const { id, action, user_id, ...updateData } = body
@@ -159,7 +200,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Prepare update based on action
-    const updates: Record<string, any> = {
+    const updates: Record<string, unknown> = {
       ...updateData,
       updated_at: new Date().toISOString()
     }

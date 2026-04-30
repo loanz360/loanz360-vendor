@@ -142,7 +142,7 @@ async function changeReferrerHandler(request: NextRequest) {
 
     if (body.new_referral_id !== 'LOANZ360') {
       // Check if new referral exists and is active
-      let referralData: any = null
+      let referralData: unknown = null
 
       if (body.new_referral_type === 'EMPLOYEE') {
         const { data } = await supabase

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -134,7 +135,53 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      profile_picture_url: z.string().optional(),
+
+      full_name: z.string().optional(),
+
+      mobile_number: z.string().min(10).optional(),
+
+      work_email: z.string().email().optional(),
+
+      present_address: z.string().optional(),
+
+      present_address_proof_url: z.string().optional(),
+
+      present_address_proof_type: z.string().optional(),
+
+      state_name: z.string().optional(),
+
+      state_code: z.string().optional(),
+
+      pincode: z.string().optional(),
+
+      permanent_address: z.string().optional(),
+
+      permanent_address_proof_url: z.string().optional(),
+
+      permanent_address_proof_type: z.string().optional(),
+
+      bio_description: z.string().optional(),
+
+      bank_name: z.string().optional(),
+
+      branch_name: z.string().optional(),
+
+      account_number: z.string().optional(),
+
+      ifsc_code: z.string().optional(),
+
+      micr_code: z.string().optional(),
+
+      account_holder_name: z.string().optional(),
+
+      cancelled_cheque_url: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Map request data to database schema

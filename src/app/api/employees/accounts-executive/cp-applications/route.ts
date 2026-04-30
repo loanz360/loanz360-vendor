@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
@@ -241,7 +242,19 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      applicationId: z.string().uuid(),
+
+      action: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      reason: z.string(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { applicationId, action, notes, reason } = body
 
@@ -317,7 +330,7 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    let updateData: Record<string, any> = {}
+    let updateData: Record<string, unknown> = {}
     let newStatus: string
     let duplicates: unknown[] | null = null
 
@@ -515,7 +528,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Send notifications to CP
-    const cpUser = application.cp_user as any
+    const cpUser = application.cp_user as unknown
     if (cpUser) {
       try {
         await notifyStatusChange(

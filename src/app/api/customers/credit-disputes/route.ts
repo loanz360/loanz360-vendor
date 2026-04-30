@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Customer Credit Disputes API
  * CRUD operations for customer_credit_disputes table
@@ -58,7 +59,31 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      bureau: z.string().optional(),
+
+
+      dispute_type: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      account_details: z.string().optional(),
+
+
+      supporting_docs: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { bureau, dispute_type, description, account_details, supporting_docs } = body
 
@@ -98,7 +123,16 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, ...updates } = body
 

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * BDM Team Targets - Custom Reports API
  * Generate custom performance reports with flexible parameters
@@ -33,7 +34,27 @@ async function generateCustomReportHandler(request: NextRequest) {
     const bdmUserId = auth.user!.id
 
     // Parse custom report configuration
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      reportName: z.string().optional(),
+
+      dateRange: z.string().optional(),
+
+      bdeIds: z.array(z.unknown()).optional(),
+
+      metrics: z.array(z.unknown()).optional(),
+
+      groupBy: z.string().optional(),
+
+      filters: z.array(z.unknown()).optional(),
+
+      sortBy: z.string().optional(),
+
+      limit: z.number().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       reportName,
@@ -123,7 +144,7 @@ async function generateCustomReportHandler(request: NextRequest) {
     const { data: targets } = await targetQuery
 
     // Process data based on groupBy
-    const reportData: any[] = []
+    const reportData: unknown[] = []
 
     if (groupBy === 'bde') {
       // Group by BDE
@@ -139,7 +160,7 @@ async function generateCustomReportHandler(request: NextRequest) {
         const targetConversions = bdeTargets.reduce((sum, t) => sum + (t.monthly_conversion_target || 0), 0)
         const targetRevenue = bdeTargets.reduce((sum, t) => sum + (t.monthly_revenue_target || 0), 0)
 
-        const record: any = {
+        const record: Record<string, unknown> = {
           bdeId: bde.id,
           bdeName: bde.name,
           employeeCode: bde.employee_code,

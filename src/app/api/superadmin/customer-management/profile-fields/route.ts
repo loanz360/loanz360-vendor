@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -84,7 +85,59 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      field_key: z.string().optional(),
+
+      field_label: z.string().optional(),
+
+      field_type: z.string().optional(),
+
+      profile_type: z.string().optional(),
+
+      field_section: z.string().optional(),
+
+      field_group: z.string().optional(),
+
+      is_core_field: z.boolean().optional(),
+
+      applies_to_all_categories: z.string().optional(),
+
+      income_category_ids: z.string().optional(),
+
+      income_profile_ids: z.string().optional(),
+
+      applies_to_all_entity_types: z.string().optional(),
+
+      entity_type_ids: z.string().optional(),
+
+      is_required: z.boolean().optional(),
+
+      is_required_for_loan: z.boolean().optional(),
+
+      verification_source: z.string().optional(),
+
+      auto_lock_on_verify: z.string().optional(),
+
+      validation_rules: z.string().optional(),
+
+      options: z.record(z.unknown()).optional(),
+
+      placeholder: z.string().optional(),
+
+      help_text: z.string().optional(),
+
+      display_order: z.string().optional(),
+
+      is_visible: z.boolean().optional(),
+
+      is_active: z.boolean().optional(),
+
+      depends_on: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {

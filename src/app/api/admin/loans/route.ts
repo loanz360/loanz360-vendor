@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Enrich with applicant names
-    const applicantIds = (loans || []).map((l: any) => l.primary_applicant_id).filter(Boolean)
+    const applicantIds = (loans || []).map((l: unknown) => l.primary_applicant_id).filter(Boolean)
     let applicantMap: Record<string, string> = {}
     if (applicantIds.length > 0) {
       try {
@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
           .select('id, first_name, last_name')
           .in('id', applicantIds)
         if (applicants) {
-          applicants.forEach((a: any) => {
+          applicants.forEach((a: unknown) => {
             applicantMap[a.id] = `${a.first_name || ''} ${a.last_name || ''}`.trim()
           })
         }
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
       }
     } catch { /* ignore */ }
 
-    const enriched = (loans || []).map((l: any) => ({
+    const enriched = (loans || []).map((l: unknown) => ({
       ...l,
       customerName: applicantMap[l.primary_applicant_id] || 'Unknown Customer',
       amount: l.loan_amount_requested,

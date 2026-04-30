@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * API Routes for Incentive Progress Tracking
@@ -137,7 +138,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      userId: z.string().uuid().optional(),
+
+
+      incentiveId: z.string().uuid().optional(),
+
+
+      metricType: z.string().optional(),
+
+
+      currentValue: z.string().optional(),
+
+
+      targetValue: z.string().optional(),
+
+
+      metadata: z.record(z.unknown()).optional(),
+
+
+      reason: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { userId, incentiveId, metricType, currentValue, targetValue, metadata } = body
 

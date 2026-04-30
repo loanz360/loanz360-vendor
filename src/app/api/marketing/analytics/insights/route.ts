@@ -115,7 +115,7 @@ Return ONLY valid JSON, no markdown or additional text.`
   }
 }
 
-function generateFallbackInsights(analytics: any) {
+function generateFallbackInsights(analytics: unknown) {
   const insights = []
 
   // Open rate insight

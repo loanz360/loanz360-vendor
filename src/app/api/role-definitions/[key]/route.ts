@@ -103,7 +103,7 @@ export async function PUT(
     }
 
     // Build update object
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

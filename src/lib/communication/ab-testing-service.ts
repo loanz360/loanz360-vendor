@@ -28,7 +28,7 @@ export interface CreateABTestParams {
     templateCode?: string
     subject?: string
     senderId?: string
-    customConfig?: Record<string, any>
+    customConfig?: Record<string, unknown>
   }>
 
   // Traffic split (must sum to 100)
@@ -53,7 +53,7 @@ export interface ABTest {
   description: string
   message_type: string
   test_type: string
-  variants: any[]
+  variants: unknown[]
   traffic_split: Record<string, number>
   segment_id?: string
   target_count: number
@@ -205,7 +205,7 @@ export class ABTestingService {
         throw new Error('Test is not running')
       }
 
-      const results: any[] = []
+      const results: unknown[] = []
       const variantAssignments: Record<string, string[]> = {}
 
       // Initialize variant assignments

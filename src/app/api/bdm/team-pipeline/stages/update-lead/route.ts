@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * BDM Team Pipeline - Update Lead API
@@ -25,7 +26,17 @@ export async function PATCH(request: NextRequest) {
     }
 
     // 2. Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      leadId: z.string().uuid(),
+
+      updates: z.string().optional(),
+
+      note: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       leadId,
@@ -84,11 +95,11 @@ export async function PATCH(request: NextRequest) {
       'loan_type',
     ]
 
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString(),
     }
 
-    const changes: Array<{ field: string; oldValue: any; newValue: any }> = []
+    const changes: Array<{ field: string; oldValue: unknown; newValue: unknown}> = []
 
     for (const [field, value] of Object.entries(updates)) {
       if (allowedFields.includes(field)) {
@@ -259,7 +270,7 @@ function getEventTypeForField(field: string): string {
   return eventTypes[field] || 'FIELD_UPDATED'
 }
 
-function getEventDescription(field: string, oldValue: any, newValue: any, customerName: string): string {
+function getEventDescription(field: string, oldValue: unknown, newValue: unknown, customerName: string): string {
   switch (field) {
     case 'status':
       return `Lead status changed from ${getStatusLabel(oldValue)} to ${getStatusLabel(newValue)}`

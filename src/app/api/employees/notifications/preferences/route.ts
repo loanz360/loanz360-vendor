@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -141,7 +142,25 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      quiet_hours: z.string().optional(),
+
+
+      digest: z.string().optional(),
+
+
+      categories: z.string().optional(),
+
+
+      channels: z.array(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate quiet hours if provided

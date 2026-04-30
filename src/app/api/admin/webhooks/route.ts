@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Webhooks API
@@ -136,7 +137,25 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      name: z.string().optional(),
+
+      url: z.string().optional(),
+
+      subscribed_events: z.array(z.unknown()).optional(),
+
+      is_active: z.boolean().optional(),
+
+      max_retries: z.string().optional(),
+
+      custom_headers: z.string().optional(),
+
+      partner_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       name,

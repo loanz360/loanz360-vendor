@@ -35,8 +35,7 @@ export default function BDEProjectionsTable({ projections }: BDEProjectionsTable
 
   // Sort projections
   const sortedProjections = [...projections].sort((a, b) => {
-    let aVal: any, bVal: any
-
+    let aVal: unknown, bVal: unknown
     switch (sortBy) {
       case 'name':
         aVal = a.bdeName

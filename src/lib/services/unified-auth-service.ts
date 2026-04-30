@@ -37,7 +37,7 @@ export interface AuthenticatedUser {
   avatar_url?: string
   department?: string
   is_active: boolean
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
 }
 
 export interface AuthResult {

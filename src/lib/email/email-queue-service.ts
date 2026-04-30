@@ -28,14 +28,14 @@ export interface EmailQueueItem {
   priority: number
   attempts: number
   max_attempts: number
-  template_data: Record<string, any> | null
+  template_data: Record<string, unknown> | null
 }
 
 /**
  * Render template with data
  * Simple Handlebars-like template rendering
  */
-export function renderTemplate(template: string, data: Record<string, any>): string {
+export function renderTemplate(template: string, data: Record<string, unknown>): string {
   let rendered = template
 
   // Replace {{variable}} with values
@@ -63,7 +63,7 @@ export async function queueEmail(params: {
   recipient_email: string
   recipient_name: string
   template_key: string
-  template_data: Record<string, any>
+  template_data: Record<string, unknown>
   priority?: number
   scheduled_for?: Date
 }): Promise<string | null> {
@@ -461,7 +461,7 @@ export async function processEmailQueue(batchSize: number = 10): Promise<{
 export async function logEmailActivity(
   emailId: string,
   activityType: string,
-  activityData?: Record<string, any>,
+  activityData?: Record<string, unknown>,
   ipAddress?: string,
   userAgent?: string
 ): Promise<boolean> {
@@ -481,7 +481,7 @@ export async function logEmailActivity(
     if (error) throw error
 
     // Update email_queue timestamps
-    const updates: any = {}
+    const updates: Record<string, unknown> = {}
     if (activityType === 'delivered') {
       updates.delivered_at = new Date().toISOString()
     } else if (activityType === 'opened') {
@@ -531,7 +531,7 @@ export async function getNotificationPreferences(adminId: string): Promise<any |
  */
 export async function updateNotificationPreferences(
   adminId: string,
-  preferences: Record<string, any>
+  preferences: Record<string, unknown>
 ): Promise<boolean> {
   const supabase = createSupabaseAdmin()
 

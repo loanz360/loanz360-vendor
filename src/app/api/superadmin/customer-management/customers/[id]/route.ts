@@ -156,10 +156,10 @@ async function getCustomerDetailHandler(request: NextRequest, customerId: string
 
       // Statistics
       total_loans: loansData?.length || 0,
-      active_loans: loansData?.filter((l: any) =>
+      active_loans: loansData?.filter((l: unknown) =>
         ['SUBMITTED', 'UNDER_REVIEW', 'APPROVED'].includes(l.application_status)
       ).length || 0,
-      total_loan_amount: loansData?.reduce((sum: number, l: any) =>
+      total_loan_amount: loansData?.reduce((sum: number, l: unknown) =>
         sum + (parseFloat(l.loan_amount) || 0), 0
       ) || 0,
       total_activities: activitiesData?.length || 0,

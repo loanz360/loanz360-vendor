@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -46,7 +47,31 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      lead_ids: z.array(z.unknown()).optional(),
+
+
+      contact_ids: z.array(z.unknown()).optional(),
+
+
+      template_id: z.string().uuid(),
+
+
+      type: z.string().optional(),
+
+
+      campaign_name: z.string().optional(),
+
+
+      scheduled_at: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { lead_ids, contact_ids, template_id, type, campaign_name, scheduled_at } = body
 

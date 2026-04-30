@@ -92,7 +92,7 @@ async function getAnalyticsHandler(request: NextRequest) {
 
     // Calculate metrics
     const totalPartners = partners?.length || 0
-    const activePartners = partners?.filter((p: any) => p.status === 'ACTIVE').length || 0
+    const activePartners = partners?.filter((p: unknown) => p.status === 'ACTIVE').length || 0
 
     // Get previous month data for MoM growth
     const currentDate = new Date()
@@ -108,7 +108,7 @@ async function getAnalyticsHandler(request: NextRequest) {
       .lt('created_at', new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).toISOString())
 
     const lastMonthCount = lastMonthPartners?.length || 0
-    const thisMonthCount = partners?.filter((p: any) => {
+    const thisMonthCount = partners?.filter((p: unknown) => {
       const created = new Date(p.created_at)
       return created.getMonth() === currentDate.getMonth() &&
              created.getFullYear() === currentDate.getFullYear()
@@ -119,23 +119,23 @@ async function getAnalyticsHandler(request: NextRequest) {
       : '0.00'
 
     // Calculate login metrics
-    const totalLogins = partners?.reduce((sum: number, p: any) => sum + (p.total_logins || 0), 0) || 0
+    const totalLogins = partners?.reduce((sum: number, p: unknown) => sum + (p.total_logins || 0), 0) || 0
 
     // Calculate lead metrics
-    const leadsInProgress = partners?.reduce((sum: number, p: any) => sum + (p.leads_in_progress || 0), 0) || 0
-    const leadsSanctioned = partners?.reduce((sum: number, p: any) => sum + (p.leads_sanctioned || 0), 0) || 0
-    const leadsDropped = partners?.reduce((sum: number, p: any) => sum + (p.leads_dropped || 0), 0) || 0
+    const leadsInProgress = partners?.reduce((sum: number, p: unknown) => sum + (p.leads_in_progress || 0), 0) || 0
+    const leadsSanctioned = partners?.reduce((sum: number, p: unknown) => sum + (p.leads_sanctioned || 0), 0) || 0
+    const leadsDropped = partners?.reduce((sum: number, p: unknown) => sum + (p.leads_dropped || 0), 0) || 0
     const totalLeads = leadsInProgress + leadsSanctioned + leadsDropped
 
     // Calculate payout metrics
-    const estimatedPayout = partners?.reduce((sum: number, p: any) => sum + parseFloat(p.estimated_payout || 0), 0) || 0
-    const actualPayout = partners?.reduce((sum: number, p: any) => sum + parseFloat(p.actual_payout || 0), 0) || 0
+    const estimatedPayout = partners?.reduce((sum: number, p: unknown) => sum + parseFloat(p.estimated_payout || 0), 0) || 0
+    const actualPayout = partners?.reduce((sum: number, p: unknown) => sum + parseFloat(p.actual_payout || 0), 0) || 0
 
     // Get geographical data
     const stateData: Record<string, number> = {}
     const cityData: Record<string, number> = {}
 
-    partners?.forEach((p: any) => {
+    partners?.forEach((p: unknown) => {
       if (p.state) {
         stateData[p.state] = (stateData[p.state] || 0) + 1
       }

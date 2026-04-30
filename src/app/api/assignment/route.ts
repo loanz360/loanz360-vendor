@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -89,7 +90,43 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      ticket_id: z.string().uuid().optional(),
+
+
+      ticket_source: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      category: z.string().optional(),
+
+
+      preferred_agent_id: z.string().uuid().optional(),
+
+
+      method: z.string().optional(),
+
+
+      action: z.string(),
+
+
+      agent_id: z.string().uuid().optional(),
+
+
+      reason: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       ticket_id,
@@ -136,7 +173,31 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      agent_id: z.string().optional(),
+
+
+      reason: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+      ticket_source: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+      ticket_id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { action, ticket_id, ticket_source, agent_id, reason, status } = body
 

@@ -71,7 +71,7 @@ export default function MultiMetricTargetBuilder({
       display_name: preset?.display || 'Custom Metric',
       target_value: 50,
       weight: 100 / (metrics.length + 1),
-      measurement_type: (preset?.type as any) || 'count',
+      measurement_type: (preset?.type as unknown) || 'count',
       unit: preset?.unit,
       icon: preset?.icon
     }
@@ -261,7 +261,7 @@ export default function MultiMetricTargetBuilder({
                       </label>
                       <select
                         value={metric.measurement_type}
-                        onChange={(e) => updateMetric(metric.id, { measurement_type: e.target.value as any })}
+                        onChange={(e) => updateMetric(metric.id, { measurement_type: e.target.value as unknown })}
                         className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                       >
                         <option value="count">Count</option>

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Email Approval Workflows API Routes
@@ -73,7 +74,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      workflowName: z.string().optional(),
+
+
+      workflowType: z.string().optional(),
+
+
+      approvalChain: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      triggerConditions: z.string().optional(),
+
+
+      autoApproveTimeoutHours: z.string().optional(),
+
+
+      autoDenyTimeoutHours: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
 
     // Validate required fields

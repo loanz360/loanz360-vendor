@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Helper function to verify Digital Sales access
  */
-async function verifyDigitalSalesAccess(supabase: any, userId: string) {
+async function verifyDigitalSalesAccess(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')
@@ -213,7 +214,55 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      title: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      category: z.string().optional().default('GENERAL'),
+
+
+      priority: z.string().optional().default('MEDIUM'),
+
+
+      due_date: z.string().optional(),
+
+
+      due_time: z.string().optional(),
+
+
+      lead_id: z.string().uuid().optional(),
+
+
+      customer_id: z.string().uuid().optional(),
+
+
+      meeting_id: z.string().uuid().optional(),
+
+
+      sub_tasks: z.array(z.unknown()).optional().default([]),
+
+
+      tags: z.array(z.unknown()).optional().default([]),
+
+
+      attachments: z.array(z.unknown()).optional().default([]),
+
+
+      is_recurring: z.boolean().optional().default(false),
+
+
+      recurrence_pattern: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       title,
@@ -263,7 +312,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Format sub_tasks with IDs
-    const formattedSubTasks = sub_tasks.map((st: any, index: number) => ({
+    const formattedSubTasks = sub_tasks.map((st: unknown, index: number) => ({
       id: `${Date.now()}-${index}`,
       title: st.title,
       is_completed: false,

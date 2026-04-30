@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
@@ -85,7 +86,17 @@ export async function PATCH(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      id: z.string().uuid(),
+
+      ba_commission_percentage: z.string().optional(),
+
+      specific_conditions: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { id, ba_commission_percentage, specific_conditions } = body
@@ -98,7 +109,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Build update object
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
     if (ba_commission_percentage !== undefined) {
       if (ba_commission_percentage < 0 || ba_commission_percentage > 100) {

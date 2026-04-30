@@ -21,8 +21,7 @@ interface Activity {
   activityDescription: string
   entityType: string
   entityId: string
-  metadata: any
-  createdAt: string
+  metadata: unknown  createdAt: string
 }
 
 interface ActivityListProps {

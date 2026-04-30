@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
@@ -70,7 +71,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body (expecting JSON array of rows)
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      rows: z.array(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const rows: ParsedRow[] = body.rows
 

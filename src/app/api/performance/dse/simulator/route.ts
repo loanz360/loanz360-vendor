@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -32,7 +33,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      additional_deals: z.number().optional().default(0),
+
+
+      additional_revenue: z.number().optional().default(0),
+
+
+      product_type: z.string().optional().default('personal_loan'),
+
+
+      cross_sells: z.number().optional().default(0),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       additional_deals = 0,
@@ -59,14 +78,14 @@ export async function POST(request: NextRequest) {
       { headers: { cookie: request.headers.get('cookie') || '' } }
     )
 
-    let currentCommission: any = null
+    let currentCommission: unknown = null
     if (commissionRes.ok) {
       const data = await commissionRes.json()
       currentCommission = data.commission
     }
 
     // Fetch current summary
-    let summary: any = null
+    let summary: unknown = null
     const { data: s1 } = await adminClient
       .from('dse_monthly_summary')
       .select('*')

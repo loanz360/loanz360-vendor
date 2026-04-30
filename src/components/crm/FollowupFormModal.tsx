@@ -70,7 +70,7 @@ export default function FollowupFormModal({
     }
   }
 
-  const handleChange = (field: keyof FollowupFormData, value: any) => {
+  const handleChange = (field: keyof FollowupFormData, value: unknown) => {
     setFormData({ ...formData, [field]: value })
   }
 

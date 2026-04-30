@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * ULAP Lead Phase 2 Submission API
@@ -19,7 +20,15 @@ interface RouteParams {
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
     const { leadNumber } = await params;
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      documents: z.array(z.unknown()).optional(),
+
+      collected_data: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
 
     if (!leadNumber) {
@@ -151,8 +160,7 @@ async function sendPartnerNotification(
   partnerId: string,
   sourceType: string,
   leadNumber: string,
-  supabase: any
-) {
+  supabase: unknown) {
   try {
     const partnerType = sourceType === 'BA' ? 'Business Associate' : 'Bank Partner';
 

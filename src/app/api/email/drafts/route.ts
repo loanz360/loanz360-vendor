@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Employee Email Drafts API
@@ -65,7 +66,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      to: z.string().optional(),
+
+
+      cc: z.string().optional(),
+
+
+      bcc: z.string().optional(),
+
+
+      subject: z.string().optional(),
+
+
+      body_html: z.string().optional(),
+
+
+      body_text: z.string().optional(),
+
+
+      attachments: z.array(z.unknown()).optional(),
+
+
+      reply_to_message_id: z.string().uuid().optional(),
+
+
+      thread_id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       to,

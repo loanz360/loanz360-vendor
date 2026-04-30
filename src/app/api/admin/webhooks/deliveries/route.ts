@@ -107,7 +107,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform data to include endpoint name at root level
-    const transformedDeliveries = (deliveries || []).map((delivery: any) => ({
+    const transformedDeliveries = (deliveries || []).map((delivery: unknown) => ({
       id: delivery.id,
       endpoint_id: delivery.endpoint_id,
       endpoint_name: delivery.webhook_endpoints?.name || 'Unknown',

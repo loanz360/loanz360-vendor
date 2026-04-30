@@ -263,7 +263,33 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      loan_amount_disbursed: z.string().optional(),
+
+      bank_name: z.string().optional(),
+
+      loan_type: z.string().optional(),
+
+      application_number: z.string().optional(),
+
+      customer_name: z.string().optional(),
+
+      customer_mobile: z.string().optional(),
+
+      customer_email: z.string().email().optional(),
+
+      disbursement_date: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      supporting_document_url: z.string().optional(),
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     if (!body.id) {

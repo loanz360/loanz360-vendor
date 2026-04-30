@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: ULI Sandbox Tester
  * POST /api/superadmin/uli-hub/sandbox — Execute a test call to a ULI service
@@ -68,7 +69,15 @@ const MOCK_RESPONSES: Record<string, Record<string, unknown>> = {
 
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      service_code: z.string(),
+
+      payload: z.record(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { service_code, payload } = body
 

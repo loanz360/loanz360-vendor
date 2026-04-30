@@ -11,11 +11,9 @@ import BDELeaderboard from './analytics/BDELeaderboard'
 import ConversionFunnel from './analytics/ConversionFunnel'
 
 interface AnalyticsData {
-  kpis: any
-  trends: any[]
-  leaderboard: any[]
-  funnel: any
-}
+  kpis: unknown  trends: unknown[]
+  leaderboard: unknown[]
+  funnel: unknown}
 
 export default function AnalyticsTab() {
   const [loading, setLoading] = useState(true)
@@ -81,7 +79,7 @@ export default function AnalyticsTab() {
         [''],
         ['BDE Leaderboard'],
         ['Rank', 'Name', 'Conversions', 'Revenue'],
-        ...leaderboardData.map((bde: any, idx: number) => [
+        ...leaderboardData.map((bde: unknown, idx: number) => [
           idx + 1,
           bde.bdeName,
           bde.conversions,

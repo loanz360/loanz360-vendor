@@ -12,7 +12,7 @@ export interface NotificationPayload {
   message: string
   type: 'ticket' | 'task' | 'payout' | 'schedule' | 'system'
   actionUrl?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export class AccountsNotificationService {

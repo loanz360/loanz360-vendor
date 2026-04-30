@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     // Convert to JSON (array of arrays format)
     const rawData: any[][] = []
     dataSheet.eachRow((row, rowNumber) => {
-      const rowData: any[] = []
+      const rowData: unknown[] = []
       row.eachCell({ includeEmpty: true }, (cell) => {
         rowData.push(cell.value)
       })
@@ -120,22 +120,22 @@ export async function POST(request: NextRequest) {
     const batchId = batch
 
     // Map column labels to field names
-    const columns = template.columns as any[]
+    const columns = template.columns as unknown[]
     const columnMap: { [key: string]: string } = {}
-    columns.forEach((col: any) => {
+    columns.forEach((col: unknown) => {
       columnMap[col.label] = col.name
     })
 
     // Validate and prepare rows
-    const validationResults: any[] = []
-    const rowsToInsert: any[] = []
+    const validationResults: unknown[] = []
+    const rowsToInsert: unknown[] = []
 
     for (let i = 0; i < dataRows.length; i++) {
       const row = dataRows[i]
       const rowNumber = i + 2 // +2 because: +1 for 0-index, +1 for header row
 
       // Map row to object
-      const rowData: any = {}
+      const rowData: Record<string, unknown> = {}
       headers.forEach((header, index) => {
         const fieldName = columnMap[header]
         if (fieldName) {
@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
       const errors: string[] = []
       const warnings: string[] = []
 
-      columns.forEach((col: any) => {
+      columns.forEach((col: unknown) => {
         const value = rowData[col.name]
 
         // Check required fields

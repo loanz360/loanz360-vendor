@@ -361,7 +361,7 @@ interface UserApprovalAccess {
 }
 
 async function getUserApprovalAccess(
-  supabase: any,
+  supabase: unknown,
   userId: string
 ): Promise<UserApprovalAccess> {
   const defaultAccess: UserApprovalAccess = {
@@ -454,7 +454,7 @@ interface NotificationParams {
 }
 
 async function sendApprovalNotification(
-  supabase: any,
+  supabase: unknown,
   params: NotificationParams
 ): Promise<void> {
   const { camId, leadId, action, actionBy, assignedBdeId } = params
@@ -521,7 +521,7 @@ async function sendApprovalNotification(
       .eq('employee_status', 'ACTIVE')
 
     if (opsUsers && opsUsers.length > 0) {
-      const notifications = opsUsers.map((u: any) => ({
+      const notifications = opsUsers.map((u: unknown) => ({
         user_id: u.user_id,
         title,
         message,

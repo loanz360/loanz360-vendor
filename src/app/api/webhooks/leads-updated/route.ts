@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     // Update progress for relevant incentives
     for (const allocation of allocations) {
-      const incentive = allocation.incentive as any
+      const incentive = allocation.incentive as unknown
       const criteria = incentive.performance_criteria || {}
       const metricType = criteria.metric_type
 
@@ -189,12 +189,11 @@ function isEventRelevantForMetric(
  * Get current metric value based on event type
  */
 async function getCurrentMetricValue(
-  supabase: any,
+  supabase: unknown,
   userId: string,
   metricType: string,
   event: string,
-  data: any
-): Promise<number | null> {
+  data: unknown): Promise<number | null> {
   // For simplicity, trigger a full sync for this user
   // In production, you might want to increment the existing value
 
@@ -241,7 +240,7 @@ async function getCurrentMetricValue(
         .in('status', ['won', 'closed'])
         .gte('updated_at', startDate.toISOString())
 
-      return deals?.reduce((sum: number, deal: any) => sum + (deal.loan_amount || 0), 0) || 0
+      return deals?.reduce((sum: number, deal: unknown) => sum + (deal.loan_amount || 0), 0) || 0
     }
 
     default:

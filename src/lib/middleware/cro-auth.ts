@@ -22,7 +22,7 @@ export interface CROAuthResult {
   user: {
     id: string
     email?: string
-    user_metadata: Record<string, any>
+    user_metadata: Record<string, unknown>
   }
   role: string
 }

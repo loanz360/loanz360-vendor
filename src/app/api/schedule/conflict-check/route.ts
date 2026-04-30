@@ -17,7 +17,7 @@ const conflictCheckSchema = z.object({
 /**
  * Helper function to verify user authorization - all active employees can access
  */
-async function verifyUserAuthorization(supabase: any, userId: string): Promise<boolean> {
+async function verifyUserAuthorization(supabase: unknown, userId: string): Promise<boolean> {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')

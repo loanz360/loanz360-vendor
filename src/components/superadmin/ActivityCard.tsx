@@ -40,8 +40,8 @@ export interface Activity {
   entity_name?: string
   description: string
   changes_json?: {
-    before?: Record<string, any>
-    after?: Record<string, any>
+    before?: Record<string, unknown>
+    after?: Record<string, unknown>
   }
   ip_address?: string
   location?: string
@@ -92,7 +92,7 @@ export function ActivityCard({ activity, onStatusChange, showStatusActions = tru
   }
 
   // User type icons
-  const userTypeIcons: Record<string, any> = {
+  const userTypeIcons: Record<string, unknown> = {
     superadmin: Shield,
     admin: Shield,
     employee: Users,

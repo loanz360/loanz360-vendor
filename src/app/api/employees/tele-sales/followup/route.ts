@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -110,7 +111,29 @@ export async function POST(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      sequence_id: z.string().uuid().optional(),
+
+      lead_id: z.string().uuid().optional(),
+
+      customer_id: z.string().uuid().optional(),
+
+      phone_number: z.string().min(10).optional(),
+
+      contact_name: z.string().optional(),
+
+      trigger_reason: z.string().optional(),
+
+      instance_id: z.string().uuid().optional(),
+
+      action: z.string().optional(),
+
+      stop_reason: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -166,7 +189,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate first action time
-    const steps = sequence.steps as any[]
+    const steps = sequence.steps as unknown[]
     const firstStep = steps[0]
     const firstActionTime = new Date(Date.now() + (firstStep?.delay_hours || 2) * 60 * 60 * 1000)
 
@@ -232,7 +255,17 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      instance_id: z.string().optional(),
+
+      stop_reason: z.string().optional(),
+
+      action: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -249,7 +282,7 @@ export async function PUT(request: NextRequest) {
       }, { status: 400 })
     }
 
-    const updates: any = { updated_at: new Date().toISOString() }
+    const updates: Record<string, unknown> = { updated_at: new Date().toISOString() }
 
     switch (action) {
       case 'PAUSE':

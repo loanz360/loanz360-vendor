@@ -92,7 +92,7 @@ export default function MyCustomers() {
     }
   }
 
-  const exportToCSV = (customers: any[], filename: string) => {
+  const exportToCSV = (customers: unknown[], filename: string) => {
     if (!customers.length) return
 
     const headers = Object.keys(customers[0]).join(',')
@@ -152,7 +152,7 @@ export default function MyCustomers() {
   }
 
   const getClosureReasonBadge = (reason: string) => {
-    const reasonConfig: Record<string, { icon: any; color: string; label: string }> = {
+    const reasonConfig: Record<string, { icon: unknown; color: string; label: string }> = {
       CONVERTED: {
         icon: CheckCircleIcon,
         color: 'bg-green-100 text-green-800',

@@ -44,7 +44,7 @@ export interface ImportValidationResult {
 
 export interface InvalidRecord {
   row: number
-  data: Record<string, any>
+  data: Record<string, unknown>
   errors: string[]
 }
 
@@ -87,7 +87,7 @@ export interface ExportOptions {
 /**
  * Parse CSV file to admin records
  */
-export async function parseCSV(file: File): Promise<Record<string, any>[]> {
+export async function parseCSV(file: File): Promise<Record<string, unknown>[]> {
   return new Promise((resolve, reject) => {
     Papa.parse(file, {
       header: true,
@@ -100,7 +100,7 @@ export async function parseCSV(file: File): Promise<Record<string, any>[]> {
         if (results.errors.length > 0) {
           reject(new Error(`CSV parsing error: ${results.errors[0].message}`))
         } else {
-          resolve(results.data as Record<string, any>[])
+          resolve(results.data as Record<string, unknown>[])
         }
       },
       error: (error) => {
@@ -117,7 +117,7 @@ export async function parseCSV(file: File): Promise<Record<string, any>[]> {
 /**
  * Parse Excel file to admin records
  */
-export async function parseExcel(file: File): Promise<Record<string, any>[]> {
+export async function parseExcel(file: File): Promise<Record<string, unknown>[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
 
@@ -139,8 +139,8 @@ export async function parseExcel(file: File): Promise<Record<string, any>[]> {
         })
 
         // Normalize keys
-        const normalized = jsonData.map((row: any) => {
-          const normalizedRow: Record<string, any> = {}
+        const normalized = jsonData.map((row: Record<string, unknown>) => {
+          const normalizedRow: Record<string, unknown> = {}
           Object.keys(row).forEach((key) => {
             const normalizedKey = key.trim().toLowerCase().replace(/\s+/g, '_')
             normalizedRow[normalizedKey] = row[key]
@@ -170,7 +170,7 @@ export async function parseExcel(file: File): Promise<Record<string, any>[]> {
  * Validate and normalize import records
  */
 export function validateImportRecords(
-  records: Record<string, any>[],
+  records: Record<string, unknown>[],
   existingEmails: Set<string> = new Set(),
   existingPhones: Set<string> = new Set()
 ): ImportValidationResult {
@@ -255,7 +255,7 @@ export function validateImportRecords(
  * Generate CSV export
  */
 export function generateCSV(
-  admins: any[],
+  admins: unknown[],
   options: ExportOptions = { format: 'csv' }
 ): string {
   const headers = getExportHeaders(options)
@@ -274,7 +274,7 @@ export function generateCSV(
  * Generate Excel export
  */
 export function generateExcel(
-  admins: any[],
+  admins: unknown[],
   options: ExportOptions = { format: 'xlsx' }
 ): ArrayBuffer {
   const headers = getExportHeaders(options)
@@ -325,8 +325,8 @@ function getExportHeaders(options: ExportOptions): string[] {
 /**
  * Format admin record for export
  */
-function formatAdminForExport(admin: any, options: ExportOptions): Record<string, any> {
-  const record: Record<string, any> = {
+function formatAdminForExport(admin: unknown, options: ExportOptions): Record<string, unknown> {
+  const record: Record<string, unknown> = {
     'Full Name': admin.full_name || '',
     'Email': admin.email || '',
     'Phone': admin.phone || '',
@@ -374,7 +374,7 @@ export function detectFileType(filename: string): 'csv' | 'xlsx' | 'unknown' {
 /**
  * Parse import file (auto-detects format)
  */
-export async function parseImportFile(file: File): Promise<Record<string, any>[]> {
+export async function parseImportFile(file: File): Promise<Record<string, unknown>[]> {
   const fileType = detectFileType(file.name)
 
   if (fileType === 'csv') {
@@ -405,7 +405,7 @@ export function downloadFile(content: string | ArrayBuffer, filename: string, mi
  * Export admins to file
  */
 export function exportAdmins(
-  admins: any[],
+  admins: unknown[],
   options: ExportOptions
 ): void {
   if (options.format === 'csv') {

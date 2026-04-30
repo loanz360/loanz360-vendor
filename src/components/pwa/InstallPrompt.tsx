@@ -23,13 +23,13 @@ export default function InstallPrompt() {
     // Check if already installed
     const isStandaloneMode =
       window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as any).standalone ||
+      (window.navigator as unknown).standalone ||
       document.referrer.includes('android-app://');
 
     setIsStandalone(isStandaloneMode);
 
     // Check if iOS
-    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as unknown).MSStream;
     setIsIOS(iOS);
 
     // Check if user dismissed prompt before

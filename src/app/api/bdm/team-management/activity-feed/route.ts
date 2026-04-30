@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Map activities to formatted response
-    const formattedActivities = (activities || []).map((activity: any) => ({
+    const formattedActivities = (activities || []).map((activity: unknown) => ({
       id: activity.id,
       bdeId: activity.user_id,
       bdeName: activity.users?.full_name || 'Unknown',

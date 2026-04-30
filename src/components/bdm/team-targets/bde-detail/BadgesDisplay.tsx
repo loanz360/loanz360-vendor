@@ -12,8 +12,7 @@ interface BadgesDisplayProps {
     rarity: string
     category: string
     earnedAt: string
-    context: any
-  }>
+    context: unknown  }>
 }
 
 export default function BadgesDisplay({ badges }: BadgesDisplayProps) {

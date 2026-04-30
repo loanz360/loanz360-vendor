@@ -216,8 +216,7 @@ export default function SOC2Dashboard() {
 
 interface ControlsTabProps {
   controls: SOC2Control[]
-  stats: any
-  loading: boolean
+  stats: unknown  loading: boolean
 }
 
 function ControlsTab({ controls, stats, loading }: ControlsTabProps) {
@@ -308,8 +307,7 @@ function ControlsTab({ controls, stats, loading }: ControlsTabProps) {
 
 interface TestingTabProps {
   tests: ControlTest[]
-  stats: any
-  loading: boolean
+  stats: unknown  loading: boolean
 }
 
 function TestingTab({ tests, stats, loading }: TestingTabProps) {
@@ -406,8 +404,7 @@ function TestingTab({ tests, stats, loading }: TestingTabProps) {
 
 interface VendorsTabProps {
   vendors: VendorRiskAssessment[]
-  stats: any
-  loading: boolean
+  stats: unknown  loading: boolean
 }
 
 function VendorsTab({ vendors, stats, loading }: VendorsTabProps) {

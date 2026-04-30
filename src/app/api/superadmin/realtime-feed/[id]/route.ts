@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Single Activity Detail API
  * Get, update, or bookmark individual activities
@@ -32,7 +33,7 @@ export async function GET(
     }
 
     // Get related activities (same entity or correlation)
-    let relatedActivities: any[] = []
+    let relatedActivities: unknown[] = []
 
     if (activity.entity_id || activity.correlation_id) {
       const { data: related } = await supabase
@@ -72,7 +73,19 @@ export async function PATCH(
   try {
     const { id } = await params
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action: z.string().optional(),
+
+      user_id: z.string().uuid(),
+
+      notes: z.string().optional(),
+
+      tags: z.array(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { action, user_id, notes, tags } = body
@@ -84,7 +97,7 @@ export async function PATCH(
       )
     }
 
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

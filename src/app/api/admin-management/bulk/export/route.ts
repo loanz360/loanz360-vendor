@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -19,7 +20,25 @@ export async function POST(request: NextRequest) {
 
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      status: z.string().optional(),
+
+      location: z.string().optional(),
+
+      created_after: z.string().optional(),
+
+      created_before: z.string().optional(),
+
+      has_2fa: z.string().optional(),
+
+      include_modules: z.boolean().optional().default(false),
+
+      exported_by_user_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { logApiError } from '@/lib/monitoring/errorLogger'
@@ -36,7 +37,29 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      lead_id: z.string().uuid().optional(),
+
+      to_role: z.string().optional(),
+
+      require_checklist: z.string().optional(),
+
+      handoff_reason: z.string().optional(),
+
+      special_instructions: z.string().optional(),
+
+      webhook_url: z.string().optional(),
+
+      id: z.string().uuid().optional(),
+
+      action: z.string().optional(),
+
+      rejection_reason: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields
@@ -64,8 +87,8 @@ export async function POST(request: NextRequest) {
 
     // Verify checklist completion (if required)
     if (body.require_checklist && lead.conversion_checklist) {
-      const checklist = lead.conversion_checklist as any
-      const allCompleted = Object.values(checklist).every(item => (item as any).completed === true)
+      const checklist = lead.conversion_checklist as unknown
+      const allCompleted = Object.values(checklist).every(item => (item as unknown).completed === true)
 
       if (!allCompleted) {
         return NextResponse.json({ success: false, error: 'Conversion checklist is not fully completed',
@@ -75,7 +98,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare handoff data with full lead snapshot
-    const handoffData: any = {
+    const handoffData: Record<string, unknown> = {
       lead_id: body.lead_id,
       from_role: profile.subrole || profile.role,
       to_role: body.to_role,
@@ -314,7 +337,17 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      rejection_reason: z.string().optional(),
+
+      action: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const handoffId = body.id
     const action = body.action // 'accept' or 'reject'
@@ -350,7 +383,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       status: action === 'accept' ? 'Accepted' : 'Rejected',
       accepted_by: action === 'accept' ? user.id : null,
       accepted_at: action === 'accept' ? new Date().toISOString() : null,
@@ -372,7 +405,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update lead status
-    const leadUpdateData: any = {
+    const leadUpdateData: Record<string, unknown> = {
       updated_at: new Date().toISOString(),
     }
 

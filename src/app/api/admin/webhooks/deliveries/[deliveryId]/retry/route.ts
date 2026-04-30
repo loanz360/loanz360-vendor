@@ -142,7 +142,7 @@ export async function POST(
     const deliveryTime = Date.now() - startTime
 
     // Update delivery record
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       http_status: httpStatus,
       response_body: responseBody,
       retry_count: delivery.retry_count + 1,

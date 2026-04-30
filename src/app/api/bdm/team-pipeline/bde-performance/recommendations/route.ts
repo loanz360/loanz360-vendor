@@ -132,7 +132,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper functions
-function analyzePerformance(bde: any, leads: any[], events: any[], alerts: any[]) {
+function analyzePerformance(bde: unknown, leads: unknown[], events: unknown[], alerts: unknown[]) {
   const totalLeads = leads.length
   const conversions = leads.filter(l => l.status === 'DISBURSED').length
   const conversionRate = totalLeads > 0 ? (conversions / totalLeads) * 100 : 0
@@ -220,7 +220,7 @@ function analyzePerformance(bde: any, leads: any[], events: any[], alerts: any[]
   }
 }
 
-function generateRecommendations(analysis: any) {
+function generateRecommendations(analysis: unknown) {
   const recommendations = []
 
   // Conversion rate recommendations

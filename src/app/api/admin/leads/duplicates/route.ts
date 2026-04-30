@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Lead Deduplication API
  * Provides endpoints for detecting and managing duplicate leads
@@ -67,17 +68,17 @@ async function getDuplicatesHandler(request: NextRequest) {
 
     // Group by confidence level
     const grouped = {
-      high_confidence: duplicates?.filter((d: any) => d.confidence >= 0.95) || [],
-      medium_confidence: duplicates?.filter((d: any) => d.confidence >= 0.8 && d.confidence < 0.95) || [],
-      low_confidence: duplicates?.filter((d: any) => d.confidence < 0.8) || [],
+      high_confidence: duplicates?.filter((d: Record<string, unknown>) => d.confidence >= 0.95) || [],
+      medium_confidence: duplicates?.filter((d: Record<string, unknown>) => d.confidence >= 0.8 && d.confidence < 0.95) || [],
+      low_confidence: duplicates?.filter((d: Record<string, unknown>) => d.confidence < 0.8) || [],
     }
 
     return NextResponse.json({
       success: true,
       data: {
         total: duplicates?.length || 0,
-        pending: duplicates?.filter((d: any) => d.action_taken === 'flagged').length || 0,
-        resolved: duplicates?.filter((d: any) => d.action_taken !== 'flagged').length || 0,
+        pending: duplicates?.filter((d: Record<string, unknown>) => d.action_taken === 'flagged').length || 0,
+        resolved: duplicates?.filter((d: Record<string, unknown>) => d.action_taken !== 'flagged').length || 0,
         grouped,
         all: duplicates || []
       }
@@ -116,7 +117,28 @@ async function checkDuplicatesHandler(request: NextRequest) {
 
     const supabase = createSupabaseAdmin()
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      customer_name: z.string().optional(),
+
+
+      customer_mobile: z.string().optional(),
+
+
+      customer_email: z.string().email().optional(),
+
+
+      exclude_system: z.string().optional(),
+
+
+      exclude_lead_id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { customer_name, customer_mobile, customer_email, exclude_system, exclude_lead_id } = body
 

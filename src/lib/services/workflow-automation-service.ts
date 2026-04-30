@@ -60,12 +60,11 @@ export type ConditionOperator =
 export interface WorkflowCondition {
   field: string
   operator: ConditionOperator
-  value: any
-}
+  value: unknown}
 
 export interface WorkflowAction {
   type: ActionType
-  params: Record<string, any>
+  params: Record<string, unknown>
   delay_minutes?: number
 }
 
@@ -233,8 +232,8 @@ export class WorkflowAutomationService {
   async executeWorkflows(
     ticketSource: 'employee' | 'customer' | 'partner',
     trigger: TriggerType,
-    ticket: any,
-    context: Record<string, any> = {}
+    ticket: unknown,
+    context: Record<string, unknown> = {}
   ): Promise<WorkflowExecutionResult> {
     const startTime = Date.now()
     const result: WorkflowExecutionResult = {
@@ -320,8 +319,8 @@ export class WorkflowAutomationService {
   private evaluateConditions(
     conditions: WorkflowCondition[],
     logic: 'AND' | 'OR',
-    ticket: any,
-    context: Record<string, any>
+    ticket: unknown,
+    context: Record<string, unknown>
   ): boolean {
     if (conditions.length === 0) return true
 
@@ -339,8 +338,8 @@ export class WorkflowAutomationService {
    */
   private evaluateCondition(
     condition: WorkflowCondition,
-    ticket: any,
-    context: Record<string, any>
+    ticket: unknown,
+    context: Record<string, unknown>
   ): boolean {
     const fieldValue = this.getFieldValue(condition.field, ticket, context)
     const compareValue = condition.value
@@ -397,7 +396,7 @@ export class WorkflowAutomationService {
   /**
    * Get field value from ticket or context
    */
-  private getFieldValue(field: string, ticket: any, context: Record<string, any>): any {
+  private getFieldValue(field: string, ticket: unknown, context: Record<string, unknown>): unknown {
     // Check context first
     if (field.startsWith('context.')) {
       const contextField = field.replace('context.', '')
@@ -425,9 +424,9 @@ export class WorkflowAutomationService {
    */
   private async executeAction(
     action: WorkflowAction,
-    ticket: any,
+    ticket: unknown,
     ticketSource: 'employee' | 'customer' | 'partner',
-    context: Record<string, any>
+    context: Record<string, unknown>
   ): Promise<void> {
     // Handle delay if specified
     if (action.delay_minutes && action.delay_minutes > 0) {
@@ -533,9 +532,9 @@ export class WorkflowAutomationService {
    */
   private async scheduleDelayedAction(
     action: WorkflowAction,
-    ticket: any,
+    ticket: unknown,
     ticketSource: string,
-    context: Record<string, any>
+    context: Record<string, unknown>
   ): Promise<void> {
     const executeAt = new Date(Date.now() + (action.delay_minutes! * 60 * 1000))
 
@@ -555,8 +554,8 @@ export class WorkflowAutomationService {
    * Send notification
    */
   private async sendNotification(
-    params: Record<string, any>,
-    ticket: any,
+    params: Record<string, unknown>,
+    ticket: unknown,
     ticketSource: string
   ): Promise<void> {
     await supabase
@@ -574,7 +573,7 @@ export class WorkflowAutomationService {
   /**
    * Send email
    */
-  private async sendEmail(params: Record<string, any>, ticket: any): Promise<void> {
+  private async sendEmail(params: Record<string, unknown>, ticket: unknown): Promise<void> {
     await supabase
       .from('email_queue')
       .insert({
@@ -591,7 +590,7 @@ export class WorkflowAutomationService {
    */
   private async addInternalNote(
     note: string,
-    ticket: any,
+    ticket: unknown,
     ticketSource: string
   ): Promise<void> {
     const messageTable = ticketSource === 'employee'
@@ -614,9 +613,9 @@ export class WorkflowAutomationService {
    * Escalate ticket
    */
   private async escalateTicket(
-    ticket: any,
+    ticket: unknown,
     ticketSource: string,
-    params: Record<string, any>
+    params: Record<string, unknown>
   ): Promise<void> {
     const tableName = ticketSource === 'employee'
       ? 'support_tickets'
@@ -647,7 +646,7 @@ export class WorkflowAutomationService {
    */
   private async applyTemplate(
     templateId: string,
-    ticket: any,
+    ticket: unknown,
     ticketSource: string
   ): Promise<void> {
     const { data: template } = await supabase
@@ -678,9 +677,8 @@ export class WorkflowAutomationService {
    * Execute webhook
    */
   private async executeWebhook(
-    params: Record<string, any>,
-    ticket: any
-  ): Promise<void> {
+    params: Record<string, unknown>,
+    ticket: unknown  ): Promise<void> {
     try {
       const response = await fetch(params.url, {
         method: params.method || 'POST',
@@ -707,7 +705,7 @@ export class WorkflowAutomationService {
   /**
    * Interpolate template variables
    */
-  private interpolateTemplate(template: string, ticket: any): string {
+  private interpolateTemplate(template: string, ticket: unknown): string {
     return template.replace(/\{\{(\w+)\}\}/g, (match, key) => {
       return ticket[key] ?? match
     })
@@ -845,8 +843,8 @@ export function getWorkflowService(): WorkflowAutomationService {
 export async function executeWorkflows(
   ticketSource: 'employee' | 'customer' | 'partner',
   trigger: TriggerType,
-  ticket: any,
-  context?: Record<string, any>
+  ticket: unknown,
+  context?: Record<string, unknown>
 ) {
   return getWorkflowService().executeWorkflows(ticketSource, trigger, ticket, context)
 }

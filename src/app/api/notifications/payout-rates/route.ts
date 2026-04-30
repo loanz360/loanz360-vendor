@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -186,7 +187,58 @@ export async function POST(request: NextRequest) {
       .eq('id', auth.userId)
       .maybeSingle()
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      notification_type: z.string().optional(),
+
+
+      bank_name: z.string().optional(),
+
+
+      location: z.string().optional(),
+
+
+      loan_type: z.string().optional(),
+
+
+      old_percentage: z.string().optional(),
+
+
+      new_percentage: z.string().optional(),
+
+
+      effective_from: z.string().optional(),
+
+
+      effective_to: z.string().optional(),
+
+
+      title: z.string().optional(),
+
+
+      message: z.string().optional(),
+
+
+      target_partner_types: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      notification_id: z.string().uuid(),
+
+
+      action: z.string().optional(),
+
+
+      mark_all: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       notification_type,
@@ -270,7 +322,22 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Profile not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      notification_id: z.string().optional(),
+
+
+      mark_all: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { notification_id, action, mark_all } = body
 
@@ -326,7 +393,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Upsert read/dismiss status
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, unknown> = {
       notification_id,
       partner_id: profile.id
     }

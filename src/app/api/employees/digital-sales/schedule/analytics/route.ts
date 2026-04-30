@@ -7,7 +7,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Helper function to verify Digital Sales access
  */
-async function verifyDigitalSalesAccess(supabase: any, userId: string) {
+async function verifyDigitalSalesAccess(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth, checkPermission, hrCanManageEmployee } from '@/lib/auth/employee-mgmt-auth'
@@ -167,7 +168,15 @@ export async function PUT(
     }
 
     const employeeId = params.id
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      work_email: z.string().email().optional(),
+
+      mobile_number: z.string().min(10).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // HR-specific check
@@ -199,7 +208,7 @@ export async function PUT(
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_by: auth.userId,
       updated_at: new Date().toISOString()
     }

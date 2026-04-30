@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -94,7 +95,21 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      offer_id: z.string().uuid(),
+
+      collection_name: z.string().optional().default('default'),
+
+      notes: z.string().optional(),
+
+      tags: z.array(z.unknown()).optional().default([]),
+
+      action: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { offer_id, collection_name = 'default', notes = null, tags = [] } = body
 
@@ -229,7 +244,19 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      collection_name: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      action: z.string().optional(),
+
+      offer_id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { offer_id, action, notes, collection_name } = body
 

@@ -20,10 +20,8 @@ interface PendingLead {
   pincode: string
   lead_source: string
   created_at: string
-  leadAge: any
-  priority: 'urgent' | 'high' | 'medium' | 'low'
-  assignability: any
-  suggestedBDEs: any[]
+  leadAge: unknown  priority: 'urgent' | 'high' | 'medium' | 'low'
+  assignability: unknown  suggestedBDEs: unknown[]
 }
 
 export default function AssignmentControlTab() {

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -20,7 +21,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      banner_id: z.string().uuid().optional(),
+
+      action_type: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { banner_id, action_type } = body
 
@@ -170,7 +179,7 @@ export async function GET(request: NextRequest) {
 
     if (reportType === 'by_banner') {
       // Group analytics by banner
-      const bannerStats: Record<string, any> = {}
+      const bannerStats: Record<string, unknown> = {}
 
       for (const record of analytics) {
         const bid = record.banner_id
@@ -197,7 +206,7 @@ export async function GET(request: NextRequest) {
       }
 
       // Calculate CTR and convert Set to count
-      const bannerAnalytics = Object.values(bannerStats).map((stat: any) => ({
+      const bannerAnalytics = Object.values(bannerStats).map((stat: unknown) => ({
         ...stat,
         unique_viewers: stat.unique_viewers.size,
         ctr: stat.views > 0 ? (stat.clicks / stat.views) * 100 : 0

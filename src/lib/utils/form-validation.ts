@@ -10,8 +10,7 @@ import { isValidPAN, isValidAadhaar, isValidUAN, isValidBankAccount, isValidIFSC
  */
 export type ValidationRule = {
   type: 'required' | 'email' | 'number' | 'min' | 'max' | 'pattern' | 'custom' | 'pan' | 'aadhaar' | 'uan' | 'bankAccount' | 'ifsc'
-  value?: any
-  message: string
+  value?: unknown  message: string
 }
 
 /**
@@ -25,7 +24,7 @@ export interface ValidationResult {
 /**
  * Validate a single field
  */
-export function validateField(value: any, rules: ValidationRule[]): string | null {
+export function validateField(value: unknown, rules: ValidationRule[]): string | null {
   for (const rule of rules) {
     switch (rule.type) {
       case 'required':
@@ -113,7 +112,7 @@ export function validateField(value: any, rules: ValidationRule[]): string | nul
  * Validate entire form
  */
 export function validateForm(
-  values: Record<string, any>,
+  values: Record<string, unknown>,
   rules: Record<string, ValidationRule[]>
 ): ValidationResult {
   const errors: Record<string, string> = {}

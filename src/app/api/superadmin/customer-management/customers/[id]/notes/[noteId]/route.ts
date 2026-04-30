@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -188,7 +189,49 @@ async function updateNoteHandler(request: NextRequest, customerId: string, noteI
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      note_title: z.string().optional(),
+
+
+      note_content: z.string().optional(),
+
+
+      note_type: z.string().optional(),
+
+
+      category: z.string().optional(),
+
+
+      is_important: z.boolean().optional(),
+
+
+      is_pinned: z.boolean().optional(),
+
+
+      visibility: z.string().optional(),
+
+
+      tags: z.array(z.unknown()).optional(),
+
+
+      reminder_at: z.string().optional(),
+
+
+      assigned_to: z.string().optional(),
+
+
+      due_date: z.string().optional(),
+
+
+      completed_at: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       note_title,
@@ -232,7 +275,7 @@ async function updateNoteHandler(request: NextRequest, customerId: string, noteI
     }
 
     // Build update object
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
     if (note_title !== undefined) updateData.note_title = note_title?.trim() || null
     if (note_content !== undefined) {

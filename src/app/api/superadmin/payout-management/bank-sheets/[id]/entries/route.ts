@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Bank Payout Sheet Entries API
  * GET: List entries for a specific sheet
@@ -130,7 +131,28 @@ export async function PUT(
       return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      entryId: z.string().uuid(),
+
+
+      action: z.string().optional(),
+
+
+      applicationId: z.string().uuid().optional(),
+
+
+      applicationType: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { entryId, action, applicationId, applicationType, notes } = body
 

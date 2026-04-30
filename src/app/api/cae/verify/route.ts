@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
         city: lead.customer_city,
         state: lead.customer_state,
         pincode: lead.customer_pincode,
-        entity_type: lead.entity_type as any,
+        entity_type: lead.entity_type as unknown,
         gstin: lead.gstin,
         cin: lead.cin,
         udyam_number: lead.udyam_number,

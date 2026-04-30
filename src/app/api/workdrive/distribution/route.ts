@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive File Distribution API
@@ -171,7 +172,49 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Only administrators can distribute files' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      fileId: z.string().uuid().optional(),
+
+
+      folderId: z.string().uuid().optional(),
+
+
+      scope: z.string().optional(),
+
+
+      targetDepartments: z.string().optional(),
+
+
+      targetRoles: z.string().optional(),
+
+
+      targetUsers: z.string().optional(),
+
+
+      message: z.string().optional(),
+
+
+      notifyUsers: z.boolean().optional().default(true),
+
+
+      requireAcknowledgment: z.boolean().optional().default(false),
+
+
+      dueDate: z.string().optional(),
+
+
+      distributionId: z.string().uuid(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       fileId,
@@ -321,7 +364,7 @@ export async function POST(request: NextRequest) {
     // Log audit
     await logAudit({
       userId: user.id,
-      action: 'share' as any,
+      action: 'share' as unknown,
       resourceType: fileId ? 'file' : 'folder',
       resourceId: fileId || folderId!,
       resourceName,
@@ -366,7 +409,19 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      distributionId: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { distributionId, action } = body
 

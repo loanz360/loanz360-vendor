@@ -887,7 +887,7 @@ export async function logAudit(params: {
   resourceType: ResourceType
   resourceId: string
   resourceName?: string
-  details?: Record<string, any>
+  details?: Record<string, unknown>
   ipAddress?: string
   userAgent?: string
 }): Promise<void> {

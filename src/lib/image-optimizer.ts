@@ -140,7 +140,7 @@ export async function optimizeImage(
 
         images.push({
           format,
-          size: sizeName as any,
+          size: sizeName as unknown,
           width: optimizedMetadata.width || sizeConfig.width,
           height: optimizedMetadata.height || sizeConfig.height,
           buffer: optimizedBuffer,

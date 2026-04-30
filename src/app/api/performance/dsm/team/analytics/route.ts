@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
       .eq('year', currentYear)
 
     // Fetch DSM's coaching data (if table exists)
-    let coachingSessions: any[] = []
+    let coachingSessions: unknown[] = []
     try {
       const { data, error } = await supabase
         .from('coaching_sessions')
@@ -151,11 +151,10 @@ export async function GET(request: NextRequest) {
 function calculateTeamAnalytics(
   totalDseCount: number,
   activeDseCount: number,
-  dailyMetrics: any[],
-  monthlySummaries: any[],
-  coachingSessions: any[],
-  targets: any
-): DSMTeamAnalytics {
+  dailyMetrics: unknown[],
+  monthlySummaries: unknown[],
+  coachingSessions: unknown[],
+  targets: unknown): DSMTeamAnalytics {
   // Aggregate field activity
   const fieldActivity = dailyMetrics.reduce(
     (acc, metric) => {

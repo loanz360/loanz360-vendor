@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // SKILLS MANAGEMENT API
@@ -13,7 +14,7 @@ import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-async function getEmployeeId(supabase: any, userId: string) {
+async function getEmployeeId(supabase: unknown, userId: string) {
   const { data: employee } = await supabase
     .from('employees')
     .select('id, sub_role')
@@ -100,12 +101,12 @@ export async function GET(request: NextRequest) {
       // Calculate summary
       const summary = {
         total_skills: employeeSkills.length,
-        expert_level: employeeSkills.filter((s: any) => s.proficiency_level === 'EXPERT').length,
-        advanced_level: employeeSkills.filter((s: any) => s.proficiency_level === 'ADVANCED').length,
-        intermediate_level: employeeSkills.filter((s: any) => s.proficiency_level === 'INTERMEDIATE').length,
-        beginner_level: employeeSkills.filter((s: any) => s.proficiency_level === 'BEGINNER').length,
-        core_skills: employeeSkills.filter((s: any) => s.skill?.is_core_skill).length,
-        certified_skills: employeeSkills.filter((s: any) => s.certification_name).length
+        expert_level: employeeSkills.filter((s: unknown) => s.proficiency_level === 'EXPERT').length,
+        advanced_level: employeeSkills.filter((s: unknown) => s.proficiency_level === 'ADVANCED').length,
+        intermediate_level: employeeSkills.filter((s: unknown) => s.proficiency_level === 'INTERMEDIATE').length,
+        beginner_level: employeeSkills.filter((s: unknown) => s.proficiency_level === 'BEGINNER').length,
+        core_skills: employeeSkills.filter((s: unknown) => s.skill?.is_core_skill).length,
+        certified_skills: employeeSkills.filter((s: unknown) => s.certification_name).length
       }
 
       return NextResponse.json({
@@ -167,7 +168,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      skill_id: z.string().uuid(),
+
+
+      proficiency_level: z.string().optional(),
+
+
+      years_of_experience: z.string().optional(),
+
+
+      self_rating: z.string().optional(),
+
+
+      certification_name: z.string().optional(),
+
+
+      certification_date: z.string().optional(),
+
+
+      is_primary_skill: z.boolean().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       skill_id,
@@ -261,7 +292,19 @@ export async function PATCH(request: NextRequest) {
 
     const isHR = ['HR_EXECUTIVE', 'HR_MANAGER'].includes(employee.sub_role)
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      action: z.string().optional(),
+
+
+      skill_id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { skill_id, action, ...updateData } = body
 

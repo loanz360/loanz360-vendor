@@ -204,7 +204,7 @@ export default function ReportBuilder() {
             </label>
             <select
               value={exportFormat}
-              onChange={(e) => setExportFormat(e.target.value as any)}
+              onChange={(e) => setExportFormat(e.target.value as unknown)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
             >
               <option value="pdf">PDF</option>

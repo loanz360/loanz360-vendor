@@ -36,9 +36,9 @@ export interface DataSubjectRequest {
   requester_email: string
   requester_name?: string
   status: DSARStatus
-  request_details?: Record<string, any>
+  request_details?: Record<string, unknown>
   due_date: string // 30-day GDPR requirement
-  response_data?: Record<string, any>
+  response_data?: Record<string, unknown>
   response_file_path?: string
   identity_verified: boolean
   identity_verification_method?: string
@@ -132,7 +132,7 @@ export class GDPRService {
     request_type: DSARType
     requester_email: string
     requester_name?: string
-    request_details?: Record<string, any>
+    request_details?: Record<string, unknown>
     lead_id?: string
   }): Promise<{ success: boolean; request_id?: string; error?: string }> {
     try {
@@ -242,7 +242,7 @@ export class GDPRService {
    * Generate DSAR data package (Right to Access - Article 15)
    * Generates comprehensive JSON export of all personal data
    */
-  async generateDSARPackage(requestId: string): Promise<{ success: boolean; data?: any; error?: string }> {
+  async generateDSARPackage(requestId: string): Promise<{ success: boolean; data?: unknown; error?: string }> {
     try {
       const { data: request } = await this.supabase
         .from('data_subject_requests')
@@ -339,7 +339,7 @@ export class GDPRService {
    */
   async processRectificationRequest(
     requestId: string,
-    corrections: Record<string, any>
+    corrections: Record<string, unknown>
   ): Promise<{ success: boolean; error?: string }> {
     try {
       const { data: request } = await this.supabase
@@ -385,7 +385,7 @@ export class GDPRService {
    * Process Right to Data Portability (Article 20)
    * Exports data in machine-readable format (JSON)
    */
-  async processPortabilityRequest(requestId: string): Promise<{ success: boolean; data?: any; error?: string }> {
+  async processPortabilityRequest(requestId: string): Promise<{ success: boolean; data?: unknown; error?: string }> {
     try {
       // Same as DSAR but in structured, machine-readable format
       return await this.generateDSARPackage(requestId)

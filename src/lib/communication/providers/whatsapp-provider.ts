@@ -156,7 +156,7 @@ export class WhatsAppProvider {
     try {
       const normalizedPhone = this.normalizePhoneNumber(params.to)
 
-      const payload: any = {
+      const payload: Record<string, unknown> = {
         messaging_product: 'whatsapp',
         to: normalizedPhone,
         type: 'template',
@@ -216,7 +216,7 @@ export class WhatsAppProvider {
     try {
       const normalizedPhone = this.normalizePhoneNumber(params.to)
 
-      const interactive: any = {
+      const interactive: Record<string, unknown> = {
         type: params.type,
         body: { text: params.body }
       }
@@ -294,7 +294,7 @@ export class WhatsAppProvider {
     try {
       const normalizedPhone = this.normalizePhoneNumber(params.to)
 
-      const mediaObject: any = {
+      const mediaObject: Record<string, unknown> = {
         link: params.mediaUrl
       }
 
@@ -343,7 +343,7 @@ export class WhatsAppProvider {
   /**
    * Handle WhatsApp webhook
    */
-  static async handleWebhook(body: any) {
+  static async handleWebhook(body: unknown) {
     try {
       const entry = body.entry?.[0]
       const changes = entry?.changes?.[0]
@@ -395,7 +395,7 @@ export class WhatsAppProvider {
   /**
    * Handle incoming message (for future chatbot integration)
    */
-  private static async handleIncomingMessage(message: any) {
+  private static async handleIncomingMessage(message: unknown) {
     console.log('Incoming WhatsApp message:', {
       from: message.from,
       type: message.type,
@@ -430,7 +430,7 @@ export class WhatsAppProvider {
   /**
    * Handle API errors
    */
-  private handleError(data: any): WhatsAppResponse {
+  private handleError(data: Record<string, unknown>): WhatsAppResponse {
     const error = data.error || {}
 
     return {
@@ -459,7 +459,7 @@ export class WhatsAppProvider {
         provider_transaction_id: params.response.messageId,
         error_code: params.response.errorCode?.toString(),
         error_message: params.response.errorMessage,
-        provider_response: params.response as any
+        provider_response: params.response as unknown
       })
     } catch (error) {
       console.error('Failed to log WhatsApp delivery:', error)

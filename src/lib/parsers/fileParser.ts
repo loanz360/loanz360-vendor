@@ -37,7 +37,7 @@ function extractContactsFromText(text: string): ParsedContact[] {
 }
 
 // Normalize contact data
-function normalizeContact(data: any): ParsedContact {
+function normalizeContact(data: Record<string, unknown>): ParsedContact {
   return {
     full_name: data.name || data.full_name || data.Name || data['Full Name'] || data['Customer Name'] || undefined,
     email: data.email || data.Email || data['Email Address'] || undefined,
@@ -56,7 +56,7 @@ async function parseCSV(buffer: Buffer): Promise<ParsedContact[]> {
       header: true,
       skipEmptyLines: true,
       complete: (results) => {
-        const contacts = results.data.map((row: any) => normalizeContact(row))
+        const contacts = results.data.map((row: Record<string, unknown>) => normalizeContact(row))
         resolve(contacts.filter(c => c.email || c.phone))
       },
       error: (error) => reject(error)
@@ -77,7 +77,7 @@ async function parseExcel(buffer: Buffer): Promise<ParsedContact[]> {
   }
 
   const workbook = new Workbook()
-  await workbook.xlsx.load(buffer as any)
+  await workbook.xlsx.load(buffer as unknown)
 
   const worksheet = workbook.worksheets[0]
   if (!worksheet) {
@@ -97,7 +97,7 @@ async function parseExcel(buffer: Buffer): Promise<ParsedContact[]> {
   worksheet.eachRow((row, rowNumber) => {
     if (rowNumber === 1) return
 
-    const rowData: any = {}
+    const rowData: Record<string, unknown> = {}
     row.eachCell((cell, colNumber) => {
       const header = headers[colNumber - 1]
       if (header) {

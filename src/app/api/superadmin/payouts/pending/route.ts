@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
     }
 
     // 5. Format response data
-    const commissions: PendingCommission[] = (leads || []).map((lead: any) => ({
+    const commissions: PendingCommission[] = (leads || []).map((lead: unknown) => ({
       id: lead.id,
       lead_id: lead.lead_id,
       partner_id: lead.partner_id,

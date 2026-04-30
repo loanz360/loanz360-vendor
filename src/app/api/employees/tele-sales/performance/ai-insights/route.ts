@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -63,7 +64,49 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      id: z.string().uuid(),
+
+
+      is_read: z.boolean().optional(),
+
+
+      is_dismissed: z.boolean().optional(),
+
+
+      insight_type: z.string().optional(),
+
+
+      title: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      recommendation: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      data_points: z.string().optional(),
+
+
+      is_actionable: z.boolean().optional(),
+
+
+      action_url: z.string().optional(),
+
+
+      expires_at: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { data, error } = await supabase
@@ -108,7 +151,22 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      is_read: z.boolean().optional(),
+
+
+      is_dismissed: z.boolean().optional(),
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, is_read, is_dismissed } = body
 

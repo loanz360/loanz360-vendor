@@ -133,7 +133,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function getMetricValue(metric: any, type: string): number {
+function getMetricValue(metric: unknown, type: string): number {
   switch (type) {
     case 'revenue':
       return metric.revenue_generated || 0
@@ -148,7 +148,7 @@ function getMetricValue(metric: any, type: string): number {
   }
 }
 
-function getMetricValueFromDaily(dailyMetric: any, type: string): number {
+function getMetricValueFromDaily(dailyMetric: unknown, type: string): number {
   switch (type) {
     case 'revenue':
       return dailyMetric.revenue_generated || 0

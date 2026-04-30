@@ -216,7 +216,7 @@ export default function AdminEmployeeExplorer({
               </select>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as unknown)}
                 className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-orange-500/50"
               >
                 <option value="storage">By Storage</option>

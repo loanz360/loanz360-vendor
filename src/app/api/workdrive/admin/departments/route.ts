@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive Admin Departments API
@@ -63,7 +64,7 @@ export async function GET(request: NextRequest) {
       .select('*')
       .eq('entity_type', 'department')
 
-    const quotasByDept: Record<string, any> = {}
+    const quotasByDept: Record<string, unknown> = {}
     quotasData?.forEach(quota => {
       quotasByDept[quota.entity_id] = quota
     })
@@ -153,7 +154,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      departmentName: z.string(),
+
+
+      storageLimitGB: z.string().optional(),
+
+
+      alertThreshold: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { departmentName, storageLimitGB, alertThreshold } = body
 

@@ -13,7 +13,7 @@ import { apiLogger } from '@/lib/utils/logger'
  * Helper function to verify user authorization
  * All active employees can access the schedule feature
  */
-async function verifyUserAuthorization(supabase: any, userId: string): Promise<boolean> {
+async function verifyUserAuthorization(supabase: unknown, userId: string): Promise<boolean> {
   // Check employee_profile first
   const { data: profile } = await supabase
     .from('employee_profile')
@@ -182,7 +182,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Apply sorting
-    query = query.order(validatedParams.sort_by as any, {
+    query = query.order(validatedParams.sort_by as unknown, {
       ascending: validatedParams.sort_order === 'asc'
     })
 
@@ -213,7 +213,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform data to include participant details
-    const schedulesWithDetails: ScheduleWithDetails[] = (schedules || []).map((schedule: any) => ({
+    const schedulesWithDetails: ScheduleWithDetails[] = (schedules || []).map((schedule: unknown) => ({
       ...schedule,
       // Partner details
       partner_email: schedule.partner?.email,

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -43,7 +44,15 @@ export async function POST(request: NextRequest) {
   const corsHeaders = getCorsHeaders(origin)
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      chatbot_id: z.string().uuid(),
+
+      visitor_data: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { chatbot_id, visitor_data } = body
 

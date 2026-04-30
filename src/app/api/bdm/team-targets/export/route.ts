@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * BDM Team Targets - Export Data API
  * Exports team performance data in various formats (CSV, Excel-like JSON)
@@ -56,7 +57,28 @@ async function exportDataHandler(request: NextRequest) {
     // 2. PARSE REQUEST BODY
     // =====================================================
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      month: z.number().optional(),
+
+
+      year: z.number().optional(),
+
+
+      format: z.string().optional().default('csv'),
+
+
+      includeDaily: z.boolean().optional().default(false),
+
+
+      includeBadges: z.boolean().optional().default(false),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { month, year, format = 'csv', includeDaily = false, includeBadges = false } = body
 
@@ -98,7 +120,7 @@ async function exportDataHandler(request: NextRequest) {
     // 4. FORMAT DATA FOR EXPORT
     // =====================================================
 
-    const exportData: any[] = []
+    const exportData: unknown[] = []
 
     // Header row (for CSV)
     const headers = [
@@ -129,7 +151,7 @@ async function exportDataHandler(request: NextRequest) {
     exportData.push(headers)
 
     // Add BDE performance rows
-    overview.bde_performance?.forEach((bde: any) => {
+    overview.bde_performance?.forEach((bde: unknown) => {
       const row = [
         bde.bde_name,
         bde.employee_code,
@@ -191,7 +213,7 @@ async function exportDataHandler(request: NextRequest) {
     // 6. FETCH DAILY DATA IF REQUESTED
     // =====================================================
 
-    let dailyData: any[] = []
+    let dailyData: unknown[] = []
     if (includeDaily) {
       const dailyHeaders = ['Date', 'BDE Name', 'Leads', 'Conversions', 'Revenue (₹)', 'Conversion Rate %']
       dailyData.push(dailyHeaders)
@@ -222,12 +244,12 @@ async function exportDataHandler(request: NextRequest) {
     // 7. FETCH BADGES DATA IF REQUESTED
     // =====================================================
 
-    let badgesData: any[] = []
+    let badgesData: unknown[] = []
     if (includeBadges) {
       const badgesHeaders = ['BDE Name', 'Badge Name', 'Category', 'Rarity', 'Points', 'Earned Date']
       badgesData.push(badgesHeaders)
 
-      const teamBDEs = overview.bde_performance?.map((bde: any) => bde.bde_id) || []
+      const teamBDEs = overview.bde_performance?.map((bde: unknown) => bde.bde_id) || []
 
       if (teamBDEs.length > 0) {
         const { data: badges } = await supabase
@@ -244,9 +266,9 @@ async function exportDataHandler(request: NextRequest) {
           .eq('earned_for_year', year)
           .order('earned_at', { ascending: false })
 
-        badges?.forEach((badge: any) => {
-          const user = badge.users as any
-          const badgeInfo = badge.achievement_badges as any
+        badges?.forEach((badge: unknown) => {
+          const user = badge.users as unknown
+          const badgeInfo = badge.achievement_badges as unknown
 
           badgesData.push([
             user?.name || 'Unknown',
@@ -276,7 +298,7 @@ async function exportDataHandler(request: NextRequest) {
       // Add main data
       csvRows.push('MONTHLY OVERVIEW')
       exportData.forEach((row) => {
-        csvRows.push(row.map((cell: any) => `"${cell}"`).join(','))
+        csvRows.push(row.map((cell: unknown) => `"${cell}"`).join(','))
       })
 
       // Add daily data if included
@@ -284,7 +306,7 @@ async function exportDataHandler(request: NextRequest) {
         csvRows.push('')
         csvRows.push('DAILY ACTIVITY')
         dailyData.forEach((row) => {
-          csvRows.push(row.map((cell: any) => `"${cell}"`).join(','))
+          csvRows.push(row.map((cell: unknown) => `"${cell}"`).join(','))
         })
       }
 
@@ -293,7 +315,7 @@ async function exportDataHandler(request: NextRequest) {
         csvRows.push('')
         csvRows.push('BADGES EARNED')
         badgesData.forEach((row) => {
-          csvRows.push(row.map((cell: any) => `"${cell}"`).join(','))
+          csvRows.push(row.map((cell: unknown) => `"${cell}"`).join(','))
         })
       }
 

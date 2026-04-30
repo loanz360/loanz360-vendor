@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Email Compliance API Routes
@@ -114,7 +115,73 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      matterName: z.string().optional(),
+
+
+      holdType: z.string().optional(),
+
+
+      custodianAccountIds: z.string().optional(),
+
+
+      matterId: z.string().uuid().optional(),
+
+
+      description: z.string().optional(),
+
+
+      contentStartDate: z.string().optional(),
+
+
+      contentEndDate: z.string().optional(),
+
+
+      legalCounsel: z.string().optional(),
+
+
+      internalNotes: z.string().optional(),
+
+
+      holdId: z.string().uuid(),
+
+
+      reason: z.string().optional(),
+
+
+      policyName: z.string().optional(),
+
+
+      retentionPeriodDays: z.string().optional(),
+
+
+      retentionAction: z.string().optional(),
+
+
+      scopeType: z.string().optional(),
+
+
+      scopeIds: z.string().optional(),
+
+
+      applyToFolders: z.string().optional(),
+
+
+      excludeLabels: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const { action } = body;
 

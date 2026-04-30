@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Customer Community Stories API
  * CRUD for customer_community_stories + likes
@@ -78,7 +79,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      story_id: z.string().uuid(),
+
+
+      author_name: z.string().optional(),
+
+
+      loan_type: z.string().optional(),
+
+
+      amount: z.number().optional(),
+
+
+      story: z.string().optional(),
+
+
+      rating: z.string().optional(),
+
+
+      location: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action } = body
 
@@ -149,7 +183,16 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, ...updates } = body
 

@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch current month summary for progress calculations
     const now = new Date()
-    let summary: any = null
+    let summary: unknown = null
     const { data: s1 } = await adminClient
       .from('dse_monthly_summary')
       .select('*')
@@ -70,15 +70,15 @@ export async function GET(request: NextRequest) {
 
     const badges = allBadges || []
     const earned = userBadges || []
-    const earnedBadgeIds = new Set(earned.map((e: any) => e.badge_id))
+    const earnedBadgeIds = new Set(earned.map((e: unknown) => e.badge_id))
 
     // Calculate total points
-    const totalPoints = earned.reduce((sum: number, e: any) => sum + (e.badge?.points || 0), 0)
+    const totalPoints = earned.reduce((sum: number, e: unknown) => sum + (e.badge?.points || 0), 0)
 
     // Calculate progress toward unearned badges
     const nextBadges: NextBadgeProgress[] = badges
-      .filter((b: any) => !earnedBadgeIds.has(b.id))
-      .map((badge: any) => {
+      .filter((b: unknown) => !earnedBadgeIds.has(b.id))
+      .map((badge: unknown) => {
         const criteria = badge.criteria || {}
         let currentProgress = 0
         let target = 100
@@ -121,7 +121,7 @@ export async function GET(request: NextRequest) {
       .select('dse_user_id, badge:dse_achievement_badges(points)')
 
     const pointsByUser: Record<string, number> = {}
-    ;(allUserBadges || []).forEach((ub: any) => {
+    ;(allUserBadges || []).forEach((ub: unknown) => {
       const uid = ub.dse_user_id
       pointsByUser[uid] = (pointsByUser[uid] || 0) + (ub.badge?.points || 0)
     })

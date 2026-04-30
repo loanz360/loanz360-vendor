@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { logApiError } from '@/lib/monitoring/errorLogger'
@@ -35,7 +36,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      leads: z.array(z.unknown()).optional(),
+
+      skip_duplicates: z.string().optional(),
+
+      default_assigned_to: z.string().optional(),
+
+      file_name: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { leads, skip_duplicates, default_assigned_to } = body
 
@@ -66,7 +79,7 @@ export async function POST(request: NextRequest) {
       success: 0,
       skipped: 0,
       failed: 0,
-      errors: [] as any[]
+      errors: [] as unknown[]
     }
 
     for (let i = 0; i < leads.length; i++) {
@@ -100,7 +113,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Prepare lead data - map CSV input fields to crm_leads schema
-        const newLeadData: any = {
+        const newLeadData: Record<string, unknown> = {
           customer_name: leadData.customer_name,
           phone: leadData.customer_mobile,
           alternate_phone: leadData.alternate_phone || null,

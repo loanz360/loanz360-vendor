@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
     let entries: LeaderboardEntry[] = []
 
     if (leaderboardData && leaderboardData.length > 0) {
-      entries = leaderboardData.map((entry: any, index: number) => ({
+      entries = leaderboardData.map((entry: unknown, index: number) => ({
         rank: entry.company_rank || index + 1,
         userId: entry.user_id,
         name: entry.users?.full_name || 'Unknown',

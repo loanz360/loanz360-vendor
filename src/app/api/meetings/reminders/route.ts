@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -99,7 +100,49 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      meeting_id: z.string().uuid().optional(),
+
+
+      reminder_title: z.string().optional(),
+
+
+      remind_at: z.string().optional(),
+
+
+      reminder_message: z.string().optional(),
+
+
+      frequency: z.string().optional(),
+
+
+      send_email: z.string().email().optional(),
+
+
+      send_push: z.string().optional(),
+
+
+      send_sms: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+      acknowledged_at: z.string().optional(),
+
+
+      dismissed_at: z.string().optional(),
+
+
+      sent_at: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields
@@ -181,7 +224,25 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Reminder ID required' }, { status: 400 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      status: z.string().optional(),
+
+
+      acknowledged_at: z.string().optional(),
+
+
+      dismissed_at: z.string().optional(),
+
+
+      sent_at: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     // Verify ownership
@@ -198,7 +259,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Handle status changes with timestamps
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       ...body,
       updated_at: new Date().toISOString()
     }

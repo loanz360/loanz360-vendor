@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get lead counts per partner
-    const partnerIds = (partners || []).map((p: any) => p.id)
+    const partnerIds = (partners || []).map((p: unknown) => p.id)
     let leadCounts: Record<string, number> = {}
     let commissions: Record<string, number> = {}
     if (partnerIds.length > 0) {
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
           .select('partner_id, status')
           .in('partner_id', partnerIds)
         if (leads) {
-          leads.forEach((l: any) => {
+          leads.forEach((l: unknown) => {
             leadCounts[l.partner_id] = (leadCounts[l.partner_id] || 0) + 1
           })
         }
@@ -64,14 +64,14 @@ export async function GET(request: NextRequest) {
           .select('partner_id, amount, status')
           .in('partner_id', partnerIds)
         if (payouts) {
-          payouts.forEach((p: any) => {
+          payouts.forEach((p: unknown) => {
             commissions[p.partner_id] = (commissions[p.partner_id] || 0) + (p.amount || 0)
           })
         }
       } catch { /* ignore */ }
     }
 
-    const enriched = (partners || []).map((p: any) => ({
+    const enriched = (partners || []).map((p: unknown) => ({
       ...p,
       totalLeads: leadCounts[p.id] || 0,
       totalCommission: commissions[p.id] || 0,

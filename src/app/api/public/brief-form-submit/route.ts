@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
           }
         } else {
           // Try legacy format
-          const decoded = decryptTraceToken(body.trace_token) as any
+          const decoded = decryptTraceToken(body.trace_token) as unknown
           if (decoded?.success && decoded?.data) {
             originatorType = decoded.data.originatorType
             originatorId = decoded.data.originatorId
@@ -293,7 +293,7 @@ export async function POST(request: NextRequest) {
 
     if (duplicateCheck && duplicateCheck.length > 0) {
       // Found duplicates - tag and link them
-      duplicateLeadIds = duplicateCheck.map((dup: any) => dup.lead_identifier)
+      duplicateLeadIds = duplicateCheck.map((dup: unknown) => dup.lead_identifier)
       leadTags.push('DUPLICATE')
     }
 
@@ -349,7 +349,7 @@ export async function POST(request: NextRequest) {
           p_lead_system: dup.system_name,
           p_lead_id: dup.lead_id,
           p_duplicate_lead_id: leadLeadId
-        }).catch((err: any) => {
+        }).catch((err: unknown) => {
           apiLogger.error('Failed to link duplicate', err)
         })
       }

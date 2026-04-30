@@ -46,7 +46,7 @@ export interface ProviderConfig {
   is_active: boolean
   is_mock: boolean
   priority: number
-  config_json: Record<string, any> | null
+  config_json: Record<string, unknown> | null
 }
 
 // Standard request/response interfaces
@@ -54,19 +54,18 @@ export interface ProviderRequest {
   request_id: string
   lead_id: string
   request_type: string
-  payload: Record<string, any>
+  payload: Record<string, unknown>
 }
 
 export interface ProviderResponse {
   success: boolean
   provider_code: string
   request_id: string
-  data?: Record<string, any>
+  data?: Record<string, unknown>
   error?: {
     code: string
     message: string
-    details?: any
-  }
+    details?: unknown  }
   latency_ms: number
   cost?: number
 }
@@ -89,7 +88,7 @@ export abstract class BaseProviderAdapter {
   protected async makeRequest(
     endpoint: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
-    body?: Record<string, any>,
+    body?: Record<string, unknown>,
     headers?: Record<string, string>
   ): Promise<Response> {
     const controller = new AbortController()
@@ -195,7 +194,7 @@ export class MockProviderAdapter extends BaseProviderAdapter {
     return true
   }
 
-  private generateMockData(request: ProviderRequest): Record<string, any> {
+  private generateMockData(request: ProviderRequest): Record<string, unknown> {
     switch (request.request_type) {
       case 'CREDIT_SCORE':
         return {
@@ -255,7 +254,7 @@ export class ProviderAdapterFactory {
 
   // Initialize adapters from database configuration
   // Pass supabase client from API route context
-  static async initialize(supabase: any): Promise<void> {
+  static async initialize(supabase: unknown): Promise<void> {
 
     const { data: providers, error } = await supabase
       .from('cae_providers')

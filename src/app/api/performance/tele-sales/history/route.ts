@@ -154,7 +154,7 @@ function calculateGrade(score: number): PerformanceGrade {
   return 'F'
 }
 
-function generateHighlights(entry: any): string[] {
+function generateHighlights(entry: unknown): string[] {
   const highlights: string[] = []
 
   // Revenue highlights
@@ -205,7 +205,7 @@ function generateHighlights(entry: any): string[] {
   return highlights.slice(0, 4) // Max 4 highlights
 }
 
-function calculateHistoryTrend(allData: any[], currentEntry: any): 'up' | 'down' | 'stable' {
+function calculateHistoryTrend(allData: unknown[], currentEntry: unknown): 'up' | 'down' | 'stable' {
   const currentIndex = allData.findIndex(
     (d) => d.month === currentEntry.month && d.year === currentEntry.year
   )
@@ -222,7 +222,7 @@ function calculateHistoryTrend(allData: any[], currentEntry: any): 'up' | 'down'
   return 'stable'
 }
 
-function calculatePerformanceTrend(history: any[]): {
+function calculatePerformanceTrend(history: unknown[]): {
   direction: 'improving' | 'declining' | 'stable'
   averageChange: number
   consecutiveImprovements: number
@@ -257,7 +257,7 @@ function calculatePerformanceTrend(history: any[]): {
   }
 }
 
-function findBestMonth(history: any[]): { period: string; score: number } | null {
+function findBestMonth(history: unknown[]): { period: string; score: number } | null {
   if (history.length === 0) return null
 
   const best = history.reduce((max, current) =>
@@ -267,20 +267,20 @@ function findBestMonth(history: any[]): { period: string; score: number } | null
   return { period: best.period, score: best.overallScore }
 }
 
-function calculateAverageScore(history: any[]): number {
+function calculateAverageScore(history: unknown[]): number {
   if (history.length === 0) return 0
   const total = history.reduce((sum, h) => sum + h.overallScore, 0)
   return Math.round((total / history.length) * 10) / 10
 }
 
-function calculateAverageRank(history: any[]): number {
+function calculateAverageRank(history: unknown[]): number {
   const rankedHistory = history.filter((h) => h.rank > 0)
   if (rankedHistory.length === 0) return 0
   const total = rankedHistory.reduce((sum, h) => sum + h.rank, 0)
   return Math.round(total / rankedHistory.length)
 }
 
-function calculateImprovementRate(history: any[]): number {
+function calculateImprovementRate(history: unknown[]): number {
   if (history.length < 2) return 0
 
   let improvements = 0

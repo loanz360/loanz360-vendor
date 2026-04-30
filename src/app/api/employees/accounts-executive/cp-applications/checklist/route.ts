@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
@@ -200,7 +201,17 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      verificationId: z.string().uuid(),
+
+      isVerified: z.string().optional(),
+
+      notes: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { verificationId, isVerified, notes } = body
 
@@ -246,7 +257,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update verification item
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, unknown> = {
       is_verified: isVerified,
       verified_by: isVerified ? user.id : null,
       verified_at: isVerified ? new Date().toISOString() : null,

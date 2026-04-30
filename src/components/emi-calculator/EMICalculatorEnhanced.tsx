@@ -1173,23 +1173,23 @@ export default function EMICalculatorEnhanced({
                               <tbody className="divide-y divide-white/5">
                                 {(showYearlyView ? yearlyData : amortizationSchedule).map((row) => (
                                   <tr
-                                    key={showYearlyView ? (row as any).year : (row as AmortizationRow).month}
+                                    key={showYearlyView ? (row as unknown).year : (row as AmortizationRow).month}
                                     className="hover:bg-white/5 transition-colors"
                                   >
                                     <td className="px-3 md:px-4 py-2 text-gray-300">
-                                      {showYearlyView ? `Year ${(row as any).year}` : (row as AmortizationRow).month}
+                                      {showYearlyView ? `Year ${(row as unknown).year}` : (row as AmortizationRow).month}
                                     </td>
                                     <td className="px-3 md:px-4 py-2 text-right text-gray-300">
                                       {formatIndianCurrency(showYearlyView ? emi * 12 : (row as AmortizationRow).emi)}
                                     </td>
                                     <td className="px-3 md:px-4 py-2 text-right text-blue-400 font-medium">
-                                      {formatIndianCurrency(showYearlyView ? (row as any).principal : (row as AmortizationRow).principalPaid)}
+                                      {formatIndianCurrency(showYearlyView ? (row as unknown).principal : (row as AmortizationRow).principalPaid)}
                                     </td>
                                     <td className="px-3 md:px-4 py-2 text-right text-orange-400 font-medium">
-                                      {formatIndianCurrency(showYearlyView ? (row as any).interest : (row as AmortizationRow).interestPaid)}
+                                      {formatIndianCurrency(showYearlyView ? (row as unknown).interest : (row as AmortizationRow).interestPaid)}
                                     </td>
                                     <td className="px-3 md:px-4 py-2 text-right text-gray-200 font-medium">
-                                      {formatIndianCurrency((row as any).balance)}
+                                      {formatIndianCurrency((row as unknown).balance)}
                                     </td>
                                   </tr>
                                 ))}

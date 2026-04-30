@@ -14,14 +14,12 @@ export type RuleAction = 'APPROVE' | 'REJECT' | 'REFER' | 'ADD_CONDITION' | 'ADJ
 export interface RuleCondition {
   field: string
   operator: RuleOperator
-  value: any
-  valueEnd?: any // For 'between' operator
+  value: unknown  valueEnd?: any // For 'between' operator
 }
 
 export interface RuleActionConfig {
   action: RuleAction
-  value?: any
-  message?: string
+  value?: unknown  message?: string
   severity?: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
 }
 
@@ -37,7 +35,7 @@ export interface BusinessRule {
   conditions: RuleCondition[]
   conditionLogic?: 'AND' | 'OR'
   actions: RuleActionConfig[]
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface RuleEvaluationResult {
@@ -68,7 +66,7 @@ export interface RulesEngineResult {
 export interface RuleContext {
   request: CAERequest
   result?: CAEResult
-  additionalData?: Record<string, any>
+  additionalData?: Record<string, unknown>
 }
 
 export class RulesEngine {
@@ -282,7 +280,7 @@ export class RulesEngine {
   /**
    * Transform database rule format to engine format
    */
-  private transformDBRule(dbRule: any): BusinessRule {
+  private transformDBRule(dbRule: unknown): BusinessRule {
     return {
       id: dbRule.id,
       name: dbRule.rule_name,
@@ -302,7 +300,7 @@ export class RulesEngine {
   /**
    * Parse conditions from database JSON
    */
-  private parseConditions(conditions: any): RuleCondition[] {
+  private parseConditions(conditions: unknown): RuleCondition[] {
     if (!conditions) return []
     if (Array.isArray(conditions)) {
       return conditions.map((c) => ({
@@ -319,14 +317,14 @@ export class RulesEngine {
           return {
             field: key,
             operator: 'gte' as RuleOperator,
-            value: (value as any).min,
+            value: (value as unknown).min,
           }
         }
         if (typeof value === 'object' && value !== null && 'max' in value) {
           return {
             field: key,
             operator: 'lte' as RuleOperator,
-            value: (value as any).max,
+            value: (value as unknown).max,
           }
         }
         return {
@@ -342,7 +340,7 @@ export class RulesEngine {
   /**
    * Parse actions from database JSON
    */
-  private parseActions(actions: any): RuleActionConfig[] {
+  private parseActions(actions: unknown): RuleActionConfig[] {
     if (!actions) return []
     if (Array.isArray(actions)) {
       return actions.map((a) => ({
@@ -454,7 +452,7 @@ export class RulesEngine {
   /**
    * Get field value from context using dot notation
    */
-  private getFieldValue(field: string, context: RuleContext): any {
+  private getFieldValue(field: string, context: RuleContext): unknown {
     // Handle special computed fields
     const computedValue = this.getComputedFieldValue(field, context)
     if (computedValue !== undefined) {
@@ -483,7 +481,7 @@ export class RulesEngine {
   /**
    * Get nested value using dot notation
    */
-  private getNestedValue(obj: any, path: string): any {
+  private getNestedValue(obj: unknown, path: string): unknown {
     const parts = path.split('.')
     let current = obj
 
@@ -500,7 +498,7 @@ export class RulesEngine {
   /**
    * Compute special field values
    */
-  private getComputedFieldValue(field: string, context: RuleContext): any {
+  private getComputedFieldValue(field: string, context: RuleContext): unknown {
     const request = context.request
     const result = context.result
 

@@ -66,7 +66,7 @@ export default function NoteFormModal({
     }
   }
 
-  const handleChange = (field: keyof NoteFormData, value: any) => {
+  const handleChange = (field: keyof NoteFormData, value: unknown) => {
     setFormData({ ...formData, [field]: value })
   }
 

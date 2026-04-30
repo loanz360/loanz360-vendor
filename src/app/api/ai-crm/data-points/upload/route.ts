@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
 
     // Parse file based on type
     const workbook = new ExcelJS.Workbook()
-    let rawData: any[] = []
+    let rawData: unknown[] = []
 
     if (fileExtension === 'csv') {
       await workbook.csv.read(Buffer.from(buffer))
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
 
     worksheet.eachRow((row, rowNumber) => {
       if (rowNumber === 1) return // Skip header row
-      const rowData: any = {}
+      const rowData: Record<string, unknown> = {}
       row.eachCell((cell, colNumber) => {
         const header = headers[colNumber - 1]
         if (header) {
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
 
     // Normalize column names (handle variations)
     const normalizedData = rawData.map((row) => {
-      const normalized: any = {}
+      const normalized: Record<string, unknown> = {}
 
       Object.keys(row).forEach((key) => {
         const lowerKey = key.toLowerCase().trim()
@@ -164,8 +164,8 @@ export async function POST(request: NextRequest) {
     })
 
     // Validate and clean data
-    const validContacts: any[] = []
-    const invalidContacts: any[] = []
+    const validContacts: unknown[] = []
+    const invalidContacts: unknown[] = []
     const duplicatePhones = new Set<string>()
     const seenPhones = new Set<string>()
 

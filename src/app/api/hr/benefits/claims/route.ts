@@ -63,7 +63,25 @@ export async function PATCH(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      id: z.string().uuid(),
+
+
+      status: z.string().optional(),
+
+
+      approved_amount: z.string().optional(),
+
+
+      remarks: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { id, status, approved_amount, remarks } = body
 

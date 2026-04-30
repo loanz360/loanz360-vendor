@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Customer Wallet Referrals API
@@ -97,7 +98,25 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()
     const adminClient = createAdminClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      referred_name: z.string().optional(),
+
+      referred_mobile: z.string(),
+
+      referred_email: z.string().email().optional(),
+
+      referred_city: z.string().optional(),
+
+      loan_type: z.string().optional(),
+
+      required_loan_amount: z.string().optional(),
+
+      share_via_whatsapp: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {

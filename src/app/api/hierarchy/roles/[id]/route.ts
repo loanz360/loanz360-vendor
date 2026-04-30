@@ -23,7 +23,7 @@ const roleUpdateSchema = z.object({
 });
 
 // Helper function to check if user is Super Admin
-async function isSuperAdmin(supabase: any): Promise<boolean> {
+async function isSuperAdmin(supabase: unknown): Promise<boolean> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
 
@@ -141,7 +141,7 @@ export async function PUT(
     }
 
     // Prepare data for update
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       ...validatedData,
       updated_by: user.id,
       updated_at: new Date().toISOString(),

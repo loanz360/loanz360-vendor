@@ -20,8 +20,7 @@ interface ReportField {
 interface ReportFilter {
   field: string;
   operator: 'equals' | 'contains' | 'gt' | 'lt' | 'between';
-  value: any;
-}
+  value: unknown}
 
 interface ReportConfig {
   name: string;
@@ -147,7 +146,7 @@ export default function CustomReportBuilder() {
   );
 }
 
-function downloadCSV(data: any[], filename: string) {
+function downloadCSV(data: unknown[], filename: string) {
   const csv = [
     Object.keys(data[0]).join(','),
     ...data.map((row) => Object.values(row).join(',')),

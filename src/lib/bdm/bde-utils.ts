@@ -125,7 +125,7 @@ export function countActiveBDEs(bdes: BDEInfo[]): number {
 /**
  * Get current BDM ID from auth (sync helper)
  */
-export function getCurrentBDMIdFromAuth(auth: any): string | null {
+export function getCurrentBDMIdFromAuth(auth: unknown): string | null {
   return auth?.user?.id || null
 }
 

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
@@ -47,7 +48,37 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      evidenceType: z.string().optional(),
+
+      fileName: z.string().optional(),
+
+      fileType: z.string().optional(),
+
+      fileSize: z.string().optional(),
+
+      fileHash: z.string().optional(),
+
+      storagePath: z.string().optional(),
+
+      description: z.string().optional(),
+
+      tags: z.array(z.unknown()).optional(),
+
+      auditLogId: z.string().uuid().optional(),
+
+      policyId: z.string().uuid().optional(),
+
+      violationId: z.string().uuid().optional(),
+
+      uploadedBy: z.string().optional(),
+
+      sensitivityLevel: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {

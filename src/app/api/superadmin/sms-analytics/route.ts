@@ -41,13 +41,13 @@ export async function GET(request: NextRequest) {
       .lte('created_at', to)
 
     const totalSent = allLogs?.length || 0
-    const totalDelivered = allLogs?.filter((log: Record<string, any>) => log.status === 'delivered').length || 0
-    const totalFailed = allLogs?.filter((log: Record<string, any>) => log.status === 'failed').length || 0
-    const totalPending = allLogs?.filter((log: Record<string, any>) => log.status === 'pending').length || 0
+    const totalDelivered = allLogs?.filter((log: Record<string, unknown>) => log.status === 'delivered').length || 0
+    const totalFailed = allLogs?.filter((log: Record<string, unknown>) => log.status === 'failed').length || 0
+    const totalPending = allLogs?.filter((log: Record<string, unknown>) => log.status === 'pending').length || 0
     const deliveryRate = totalSent > 0 ? ((totalDelivered / totalSent) * 100).toFixed(2) : 0
 
     // Calculate average delivery time
-    const deliveryTimes = allLogs?.filter((log: Record<string, any>) => log.sent_at && log.delivered_at).map(log => {
+    const deliveryTimes = allLogs?.filter((log: Record<string, unknown>) => log.sent_at && log.delivered_at).map(log => {
       const sent = new Date(log.sent_at).getTime()
       const delivered = new Date(log.delivered_at).getTime()
       return (delivered - sent) / 1000 // seconds
@@ -58,10 +58,10 @@ export async function GET(request: NextRequest) {
       : 0
 
     // Calculate total cost
-    const totalCost = allLogs?.reduce((sum: number, log: Record<string, any>) => sum + (parseFloat(log.cost_credits) || 0), 0).toFixed(2) || '0'
+    const totalCost = allLogs?.reduce((sum: number, log: Record<string, unknown>) => sum + (parseFloat(log.cost_credits) || 0), 0).toFixed(2) || '0'
 
     // Calculate total message parts (for long SMS)
-    const totalMessageParts = allLogs?.reduce((sum: number, log: Record<string, any>) => sum + (log.message_parts || 1), 0) || 0
+    const totalMessageParts = allLogs?.reduce((sum: number, log: Record<string, unknown>) => sum + (log.message_parts || 1), 0) || 0
 
     // Stats by template
     const { data: templateStats } = await supabase
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
       .lte('created_at', to)
       .not('template_code', 'is', null)
 
-    const templateBreakdown = templateStats?.reduce((acc: any, log: any) => {
+    const templateBreakdown = templateStats?.reduce((acc: unknown, log: unknown) => {
       if (!acc[log.template_code]) {
         acc[log.template_code] = { total: 0, delivered: 0, failed: 0 }
       }
@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
       .gte('created_at', from)
       .lte('created_at', to)
 
-    const providerBreakdown = providerStats?.reduce((acc: any, log: any) => {
+    const providerBreakdown = providerStats?.reduce((acc: unknown, log: unknown) => {
       if (!acc[log.provider_name]) {
         acc[log.provider_name] = { total: 0, delivered: 0, failed: 0 }
       }

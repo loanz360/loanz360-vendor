@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Email Marketing Campaign Management API
  * Create, manage, and send email marketing campaigns
@@ -36,7 +37,7 @@ interface Campaign {
   openedCount?: number;
   clickedCount?: number;
   tags?: string[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 /**
@@ -153,7 +154,52 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      campaignId: z.string().uuid().optional(),
+
+
+      id: z.string().uuid(),
+
+
+      name: z.string().optional(),
+
+
+      subject: z.string().optional(),
+
+
+      htmlContent: z.string().optional(),
+
+
+      textContent: z.string().optional(),
+
+
+      recipients: z.array(z.unknown()).optional(),
+
+
+      recipientListId: z.string().uuid().optional(),
+
+
+      tags: z.array(z.unknown()).optional(),
+
+
+      metadata: z.record(z.unknown()).optional(),
+
+
+      scheduledAt: z.string(),
+
+
+      testEmail: z.string().email(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const { action, campaignId, ...campaignData } = body;
 
@@ -292,7 +338,43 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      tags: z.string().optional(),
+
+
+      textContent: z.string().optional(),
+
+
+      metadata: z.string().optional(),
+
+
+      name: z.string().optional(),
+
+
+      subject: z.string().optional(),
+
+
+      htmlContent: z.string().optional(),
+
+
+      scheduledAt: z.string().optional(),
+
+
+      recipients: z.string().optional(),
+
+
+      recipientListId: z.string().optional(),
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2;
     const { id, name, subject, htmlContent, textContent, recipients, recipientListId, tags, metadata, scheduledAt } = body;
 
@@ -336,7 +418,7 @@ export async function PUT(request: NextRequest) {
       totalRecipients = count || 0;
     }
 
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_by: user.id,
       updated_at: new Date().toISOString(),
     };
@@ -470,7 +552,7 @@ export async function DELETE(request: NextRequest) {
 // HELPER FUNCTIONS
 // ============================================================================
 
-async function sendCampaign(supabase: any, campaignId: string, userId: string) {
+async function sendCampaign(supabase: unknown, campaignId: string, userId: string) {
   try {
     // Get campaign
     const { data: campaign, error } = await supabase
@@ -515,7 +597,7 @@ async function sendCampaign(supabase: any, campaignId: string, userId: string) {
         .eq('list_id', campaign.recipient_list_id)
         .eq('is_active', true);
 
-      recipients = (members || []).map((m: any) => ({
+      recipients = (members || []).map((m: unknown) => ({
         email: m.email,
         name: m.name,
         customData: m.custom_data,
@@ -609,7 +691,7 @@ async function sendCampaign(supabase: any, campaignId: string, userId: string) {
   }
 }
 
-async function scheduleCampaign(supabase: any, campaignId: string, scheduledAt: string) {
+async function scheduleCampaign(supabase: unknown, campaignId: string, scheduledAt: string) {
   const { data: campaign, error } = await supabase
     .from('email_campaigns')
     .update({
@@ -635,7 +717,7 @@ async function scheduleCampaign(supabase: any, campaignId: string, scheduledAt: 
   });
 }
 
-async function pauseCampaign(supabase: any, campaignId: string) {
+async function pauseCampaign(supabase: unknown, campaignId: string) {
   const { data: campaign, error } = await supabase
     .from('email_campaigns')
     .update({
@@ -660,7 +742,7 @@ async function pauseCampaign(supabase: any, campaignId: string) {
   });
 }
 
-async function cancelCampaign(supabase: any, campaignId: string) {
+async function cancelCampaign(supabase: unknown, campaignId: string) {
   const { data: campaign, error } = await supabase
     .from('email_campaigns')
     .update({
@@ -685,7 +767,7 @@ async function cancelCampaign(supabase: any, campaignId: string) {
   });
 }
 
-async function duplicateCampaign(supabase: any, campaignId: string, userId: string) {
+async function duplicateCampaign(supabase: unknown, campaignId: string, userId: string) {
   // Get original campaign
   const { data: original, error } = await supabase
     .from('email_campaigns')
@@ -747,7 +829,7 @@ async function duplicateCampaign(supabase: any, campaignId: string, userId: stri
   });
 }
 
-async function sendTestEmail(supabase: any, campaignId: string, testEmail: string) {
+async function sendTestEmail(supabase: unknown, campaignId: string, testEmail: string) {
   // Get campaign
   const { data: campaign, error } = await supabase
     .from('email_campaigns')

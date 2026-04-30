@@ -44,7 +44,7 @@ export default function EMICalculator() {
     if (savedHistory) {
       try {
         const parsed = JSON.parse(savedHistory)
-        setHistory(parsed.map((item: any) => ({
+        setHistory(parsed.map((item: Record<string, unknown>) => ({
           ...item,
           timestamp: new Date(item.timestamp)
         })))

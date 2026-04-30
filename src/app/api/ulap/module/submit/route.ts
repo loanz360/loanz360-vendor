@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * API Route: ULAP Module - Lead Submission
@@ -61,7 +62,43 @@ function getLeadGeneratorRole(sourceType: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      customer_name: z.string().optional(),
+
+      customer_mobile: z.string().optional(),
+
+      source_type: z.string().optional(),
+
+      source_user_name: z.string().optional(),
+
+      source_partner_id: z.string().uuid().optional(),
+
+      source_partner_name: z.string().optional(),
+
+      trace_token: z.string().optional(),
+
+      customer_email: z.string().email().optional(),
+
+      customer_city: z.string().optional(),
+
+      customer_state: z.string().optional(),
+
+      customer_pincode: z.string().optional(),
+
+      loan_type: z.string().optional(),
+
+      required_loan_amount: z.string().optional(),
+
+      collected_data: z.string().optional(),
+
+      loan_category_id: z.string().uuid().optional(),
+
+      loan_subcategory_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Required fields validation

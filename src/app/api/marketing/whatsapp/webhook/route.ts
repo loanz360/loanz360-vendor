@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -31,7 +32,13 @@ export async function GET(request: NextRequest) {
 // Handle incoming webhooks (POST request)
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      entry: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Log webhook for debugging
@@ -86,14 +93,14 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function processStatusUpdate(accountId: string, status: any) {
+async function processStatusUpdate(accountId: string, status: unknown) {
   const messageId = status.id
   const statusType = status.status // sent, delivered, read, failed
   const timestamp = status.timestamp
     ? new Date(parseInt(status.timestamp) * 1000).toISOString()
     : new Date().toISOString()
 
-  const updateData: any = {
+  const updateData: Record<string, unknown> = {
     status: statusType,
     updated_at: new Date().toISOString(),
   }
@@ -138,9 +145,8 @@ async function processStatusUpdate(accountId: string, status: any) {
 
 async function processIncomingMessage(
   accountId: string,
-  message: any,
-  contact: any
-) {
+  message: unknown,
+  contact: unknown) {
   const phoneNumber = message.from
   const messageType = message.type
   const timestamp = message.timestamp

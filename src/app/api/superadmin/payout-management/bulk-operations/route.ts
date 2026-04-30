@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -39,7 +40,17 @@ async function bulkOperationsHandler(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      operation: z.string().optional(),
+
+      ids: z.array(z.unknown()).optional(),
+
+      updates: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { operation, ids, updates } = body
@@ -96,7 +107,7 @@ async function bulkOperationsHandler(request: NextRequest) {
 /**
  * Handle bulk update operation
  */
-async function handleBulkUpdate(supabase: any, ids: string[], updates: any, userId: string) {
+async function handleBulkUpdate(supabase: unknown, ids: string[], updates: unknown, userId: string) {
   try {
     // Validate updates object
     if (!updates || typeof updates !== 'object') {
@@ -108,7 +119,7 @@ async function handleBulkUpdate(supabase: any, ids: string[], updates: any, user
 
     // Only allow updating specific fields
     const allowedFields = ['commission_percentage', 'specific_conditions']
-    const updateFields: any = {}
+    const updateFields: Record<string, unknown> = {}
 
     for (const [key, value] of Object.entries(updates)) {
       if (!allowedFields.includes(key)) {
@@ -177,7 +188,7 @@ async function handleBulkUpdate(supabase: any, ids: string[], updates: any, user
 /**
  * Handle bulk delete operation
  */
-async function handleBulkDelete(supabase: any, ids: string[], userId: string) {
+async function handleBulkDelete(supabase: unknown, ids: string[], userId: string) {
   try {
     // Perform bulk delete using database function
     const { data, error } = await supabase.rpc('bulk_delete_general_percentages', {

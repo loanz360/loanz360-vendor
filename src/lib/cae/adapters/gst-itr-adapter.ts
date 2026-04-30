@@ -539,7 +539,7 @@ export class GSTITRAdapter {
     }
   }
 
-  private parseGSTResponse(response: any, gstin: string): GSTVerificationResult {
+  private parseGSTResponse(response: unknown, gstin: string): GSTVerificationResult {
     if (response.error) {
       return {
         success: false,
@@ -562,7 +562,7 @@ export class GSTITRAdapter {
     }
   }
 
-  private parseITRResponse(response: any, pan: string): ITRVerificationResult {
+  private parseITRResponse(response: unknown, pan: string): ITRVerificationResult {
     if (response.error) {
       return {
         success: false,

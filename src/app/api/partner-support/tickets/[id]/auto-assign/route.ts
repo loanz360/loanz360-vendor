@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { autoAssignTicket, AssignmentStrategy } from '@/lib/tickets/auto-assignment'
@@ -40,7 +41,13 @@ export async function POST(
     }
 
     // Get strategy from request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      strategy: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr.catch(() => ({}))
     const strategy: AssignmentStrategy = body.strategy || 'workload_based'
 

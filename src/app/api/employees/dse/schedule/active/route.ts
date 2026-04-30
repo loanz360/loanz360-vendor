@@ -108,11 +108,11 @@ export async function GET(request: NextRequest) {
 
     // Group meetings by time period
     const grouped = {
-      today: [] as any[],
-      tomorrow: [] as any[],
-      this_week: [] as any[],
-      next_week: [] as any[],
-      later: [] as any[],
+      today: [] as unknown[],
+      tomorrow: [] as unknown[],
+      this_week: [] as unknown[],
+      next_week: [] as unknown[],
+      later: [] as unknown[],
       total: meetings?.length || 0,
     }
 

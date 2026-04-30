@@ -6,8 +6,7 @@ export interface DragDropItem {
   id: string
   type: 'file' | 'folder'
   name: string
-  data?: any
-}
+  data?: unknown}
 
 export interface DropTarget {
   id: string

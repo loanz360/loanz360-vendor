@@ -8,7 +8,7 @@ class MSG91Provider extends BaseSMSProvider {
     super('msg91', 'MSG91', config)
   }
 
-  async sendSMS(message: any) {
+  async sendSMS(message: unknown) {
     const response = await fetch('https://api.msg91.com/api/v5/flow/', {
       method: 'POST',
       headers: {
@@ -27,7 +27,7 @@ class MSG91Provider extends BaseSMSProvider {
     return { success: data.type === 'success', message_id: data.request_id, provider_response: data }
   }
 
-  async sendBulkSMS(messages: any[]) {
+  async sendBulkSMS(messages: unknown[]) {
     return Promise.all(messages.map(m => this.sendSMS(m)))
   }
 
@@ -54,7 +54,7 @@ class TextlocalProvider extends BaseSMSProvider {
     super('textlocal', 'Textlocal', config)
   }
 
-  async sendSMS(message: any) {
+  async sendSMS(message: unknown) {
     const params = new URLSearchParams({
       apikey: this.config.api_key || '',
       numbers: Array.isArray(message.to) ? message.to.join(',') : message.to,
@@ -75,7 +75,7 @@ class TextlocalProvider extends BaseSMSProvider {
     }
   }
 
-  async sendBulkSMS(messages: any[]) {
+  async sendBulkSMS(messages: unknown[]) {
     return Promise.all(messages.map(m => this.sendSMS(m)))
   }
 
@@ -105,7 +105,7 @@ class GupshupProvider extends BaseSMSProvider {
     super('gupshup', 'Gupshup', config)
   }
 
-  async sendSMS(message: any) {
+  async sendSMS(message: unknown) {
     const params = new URLSearchParams({
       userid: this.config.username || '',
       password: this.config.password || '',
@@ -127,7 +127,7 @@ class GupshupProvider extends BaseSMSProvider {
     return { success, message_id: text.split('|')[2]?.trim(), provider_response: text }
   }
 
-  async sendBulkSMS(messages: any[]) {
+  async sendBulkSMS(messages: unknown[]) {
     return Promise.all(messages.map(m => this.sendSMS(m)))
   }
 
@@ -149,7 +149,7 @@ class VconProvider extends BaseSMSProvider {
     super('vcon', 'Vcon', config)
   }
 
-  async sendSMS(message: any) {
+  async sendSMS(message: unknown) {
     const params = new URLSearchParams({
       user: this.config.username || '',
       pass: this.config.password || '',
@@ -163,7 +163,7 @@ class VconProvider extends BaseSMSProvider {
     return { success: text.includes('OK'), message_id: text, provider_response: text }
   }
 
-  async sendBulkSMS(messages: any[]) {
+  async sendBulkSMS(messages: unknown[]) {
     return Promise.all(messages.map(m => this.sendSMS(m)))
   }
 
@@ -185,7 +185,7 @@ class AirtelProvider extends BaseSMSProvider {
     super('airtel', 'Airtel IQ', config)
   }
 
-  async sendSMS(message: any) {
+  async sendSMS(message: unknown) {
     const response = await fetch('https://iqsms.airtel.in/api/v1/send-sms', {
       method: 'POST',
       headers: {
@@ -204,7 +204,7 @@ class AirtelProvider extends BaseSMSProvider {
     return { success: data.status === 'success', message_id: data.messageId, provider_response: data }
   }
 
-  async sendBulkSMS(messages: any[]) {
+  async sendBulkSMS(messages: unknown[]) {
     return Promise.all(messages.map(m => this.sendSMS(m)))
   }
 
@@ -226,7 +226,7 @@ class KaleyraProvider extends BaseSMSProvider {
     super('kaleyra', 'Kaleyra', config)
   }
 
-  async sendSMS(message: any) {
+  async sendSMS(message: unknown) {
     const response = await fetch('https://api.kaleyra.io/v1/messages', {
       method: 'POST',
       headers: {
@@ -245,7 +245,7 @@ class KaleyraProvider extends BaseSMSProvider {
     return { success: !!data.id, message_id: data.id, provider_response: data }
   }
 
-  async sendBulkSMS(messages: any[]) {
+  async sendBulkSMS(messages: unknown[]) {
     return Promise.all(messages.map(m => this.sendSMS(m)))
   }
 
@@ -267,7 +267,7 @@ class TwoFactorProvider extends BaseSMSProvider {
     super('2factor', '2Factor', config)
   }
 
-  async sendSMS(message: any) {
+  async sendSMS(message: unknown) {
     const phone = Array.isArray(message.to) ? message.to[0] : message.to
     const response = await fetch(
       `https://2factor.in/API/V1/${this.config.api_key}/SMS/${phone}/${message.message}`,
@@ -277,7 +277,7 @@ class TwoFactorProvider extends BaseSMSProvider {
     return { success: data.Status === 'Success', message_id: data.Details, provider_response: data }
   }
 
-  async sendBulkSMS(messages: any[]) {
+  async sendBulkSMS(messages: unknown[]) {
     return Promise.all(messages.map(m => this.sendSMS(m)))
   }
 

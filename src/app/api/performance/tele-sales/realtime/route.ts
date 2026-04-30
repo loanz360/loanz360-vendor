@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { TeleSalesRealTimeMetrics } from '@/lib/types/performance.types'
@@ -91,10 +92,10 @@ export async function GET(request: NextRequest) {
       .lte('scheduled_time', `${today}T23:59:59`)
 
     const waitingCallbacks = (scheduledItems || []).filter(
-      (item: any) => item.activity_type === 'callback'
+      (item: Record<string, unknown>) => item.activity_type === 'callback'
     ).length
     const scheduledFollowUps = (scheduledItems || []).filter(
-      (item: any) => item.activity_type === 'follow_up'
+      (item: Record<string, unknown>) => item.activity_type === 'follow_up'
     ).length
 
     // Generate quality alerts based on metrics
@@ -211,7 +212,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      eventType: z.string().optional(),
+
+
+      data: z.record(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { eventType, data } = body
 

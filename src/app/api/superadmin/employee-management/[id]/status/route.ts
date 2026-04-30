@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth, checkPermission, hrCanManageEmployee } from '@/lib/auth/employee-mgmt-auth'
@@ -38,7 +39,15 @@ export async function PATCH(
     }
 
     const employeeId = params.id
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      is_active: z.boolean().optional(),
+
+      reason: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { is_active, reason } = body

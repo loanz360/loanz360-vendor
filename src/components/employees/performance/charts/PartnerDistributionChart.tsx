@@ -45,7 +45,7 @@ export default function PartnerDistributionChart({ data }: PartnerDistributionCh
     )
   }
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: unknown) => {
     if (active && payload && payload.length) {
       const data = payload[0]
       const percentage = ((data.value / total) * 100).toFixed(1)
@@ -89,7 +89,7 @@ export default function PartnerDistributionChart({ data }: PartnerDistributionCh
           <Legend
             verticalAlign="bottom"
             height={36}
-            formatter={(value, entry: any) => (
+            formatter={(value, entry: unknown) => (
               <span style={{ color: '#9CA3AF', fontSize: '14px' }}>
                 {value} ({entry.payload.value})
               </span>

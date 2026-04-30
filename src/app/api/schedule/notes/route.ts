@@ -148,7 +148,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform notes to include author details
-    const notesWithAuthor = notes.map((note: any) => ({
+    const notesWithAuthor = notes.map((note: unknown) => ({
       ...note,
       author_name: note.author?.user_metadata?.full_name || note.author?.email,
       author_email: note.author?.email,

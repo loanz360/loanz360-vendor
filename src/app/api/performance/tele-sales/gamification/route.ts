@@ -142,7 +142,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function aggregateMetrics(metrics: any[]): any {
+function aggregateMetrics(metrics: unknown[]): unknown {
   return metrics.reduce(
     (acc, m) => ({
       totalCalls: acc.totalCalls + (m.total_calls || 0),
@@ -160,7 +160,7 @@ function aggregateMetrics(metrics: any[]): any {
   )
 }
 
-function calculatePoints(totals: any, todayMetrics: any): any {
+function calculatePoints(totals: unknown, todayMetrics: unknown): unknown {
   return {
     callPoints: Math.floor(totals.totalCalls * 2), // 2 points per call
     conversionPoints: Math.floor(totals.leadsConverted * 50), // 50 points per conversion
@@ -169,7 +169,7 @@ function calculatePoints(totals: any, todayMetrics: any): any {
   }
 }
 
-function calculateBonusPoints(totals: any, todayMetrics: any): number {
+function calculateBonusPoints(totals: unknown, todayMetrics: unknown): number {
   let bonus = 0
 
   // Revenue bonus (100 points per lakh)
@@ -191,7 +191,7 @@ function calculateBonusPoints(totals: any, todayMetrics: any): number {
   return bonus
 }
 
-function calculateDayPoints(metrics: any): number {
+function calculateDayPoints(metrics: unknown): number {
   return (
     (metrics.total_calls || 0) * 2 +
     (metrics.leads_converted || 0) * 50 +
@@ -242,7 +242,7 @@ function calculateLevel(totalPoints: number): {
   }
 }
 
-function calculateStreaks(metrics: any[]): {
+function calculateStreaks(metrics: unknown[]): {
   callStreak: number
   conversionStreak: number
   qualityStreak: number
@@ -277,7 +277,7 @@ function calculateStreaks(metrics: any[]): {
   return { callStreak, conversionStreak, qualityStreak }
 }
 
-function generateBadges(totals: any, metrics: any[], profile: any, summary: any): AchievementBadge[] {
+function generateBadges(totals: unknown, metrics: unknown[], profile: unknown, summary: unknown): AchievementBadge[] {
   const badges: AchievementBadge[] = []
   const now = new Date().toISOString()
 
@@ -448,7 +448,7 @@ function generateBadges(totals: any, metrics: any[], profile: any, summary: any)
 }
 
 async function getLeaderboardPositions(
-  supabase: any,
+  supabase: unknown,
   userId: string,
   month: number,
   year: number
@@ -462,7 +462,7 @@ async function getLeaderboardPositions(
   }
 }
 
-async function getActiveContests(supabase: any, userId: string): Promise<Contest[]> {
+async function getActiveContests(supabase: unknown, userId: string): Promise<Contest[]> {
   // This would query active contests from a contests table
   // For now, return sample contests
   const now = new Date()

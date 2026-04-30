@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -168,7 +169,41 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action: z.string(),
+
+      flagged_id: z.string().uuid().optional(),
+
+      review_action: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      modified_content: z.string().optional(),
+
+      offer_id: z.string().uuid().optional(),
+
+      offer_title: z.string().optional(),
+
+      description: z.string().optional(),
+
+      rolled_out_by: z.string().optional(),
+
+      type: z.string().optional(),
+
+      word: z.string().optional(),
+
+      word_type: z.string().optional(),
+
+      severity: z.string().optional(),
+
+      rule_id: z.string().uuid().optional(),
+
+      is_active: z.boolean().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action } = body
 
@@ -311,7 +346,31 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      word: z.string().optional(),
+
+
+      type: z.string().optional(),
+
+
+      word_type: z.string().optional(),
+
+
+      rule_id: z.string().optional(),
+
+
+      is_active: z.boolean().optional(),
+
+
+      severity: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { type, word, word_type, severity, rule_id, is_active } = body
 

@@ -134,7 +134,7 @@ export const mask = {
 /**
  * Mask all sensitive fields in an object
  */
-export function maskSensitiveData<T extends Record<string, any>>(data: T): T {
+export function maskSensitiveData<T extends Record<string, unknown>>(data: T): T {
   const sensitiveFields: Record<string, keyof typeof mask> = {
     customer_pan: 'pan',
     pan: 'pan',
@@ -291,7 +291,7 @@ export interface AuditLogEntry {
   resourceId?: string
   ipAddress?: string
   userAgent?: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   status: 'SUCCESS' | 'FAILURE'
   errorMessage?: string
 }
@@ -329,7 +329,7 @@ export class AuditLogger {
     return this.logs.slice(-count)
   }
 
-  private maskMetadata(metadata: Record<string, any>): Record<string, any> {
+  private maskMetadata(metadata: Record<string, unknown>): Record<string, unknown> {
     return maskSensitiveData(metadata)
   }
 
@@ -371,8 +371,7 @@ export class AuditLogger {
     userId?: string
     ipAddress?: string
     userAgent?: string
-    requestBody?: any
-    status: number
+    requestBody?: unknown    status: number
     responseTime?: number
     error?: string
   }): void {
@@ -430,8 +429,8 @@ export class AuditLogger {
     userId: string
     configType: string
     configId?: string
-    changes: Record<string, any>
-    oldValues?: Record<string, any>
+    changes: Record<string, unknown>
+    oldValues?: Record<string, unknown>
     success: boolean
     error?: string
   }): void {
@@ -875,7 +874,7 @@ export const sanitize = {
       }
 
       // Check depth to prevent DoS
-      const checkDepth = (obj: any, depth: number = 0): boolean => {
+      const checkDepth = (obj: unknown, depth: number = 0): boolean => {
         if (depth > maxDepth) return false
         if (obj && typeof obj === 'object') {
           for (const key in obj) {
@@ -1003,8 +1002,8 @@ export interface ValidationRule {
   minLength?: number
   maxLength?: number
   pattern?: RegExp
-  allowedValues?: any[]
-  custom?: (value: any) => boolean | string
+  allowedValues?: unknown[]
+  custom?: (value: unknown) => boolean | string
 }
 
 export interface ValidationSchema {
@@ -1014,16 +1013,16 @@ export interface ValidationSchema {
 export interface ValidationResult {
   valid: boolean
   errors: Record<string, string>
-  sanitized: Record<string, any>
+  sanitized: Record<string, unknown>
 }
 
 /**
  * Validate and sanitize input against schema
  * BUG FIX #8: Complete input validation system
  */
-export function validateInput(input: Record<string, any>, schema: ValidationSchema): ValidationResult {
+export function validateInput(input: Record<string, unknown>, schema: ValidationSchema): ValidationResult {
   const errors: Record<string, string> = {}
-  const sanitized: Record<string, any> = {}
+  const sanitized: Record<string, unknown> = {}
 
   for (const [field, rule] of Object.entries(schema)) {
     const value = input[field]
@@ -1242,9 +1241,8 @@ export function isIPAllowed(ip: string, allowedRanges: string[]): boolean {
  * BUG FIX #3: Store sensitive data (Aadhaar) encrypted in separate table
  */
 export class EncryptedDataStore {
-  private supabase: any
-
-  constructor(supabase: any) {
+  private supabase: unknown
+  constructor(supabase: unknown) {
     this.supabase = supabase
   }
 
@@ -1395,6 +1393,6 @@ export const secureKeyStore = SecureKeyStore.getInstance()
 export const auditLogger = new AuditLogger()
 
 // Factory function for encrypted data store
-export function createEncryptedDataStore(supabase: any): EncryptedDataStore {
+export function createEncryptedDataStore(supabase: unknown): EncryptedDataStore {
   return new EncryptedDataStore(supabase)
 }

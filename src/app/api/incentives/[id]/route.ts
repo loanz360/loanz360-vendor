@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -88,7 +89,7 @@ export async function GET(
       const isEligible =
         incentive.target_all_employees ||
         incentive.incentive_target_audience.some(
-          (ta: any) => ta.subrole?.subrole_code?.toLowerCase() === employee?.sub_role?.toLowerCase()
+          (ta: unknown) => ta.subrole?.subrole_code?.toLowerCase() === employee?.sub_role?.toLowerCase()
         )
 
       if (!isEligible) {
@@ -176,7 +177,43 @@ export async function PATCH(
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      incentive_title: z.string().optional(),
+
+      incentive_description: z.string().optional(),
+
+      incentive_type: z.string().optional(),
+
+      incentive_image_url: z.string().optional(),
+
+      reward_amount: z.string().optional(),
+
+      reward_currency: z.string().optional(),
+
+      reward_details: z.string().optional(),
+
+      start_date: z.string().optional(),
+
+      end_date: z.string().optional(),
+
+      target_all_employees: z.string().optional(),
+
+      target_subroles: z.array(z.unknown()).optional(),
+
+      performance_criteria: z.string().optional(),
+
+      status: z.string().optional(),
+
+      display_order: z.string().optional(),
+
+      notify_before_expiry_days: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       incentive_title,
@@ -203,7 +240,7 @@ export async function PATCH(
     }
 
     // Build update object (only include provided fields)
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_by: auth.userId,
     }
 

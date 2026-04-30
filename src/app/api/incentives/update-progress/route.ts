@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -54,7 +55,28 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      user_id: z.string().uuid().optional(),
+
+
+      incentive_id: z.string().uuid().optional(),
+
+
+      metric_name: z.string().optional(),
+
+
+      metric_value: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { user_id, incentive_id, metric_name, metric_value, notes } = body
 
@@ -111,7 +133,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate progress percentage
-    const criteria = incentive.performance_criteria as any
+    const criteria = incentive.performance_criteria as unknown
     const targetValue = criteria.target_value || 100
     const progressPercentage = Math.min((metric_value / targetValue) * 100, 100)
 
@@ -131,11 +153,11 @@ export async function POST(request: NextRequest) {
     let earnedAmount = 0
     if (progressPercentage >= 100) {
       // Check if tiered rewards
-      const rewardDetails = incentive.reward_details as any
+      const rewardDetails = incentive.reward_details as unknown
       if (rewardDetails?.type === 'tiered' && rewardDetails?.slabs) {
         // Find matching slab
         const slab = rewardDetails.slabs.find(
-          (s: any) => metric_value >= s.min && metric_value <= s.max
+          (s: unknown) => metric_value >= s.min && metric_value <= s.max
         )
         earnedAmount = slab?.amount || incentive.reward_amount || 0
       } else {

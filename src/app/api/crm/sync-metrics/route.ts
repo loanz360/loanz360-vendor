@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
@@ -49,7 +50,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      user_id: z.string().uuid().optional(),
+
+      metric_period: z.string().optional().default('monthly'),
+
+      force_recalculate: z.boolean().optional().default(false),
+
+      metric_names: z.array(z.unknown()).optional().default([]),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const {
       user_id,
@@ -79,7 +92,7 @@ export async function POST(request: NextRequest) {
       users_synced: 0,
       metrics_updated: [] as string[],
       allocations_updated: 0,
-      errors: [] as any[],
+      errors: [] as unknown[],
     };
 
     // Sync each user
@@ -145,7 +158,7 @@ export async function POST(request: NextRequest) {
           }
 
           // Get metric value from crm_incentive_metrics
-          const metricValue = (metrics as any)[metricName] || 0;
+          const metricValue = (metrics as unknown)[metricName] || 0;
 
           // Calculate new progress
           const newProgress = allocation.target_value > 0

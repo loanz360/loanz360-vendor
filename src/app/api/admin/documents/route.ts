@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Enrich with customer names
-    const customerIds = (docs || []).map((d: any) => d.customer_id).filter(Boolean)
+    const customerIds = (docs || []).map((d: Record<string, unknown>) => d.customer_id).filter(Boolean)
     let customerMap: Record<string, string> = {}
     if (customerIds.length > 0) {
       try {
@@ -66,7 +67,7 @@ export async function GET(request: NextRequest) {
           .select('id, full_name, unique_id')
           .in('id', customerIds)
         if (customers) {
-          customers.forEach((c: any) => {
+          customers.forEach((c: unknown) => {
             customerMap[c.id] = `${c.full_name} (${c.unique_id})`
           })
         }
@@ -87,7 +88,7 @@ export async function GET(request: NextRequest) {
       })
     } catch { /* ignore */ }
 
-    const enriched = (docs || []).map((d: any) => ({
+    const enriched = (docs || []).map((d: Record<string, unknown>) => ({
       ...d,
       customerName: customerMap[d.customer_id] || 'Unknown Customer',
       name: d.document_type?.replace(/_/g, ' ') || 'Document',
@@ -116,7 +117,17 @@ export async function PATCH(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      id: z.string().uuid().optional(),
+
+      action: z.string().optional(),
+
+      rejection_reason: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { id, action, rejection_reason } = body
 
@@ -124,7 +135,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'id and action required' }, { status: 400 })
     }
 
-    const updateData: any = { updated_at: new Date().toISOString() }
+    const updateData: Record<string, unknown> = { updated_at: new Date().toISOString() }
     if (action === 'verify') {
       updateData.document_status = 'VERIFIED'
       updateData.verification_date = new Date().toISOString()

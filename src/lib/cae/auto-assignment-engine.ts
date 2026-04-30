@@ -154,7 +154,7 @@ export class AutoAssignmentEngine {
 
       // 5. Get current workload for each BDE
       const bdeInfoList: BDEInfo[] = await Promise.all(
-        bdes.map(async (bde: any) => {
+        bdes.map(async (bde: unknown) => {
           const workload = await this.getBDEWorkload(bde.id)
           return {
             id: bde.id,
@@ -583,7 +583,7 @@ export class AutoAssignmentEngine {
         .eq('sub_role', 'BDE')
         .eq('employee_status', 'ACTIVE')
 
-      const workloadPromises = (bdes || []).map(async (bde: any) => {
+      const workloadPromises = (bdes || []).map(async (bde: unknown) => {
         const { count } = await this.supabase
           .from('partner_leads')
           .select('id', { count: 'exact', head: true })

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -12,7 +13,25 @@ const supabase = createClient(
 // POST - Duplicate a form configuration
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      id: z.string().uuid(),
+
+      new_name: z.string().optional(),
+
+      target_category_id: z.string().uuid().optional(),
+
+      target_loan_type_id: z.string().uuid().optional(),
+
+      target_profile_id: z.string().uuid().optional(),
+
+      target_sub_profile_id: z.string().uuid().optional(),
+
+      created_by: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const { id, new_name, target_category_id, target_loan_type_id, target_profile_id, target_sub_profile_id, created_by } = body;
 

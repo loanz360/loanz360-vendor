@@ -93,7 +93,7 @@ export async function POST(
     }
 
     // Evaluate each participant
-    const evaluationCriteria = contest.evaluation_criteria as any
+    const evaluationCriteria = contest.evaluation_criteria as unknown
     const evaluatedParticipants = []
 
     for (const participant of participants) {
@@ -198,10 +198,9 @@ export async function POST(
  * Fetches real performance data from database tables
  */
 async function calculateParticipantScore(
-  supabase: any,
+  supabase: unknown,
   partnerId: string,
-  evaluationCriteria: any
-): Promise<number> {
+  evaluationCriteria: unknown): Promise<number> {
   try {
     const metrics = evaluationCriteria.metrics || []
     let totalScore = 0
@@ -236,7 +235,7 @@ async function calculateParticipantScore(
             .in('application_status', ['APPROVED', 'DISBURSED'])
 
           if (loans && loans.length > 0) {
-            metricValue = loans.reduce((sum: number, loan: any) => {
+            metricValue = loans.reduce((sum: number, loan: unknown) => {
               // Check if actually disbursed
               const disbursed = loan.disbursement_details?.disbursed_amount || loan.loan_amount
               return sum + parseFloat(disbursed || 0)
@@ -323,7 +322,7 @@ async function calculateParticipantScore(
             .in('application_status', ['APPROVED', 'DISBURSED'])
 
           if (loans && loans.length > 0) {
-            const total = loans.reduce((sum: number, loan: any) => sum + parseFloat(loan.loan_amount || 0), 0)
+            const total = loans.reduce((sum: number, loan: unknown) => sum + parseFloat(loan.loan_amount || 0), 0)
             metricValue = total / loans.length
           }
           break

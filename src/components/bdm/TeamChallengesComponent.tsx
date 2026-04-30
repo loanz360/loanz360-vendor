@@ -116,7 +116,7 @@ export function TeamChallengesComponent({ status = 'active' }: TeamChallengesPro
             </p>
           </div>
         ) : (
-          challenges.map((challenge: any) => {
+          challenges.map((challenge: unknown) => {
             const progress = calculateProgress(
               challenge.current_value || 0,
               challenge.target_value || 0
@@ -187,9 +187,9 @@ export function TeamChallengesComponent({ status = 'active' }: TeamChallengesPro
                     </h4>
                     <div className="space-y-2">
                       {challenge.participants
-                        .sort((a: any, b: any) => (b.current_value || 0) - (a.current_value || 0))
+                        .sort((a: unknown, b: unknown) => (b.current_value || 0) - (a.current_value || 0))
                         .slice(0, 5)
-                        .map((participant: any, index: number) => {
+                        .map((participant: unknown, index: number) => {
                           const participantProgress = calculateProgress(
                             participant.current_value || 0,
                             challenge.target_value || 0
@@ -288,7 +288,7 @@ export function TeamChallengesComponent({ status = 'active' }: TeamChallengesPro
             </div>
             <p className="text-2xl font-bold">
               {challenges.reduce(
-                (sum: number, c: any) => sum + (c.participants?.length || 0),
+                (sum: number, c: unknown) => sum + (c.participants?.length || 0),
                 0
               )}
             </p>
@@ -299,7 +299,7 @@ export function TeamChallengesComponent({ status = 'active' }: TeamChallengesPro
               <span className="text-sm font-medium">Completed</span>
             </div>
             <p className="text-2xl font-bold">
-              {challenges.filter((c: any) => c.status === 'completed').length}
+              {challenges.filter((c: unknown) => c.status === 'completed').length}
             </p>
           </div>
         </div>

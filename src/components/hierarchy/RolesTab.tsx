@@ -144,7 +144,7 @@ export default function RolesTab() {
 
       const method = editingRole ? 'PUT' : 'POST';
 
-      const payload: any = {
+      const payload: Record<string, unknown> = {
         role_name: formData.role_name,
         role_code: formData.role_code,
         description: formData.description || undefined,

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
@@ -44,7 +45,25 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      reviewType: z.string().optional(),
+
+      reviewerId: z.string().uuid().optional(),
+
+      reviewId: z.string().uuid(),
+
+      status: z.string().optional(),
+
+      findings: z.array(z.unknown()).optional(),
+
+      completionNotes: z.string().optional(),
+
+      signOffBy: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { reviewType, reviewerId } = body
 
@@ -73,7 +92,21 @@ export async function POST(request: NextRequest) {
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      completionNotes: z.string().optional(),
+
+      signOffBy: z.string().optional(),
+
+      findings: z.string().optional(),
+
+      status: z.string().optional(),
+
+      reviewId: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { reviewId, status, findings, completionNotes, signOffBy } = body
 
@@ -86,7 +119,7 @@ export async function PATCH(request: NextRequest) {
 
     const supabase = createSupabaseAdmin()
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (status) updateData.status = status
     if (findings) {
       updateData.findings = findings

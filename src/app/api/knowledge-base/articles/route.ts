@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -67,7 +68,43 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      title: z.string().optional(),
+
+
+      slug: z.string().optional(),
+
+
+      content: z.string().optional(),
+
+
+      excerpt: z.string().optional(),
+
+
+      category_id: z.string().uuid().optional(),
+
+
+      tags: z.array(z.unknown()).optional(),
+
+
+      status: z.string().optional(),
+
+
+      visibility: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       title,
@@ -128,7 +165,19 @@ export async function PATCH(request: NextRequest) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      action: z.string().optional(),
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, action, ...updates } = body
 

@@ -266,7 +266,7 @@ export function AdvancedSearch({
     }, 300)
   }
 
-  const handleFilterChange = (key: keyof SearchFilters, value: any) => {
+  const handleFilterChange = (key: keyof SearchFilters, value: unknown) => {
     const newFilters = { ...filters, [key]: value }
     setFilters(newFilters)
     search(newFilters)
@@ -595,7 +595,7 @@ export function AdvancedSearch({
               <div className="flex items-center gap-2">
                 <Select
                   value={filters.sortBy}
-                  onValueChange={(value: any) => handleFilterChange('sortBy', value)}
+                  onValueChange={(value: unknown) => handleFilterChange('sortBy', value)}
                 >
                   <SelectTrigger className="w-28 h-8">
                     <SelectValue />

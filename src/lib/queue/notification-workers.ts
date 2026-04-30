@@ -60,7 +60,7 @@ class InMemoryWorker<T> {
 
   on(event: 'completed', handler: (job: Job<T>) => void): void
   on(event: 'failed', handler: (job: Job<T> | undefined, err: Error) => void): void
-  on(event: 'completed' | 'failed', handler: any): void {
+  on(event: 'completed' | 'failed', handler: unknown): void {
     if (event === 'completed') {
       this.eventHandlers.completed.push(handler)
     } else if (event === 'failed') {

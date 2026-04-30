@@ -291,7 +291,7 @@ export class UniversalCAMGenerator {
     return `CAM-${timestamp}-${random}`
   }
 
-  private buildDocumentStatus(documents: any[], loanType: string): DocumentStatus {
+  private buildDocumentStatus(documents: unknown[], loanType: string): DocumentStatus {
     // Define mandatory documents by loan type
     const mandatoryDocsByType: Record<string, string[]> = {
       'HOME_LOAN': ['PAN', 'AADHAAR', 'INCOME_PROOF', 'BANK_STATEMENT', 'PROPERTY_DOCUMENTS', 'EMPLOYMENT_PROOF'],

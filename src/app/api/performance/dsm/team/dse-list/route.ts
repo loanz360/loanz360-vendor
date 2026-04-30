@@ -218,7 +218,7 @@ export async function GET(request: NextRequest) {
 /**
  * Aggregate DSE daily metrics for the month
  */
-function aggregateDSEMetrics(dailyMetrics: any[]) {
+function aggregateDSEMetrics(dailyMetrics: unknown[]) {
   if (!dailyMetrics || dailyMetrics.length === 0) {
     return {
       field_visits: 0,

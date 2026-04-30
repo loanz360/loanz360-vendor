@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Convert to JSON
-    const rawData: any[] = []
+    const rawData: unknown[] = []
     const headers: string[] = []
 
     worksheet.eachRow((row, rowNumber) => {
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
         })
       } else {
         // Convert data rows to objects
-        const rowData: any = {}
+        const rowData: Record<string, unknown> = {}
         row.eachCell((cell, colNumber) => {
           const header = headers[colNumber - 1]
           if (header) {
@@ -125,17 +125,17 @@ export async function POST(request: NextRequest) {
     const normalizedData: PayoutRow[] = []
     const validationErrors: ValidationError[] = []
 
-    rawData.forEach((row: any, index: number) => {
+    rawData.forEach((row: unknown, index: number) => {
       const rowNumber = index + 2 // +2 because Excel rows start at 1 and first row is header
 
       // Normalize keys to lowercase
-      const normalizedRow: any = {}
+      const normalizedRow: Record<string, unknown> = {}
       Object.keys(row).forEach(key => {
         normalizedRow[key.toLowerCase().trim()] = row[key]
       })
 
       // Map to expected column names
-      const mappedRow: any = {}
+      const mappedRow: Record<string, unknown> = {}
 
       for (const [expectedCol, alternates] of Object.entries(alternateColumnNames)) {
         let found = false

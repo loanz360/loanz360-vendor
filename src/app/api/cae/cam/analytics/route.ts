@@ -196,7 +196,7 @@ export async function GET(request: NextRequest) {
     const trend = calculateTrend(camList, period)
 
     // Get top performers (only for full access)
-    let topPerformers: any[] | undefined
+    let topPerformers: unknown[] | undefined
     if (accessLevel === 'FULL') {
       topPerformers = await getTopPerformers(supabase, dateRange)
     }
@@ -233,7 +233,7 @@ export async function GET(request: NextRequest) {
 }
 
 async function getAccessLevel(
-  supabase: any,
+  supabase: unknown,
   userId: string
 ): Promise<'FULL' | 'BDE_ONLY' | 'NONE'> {
   // Check super admin
@@ -309,7 +309,7 @@ function getDateRange(period: Period): { start: Date; end: Date | null } {
   return { start, end: now }
 }
 
-function calculateSummary(cams: any[]) {
+function calculateSummary(cams: unknown[]) {
   const total = cams.length
 
   const approved = cams.filter(c =>
@@ -370,7 +370,7 @@ function calculateSummary(cams: any[]) {
   }
 }
 
-function calculateByStatus(cams: any[]) {
+function calculateByStatus(cams: unknown[]) {
   const total = cams.length
   const statusCounts: Record<string, number> = {}
 
@@ -388,7 +388,7 @@ function calculateByStatus(cams: any[]) {
     .sort((a, b) => b.count - a.count)
 }
 
-function calculateByRiskGrade(cams: any[]) {
+function calculateByRiskGrade(cams: unknown[]) {
   const total = cams.length
   const gradeCounts: Record<string, { count: number; creditScores: number[] }> = {}
 
@@ -418,7 +418,7 @@ function calculateByRiskGrade(cams: any[]) {
     })
 }
 
-function calculateByRecommendation(cams: any[]) {
+function calculateByRecommendation(cams: unknown[]) {
   const total = cams.length
   const recCounts: Record<string, number> = {}
 
@@ -436,7 +436,7 @@ function calculateByRecommendation(cams: any[]) {
     .sort((a, b) => b.count - a.count)
 }
 
-async function calculateByLoanType(supabase: any, cams: any[]) {
+async function calculateByLoanType(supabase: unknown, cams: unknown[]) {
   // Get lead IDs to fetch loan types
   const leadIds = cams.map(c => c.lead_id).filter(Boolean)
 
@@ -449,7 +449,7 @@ async function calculateByLoanType(supabase: any, cams: any[]) {
     .select('id, loan_type, required_loan_amount')
     .in('id', leadIds)
 
-  const leadMap = new Map(leads?.map((l: any) => [l.id, l]) || [])
+  const leadMap = new Map(leads?.map((l: unknown) => [l.id, l]) || [])
 
   const loanTypeStats: Record<string, {
     count: number
@@ -485,7 +485,7 @@ async function calculateByLoanType(supabase: any, cams: any[]) {
     .sort((a, b) => b.count - a.count)
 }
 
-function calculateTrend(cams: any[], period: Period) {
+function calculateTrend(cams: unknown[], period: Period) {
   const groupBy = period === 'today' ? 'hour' : period === 'week' ? 'day' : 'week'
 
   const groups: Record<string, { total: number; approved: number; rejected: number; pending: number }> = {}
@@ -528,7 +528,7 @@ function calculateTrend(cams: any[], period: Period) {
 }
 
 async function getTopPerformers(
-  supabase: any,
+  supabase: unknown,
   dateRange: { start: Date; end: Date | null }
 ) {
   const { data: approvalLogs } = await supabase
@@ -547,7 +547,7 @@ async function getTopPerformers(
     approved: number
   }> = {}
 
-  approvalLogs.forEach((log: any) => {
+  approvalLogs.forEach((log: unknown) => {
     if (!userStats[log.action_by]) {
       userStats[log.action_by] = { name: log.action_by_name, total: 0, approved: 0 }
     }
@@ -569,7 +569,7 @@ async function getTopPerformers(
 }
 
 async function getRecentApprovals(
-  supabase: any,
+  supabase: unknown,
   accessLevel: 'FULL' | 'BDE_ONLY',
   userId: string,
   limit: number
@@ -605,15 +605,15 @@ async function getRecentApprovals(
   }
 
   // Get approver names
-  const approverIds = cams.map((c: any) => c.approved_by).filter(Boolean)
+  const approverIds = cams.map((c: unknown) => c.approved_by).filter(Boolean)
   const { data: users } = await supabase
     .from('users')
     .select('id, full_name')
     .in('id', approverIds)
 
-  const userMap = new Map(users?.map((u: any) => [u.id, u.full_name]) || [])
+  const userMap = new Map(users?.map((u: unknown) => [u.id, u.full_name]) || [])
 
-  return cams.map((cam: any) => ({
+  return cams.map((cam: unknown) => ({
     cam_id: cam.cam_id,
     lead_number: cam.partner_leads?.lead_id || '',
     customer_name: cam.partner_leads?.customer_name || '',
@@ -625,7 +625,7 @@ async function getRecentApprovals(
 }
 
 async function getRecentRejections(
-  supabase: any,
+  supabase: unknown,
   accessLevel: 'FULL' | 'BDE_ONLY',
   userId: string,
   limit: number
@@ -661,15 +661,15 @@ async function getRecentRejections(
   }
 
   // Get rejector names
-  const rejectorIds = cams.map((c: any) => c.rejected_by).filter(Boolean)
+  const rejectorIds = cams.map((c: unknown) => c.rejected_by).filter(Boolean)
   const { data: users } = await supabase
     .from('users')
     .select('id, full_name')
     .in('id', rejectorIds)
 
-  const userMap = new Map(users?.map((u: any) => [u.id, u.full_name]) || [])
+  const userMap = new Map(users?.map((u: unknown) => [u.id, u.full_name]) || [])
 
-  return cams.map((cam: any) => ({
+  return cams.map((cam: unknown) => ({
     cam_id: cam.cam_id,
     lead_number: cam.partner_leads?.lead_id || '',
     customer_name: cam.partner_leads?.customer_name || '',

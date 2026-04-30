@@ -28,7 +28,7 @@ const updateSchema = z.object({
 /**
  * Helper to verify the DSE owns this deal
  */
-async function verifyDealOwnership(supabase: any, dealId: string, userId: string) {
+async function verifyDealOwnership(supabase: unknown, dealId: string, userId: string) {
   const { data: deal, error } = await supabase
     .from('crm_deals')
     .select('id, stage, status')

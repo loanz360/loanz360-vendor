@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
 
     // Mode: Get single channel config
     if (mode === 'config') {
-      const channelType = searchParams.get('channel_type') as any
+      const channelType = searchParams.get('channel_type') as unknown
       if (!channelType) {
         return NextResponse.json({ success: false, error: 'channel_type required' }, { status: 400 })
       }
@@ -99,7 +100,69 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action: z.string().optional(),
+
+      channel_type: z.string(),
+
+      channel_id: z.string().uuid().optional(),
+
+      sender_id: z.string().uuid().optional(),
+
+      sender_name: z.string().optional(),
+
+      sender_email: z.string().email().optional(),
+
+      sender_phone: z.string().optional(),
+
+      subject: z.string().optional(),
+
+      content: z.string().optional(),
+
+      attachments: z.array(z.unknown()).optional(),
+
+      metadata: z.record(z.unknown()).optional(),
+
+      ticket_id: z.string().uuid().optional(),
+
+      ticket_source: z.string().optional(),
+
+      recipient_id: z.string().uuid().optional(),
+
+      recipient_email: z.string().email().optional(),
+
+      recipient_phone: z.string().optional(),
+
+      template_id: z.string().uuid().optional(),
+
+      template_data: z.string().optional(),
+
+      visitor_id: z.string().uuid(),
+
+      visitor_name: z.string().optional(),
+
+      visitor_email: z.string().email().optional(),
+
+      session_id: z.string().uuid(),
+
+      agent_id: z.string().uuid().optional(),
+
+      agent_name: z.string().optional(),
+
+      sender_type: z.string().optional(),
+
+      message: z.string().optional(),
+
+      message_type: z.string().optional(),
+
+      attachment_url: z.string().optional(),
+
+      create_ticket: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action } = body
 
@@ -270,7 +333,16 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      channel_type: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { channel_type, ...updates } = body
 

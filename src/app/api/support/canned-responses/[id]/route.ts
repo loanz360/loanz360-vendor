@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -107,9 +108,21 @@ export async function PATCH(
     }
 
     // Parse update data
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      title: z.string().optional(),
+
+      category: z.string().optional(),
+
+      response_text: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
-    const updates: any = {}
+    const updates: Record<string, unknown> = {}
 
     if (body.title !== undefined) updates.title = body.title
     if (body.category !== undefined) updates.category = body.category

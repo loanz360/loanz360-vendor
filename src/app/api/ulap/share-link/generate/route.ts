@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * API Route: ULAP Share Link - Generate
@@ -34,7 +35,29 @@ function generateTraceToken(): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      source_type: z.string().optional(),
+
+      source_user_id: z.string().uuid().optional(),
+
+      source_user_name: z.string().optional(),
+
+      source_partner_id: z.string().uuid().optional(),
+
+      source_partner_name: z.string().optional(),
+
+      expiry_days: z.string().optional(),
+
+      customer_name: z.string().optional(),
+
+      customer_mobile: z.string().optional(),
+
+      loan_type: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const supabase = await createClient()

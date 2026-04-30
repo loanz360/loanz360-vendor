@@ -9,7 +9,7 @@ interface PerformanceMetric {
   startTime: number
   endTime?: number
   duration?: number
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 // Metrics storage
@@ -17,7 +17,7 @@ const metrics: PerformanceMetric[] = []
 const MAX_METRICS = 1000
 
 // Start a performance measurement
-export function startMeasure(name: string, metadata?: Record<string, any>): () => number {
+export function startMeasure(name: string, metadata?: Record<string, unknown>): () => number {
   const metric: PerformanceMetric = {
     name,
     startTime: Date.now(),
@@ -42,7 +42,7 @@ export function startMeasure(name: string, metadata?: Record<string, any>): () =
 export async function measureAsync<T>(
   name: string,
   fn: () => Promise<T>,
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): Promise<T> {
   const endMeasure = startMeasure(name, metadata)
   try {
@@ -241,7 +241,7 @@ export function createIntersectionObserver(
 }
 
 // Debounce utility for search and filters
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => any>(
   fn: T,
   delay: number
 ): (...args: Parameters<T>) => void {
@@ -254,7 +254,7 @@ export function debounce<T extends (...args: any[]) => any>(
 }
 
 // Throttle utility for scroll and resize handlers
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => any>(
   fn: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -273,7 +273,7 @@ export function throttle<T extends (...args: any[]) => any>(
 
 // Request batching for multiple file metadata fetches
 export class RequestBatcher<T, R> {
-  private queue: { key: T; resolve: (value: R) => void; reject: (error: any) => void }[] = []
+  private queue: { key: T; resolve: (value: R) => void; reject: (error: unknown) => void }[] = []
   private timeout: NodeJS.Timeout | null = null
 
   constructor(

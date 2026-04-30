@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth, checkPermission } from '@/lib/auth/employee-mgmt-auth'
@@ -104,7 +105,43 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      template_id: z.string().uuid().optional(),
+
+
+      employee_ids: z.array(z.unknown()).optional(),
+
+
+      target_period: z.string().optional(),
+
+
+      start_date: z.string().optional(),
+
+
+      end_date: z.string().optional(),
+
+
+      template_name: z.string().optional(),
+
+
+      sub_role: z.string().optional(),
+
+
+      department_id: z.string().uuid().optional(),
+
+
+      default_metrics: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate
@@ -198,7 +235,28 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      target_period: z.string().optional(),
+
+
+      end_date: z.string().optional(),
+
+
+      employee_ids: z.string().optional(),
+
+
+      template_id: z.string().optional(),
+
+
+      start_date: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { template_id, employee_ids, target_period, start_date, end_date } = body
 

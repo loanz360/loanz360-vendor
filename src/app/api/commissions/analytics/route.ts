@@ -194,8 +194,8 @@ export async function GET(request: NextRequest) {
     const convertedLeads = currentLeads.filter(l => l.status === 'converted' || l.status === 'disbursed').length
     const conversionRate = currentLeads.length > 0 ? (convertedLeads / currentLeads.length) * 100 : 0
 
-    const prevTotalDisbursements = prevDisbursements.reduce((sum: number, d: any) => sum + (d.loan_amount || 0), 0)
-    const prevTotalCommission = prevDisbursements.reduce((sum: number, d: any) => sum + (d.commission_amount || 0), 0)
+    const prevTotalDisbursements = prevDisbursements.reduce((sum: number, d: unknown) => sum + (d.loan_amount || 0), 0)
+    const prevTotalCommission = prevDisbursements.reduce((sum: number, d: unknown) => sum + (d.commission_amount || 0), 0)
 
     const summary: AnalyticsSummary = {
       total_disbursements: totalDisbursements,
@@ -237,7 +237,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Calculate analytics by different dimensions
-function calculateDimensions(disbursements: any[]): AnalyticsByDimension {
+function calculateDimensions(disbursements: unknown[]): AnalyticsByDimension {
   // By Bank
   const bankMap = new Map<string, { disbursements: number; commission: number; lead_count: number; rates: number[] }>()
   // By Loan Type

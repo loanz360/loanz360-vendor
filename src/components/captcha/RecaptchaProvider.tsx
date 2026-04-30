@@ -27,8 +27,7 @@ interface RecaptchaProviderProps {
 
 declare global {
   interface Window {
-    grecaptcha: any
-  }
+    grecaptcha: unknown  }
 }
 
 export function RecaptchaProvider({ children, siteKey }: RecaptchaProviderProps) {

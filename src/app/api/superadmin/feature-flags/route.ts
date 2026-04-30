@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: Super Admin Feature Flags Management
  * GET    /api/superadmin/feature-flags  — List all flags
@@ -39,7 +40,31 @@ export async function GET() {
 // POST — Create a new feature flag
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      flag_key: z.string().optional(),
+
+      flag_name: z.string().optional(),
+
+      description: z.string().optional(),
+
+      portal: z.string().optional(),
+
+      category: z.string().optional(),
+
+      is_enabled: z.boolean().optional(),
+
+      rollout_percentage: z.number().optional(),
+
+      metadata: z.record(z.unknown()).optional(),
+
+      depends_on: z.string().optional(),
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const supabase = createAdminClient()
 
@@ -74,7 +99,29 @@ export async function POST(request: NextRequest) {
 // PATCH — Update an existing feature flag
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      is_enabled: z.boolean().optional(),
+
+      category: z.string().optional(),
+
+      metadata: z.string().optional(),
+
+      depends_on: z.string().optional(),
+
+      flag_name: z.string().optional(),
+
+      rollout_percentage: z.string().optional(),
+
+      description: z.string().optional(),
+
+      portal: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     if (!body.id) {
       return NextResponse.json(

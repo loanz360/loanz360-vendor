@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     const sortColumn = validateSortColumn(searchParams.get('sortBy'), [...VALID_SORT_COLUMNS], 'created_at')
     const sortOrder = searchParams.get('sortOrder') === 'asc' ? 'asc' : 'desc'
 
-    const results: any[] = []
+    const results: unknown[] = []
     const warnings: string[] = []
     let totalMyDirect = 0
     let totalFromPartners = 0
@@ -87,8 +87,8 @@ export async function GET(request: NextRequest) {
         .eq('recruited_by_cpe', user.id)
 
       if (partners && partners.length > 0) {
-        partnerUserIds = partners.map((p: any) => p.user_id).filter(Boolean)
-        partnerMap = new Map(partners.map((p: any) => [p.user_id, p]))
+        partnerUserIds = partners.map((p: unknown) => p.user_id).filter(Boolean)
+        partnerMap = new Map(partners.map((p: unknown) => [p.user_id, p]))
 
         if (partnerUserIds.length > 0) {
           const { count: rawPlCount, error: rawPlErr } = await supabase

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -61,7 +62,37 @@ export async function POST(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      candidate_id: z.string().uuid(),
+
+
+      interview_type: z.string().optional(),
+
+
+      scheduled_at: z.string(),
+
+
+      interviewer_name: z.string().optional(),
+
+
+      location: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { candidate_id, interview_type, scheduled_at, interviewer_name, location, notes } = body
     if (!candidate_id) return NextResponse.json({ success: false, error: 'Candidate ID required' }, { status: 400 })
@@ -132,7 +163,19 @@ export async function PATCH(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      status: z.string().optional(),
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id } = body
     if (!id) return NextResponse.json({ success: false, error: 'Interview ID required' }, { status: 400 })

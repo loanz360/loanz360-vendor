@@ -157,8 +157,8 @@ export interface EnhancedPartnerLead {
   loan_type?: string
   loan_amount?: number
   loan_purpose?: string
-  brief_form_data?: any
-  detailed_form_data?: any
+  brief_form_data?: Record<string, unknown>
+  detailed_form_data?: Record<string, unknown>
 
   // BDE assignment
   assigned_bde_id?: string
@@ -249,8 +249,7 @@ export interface BDENote {
   customer_response?: CustomerResponse
   next_follow_up_date?: string
   priority?: NotePriority
-  attachments?: any
-  created_at: string
+  attachments?: unknown  created_at: string
   updated_at: string
 }
 
@@ -297,7 +296,7 @@ export interface StatusHistory {
   edited_by_name?: string
   original_from_status?: string
   original_to_status?: string
-  change_metadata?: any
+  change_metadata?: Record<string, unknown>
   created_at: string
   updated_at: string
 }
@@ -342,8 +341,7 @@ export interface LeadDocument {
   encryption_key_id?: string
   thumbnail_s3_key?: string
   thumbnail_url?: string
-  metadata?: any
-  tags?: string[]
+  metadata?: unknown  tags?: string[]
   upload_ip?: string
   upload_user_agent?: string
   created_at: string
@@ -376,8 +374,7 @@ export interface CustomerProfileDocument {
   is_active: boolean
   replaced_by_id?: string
   replaced_at?: string
-  metadata?: any
-  created_at: string
+  metadata?: unknown  created_at: string
   updated_at: string
 }
 
@@ -431,7 +428,7 @@ export interface BriefFormRequest {
   loan_purpose?: string
 
   // Additional data
-  additional_data?: any
+  additional_data?: Record<string, unknown>
 }
 
 export interface BriefFormResponse {
@@ -488,7 +485,7 @@ export interface DetailedFormRequest {
   }>
 
   // Additional data
-  additional_data?: any
+  additional_data?: Record<string, unknown>
 }
 
 export interface DetailedFormResponse {

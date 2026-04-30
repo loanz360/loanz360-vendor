@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAuth, checkPermission } from '@/lib/auth/employee-mgmt-auth'
@@ -34,7 +35,28 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_name: z.string().optional(),
+
+
+      employee_id: z.string().uuid().optional(),
+
+
+      work_email: z.string().email().optional(),
+
+
+      mobile_number: z.string().min(10).optional(),
+
+
+      temporary_password: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { employee_name, employee_id, work_email, mobile_number, temporary_password } = body
 

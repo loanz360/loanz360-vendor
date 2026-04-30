@@ -133,7 +133,7 @@ export function FileDistribution({
           .not('department', 'is', null)
 
         const deptCounts: Record<string, number> = {}
-        deptData?.forEach((p: any) => {
+        deptData?.forEach((p: unknown) => {
           if (p.department) {
             deptCounts[p.department] = (deptCounts[p.department] || 0) + 1
           }
@@ -154,7 +154,7 @@ export function FileDistribution({
           .not('role', 'is', null)
 
         const roleCounts: Record<string, number> = {}
-        roleData?.forEach((p: any) => {
+        roleData?.forEach((p: unknown) => {
           if (p.role) {
             roleCounts[p.role] = (roleCounts[p.role] || 0) + 1
           }

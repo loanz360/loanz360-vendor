@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
@@ -35,7 +36,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_id: z.string().uuid(),
+
+
+      include_compensation: z.boolean().optional().default(true),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { employee_id, include_compensation = true } = body
 
@@ -87,7 +100,7 @@ export async function POST(request: NextRequest) {
       full_name: employee.full_name,
       present_address: employee.present_address,
       sub_role: employee.sub_role,
-      department_name: (employee as any).departments?.name,
+      department_name: (employee as unknown).departments?.name,
       date_of_joining: employee.date_of_joining,
       city: employee.city,
       state: employee.state,

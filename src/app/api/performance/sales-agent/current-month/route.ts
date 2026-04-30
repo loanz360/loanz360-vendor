@@ -236,7 +236,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function aggregateSalesAgentMetrics(dailyMetrics: any[]): any {
+function aggregateSalesAgentMetrics(dailyMetrics: unknown[]): unknown {
   if (dailyMetrics.length === 0) {
     return {
       total_calls: 0,
@@ -300,7 +300,7 @@ function aggregateSalesAgentMetrics(dailyMetrics: any[]): any {
   }
 }
 
-function calculateSalesAgentPerformanceScore(current: any, targets: SalesAgentMonthlyTargets): number {
+function calculateSalesAgentPerformanceScore(current: unknown, targets: SalesAgentMonthlyTargets): number {
   const weights = {
     calls: 0.10,
     call_duration: 0.05,

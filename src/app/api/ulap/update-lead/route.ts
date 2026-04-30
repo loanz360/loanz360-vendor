@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * API Route: ULAP Lead Update (Phase 2)
@@ -12,7 +13,19 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      lead_id: z.string().uuid(),
+
+      is_complete: z.boolean().optional(),
+
+      property_data: z.string().optional(),
+
+      document_data: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
 
     // Required: lead_id to update

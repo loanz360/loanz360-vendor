@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Email Monitoring API Routes
@@ -114,7 +115,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      providerId: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const { action, providerId } = body;
 

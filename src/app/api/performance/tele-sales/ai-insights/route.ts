@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function aggregateMetrics(dailyMetrics: any[]): any {
+function aggregateMetrics(dailyMetrics: unknown[]): unknown {
   if (dailyMetrics.length === 0) return getEmptyMetrics()
 
   return dailyMetrics.reduce(
@@ -166,7 +166,7 @@ function getEmptyMetrics() {
   }
 }
 
-function calculateOrgAverages(allMetrics: any[]): any {
+function calculateOrgAverages(allMetrics: unknown[]): unknown {
   if (allMetrics.length === 0) return {}
 
   const userMetrics: Record<string, any[]> = {}
@@ -186,10 +186,10 @@ function calculateOrgAverages(allMetrics: any[]): any {
 }
 
 function generateInsights(
-  metrics: any,
-  targets: any,
-  orgAverages: any,
-  dailyMetrics: any[],
+  metrics: unknown,
+  targets: unknown,
+  orgAverages: unknown,
+  dailyMetrics: unknown[],
   userName: string
 ): AIInsight[] {
   const insights: AIInsight[] = []

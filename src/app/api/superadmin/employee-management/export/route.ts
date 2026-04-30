@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     // Get accessible departments
     const accessibleDepartments = await getAccessibleDepartments(auth.userId!, auth.role!)
 
-    let data: any[] = []
+    let data: unknown[] = []
     let filename = 'export'
 
     switch (exportType) {
@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
           .is('deleted_at', null)
 
         // Aggregate by department and role
-        const analytics: Record<string, any> = {}
+        const analytics: Record<string, unknown> = {}
 
         employees?.forEach(emp => {
           const dept = emp.departments?.name || 'Unknown'

@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 
     // Handle missing table gracefully - return empty analytics
     let tickets = ticketsData || []
-    let messages: any[] = []
+    let messages: unknown[] = []
 
     if (ticketsError) {
       apiLogger.error('Error fetching tickets (table may not exist yet)', ticketsError)
@@ -149,7 +149,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper function to calculate response times
-function calculateResponseTimes(tickets: any[], messages: any[]) {
+function calculateResponseTimes(tickets: unknown[], messages: unknown[]) {
   const messagesByTicket = messages.reduce((acc, msg) => {
     if (!acc[msg.ticket_id]) acc[msg.ticket_id] = []
     acc[msg.ticket_id].push(msg)
@@ -188,7 +188,7 @@ function calculateResponseTimes(tickets: any[], messages: any[]) {
 }
 
 // Helper function to calculate trends
-function calculateTrends(tickets: any[]) {
+function calculateTrends(tickets: unknown[]) {
   const today = new Date()
   const last7Days = []
   const last30Days = []

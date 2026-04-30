@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate file type
-    if (!CONTEST_UPLOAD_CONFIG.ALLOWED_MIME_TYPES.includes(file.type as any)) {
+    if (!CONTEST_UPLOAD_CONFIG.ALLOWED_MIME_TYPES.includes(file.type as unknown)) {
       return NextResponse.json(
         { error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed' },
         { status: 400 }

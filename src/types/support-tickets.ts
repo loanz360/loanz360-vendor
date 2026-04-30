@@ -344,7 +344,7 @@ export interface TicketActivityLog {
   field_changed: string | null
   old_value: string | null
   new_value: string | null
-  metadata: Record<string, any> | null
+  metadata: Record<string, unknown> | null
   created_at: string
 }
 

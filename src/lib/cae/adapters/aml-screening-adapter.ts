@@ -541,7 +541,7 @@ export class AMLScreeningAdapter {
     }
   }
 
-  private parseScreeningResponse(response: any, screeningId: string): ScreeningResult {
+  private parseScreeningResponse(response: unknown, screeningId: string): ScreeningResult {
     if (response.error) {
       return {
         success: false,
@@ -564,10 +564,10 @@ export class AMLScreeningAdapter {
     }
 
     const matches = response.data?.hits || []
-    const pepMatches = matches.filter((m: any) => m.types?.includes('pep')).length
-    const sanctionsMatches = matches.filter((m: any) => m.types?.includes('sanction')).length
-    const adverseMediaMatches = matches.filter((m: any) => m.types?.includes('adverse-media')).length
-    const watchlistMatches = matches.filter((m: any) => m.types?.includes('warning')).length
+    const pepMatches = matches.filter((m: unknown) => m.types?.includes('pep')).length
+    const sanctionsMatches = matches.filter((m: unknown) => m.types?.includes('sanction')).length
+    const adverseMediaMatches = matches.filter((m: unknown) => m.types?.includes('adverse-media')).length
+    const watchlistMatches = matches.filter((m: unknown) => m.types?.includes('warning')).length
 
     let riskLevel: RiskLevel = 'LOW'
     let recommendation: 'APPROVE' | 'REVIEW' | 'REJECT' | 'ENHANCED_DUE_DILIGENCE' = 'APPROVE'
@@ -601,8 +601,8 @@ export class AMLScreeningAdapter {
     }
   }
 
-  private parseMatches(hits: any[]): MatchedEntity[] {
-    return hits.map((hit: any) => ({
+  private parseMatches(hits: unknown[]): MatchedEntity[] {
+    return hits.map((hit: unknown) => ({
       entity_id: hit.id || hit.doc?.id,
       match_score: hit.match_score || hit.score || 0,
       matched_name: hit.doc?.name || hit.name,
@@ -615,7 +615,7 @@ export class AMLScreeningAdapter {
         full_name: hit.doc?.name,
         aliases: hit.doc?.aka || [],
         date_of_birth: hit.doc?.fields?.date_of_birth?.[0]?.value,
-        nationality: hit.doc?.fields?.nationality?.map((n: any) => n.value) || [],
+        nationality: hit.doc?.fields?.nationality?.map((n: unknown) => n.value) || [],
         country: hit.doc?.fields?.country_codes || []
       }
     }))

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -136,7 +137,49 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      entityId: z.string().uuid(),
+
+
+      email: z.string().email().optional(),
+
+
+      mobile: z.string().min(10).optional(),
+
+
+      fullName: z.string().optional(),
+
+
+      roleKey: z.string().optional(),
+
+
+      roleName: z.string().optional(),
+
+
+      canSignDocuments: z.boolean().optional().default(false),
+
+
+      canApplyForLoans: z.boolean().optional().default(false),
+
+
+      canManageEntity: z.boolean().optional().default(false),
+
+
+      shareholdingPercentage: z.string().optional(),
+
+
+      personalMessage: z.string().optional(),
+
+
+      expiresInDays: z.number().optional().default(7),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       entityId,

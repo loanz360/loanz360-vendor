@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
     const { data: previousMeetings } = await previousMeetingsQuery
 
     // Fetch notes from previous meetings
-    let previousNotes: any[] = []
+    let previousNotes: unknown[] = []
     if (previousMeetings && previousMeetings.length > 0) {
       const meetingIds = previousMeetings.map(m => m.id)
       const { data: notes } = await supabase

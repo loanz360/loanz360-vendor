@@ -181,8 +181,7 @@ export async function getCachedNotification(notificationId: string): Promise<any
  */
 export async function setCachedNotification(
   notificationId: string,
-  notification: any
-): Promise<void> {
+  notification: unknown): Promise<void> {
   try {
     const redis = await getRedisClient()
     const key = getCacheKey(CACHE_PREFIXES.NOTIFICATION_DETAIL, notificationId)
@@ -236,7 +235,7 @@ export async function getCachedTemplates(): Promise<any[] | null> {
 /**
  * Set templates in cache
  */
-export async function setCachedTemplates(templates: any[]): Promise<void> {
+export async function setCachedTemplates(templates: unknown[]): Promise<void> {
   try {
     const redis = await getRedisClient()
     const key = CACHE_PREFIXES.TEMPLATE_LIST
@@ -296,8 +295,7 @@ export async function getCachedAnalyticsStats(
 export async function setCachedAnalyticsStats(
   startDate: string,
   endDate: string,
-  stats: any
-): Promise<void> {
+  stats: unknown): Promise<void> {
   try {
     const redis = await getRedisClient()
     const key = getCacheKey(CACHE_PREFIXES.ANALYTICS_STATS, startDate, endDate)
@@ -330,7 +328,7 @@ export async function getCachedTrendingNotifications(): Promise<any[] | null> {
 /**
  * Set trending notifications in cache
  */
-export async function setCachedTrendingNotifications(notifications: any[]): Promise<void> {
+export async function setCachedTrendingNotifications(notifications: unknown[]): Promise<void> {
   try {
     const redis = await getRedisClient()
     const key = CACHE_PREFIXES.ANALYTICS_TRENDING

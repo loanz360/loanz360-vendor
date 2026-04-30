@@ -120,7 +120,13 @@ export async function POST(request: NextRequest) {
 
   try {
     // Parse and validate request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const parseResult = createWebhookSchema.safeParse(body)
 
@@ -212,7 +218,13 @@ export async function PUT(request: NextRequest) {
   const { user, supabase, requestId } = authResult.context
 
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, ...updateData } = body
 

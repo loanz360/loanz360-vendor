@@ -56,7 +56,7 @@ const customerSchema = z.object({
 })
 
 // Helper function to verify DSM role and get team members
-async function verifyDSMRole(supabase: any, userId: string) {
+async function verifyDSMRole(supabase: unknown, userId: string) {
   const { data: profile, error } = await supabase
     .from('users')
     .select('role, sub_role')
@@ -75,7 +75,7 @@ async function verifyDSMRole(supabase: any, userId: string) {
 }
 
 // Helper function to get DSM's team member IDs
-async function getTeamMemberIds(supabase: any, dsmUserId: string) {
+async function getTeamMemberIds(supabase: unknown, dsmUserId: string) {
   const { data: teamMembers, error } = await supabase
     .from('users')
     .select('id')
@@ -204,7 +204,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform data to hide phone numbers and flatten DSE info
-    const transformedCustomers = customers?.map((customer: any) => {
+    const transformedCustomers = customers?.map((customer: unknown) => {
       const { dse, primary_mobile, alternate_mobile, whatsapp_number, landline, ...rest } = customer
       return {
         ...rest,

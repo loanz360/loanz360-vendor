@@ -270,7 +270,7 @@ async function getBDESummaryHandler(request: NextRequest, bdeId: string) {
           avgDailyConversions: parseFloat(avgDailyConversions.toFixed(2)),
           avgDailyRevenue: parseFloat(avgDailyRevenue.toFixed(2)),
         },
-        badges: earnedBadges?.map((eb: any) => ({
+        badges: earnedBadges?.map((eb: unknown) => ({
           id: eb.badge_id,
           name: eb.achievement_badges?.badge_name,
           icon: eb.achievement_badges?.icon,

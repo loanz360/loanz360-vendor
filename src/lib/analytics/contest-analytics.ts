@@ -230,7 +230,7 @@ export async function getLeaderboardChanges(contestId: string): Promise<Leaderbo
 
   for (const current of currentLeaderboard || []) {
     const previous = previousLeaderboard.find(
-      (p: any) => p.partner_id === current.partner_id
+      (p: unknown) => p.partner_id === current.partner_id
     )
 
     if (previous && previous.rank !== current.current_rank) {
@@ -253,7 +253,7 @@ export async function getLeaderboardChanges(contestId: string): Promise<Leaderbo
 
   // Count new entries and dropouts
   const currentIds = new Set((currentLeaderboard || []).map((p) => p.partner_id))
-  const previousIds = new Set(previousLeaderboard.map((p: any) => p.partner_id))
+  const previousIds = new Set(previousLeaderboard.map((p: unknown) => p.partner_id))
 
   const new_entries = [...currentIds].filter((id) => !previousIds.has(id)).length
   const dropped_out = [...previousIds].filter((id) => !currentIds.has(id)).length

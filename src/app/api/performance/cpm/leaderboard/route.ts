@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
     try {
       for (const cpm of allCPMs) {
         let targets = null
-        let dailyMetrics: any[] = []
+        let dailyMetrics: unknown[] = []
 
         try {
           const { data, error } = await supabase

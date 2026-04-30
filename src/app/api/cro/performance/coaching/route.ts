@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
       .split('T')[0]
 
     const recentMetrics = (dailyMetrics || []).filter(
-      (d: any) => d.date >= sevenDaysAgo
+      (d: Record<string, unknown>) => d.date >= sevenDaysAgo
     )
 
     // Calculate area scores
@@ -170,9 +170,9 @@ interface AreaScores {
 }
 
 function calculateAreaScores(
-  dailyMetrics: any[],
-  targets: any,
-  recentMetrics: any[]
+  dailyMetrics: unknown[],
+  targets: unknown,
+  recentMetrics: unknown[]
 ): AreaScores {
   if (dailyMetrics.length === 0) {
     return { call_skills: 0, lead_management: 0, deal_closing: 0, time_management: 0 }
@@ -181,9 +181,9 @@ function calculateAreaScores(
   const days = dailyMetrics.length
 
   // --- Call Skills Score ---
-  const totalCalls = dailyMetrics.reduce((s: number, d: any) => s + (d.calls_made || 0), 0)
-  const totalConnected = dailyMetrics.reduce((s: number, d: any) => s + (d.calls_connected || 0), 0)
-  const avgCallDuration = dailyMetrics.reduce((s: number, d: any) => s + (d.avg_call_duration_minutes || 0), 0) / days
+  const totalCalls = dailyMetrics.reduce((s: number, d: unknown) => s + (d.calls_made || 0), 0)
+  const totalConnected = dailyMetrics.reduce((s: number, d: unknown) => s + (d.calls_connected || 0), 0)
+  const avgCallDuration = dailyMetrics.reduce((s: number, d: unknown) => s + (d.avg_call_duration_minutes || 0), 0) / days
   const avgCallsPerDay = totalCalls / days
 
   const targetCallsPerDay = targets?.target_calls_per_day || 50
@@ -195,11 +195,11 @@ function calculateAreaScores(
   const callSkillsScore = callVolumeScore * 0.4 + connectRate * 0.3 + durationScore * 0.3
 
   // --- Lead Management Score ---
-  const totalLeadsGenerated = dailyMetrics.reduce((s: number, d: any) => s + (d.leads_generated || 0), 0)
-  const totalLeadsConverted = dailyMetrics.reduce((s: number, d: any) => s + (d.leads_converted || 0), 0)
-  const totalFollowupsCompleted = dailyMetrics.reduce((s: number, d: any) => s + (d.followups_completed || 0), 0)
-  const totalFollowupsScheduled = dailyMetrics.reduce((s: number, d: any) => s + (d.followups_scheduled || 0), 0)
-  const avgResponseTime = dailyMetrics.reduce((s: number, d: any) => s + (d.avg_response_time_minutes || 0), 0) / days
+  const totalLeadsGenerated = dailyMetrics.reduce((s: number, d: unknown) => s + (d.leads_generated || 0), 0)
+  const totalLeadsConverted = dailyMetrics.reduce((s: number, d: unknown) => s + (d.leads_converted || 0), 0)
+  const totalFollowupsCompleted = dailyMetrics.reduce((s: number, d: unknown) => s + (d.followups_completed || 0), 0)
+  const totalFollowupsScheduled = dailyMetrics.reduce((s: number, d: unknown) => s + (d.followups_scheduled || 0), 0)
+  const avgResponseTime = dailyMetrics.reduce((s: number, d: unknown) => s + (d.avg_response_time_minutes || 0), 0) / days
 
   const targetLeadsGenerated = targets?.target_leads_generated || 100
   const targetConversionRate = targets?.target_conversion_rate || 20
@@ -214,9 +214,9 @@ function calculateAreaScores(
   const leadManagementScore = leadGenScore * 0.25 + conversionScore * 0.35 + followupRate * 0.2 + responseScore * 0.2
 
   // --- Deal Closing Score ---
-  const totalCasesSanctioned = dailyMetrics.reduce((s: number, d: any) => s + (d.cases_sanctioned || 0), 0)
-  const totalCasesDisbursed = dailyMetrics.reduce((s: number, d: any) => s + (d.cases_disbursed || 0), 0)
-  const totalRevenue = dailyMetrics.reduce((s: number, d: any) => s + (d.revenue_generated || 0), 0)
+  const totalCasesSanctioned = dailyMetrics.reduce((s: number, d: unknown) => s + (d.cases_sanctioned || 0), 0)
+  const totalCasesDisbursed = dailyMetrics.reduce((s: number, d: unknown) => s + (d.cases_disbursed || 0), 0)
+  const totalRevenue = dailyMetrics.reduce((s: number, d: unknown) => s + (d.revenue_generated || 0), 0)
 
   const targetCasesSanctioned = targets?.target_cases_sanctioned || 15
   const targetCasesDisbursed = targets?.target_cases_disbursed || 10
@@ -233,11 +233,11 @@ function calculateAreaScores(
   // --- Time Management Score ---
   const recentDays = recentMetrics.length
   const avgActiveHours = recentDays > 0
-    ? recentMetrics.reduce((s: number, d: any) => s + (d.active_hours || 0), 0) / recentDays
+    ? recentMetrics.reduce((s: number, d: unknown) => s + (d.active_hours || 0), 0) / recentDays
     : 0
 
   // Consistency: how many of last 7 days had activity
-  const activeDaysCount = recentMetrics.filter((d: any) => (d.calls_made || 0) > 0).length
+  const activeDaysCount = recentMetrics.filter((d: Record<string, unknown>) => (d.calls_made || 0) > 0).length
   const consistencyScore = recentDays > 0 ? (activeDaysCount / Math.min(recentDays, 5)) * 100 : 0
 
   // Active hours score (target ~8 hours)
@@ -272,9 +272,8 @@ function getSkillLevel(score: number): SkillLevel {
 
 function generateCoachingTips(
   areaScores: AreaScores,
-  dailyMetrics: any[],
-  targets: any
-): Record<SkillArea, CoachingTip[]> {
+  dailyMetrics: unknown[],
+  targets: unknown): Record<SkillArea, CoachingTip[]> {
   const tips: Record<SkillArea, CoachingTip[]> = {
     call_skills: [],
     lead_management: [],
@@ -296,23 +295,23 @@ function generateCoachingTips(
   }
 
   const days = dailyMetrics.length
-  const totalCalls = dailyMetrics.reduce((s: number, d: any) => s + (d.calls_made || 0), 0)
-  const totalConnected = dailyMetrics.reduce((s: number, d: any) => s + (d.calls_connected || 0), 0)
-  const avgCallDuration = dailyMetrics.reduce((s: number, d: any) => s + (d.avg_call_duration_minutes || 0), 0) / days
+  const totalCalls = dailyMetrics.reduce((s: number, d: unknown) => s + (d.calls_made || 0), 0)
+  const totalConnected = dailyMetrics.reduce((s: number, d: unknown) => s + (d.calls_connected || 0), 0)
+  const avgCallDuration = dailyMetrics.reduce((s: number, d: unknown) => s + (d.avg_call_duration_minutes || 0), 0) / days
   const avgCallsPerDay = totalCalls / days
   const connectRate = totalCalls > 0 ? (totalConnected / totalCalls) * 100 : 0
 
-  const totalLeadsGenerated = dailyMetrics.reduce((s: number, d: any) => s + (d.leads_generated || 0), 0)
-  const totalLeadsConverted = dailyMetrics.reduce((s: number, d: any) => s + (d.leads_converted || 0), 0)
-  const totalFollowupsCompleted = dailyMetrics.reduce((s: number, d: any) => s + (d.followups_completed || 0), 0)
-  const totalFollowupsScheduled = dailyMetrics.reduce((s: number, d: any) => s + (d.followups_scheduled || 0), 0)
-  const avgResponseTime = dailyMetrics.reduce((s: number, d: any) => s + (d.avg_response_time_minutes || 0), 0) / days
+  const totalLeadsGenerated = dailyMetrics.reduce((s: number, d: unknown) => s + (d.leads_generated || 0), 0)
+  const totalLeadsConverted = dailyMetrics.reduce((s: number, d: unknown) => s + (d.leads_converted || 0), 0)
+  const totalFollowupsCompleted = dailyMetrics.reduce((s: number, d: unknown) => s + (d.followups_completed || 0), 0)
+  const totalFollowupsScheduled = dailyMetrics.reduce((s: number, d: unknown) => s + (d.followups_scheduled || 0), 0)
+  const avgResponseTime = dailyMetrics.reduce((s: number, d: unknown) => s + (d.avg_response_time_minutes || 0), 0) / days
   const conversionRate = totalLeadsGenerated > 0 ? (totalLeadsConverted / totalLeadsGenerated) * 100 : 0
   const followupRate = totalFollowupsScheduled > 0 ? (totalFollowupsCompleted / totalFollowupsScheduled) * 100 : 100
 
-  const totalCasesSanctioned = dailyMetrics.reduce((s: number, d: any) => s + (d.cases_sanctioned || 0), 0)
-  const totalCasesDisbursed = dailyMetrics.reduce((s: number, d: any) => s + (d.cases_disbursed || 0), 0)
-  const totalRevenue = dailyMetrics.reduce((s: number, d: any) => s + (d.revenue_generated || 0), 0)
+  const totalCasesSanctioned = dailyMetrics.reduce((s: number, d: unknown) => s + (d.cases_sanctioned || 0), 0)
+  const totalCasesDisbursed = dailyMetrics.reduce((s: number, d: unknown) => s + (d.cases_disbursed || 0), 0)
+  const totalRevenue = dailyMetrics.reduce((s: number, d: unknown) => s + (d.revenue_generated || 0), 0)
 
   const targetCallsPerDay = targets?.target_calls_per_day || 50
   const targetConversionRate = targets?.target_conversion_rate || 20
@@ -550,9 +549,9 @@ function generateCoachingTips(
 
   // --- Time Management Tips ---
   const recentDays = dailyMetrics.slice(0, 7)
-  const activeDays = recentDays.filter((d: any) => (d.calls_made || 0) > 0).length
+  const activeDays = recentDays.filter((d: Record<string, unknown>) => (d.calls_made || 0) > 0).length
   const avgActiveHours = recentDays.length > 0
-    ? recentDays.reduce((s: number, d: any) => s + (d.active_hours || 0), 0) / recentDays.length
+    ? recentDays.reduce((s: number, d: unknown) => s + (d.active_hours || 0), 0) / recentDays.length
     : 0
 
   if (activeDays < 4 && recentDays.length >= 5) {
@@ -673,9 +672,8 @@ function generateCoachingTips(
 
 function generateTodayActions(
   areaScores: AreaScores,
-  recentMetrics: any[],
-  targets: any
-): TodayAction[] {
+  recentMetrics: unknown[],
+  targets: unknown): TodayAction[] {
   const actions: TodayAction[] = []
   let actionId = 0
 

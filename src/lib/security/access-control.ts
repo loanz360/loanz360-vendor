@@ -61,7 +61,7 @@ export async function logAccessViolation(params: {
   country_code?: string
   city?: string
   violation_type: string
-  violation_details?: Record<string, any>
+  violation_details?: Record<string, unknown>
   user_agent?: string
   attempted_action?: string
 }): Promise<string | null> {

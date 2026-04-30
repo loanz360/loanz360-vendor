@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
       .eq('shared_by', user.id)
 
     // Count shares per offer
-    const offerShareCounts = topOffers?.reduce((acc: any, share: any) => {
+    const offerShareCounts = topOffers?.reduce((acc: unknown, share: unknown) => {
       const offerId = share.offer_id
       if (!acc[offerId]) {
         acc[offerId] = {
@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
     }, {})
 
     const topPerforming = Object.values(offerShareCounts || {})
-      .sort((a: any, b: any) => b.share_count - a.share_count)
+      .sort((a: unknown, b: unknown) => b.share_count - a.share_count)
       .slice(0, 5)
 
     return NextResponse.json({

@@ -21,7 +21,7 @@ export interface ProgressUpdate {
   targetValue: number
   timestamp?: Date
   source: 'manual' | 'webhook' | 'sync' | 'calculated'
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface ProgressCalculation {
@@ -60,7 +60,7 @@ export async function calculateProgress(
     throw new Error(`Failed to fetch allocation: ${error?.message}`)
   }
 
-  const incentive = allocation.incentive as any
+  const incentive = allocation.incentive as unknown
   const criteria = incentive.performance_criteria || {}
   const eligibilityCriteria = incentive.eligibility_criteria || {}
 
@@ -197,7 +197,7 @@ export async function syncProgressFromLeads(userId?: string): Promise<number> {
   let updatedCount = 0
 
   for (const allocation of allocations) {
-    const incentive = allocation.incentive as any
+    const incentive = allocation.incentive as unknown
     const criteria = incentive.performance_criteria || {}
     const metricType = criteria.metric_type
 
@@ -236,8 +236,7 @@ async function getMetricValueFromLeads(
   supabase: SupabaseClient,
   userId: string,
   metricType: string,
-  criteria: any
-): Promise<number | null> {
+  criteria: unknown): Promise<number | null> {
   const measurementPeriod = criteria.measurement_period || 'monthly'
   const startDate = getStartDateForPeriod(measurementPeriod)
 

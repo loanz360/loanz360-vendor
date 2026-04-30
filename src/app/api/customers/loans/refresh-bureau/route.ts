@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
@@ -31,7 +32,13 @@ export async function POST(request: NextRequest) {
     // Parse request body
     let force = false;
     try {
-      const { data: body, error: _valErr } = await parseBody(request)
+      const bodySchema = z.object({
+
+        force: z.string().optional(),
+
+      })
+
+      const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
       force = body.force === true;
     } catch {

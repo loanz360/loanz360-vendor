@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -29,7 +30,43 @@ export async function POST(request: NextRequest) {
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     if (authError || !user) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      bdeUserId: z.string().uuid().optional(),
+
+
+      projectionMonth: z.string().optional(),
+
+
+      currentLeads: z.string().optional(),
+
+
+      currentConversions: z.string().optional(),
+
+
+      currentRevenue: z.string().optional(),
+
+
+      projectedLeads: z.string().optional(),
+
+
+      projectedConversions: z.string().optional(),
+
+
+      projectedRevenue: z.string().optional(),
+
+
+      confidenceScore: z.string().optional(),
+
+
+      likelihood: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { bdeUserId, projectionMonth, currentLeads, currentConversions, currentRevenue, projectedLeads, projectedConversions, projectedRevenue, confidenceScore, likelihood } = body
 

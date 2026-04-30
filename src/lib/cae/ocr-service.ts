@@ -35,7 +35,7 @@ export interface DocumentInput {
   fileBase64?: string
   category: DocumentCategory
   documentType: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface ExtractedField {
@@ -58,7 +58,7 @@ export interface OCRResult {
   processingTime: number
   extractedFields: ExtractedField[]
   rawText?: string
-  structuredData?: Record<string, any>
+  structuredData?: Record<string, unknown>
   confidence: number
   pageCount?: number
   error?: {
@@ -70,7 +70,7 @@ export interface OCRResult {
 export interface DocumentVerificationResult {
   verified: boolean
   documentType: string
-  extractedData: Record<string, any>
+  extractedData: Record<string, unknown>
   verificationChecks: Array<{
     check: string
     passed: boolean
@@ -81,9 +81,9 @@ export interface DocumentVerificationResult {
 }
 
 // Document type specific extractors
-const DOCUMENT_EXTRACTORS: Record<string, (fields: ExtractedField[]) => Record<string, any>> = {
+const DOCUMENT_EXTRACTORS: Record<string, (fields: ExtractedField[]) => Record<string, unknown>> = {
   PAN_CARD: (fields) => {
-    const data: Record<string, any> = {}
+    const data: Record<string, unknown> = {}
     for (const field of fields) {
       const key = field.key.toLowerCase()
       if (key.includes('name')) data.name = field.value
@@ -102,7 +102,7 @@ const DOCUMENT_EXTRACTORS: Record<string, (fields: ExtractedField[]) => Record<s
   },
 
   AADHAR_CARD: (fields) => {
-    const data: Record<string, any> = {}
+    const data: Record<string, unknown> = {}
     for (const field of fields) {
       const key = field.key.toLowerCase()
       if (key.includes('name')) data.name = field.value
@@ -122,7 +122,7 @@ const DOCUMENT_EXTRACTORS: Record<string, (fields: ExtractedField[]) => Record<s
   },
 
   SALARY_SLIP: (fields) => {
-    const data: Record<string, any> = {}
+    const data: Record<string, unknown> = {}
     let totalEarnings = 0
     let totalDeductions = 0
 
@@ -150,7 +150,7 @@ const DOCUMENT_EXTRACTORS: Record<string, (fields: ExtractedField[]) => Record<s
   },
 
   BANK_STATEMENT: (fields) => {
-    const data: Record<string, any> = {
+    const data: Record<string, unknown> = {
       transactions: [],
     }
 
@@ -171,7 +171,7 @@ const DOCUMENT_EXTRACTORS: Record<string, (fields: ExtractedField[]) => Record<s
   },
 
   ITR_FORM: (fields) => {
-    const data: Record<string, any> = {}
+    const data: Record<string, unknown> = {}
 
     for (const field of fields) {
       const key = field.key.toLowerCase()
@@ -192,7 +192,7 @@ const DOCUMENT_EXTRACTORS: Record<string, (fields: ExtractedField[]) => Record<s
   },
 
   GST_CERTIFICATE: (fields) => {
-    const data: Record<string, any> = {}
+    const data: Record<string, unknown> = {}
 
     for (const field of fields) {
       const key = field.key.toLowerCase()
@@ -282,7 +282,7 @@ export class OCRService {
    */
   async extractStructuredData(
     input: DocumentInput
-  ): Promise<{ success: boolean; data: Record<string, any>; confidence: number; error?: string }> {
+  ): Promise<{ success: boolean; data: Record<string, unknown>; confidence: number; error?: string }> {
     const ocrResult = await this.processDocument(input)
 
     if (!ocrResult.success) {
@@ -307,7 +307,7 @@ export class OCRService {
     }
 
     // Generic extraction for unknown document types
-    const genericData: Record<string, any> = {}
+    const genericData: Record<string, unknown> = {}
     for (const field of ocrResult.extractedFields) {
       if (field.confidence >= 0.7) {
         genericData[field.key] = field.value
@@ -326,7 +326,7 @@ export class OCRService {
    */
   async verifyDocument(
     input: DocumentInput,
-    expectedData?: Record<string, any>
+    expectedData?: Record<string, unknown>
   ): Promise<DocumentVerificationResult> {
     const extractionResult = await this.extractStructuredData(input)
 
@@ -542,8 +542,8 @@ export class OCRService {
     }
   }
 
-  private fieldsToObject(fields: ExtractedField[]): Record<string, any> {
-    const result: Record<string, any> = {}
+  private fieldsToObject(fields: ExtractedField[]): Record<string, unknown> {
+    const result: Record<string, unknown> = {}
     for (const field of fields) {
       result[field.key.toLowerCase().replace(/\s+/g, '_')] = field.value
     }
@@ -578,7 +578,7 @@ export class OCRService {
     }
   }
 
-  private validateSalarySlip(data: Record<string, any>): DocumentVerificationResult['verificationChecks'][0] {
+  private validateSalarySlip(data: Record<string, unknown>): DocumentVerificationResult['verificationChecks'][0] {
     const hasRequiredFields = data.gross_salary || data.net_salary
     return {
       check: 'SALARY_SLIP_VALIDATION',
@@ -587,7 +587,7 @@ export class OCRService {
     }
   }
 
-  private validateBankStatement(data: Record<string, any>): DocumentVerificationResult['verificationChecks'][0] {
+  private validateBankStatement(data: Record<string, unknown>): DocumentVerificationResult['verificationChecks'][0] {
     const hasRequiredFields = data.account_number && data.bank_name
     return {
       check: 'BANK_STATEMENT_VALIDATION',
@@ -596,7 +596,7 @@ export class OCRService {
     }
   }
 
-  private validateITR(data: Record<string, any>): DocumentVerificationResult['verificationChecks'][0] {
+  private validateITR(data: Record<string, unknown>): DocumentVerificationResult['verificationChecks'][0] {
     const hasRequiredFields = data.pan_number && data.total_income
     return {
       check: 'ITR_VALIDATION',

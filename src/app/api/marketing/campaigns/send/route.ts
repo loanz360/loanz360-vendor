@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       .eq('id', campaignId)
 
     // Get contacts from segment
-    let contacts: any[] = []
+    let contacts: unknown[] = []
 
     if (campaign.segment_id) {
       const segment = campaign.segment
@@ -147,8 +147,8 @@ export async function POST(request: NextRequest) {
 
 async function processCampaignSend(
   campaignId: string,
-  campaign: any,
-  contacts: any[]
+  campaign: unknown,
+  contacts: unknown[]
 ) {
   let sentCount = 0
   let deliveredCount = 0
@@ -290,7 +290,7 @@ async function processCampaignSend(
   }
 }
 
-function personalizeContent(content: string, contact: any): string {
+function personalizeContent(content: string, contact: unknown): string {
   if (!content) return ''
 
   return content

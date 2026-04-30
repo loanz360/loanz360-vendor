@@ -195,7 +195,7 @@ export class SOC2Service {
           implemented: 0,
           not_implemented: 0,
           implementation_percentage: 0,
-          by_category: {} as any
+          by_category: {} as unknown
         }
       }
 
@@ -229,7 +229,7 @@ export class SOC2Service {
         implemented: 0,
         not_implemented: 0,
         implementation_percentage: 0,
-        by_category: {} as any
+        by_category: {} as unknown
       }
     }
   }
@@ -351,7 +351,7 @@ export class SOC2Service {
         .from('soc2_controls')
         .select('id', { count: 'exact', head: true })
 
-      const totalControls = allControls ? (allControls as any).count : 0
+      const totalControls = allControls ? (allControls as unknown).count : 0
 
       return {
         total_tests: totalTests,

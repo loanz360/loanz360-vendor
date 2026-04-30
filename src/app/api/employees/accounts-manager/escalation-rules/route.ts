@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
@@ -107,7 +108,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: auth.error }, { status: auth.status })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      auto_escalate_after_days: z.string().optional(),
+
+
+      notify_manager_after_days: z.string().optional(),
+
+
+      max_items_per_ae: z.string().optional(),
+
+
+      auto_reassign_on_absence: z.string().optional(),
+
+
+      escalation_recipients: z.array(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const updates: Partial<EscalationConfig> = {}
 

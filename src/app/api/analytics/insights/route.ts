@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * API Route: Business Insights
@@ -73,7 +74,19 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      insight_id: z.string().uuid(),
+
+      action: z.string().optional(),
+
+      action_taken: z.string().optional(),
+
+      actioned_by: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { insight_id, action, action_taken, actioned_by } = body
 

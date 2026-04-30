@@ -161,7 +161,7 @@ export async function GET(
   }
 }
 
-async function generateIndividualSteps(supabase: any, profileId: string, documents: any[]) {
+async function generateIndividualSteps(supabase: unknown, profileId: string, documents: unknown[]) {
   const { data: profile } = await supabase
     .from('individuals')
     .select('full_name, date_of_birth, email, phone, pan_number, aadhaar_number')
@@ -226,7 +226,7 @@ async function generateIndividualSteps(supabase: any, profileId: string, documen
   return steps
 }
 
-async function generateEntitySteps(supabase: any, profileId: string, documents: any[]) {
+async function generateEntitySteps(supabase: unknown, profileId: string, documents: unknown[]) {
   const { data: profile } = await supabase
     .from('entities')
     .select('legal_name, incorporation_date, gst_number, pan_number')

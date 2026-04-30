@@ -65,7 +65,7 @@ export interface BDEDailyAchievementRow {
 
   day_grade: PerformanceGrade | null
 
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
 
   created_at: string
   updated_at: string
@@ -95,7 +95,7 @@ export interface BDEEarnedBadgeRow {
   badge_id: string
   earned_at: string
   earned_in_month: string
-  earning_context: Record<string, any>
+  earning_context: Record<string, unknown>
   is_displayed: boolean
   is_favorite: boolean
   awarded_by: string | null
@@ -144,7 +144,7 @@ export interface PerformanceProjectionRow {
   risk_factors: string[]
   success_factors: string[]
   recommended_actions: string[]
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
   created_at: string
 }
 
@@ -167,8 +167,8 @@ export interface TeamTargetRow {
   team_conversion_rate_target: number | null
   bde_count_target: number | null
   team_quality_score_target: number | null
-  activity_targets: Record<string, any>
-  quality_targets: Record<string, any>
+  activity_targets: Record<string, unknown>
+  quality_targets: Record<string, unknown>
   is_active: boolean
   is_published: boolean
   published_at: string | null

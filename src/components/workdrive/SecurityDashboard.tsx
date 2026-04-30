@@ -54,7 +54,7 @@ interface SecurityEvent {
   event_type: string
   file_id?: string
   file_name?: string
-  details: Record<string, any>
+  details: Record<string, unknown>
   risk_level: string
   resolved: boolean
   created_at: string
@@ -151,7 +151,7 @@ export function SecurityDashboard() {
       if (eventsError) {
         console.error('Error fetching events:', eventsError)
       } else {
-        const formattedEvents = (eventsData || []).map((e: any) => ({
+        const formattedEvents = (eventsData || []).map((e: unknown) => ({
           ...e,
           user_name: e.user?.full_name || e.user?.email || 'Unknown',
         }))
@@ -160,11 +160,11 @@ export function SecurityDashboard() {
 
       // Calculate stats
       const allEvents = eventsData || []
-      const blockedCount = allEvents.filter((e: any) => e.event_type === 'scan_blocked').length
+      const blockedCount = allEvents.filter((e: unknown) => e.event_type === 'scan_blocked').length
       const suspiciousCount = new Set(
         allEvents
-          .filter((e: any) => e.event_type === 'suspicious_activity')
-          .map((e: any) => e.user_id)
+          .filter((e: unknown) => e.event_type === 'suspicious_activity')
+          .map((e: unknown) => e.user_id)
       ).size
 
       // Get compliance flags count
@@ -177,7 +177,7 @@ export function SecurityDashboard() {
       const eventsByType: Record<string, number> = {}
       const riskDistribution: Record<string, number> = { low: 0, medium: 0, high: 0, critical: 0 }
 
-      allEvents.forEach((e: any) => {
+      allEvents.forEach((e: unknown) => {
         eventsByType[e.event_type] = (eventsByType[e.event_type] || 0) + 1
         if (e.risk_level && riskDistribution.hasOwnProperty(e.risk_level)) {
           riskDistribution[e.risk_level]++

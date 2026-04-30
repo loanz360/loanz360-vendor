@@ -70,14 +70,14 @@ export async function GET(request: NextRequest) {
     const gradeDistribution = {
       'A+': 0, 'A': 0, 'B+': 0, 'B': 0, 'C+': 0, 'C': 0, 'D': 0, 'F': 0
     }
-    performanceData.forEach((s: Record<string, any>) => {
+    performanceData.forEach((s: Record<string, unknown>) => {
       if (s.performance_grade && gradeDistribution.hasOwnProperty(s.performance_grade)) {
         gradeDistribution[s.performance_grade as keyof typeof gradeDistribution]++
       }
     })
 
     // Top performers
-    const topPerformers = performanceData.slice(0, 5).map((s: Record<string, any>) => ({
+    const topPerformers = performanceData.slice(0, 5).map((s: Record<string, unknown>) => ({
       cro_id: s.cro_id,
       name: s.cro?.full_name || 'Unknown',
       score: s.performance_score,
@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
         grade_distribution: gradeDistribution,
         top_performers: topPerformers,
         need_attention: needAttention,
-        all_cros: performanceData.map((s: Record<string, any>) => ({
+        all_cros: performanceData.map((s: Record<string, unknown>) => ({
           cro_id: s.cro_id,
           name: s.cro?.full_name || 'Unknown',
           email: s.cro?.email || '',

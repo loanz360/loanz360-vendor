@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
     effectivenessScore = Math.min(100, Math.round(effectivenessScore))
 
     // Update meeting with feedback data
-    const updatePayload: Record<string, any> = {
+    const updatePayload: Record<string, unknown> = {
       effectiveness_score: effectivenessScore,
       updated_at: new Date().toISOString(),
     }

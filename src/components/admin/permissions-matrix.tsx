@@ -30,7 +30,7 @@ export function PermissionsMatrix({ adminId, onSave }: { adminId: string; onSave
     const result = await fetchWithErrorHandling(`/api/admin-management/${adminId}/permissions`)
     if (result.success) {
       const perms: Record<string, string[]> = {}
-      result.data.forEach((p: any) => {
+      result.data.forEach((p: unknown) => {
         if (!perms[p.module_name]) perms[p.module_name] = []
         if (p.can_view) perms[p.module_name].push('view')
         if (p.can_create) perms[p.module_name].push('create')

@@ -321,7 +321,7 @@ export class DigiLockerAdapter {
     }
   }
 
-  private parseVerificationResponse(response: any, document: DigiLockerDocument): DigiLockerVerificationResult {
+  private parseVerificationResponse(response: unknown, document: DigiLockerDocument): DigiLockerVerificationResult {
     if (response.error) {
       return {
         success: false,

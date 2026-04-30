@@ -258,7 +258,7 @@ export function useFavorites(): UseFavoritesReturn {
         const response = await fetch('/api/offers/favorites')
         if (response.ok) {
           const data = await response.json()
-          const favSet = new Set<string>(data.favorites?.map((f: any) => f.offer_id) || [])
+          const favSet = new Set<string>(data.favorites?.map((f: unknown) => f.offer_id) || [])
           setFavorites(favSet)
         }
       } catch (error) {

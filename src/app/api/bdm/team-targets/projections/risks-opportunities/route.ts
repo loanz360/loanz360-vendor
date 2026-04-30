@@ -75,8 +75,8 @@ async function getRisksOpportunitiesHandler(request: NextRequest) {
     const totalDaysInMonth = new Date(year, month, 0).getDate()
     const workingDays = Math.ceil(totalDaysInMonth * 0.7)
 
-    const risks: any[] = []
-    const opportunities: any[] = []
+    const risks: unknown[] = []
+    const opportunities: unknown[] = []
 
     // Analyze each BDE
     teamBDEs.forEach((bde) => {

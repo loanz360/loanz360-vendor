@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // Push Notification Send API
 // POST: Send push notifications to users
@@ -23,7 +24,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      notification_id: z.string().uuid().optional(),
+
+
+      user_ids: z.array(z.unknown()).optional(),
+
+
+      title: z.string().optional(),
+
+
+      icon: z.string().optional(),
+
+
+      image: z.string().optional(),
+
+
+      url: z.string().optional(),
+
+
+      data: z.record(z.unknown()).optional(),
+
+
+      actions: z.string().optional(),
+
+
+      requireInteraction: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       notification_id,

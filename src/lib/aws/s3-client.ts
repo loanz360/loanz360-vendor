@@ -124,7 +124,7 @@ export async function getFromS3(key: string): Promise<{
     const response = await s3Client.send(command)
 
     // Convert stream to buffer
-    const stream = response.Body as any
+    const stream = response.Body as unknown
     const chunks: Uint8Array[] = []
 
     for await (const chunk of stream) {

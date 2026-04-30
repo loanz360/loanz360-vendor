@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -95,7 +96,15 @@ export async function POST(
     }
 
     // Parse message data
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      message: z.string().optional(),
+
+      parent_message_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { message, parent_message_id } = body
 
@@ -240,7 +249,7 @@ export async function POST(
 
       // If employee replied, notify assigned staff/department
       if (isOwner && ticketOwner && ticketOwner.email) {
-        let notifyUsers: any[] = []
+        let notifyUsers: unknown[] = []
 
         // If there's a specific assigned user, notify only them
         if (ticket.assigned_user_id) {

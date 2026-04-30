@@ -149,8 +149,7 @@ export interface TSComplianceViolation {
   phone_number?: string
   call_id?: string
   description: string
-  evidence?: any
-  status: TSViolationStatus
+  evidence?: unknown  status: TSViolationStatus
   resolved_at?: string
   resolved_by?: string
   resolution_notes?: string

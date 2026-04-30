@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
 
     await Promise.allSettled(
       pending.map(async (delivery) => {
-        const endpoint = delivery.webhook_endpoints as any
+        const endpoint = delivery.webhook_endpoints as unknown
         if (!endpoint || !endpoint.is_active) {
           // Cancel delivery for inactive/deleted endpoints
           await supabase

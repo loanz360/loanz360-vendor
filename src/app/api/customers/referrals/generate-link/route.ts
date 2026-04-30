@@ -174,7 +174,7 @@ Let me know if you have any questions!
         short_link: shortLink,
         short_code: shortCode,
         whatsapp_url: whatsappUrl,
-        referral: referral as any,
+        referral: referral as unknown,
       },
     } as GenerateReferralLinkResponse)
   } catch (error) {

@@ -255,7 +255,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper functions
-function generateComparativeInsights(comparisons: any[]) {
+function generateComparativeInsights(comparisons: unknown[]) {
   const insights = []
 
   // Find best performers in each category

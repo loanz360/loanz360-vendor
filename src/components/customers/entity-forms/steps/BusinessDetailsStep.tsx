@@ -232,7 +232,7 @@ export default function BusinessDetailsStep({
                 <button
                   key={option.value}
                   type="button"
-                  onClick={() => onUpdate({ gst_registration_status: option.value as any })}
+                  onClick={() => onUpdate({ gst_registration_status: option.value as unknown })}
                   className={`flex-1 min-w-[140px] py-3 px-4 rounded-lg border transition-all ${
                     data.gst_registration_status === option.value
                       ? 'bg-orange-500/20 border-orange-500 text-orange-400'

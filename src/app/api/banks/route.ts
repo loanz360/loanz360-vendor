@@ -216,7 +216,7 @@ export async function PUT(request: NextRequest) {
     const validatedData = updateBankSchema.parse(body)
 
     // Build update object
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
     if (validatedData.name) updateData.name = validatedData.name
     if (validatedData.display_name) updateData.display_name = sanitizeInput(validatedData.display_name)

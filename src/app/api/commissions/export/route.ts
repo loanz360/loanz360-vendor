@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     const exportType = searchParams.get('type') || 'grid' // grid, analytics, forecast
     const format = searchParams.get('format') || 'csv' // csv, json
 
-    let data: any[] = []
+    let data: unknown[] = []
     let filename = ''
 
     if (exportType === 'grid') {

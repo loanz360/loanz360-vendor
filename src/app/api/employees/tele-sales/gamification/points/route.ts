@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -14,7 +15,21 @@ export async function POST(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      category: z.string(),
+
+      reference_type: z.string().optional(),
+
+      reference_id: z.string().uuid().optional(),
+
+      description: z.string().optional(),
+
+      custom_points: z.string(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -235,7 +250,7 @@ export async function POST(request: NextRequest) {
 
 // Helper function to check and award badges
 async function checkAndAwardBadges(
-  supabase: any,
+  supabase: unknown,
   userId: string,
   stats: {
     totalCalls: number
@@ -244,7 +259,7 @@ async function checkAndAwardBadges(
     lifetimePoints: number
   }
 ) {
-  const badgesEarned: any[] = []
+  const badgesEarned: unknown[] = []
 
   try {
     // Get all badges not yet earned
@@ -253,7 +268,7 @@ async function checkAndAwardBadges(
       .select('badge_id')
       .eq('sales_executive_id', userId)
 
-    const earnedIds = new Set((earnedBadgeIds || []).map((b: any) => b.badge_id))
+    const earnedIds = new Set((earnedBadgeIds || []).map((b: unknown) => b.badge_id))
 
     const { data: allBadges } = await supabase
       .from('ts_badges')

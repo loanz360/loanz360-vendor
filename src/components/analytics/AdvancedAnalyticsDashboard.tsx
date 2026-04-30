@@ -79,7 +79,7 @@ interface AnalyticsData {
     expectedAchievers: number;
     expectedPayout: number;
     churnRisk: number;
-    recommendedTargets: any[];
+    recommendedTargets: unknown[];
   };
 }
 
@@ -174,7 +174,7 @@ export default function AdvancedAnalyticsDashboard() {
           {/* Date Range Selector */}
           <select
             value={dateRange}
-            onChange={(e) => setDateRange(e.target.value as any)}
+            onChange={(e) => setDateRange(e.target.value as unknown)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
             <option value="7d">Last 7 Days</option>
@@ -430,7 +430,7 @@ function renderCustomizedLabel({
   innerRadius,
   outerRadius,
   percent,
-}: any) {
+}: unknown) {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * (Math.PI / 180));
   const y = cy + radius * Math.sin(-midAngle * (Math.PI / 180));

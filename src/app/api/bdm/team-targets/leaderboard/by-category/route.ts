@@ -135,7 +135,7 @@ async function getLeaderboardByCategoryHandler(request: NextRequest) {
 
       // Quality metrics
       const avgQualityScore = bdeAchievements.length > 0
-        ? bdeAchievements.reduce((sum, a) => sum + ((a.quality_score as any)?.overall || 0), 0) / bdeAchievements.length
+        ? bdeAchievements.reduce((sum, a) => sum + ((a.quality_score as unknown)?.overall || 0), 0) / bdeAchievements.length
         : 0
 
       return {

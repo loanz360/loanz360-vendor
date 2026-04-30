@@ -37,7 +37,7 @@ export const employeeImportSchema = z.object({
   personal_email: z.string().email('Invalid personal email'),
   mobile_number: z.string().regex(/^[6-9]\d{9}$/, 'Invalid Indian mobile number'),
   sub_role: z.string().refine(
-    (val) => VALID_SUB_ROLES.includes(val.toUpperCase() as any),
+    (val) => VALID_SUB_ROLES.includes(val.toUpperCase() as unknown),
     'Invalid sub role'
   ).transform(v => v.toUpperCase()),
   department_id: z.string().optional(),
@@ -67,7 +67,7 @@ export interface EmployeeImportValidationResult {
 
 export interface EmployeeInvalidRecord {
   row: number
-  data: Record<string, any>
+  data: Record<string, unknown>
   errors: string[]
 }
 
@@ -89,7 +89,7 @@ export interface EmployeeImportStats {
 // CSV PARSER
 // ============================================================================
 
-export async function parseEmployeeCSV(file: File): Promise<Record<string, any>[]> {
+export async function parseEmployeeCSV(file: File): Promise<Record<string, unknown>[]> {
   return new Promise((resolve, reject) => {
     Papa.parse(file, {
       header: true,
@@ -101,7 +101,7 @@ export async function parseEmployeeCSV(file: File): Promise<Record<string, any>[
         if (results.errors.length > 0) {
           reject(new Error(`CSV parsing error: ${results.errors[0].message}`))
         } else {
-          resolve(results.data as Record<string, any>[])
+          resolve(results.data as Record<string, unknown>[])
         }
       },
       error: (error) => {
@@ -116,7 +116,7 @@ export async function parseEmployeeCSV(file: File): Promise<Record<string, any>[
 // ============================================================================
 
 export function validateEmployeeRecords(
-  records: Record<string, any>[],
+  records: Record<string, unknown>[],
   existingEmails: Set<string> = new Set(),
   existingMobiles: Set<string> = new Set()
 ): EmployeeImportValidationResult {

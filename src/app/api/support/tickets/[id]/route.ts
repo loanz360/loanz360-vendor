@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -228,9 +229,23 @@ export async function PATCH(
     }
 
     // Parse update data
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      status: z.string().optional(),
+
+      priority: z.string().optional(),
+
+      assigned_to: z.string().optional(),
+
+      assigned_user_id: z.string().uuid().optional(),
+
+      resolutionSummary: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
-    const updates: any = {}
+    const updates: Record<string, unknown> = {}
 
     // Employees can only update certain fields
     if (isOwner && !isHR && !isSuperAdmin) {

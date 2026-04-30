@@ -801,8 +801,7 @@ export interface APIError {
   error: string
   message?: string
   statusCode?: number
-  details?: any
-}
+  details?: unknown}
 
 export interface PaginationParams {
   page: number

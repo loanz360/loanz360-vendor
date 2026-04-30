@@ -75,8 +75,8 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
 
   // Check browser support
   useEffect(() => {
-    const SpeechRecognition = (window as any).SpeechRecognition ||
-                              (window as any).webkitSpeechRecognition
+    const SpeechRecognition = (window as unknown).SpeechRecognition ||
+                              (window as unknown).webkitSpeechRecognition
 
     setIsSupported(!!SpeechRecognition)
 
@@ -87,8 +87,8 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
 
   // Initialize recognition
   const initializeRecognition = useCallback(() => {
-    const SpeechRecognition = (window as any).SpeechRecognition ||
-                              (window as any).webkitSpeechRecognition
+    const SpeechRecognition = (window as unknown).SpeechRecognition ||
+                              (window as unknown).webkitSpeechRecognition
 
     if (!SpeechRecognition) {
       return null
@@ -105,7 +105,7 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
       setError(null)
     }
 
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event: Record<string, unknown>) => {
       let finalTranscript = ''
       let interim = ''
 
@@ -139,7 +139,7 @@ export function useSpeechToText(options: UseSpeechToTextOptions = {}): UseSpeech
       setInterimTranscript(interim)
     }
 
-    recognition.onerror = (event: any) => {
+    recognition.onerror = (event: Record<string, unknown>) => {
       let errorMessage = 'Speech recognition error'
 
       switch (event.error) {

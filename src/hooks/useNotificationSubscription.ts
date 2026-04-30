@@ -4,14 +4,13 @@ import { RealtimeChannel } from '@supabase/supabase-js'
 
 interface NotificationUpdate {
   type: 'INSERT' | 'UPDATE' | 'DELETE'
-  notification: any
-}
+  notification: unknown}
 
 interface UseNotificationSubscriptionOptions {
   userId?: string
   enabled?: boolean
-  onNewNotification?: (notification: any) => void
-  onNotificationUpdate?: (notification: any) => void
+  onNewNotification?: (notification: unknown) => void
+  onNotificationUpdate?: (notification: unknown) => void
   onNotificationDelete?: (notificationId: string) => void
 }
 

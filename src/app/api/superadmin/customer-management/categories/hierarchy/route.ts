@@ -19,7 +19,7 @@ interface CategoryNode {
   color_code: string | null
   is_active: boolean
   required_documents: string[]
-  additional_fields: any[]
+  additional_fields: unknown[]
   parent_id: string | null
   primary_category_key: string | null
   sub_category_key: string | null

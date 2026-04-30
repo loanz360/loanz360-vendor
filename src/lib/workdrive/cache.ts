@@ -93,7 +93,7 @@ export const cacheKeys = {
 }
 
 // Helper to generate ETag for HTTP caching
-export function generateETag(data: any): string {
+export function generateETag(data: Record<string, unknown>): string {
   const str = JSON.stringify(data)
   let hash = 0
   for (let i = 0; i < str.length; i++) {

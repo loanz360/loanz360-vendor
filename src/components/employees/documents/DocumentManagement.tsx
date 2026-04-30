@@ -30,7 +30,7 @@ interface Document {
 
 interface DocumentData {
   documents: Document[]
-  documentTypes: any[]
+  documentTypes: unknown[]
   stats: {
     total: number
     verified: number
@@ -68,7 +68,7 @@ export default function DocumentManagement() {
     }
   }
 
-  const handleFileUpload = async (docType: any, file: File) => {
+  const handleFileUpload = async (docType: unknown, file: File) => {
     setUploadingType(docType.id)
     setUploadProgress(0)
 

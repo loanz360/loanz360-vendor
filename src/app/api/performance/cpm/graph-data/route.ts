@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     startDate.setDate(startDate.getDate() - 30)
 
     // Try to fetch daily metrics - handle gracefully if table doesn't exist
-    let dailyMetrics: any[] = []
+    let dailyMetrics: unknown[] = []
     try {
       const { data, error } = await supabase
         .from('cpm_daily_metrics')
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
       })
 
       return acc
-    }, [] as any[])
+    }, [] as unknown[])
 
     return NextResponse.json({
       graphData: cumulativeData,

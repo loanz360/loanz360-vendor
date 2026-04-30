@@ -71,8 +71,8 @@ export async function GET(request: NextRequest) {
       isShared: searchParams.get('isShared') === 'true' ? true :
                 searchParams.get('isShared') === 'false' ? false : undefined,
       tags: searchParams.get('tags')?.split(',').filter(Boolean) || undefined,
-      sortBy: (searchParams.get('sortBy') as any) || 'date',
-      sortOrder: (searchParams.get('sortOrder') as any) || 'desc',
+      sortBy: (searchParams.get('sortBy') as unknown) || 'date',
+      sortOrder: (searchParams.get('sortOrder') as unknown) || 'desc',
       page: parseInt(searchParams.get('page') || '1'),
       limit: parseInt(searchParams.get('limit') || '20'),
     }

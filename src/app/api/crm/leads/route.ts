@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { logApiError } from '@/lib/monitoring/errorLogger'
@@ -174,7 +175,79 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      customer_name: z.string().optional(),
+
+      customer_mobile: z.string().optional(),
+
+      loan_type: z.string().optional(),
+
+      customer_email: z.string().email().optional(),
+
+      customer_pincode: z.string().optional(),
+
+      force_create: z.string(),
+
+      tags: z.array(z.unknown()).optional(),
+
+      duplicate_lead_ids: z.string().optional(),
+
+      phone: z.string().min(10).optional(),
+
+      alternate_phone: z.string().optional(),
+
+      email: z.string().email().optional(),
+
+      customer_city: z.string().optional(),
+
+      location: z.string().optional(),
+
+      loan_amount_required: z.string().optional(),
+
+      loan_amount: z.number().optional(),
+
+      loan_purpose: z.string().optional(),
+
+      business_name: z.string().optional(),
+
+      company_name: z.string().optional(),
+
+      business_type: z.string().optional(),
+
+      monthly_income: z.string().optional(),
+
+      lead_source: z.string().optional(),
+
+      source: z.string().optional(),
+
+      lead_status: z.string().optional(),
+
+      status: z.string().optional(),
+
+      stage: z.string().optional(),
+
+      next_followup_at: z.string().optional(),
+
+      next_follow_up_date: z.string().optional(),
+
+      remarks: z.string().optional(),
+
+      follow_up_notes: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      assigned_to: z.string().optional(),
+
+      cro_id: z.string().uuid().optional(),
+
+      followup_purpose: z.string().optional(),
+
+      id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Comprehensive validation of required fields
@@ -238,7 +311,7 @@ export async function POST(request: NextRequest) {
 
       if (duplicateCheck && duplicateCheck.length > 0) {
         // Found duplicates - prepare for linking
-        const duplicateLeadIds = duplicateCheck.map((dup: any) => dup.lead_identifier)
+        const duplicateLeadIds = duplicateCheck.map((dup: unknown) => dup.lead_identifier)
         const isDuplicate = true
 
         // Add DUPLICATE tag
@@ -256,7 +329,7 @@ export async function POST(request: NextRequest) {
           message: `This lead has ${duplicateCheck.length} potential duplicate(s)`,
           duplicate_count: duplicateCheck.length,
           duplicate_leads: duplicateLeadIds,
-          duplicates: duplicateCheck.map((dup: any) => ({
+          duplicates: duplicateCheck.map((dup: unknown) => ({
             lead_id: dup.lead_identifier,
             system: dup.system_name,
             name: dup.customer_name,
@@ -270,7 +343,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare lead data - mapped to crm_leads schema
-    const leadData: any = {
+    const leadData: Record<string, unknown> = {
       customer_name: body.customer_name,
       phone: body.customer_mobile || body.phone,
       alternate_phone: body.alternate_phone || null,
@@ -312,7 +385,7 @@ export async function POST(request: NextRequest) {
           p_lead_system: dup.system,
           p_lead_id: dup.lead_id,
           p_duplicate_lead_id: newLead.lead_id
-        }).catch((err: any) => {
+        }).catch((err: unknown) => {
           apiLogger.error('Failed to link duplicate', err)
         })
       }
@@ -384,7 +457,13 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const leadId = body.id
 
@@ -410,7 +489,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Prepare update data (only include fields that are provided)
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

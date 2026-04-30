@@ -37,7 +37,7 @@ export function DailyAchievementsComponent({ dateRange = 'this_month' }: DailyAc
             <span className="text-sm font-medium">Longest Streak</span>
           </div>
           <p className="text-2xl font-bold">
-            {Math.max(...achievements.map((a: any) => a.longest_streak || 0), 0)}
+            {Math.max(...achievements.map((a: unknown) => a.longest_streak || 0), 0)}
           </p>
         </div>
 
@@ -47,7 +47,7 @@ export function DailyAchievementsComponent({ dateRange = 'this_month' }: DailyAc
             <span className="text-sm font-medium">Total MTD</span>
           </div>
           <p className="text-2xl font-bold">
-            {achievements.reduce((sum: number, a: any) => sum + (a.mtd_conversions || 0), 0)}
+            {achievements.reduce((sum: number, a: unknown) => sum + (a.mtd_conversions || 0), 0)}
           </p>
         </div>
       </div>
@@ -64,7 +64,7 @@ export function DailyAchievementsComponent({ dateRange = 'this_month' }: DailyAc
           <p className="text-center text-gray-500 py-8">No achievements yet</p>
         ) : (
           <div className="space-y-3">
-            {achievements.slice(0, 10).map((achievement: any) => (
+            {achievements.slice(0, 10).map((achievement: unknown) => (
               <div key={achievement.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-3">
                   <Calendar className="w-5 h-5 text-gray-600" />

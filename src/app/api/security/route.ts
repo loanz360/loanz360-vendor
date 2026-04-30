@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -34,7 +35,7 @@ export async function GET(request: NextRequest) {
 
     // Mode: Get audit logs
     if (mode === 'audit_logs') {
-      const action = searchParams.get('action') as any
+      const action = searchParams.get('action') as unknown
       const entityType = searchParams.get('entity_type') || undefined
       const entityId = searchParams.get('entity_id') || undefined
       const userId = searchParams.get('user_id') || undefined
@@ -136,7 +137,52 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      log_action: z.string().optional(),
+
+
+      entity_type: z.string().optional(),
+
+
+      entity_id: z.string().uuid().optional(),
+
+
+      details: z.record(z.unknown()).optional(),
+
+
+      changes: z.string().optional(),
+
+
+      target_user_id: z.string().uuid(),
+
+
+      reason: z.string().optional(),
+
+
+      policy_id: z.string().uuid(),
+
+
+      data: z.record(z.unknown()).optional(),
+
+
+      fields: z.array(z.unknown()).optional(),
+
+
+      alert_id: z.string().uuid(),
+
+
+      settings: z.record(z.unknown()),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action } = body
 
@@ -250,7 +296,25 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      alert_id: z.string().optional(),
+
+
+      policy_id: z.string().optional(),
+
+
+      settings: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { action } = body
 

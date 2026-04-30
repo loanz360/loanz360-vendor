@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -110,7 +111,13 @@ export async function DELETE(
     }
 
     const { id } = paramValidation.data
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      deviceId: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { deviceId } = body
 

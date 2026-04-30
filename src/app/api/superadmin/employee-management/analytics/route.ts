@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
     }) || []
 
     // 3. SUB-ROLE WISE BREAKDOWN
-    const subRoleCounts = employees?.reduce((acc: any, emp) => {
+    const subRoleCounts = employees?.reduce((acc: unknown, emp) => {
       const role = emp.sub_role
       if (!acc[role]) {
         acc[role] = {
@@ -147,7 +147,7 @@ export async function GET(request: NextRequest) {
     const subRoleStats = Object.values(subRoleCounts || {})
 
     // 4. STATUS BREAKDOWN
-    const statusBreakdown = employees?.reduce((acc: any, emp) => {
+    const statusBreakdown = employees?.reduce((acc: unknown, emp) => {
       const status = emp.employee_status
       acc[status] = (acc[status] || 0) + 1
       return acc

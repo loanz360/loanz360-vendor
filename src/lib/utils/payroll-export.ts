@@ -32,7 +32,7 @@ function escapeCsvField(value: unknown): string {
 /**
  * Generate CSV content from payroll data
  */
-export function generatePayrollCSV(payslips: any[]): string {
+export function generatePayrollCSV(payslips: unknown[]): string {
   if (payslips.length === 0) {
     return 'No data available'
   }
@@ -118,7 +118,7 @@ export function generateAnnualSalaryStatementHTML(
     department: string
     pan?: string
   },
-  payslips: any[],
+  payslips: unknown[],
   year: number
 ): string {
   const totalGross = payslips.reduce((sum, p) => sum + (p.gross_salary || 0), 0)
@@ -403,7 +403,7 @@ export function downloadAnnualStatement(html: string, filename: string) {
 /**
  * Download data as JSON
  */
-export function downloadJSON(data: any, filename: string) {
+export function downloadJSON(data: unknown, filename: string) {
   const jsonString = JSON.stringify(data, null, 2)
   const blob = new Blob([jsonString], { type: 'application/json' })
   const link = document.createElement('a')

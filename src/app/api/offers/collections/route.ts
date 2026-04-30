@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -65,7 +66,21 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      collection_name: z.string(),
+
+      description: z.string().optional(),
+
+      color: z.string().optional().default('#3B82F6'),
+
+      icon: z.string().optional().default('bookmark'),
+
+      expires_hours: z.number().optional().default(168),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       collection_name,
@@ -219,7 +234,15 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      collection_name: z.string().optional(),
+
+      expires_hours: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { collection_name, expires_hours = 168 } = body
 

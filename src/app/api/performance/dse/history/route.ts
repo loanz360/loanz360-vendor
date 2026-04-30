@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     const adminClient = createSupabaseAdmin()
 
     // Try user_id first (old schema from 20251123), then dse_user_id (new schema from 20251201)
-    let summaries: any[] = []
+    let summaries: unknown[] = []
 
     const { data: s1, error: s1Err } = await adminClient
       .from('dse_monthly_summary')
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Format historical data — handle both old and new column names
-    const formattedHistory = summaries.map((s: any) => ({
+    const formattedHistory = summaries.map((s: unknown) => ({
       month: s.month,
       year: s.year,
       period: new Date(s.year, s.month - 1).toLocaleDateString('en-IN', {

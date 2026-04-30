@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Format achievements
-    const formattedAchievements = (achievements || []).map((achievement: any) => {
+    const formattedAchievements = (achievements || []).map((achievement: unknown) => {
       const tierInfo = achievement.incentive_tiers || {}
 
       // Determine rarity based on tier

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -16,7 +17,7 @@ import {
  * Old schema: title, description, applicable_roles, banner_url, status (active/completed/scheduled)
  * New schema: contest_title, contest_description, contest_type, contest_image_url, status (draft/scheduled/active/expired/disabled)
  */
-function normalizeContestData(contest: any): any {
+function normalizeContestData(contest: unknown): unknown {
   // Map old status values to new values
   const statusMap: Record<string, string> = {
     'completed': 'expired',
@@ -255,7 +256,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse and sanitize request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      target_subroles: z.array(z.unknown()).optional(),
+
+      geography_filters: z.array(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     let sanitizedData
@@ -312,7 +321,7 @@ export async function POST(request: NextRequest) {
     // Import audit utilities
     const { logContestCreated, getClientIp, getUserAgent } = await import('@/lib/audit/contest-audit')
 
-    let contest: any = null
+    let contest: unknown = null
 
     try {
       // Step 1: Insert contest
@@ -372,7 +381,7 @@ export async function POST(request: NextRequest) {
 
       // Step 3: Insert geography filters if provided
       if (geography_filters.length > 0) {
-        const geoFilters = geography_filters.map((filter: any) => ({
+        const geoFilters = geography_filters.map((filter: unknown) => ({
           contest_id: contest.id,
           geography_type: filter.geography_type,
           state_id: filter.state_id || null,
@@ -462,14 +471,14 @@ export async function POST(request: NextRequest) {
  * Helper function: Create participants for eligible partners
  */
 async function createContestParticipants(
-  supabase: any,
+  supabase: unknown,
   contestId: string,
   targetAllPartners: boolean,
   targetSubroles: string[],
   targetCategory: string
 ) {
   try {
-    let eligiblePartners: any[] = []
+    let eligiblePartners: unknown[] = []
 
     // Fetch geography filters for this contest (if any)
     const { data: geoFilters } = await supabase
@@ -552,7 +561,7 @@ async function createContestParticipants(
         if (!profile) return false
 
         // Check if partner matches any geography filter
-        return geoFilters.some((filter: any) => {
+        return geoFilters.some((filter: unknown) => {
           if (filter.geography_type === 'state' && filter.state_id) {
             return profile.state === filter.state_id
           } else if (filter.geography_type === 'city' && filter.city_id) {

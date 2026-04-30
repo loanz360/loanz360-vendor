@@ -1,11 +1,12 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
 
-async function verifySuperAdmin(supabase: any, userId: string) {
+async function verifySuperAdmin(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('users')
     .select('role')
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
     if (error) throw error
 
     // Transform to key-value map for easier consumption
-    const settingsMap: Record<string, any> = {}
+    const settingsMap: Record<string, unknown> = {}
     for (const s of (settings || [])) {
       settingsMap[s.setting_key] = {
         ...s.setting_value,
@@ -81,7 +82,19 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Super Admin access required' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      setting_key: z.string().optional(),
+
+
+      setting_value: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { setting_key, setting_value } = body
 

@@ -303,7 +303,7 @@ export function parseDate(input: string | Date | number | null | undefined): Dat
  * @param date - Date to validate
  * @returns True if valid, false otherwise
  */
-export function isValidDate(date: any): boolean {
+export function isValidDate(date: unknown): boolean {
   if (!date) return false
 
   try {

@@ -3,8 +3,7 @@
 import React from 'react'
 
 interface ActivityTimelineProps {
-  summary: any
-}
+  summary: unknown}
 
 export default function ActivityTimeline({ summary }: ActivityTimelineProps) {
   const stats = [

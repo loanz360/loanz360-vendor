@@ -178,7 +178,7 @@ export async function GET(request: NextRequest) {
         const roleKPIs = ROLE_KPI_DEFINITIONS[employee.sub_role] || []
 
         // Extract latest KPI values from performance metrics
-        const latestKPIs: Record<string, any> = {}
+        const latestKPIs: Record<string, unknown> = {}
         if (latestLog?.performance_metrics) {
           roleKPIs.forEach(kpi => {
             latestKPIs[kpi] = latestLog.performance_metrics[kpi] || 0
@@ -242,7 +242,7 @@ export async function GET(request: NextRequest) {
     )
 
     // Calculate department-level aggregates
-    const departmentAggregates: Record<string, any> = {}
+    const departmentAggregates: Record<string, unknown> = {}
     if (employees) {
       for (const emp of employees) {
         const deptId = emp.department_id
@@ -271,7 +271,7 @@ export async function GET(request: NextRequest) {
         }
       }
 
-      Object.values(departmentAggregates).forEach((dept: any) => {
+      Object.values(departmentAggregates).forEach((dept: unknown) => {
         dept.avg_productivity =
           Math.round((dept.avg_productivity / dept.employee_count) * 100) / 100
         dept.avg_achievement =

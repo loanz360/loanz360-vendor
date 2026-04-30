@@ -6,9 +6,8 @@ import MemberCard, { MemberData } from '../../shared/MemberCard'
 import MemberFormModal from '../../shared/MemberFormModal'
 
 interface MembersStepEnhancedProps {
-  data: any
-  errors: Record<string, string>
-  onUpdate: (updates: any) => void
+  data: unknown  errors: Record<string, string>
+  onUpdate: (updates: unknown) => void
 }
 
 export default function MembersStepEnhanced({ data, errors, onUpdate }: MembersStepEnhancedProps) {

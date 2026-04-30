@@ -158,7 +158,7 @@ export function useSupportTicketRealtime(
     const channel = supabase.channel(channelName)
 
     // Subscribe to ticket changes
-    const subscriptionConfig: any = {
+    const subscriptionConfig: Record<string, unknown> = {
       event: '*',
       schema: 'public',
       table: tableName
@@ -251,8 +251,8 @@ export function useTicketDetailRealtime(
   ticketId: string,
   ticketSource: TicketSource | string,
   options: UseRealtimeOptions & {
-    onNewMessage?: (message: any) => void
-    onMessageUpdate?: (message: any) => void
+    onNewMessage?: (message: unknown) => void
+    onMessageUpdate?: (message: unknown) => void
   } = {}
 ) {
   const [state, setState] = useState<RealtimeState & { messageCount: number }>({

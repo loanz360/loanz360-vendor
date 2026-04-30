@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
       dateFrom = d.toISOString()
     }
 
-    const results: any = { cp: null, partner: null }
+    const results: Record<string, unknown> = { cp: null, partner: null }
 
     if (type === 'cp' || type === 'all') {
       const { data: cpCredited } = await supabase

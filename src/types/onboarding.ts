@@ -258,8 +258,7 @@ export interface EmployeeOnboardingStatusLog {
   changed_by: string | null;
   changed_at: string;
   notes: string | null;
-  metadata: any;
-}
+  metadata: unknown}
 
 export interface EmployeeOnboardingStatusLogWithUser extends EmployeeOnboardingStatusLog {
   changed_by_user?: {

@@ -6,14 +6,14 @@ import { escapeCSVCell, formatDateIN } from '@/lib/utils/cro-helpers'
 
 export interface ExportColumn {
   header: string
-  accessor: string | ((row: Record<string, any>) => string)
+  accessor: string | ((row: Record<string, unknown>) => string)
 }
 
 /**
  * Export data to CSV file with proper escaping and BOM for Excel
  */
 export function exportToCSV(
-  data: Record<string, any>[],
+  data: Record<string, unknown>[],
   columns: ExportColumn[],
   filename: string
 ): void {

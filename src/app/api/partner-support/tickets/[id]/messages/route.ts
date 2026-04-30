@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -28,7 +29,22 @@ export async function POST(
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      message: z.string().optional(),
+
+
+      parent_message_id: z.string().uuid().optional(),
+
+
+      is_internal: z.boolean(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { message, parent_message_id, is_internal } = body
 
@@ -118,7 +134,7 @@ export async function POST(
     }
 
     // Update ticket status based on who replied
-    let statusUpdate: any = {}
+    let statusUpdate: Record<string, unknown> = {}
 
     if (senderType === 'partner' && ticket.status === 'resolved') {
       // Partner replies to resolved ticket -> reopen

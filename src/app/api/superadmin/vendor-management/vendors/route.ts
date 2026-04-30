@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth } from '@/lib/auth/employee-mgmt-auth'
@@ -105,7 +106,49 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      full_name: z.string().optional(),
+
+
+      email: z.string().email().optional(),
+
+
+      mobile_number: z.string().min(10).optional(),
+
+
+      company_name: z.string().optional(),
+
+
+      service_type: z.string().optional(),
+
+
+      address: z.string().optional(),
+
+
+      city: z.string().optional(),
+
+
+      state: z.string().optional(),
+
+
+      pincode: z.string().optional(),
+
+
+      gst_number: z.string().optional(),
+
+
+      pan_number: z.string().optional(),
+
+
+      vendor_id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { full_name, email, mobile_number, company_name, service_type, address, city, state, pincode, gst_number, pan_number, vendor_id } = body
 

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -130,7 +131,43 @@ export async function POST(request: Request) {
 
     const isHROrAdmin = profile && (profile.role === 'hr' || profile.role === 'superadmin')
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      user_id: z.string().uuid().optional(),
+
+
+      financial_year: z.string(),
+
+
+      section_80c: z.string().optional(),
+
+
+      section_80d: z.string().optional(),
+
+
+      section_80e: z.string().optional(),
+
+
+      section_80g: z.string().optional(),
+
+
+      section_80tta: z.string().optional(),
+
+
+      hra_exemption: z.string().optional(),
+
+
+      other_exemptions: z.string().optional(),
+
+
+      remarks: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       user_id,

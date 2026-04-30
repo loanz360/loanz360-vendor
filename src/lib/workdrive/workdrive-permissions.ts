@@ -374,7 +374,7 @@ export async function getResourcePermissions(params: {
   resourceId: string
 }): Promise<{
   success: boolean
-  permissions?: any[]
+  permissions?: unknown[]
   error?: string
 }> {
   try {
@@ -564,7 +564,7 @@ export async function getResourceAccessList(params: {
       }
     }) || []
 
-    return { success: true, users: result as any[] }
+    return { success: true, users: result as unknown[] }
   } catch (error) {
     console.error('Get access list error:', error)
     return {

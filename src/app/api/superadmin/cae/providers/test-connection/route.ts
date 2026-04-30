@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * CAE Provider Connection Test API
@@ -14,7 +15,19 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      provider_id: z.string().uuid().optional(),
+
+      api_endpoint: z.string().optional(),
+
+      api_key: z.string().optional(),
+
+      health_check_url: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { provider_id, api_endpoint, api_key, health_check_url } = body
 

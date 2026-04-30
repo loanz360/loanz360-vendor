@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Try to fetch existing insights - handle gracefully if table doesn't exist
-    let existingInsights: any[] = []
+    let existingInsights: unknown[] = []
     try {
       const { data, error } = await supabase
         .from('cpm_ai_insights')
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
 
     // Try to fetch targets and daily metrics
     let targets = null
-    let dailyMetrics: any[] = []
+    let dailyMetrics: unknown[] = []
 
     try {
       const { data, error } = await supabase

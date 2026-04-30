@@ -172,7 +172,7 @@ export default function PendingOnboardingTab({ onUpdate }: PendingOnboardingTabP
 
     return (
       <Badge
-        variant={config.variant as any}
+        variant={config.variant as unknown}
         className={
           status === 'in_progress' ? 'bg-blue-600' :
           status === 'completed' ? 'bg-green-600' : ''

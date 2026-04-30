@@ -285,15 +285,13 @@ export interface WorkDriveAuditLog {
 }
 
 export interface AuditDetails {
-  old_value?: any
-  new_value?: any
-  shared_with?: string[]
+  old_value?: unknown  new_value?: unknown  shared_with?: string[]
   permission_level?: PermissionLevel
   file_size?: number
   download_type?: 'single' | 'bulk'
   version_number?: number
   error?: string
-  additional_info?: Record<string, any>
+  additional_info?: Record<string, unknown>
 }
 
 export interface GeoLocation {
@@ -359,8 +357,7 @@ export interface WorkDriveRecentFile {
 export interface WorkDriveAdminSettings {
   id: string
   setting_key: string
-  setting_value: any
-  description?: string
+  setting_value: unknown  description?: string
   is_editable: boolean
   updated_by?: string
   created_at: string

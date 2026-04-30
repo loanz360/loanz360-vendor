@@ -167,13 +167,13 @@ export async function GET(request: NextRequest) {
       const totalApplications = bank.allApplications.length
       const completedApplications = bank.completedApplications.length
 
-      const withinSLA = bank.tats.filter((t: any) => t.withinSLA).length
-      const breachedSLA = bank.tats.filter((t: any) => !t.withinSLA).length
+      const withinSLA = bank.tats.filter((t: unknown) => t.withinSLA).length
+      const breachedSLA = bank.tats.filter((t: unknown) => !t.withinSLA).length
       const slaComplianceRate = bank.tats.length > 0
         ? (withinSLA / bank.tats.length) * 100
         : 0
 
-      const tatValues = bank.tats.map((t: any) => t.tat)
+      const tatValues = bank.tats.map((t: unknown) => t.tat)
       const avgTAT = tatValues.length > 0
         ? tatValues.reduce((a: number, b: number) => a + b, 0) / tatValues.length
         : 0
@@ -224,18 +224,18 @@ export async function GET(request: NextRequest) {
         monthEnd.setDate(0)
         monthEnd.setHours(23, 59, 59, 999)
 
-        const monthTats = bank.tats.filter((t: any) => {
+        const monthTats = bank.tats.filter((t: unknown) => {
           const date = new Date(t.completedDate)
           return date >= monthStart && date <= monthEnd
         })
 
-        const monthWithinSLA = monthTats.filter((t: any) => t.withinSLA).length
+        const monthWithinSLA = monthTats.filter((t: unknown) => t.withinSLA).length
         const monthComplianceRate = monthTats.length > 0
           ? (monthWithinSLA / monthTats.length) * 100
           : 0
 
         const monthAvgTAT = monthTats.length > 0
-          ? monthTats.reduce((sum: number, t: any) => sum + t.tat, 0) / monthTats.length
+          ? monthTats.reduce((sum: number, t: unknown) => sum + t.tat, 0) / monthTats.length
           : 0
 
         monthlyCompliance.push({
@@ -259,7 +259,7 @@ export async function GET(request: NextRequest) {
       // At-risk applications (pending for > 70% of target TAT)
       const atRiskThreshold = bank.targetTAT * 0.7
       const now = new Date()
-      const atRiskApplications = bank.allApplications.filter((app: any) => {
+      const atRiskApplications = bank.allApplications.filter((app: unknown) => {
         if (app.current_stage === 'DISBURSED' || app.current_stage === 'REJECTED') return false
         const daysElapsed = Math.ceil(
           (now.getTime() - new Date(app.created_at).getTime()) /
@@ -269,7 +269,7 @@ export async function GET(request: NextRequest) {
       }).length
 
       // Escalated (pending for > target TAT)
-      const escalatedApplications = bank.allApplications.filter((app: any) => {
+      const escalatedApplications = bank.allApplications.filter((app: unknown) => {
         if (app.current_stage === 'DISBURSED' || app.current_stage === 'REJECTED') return false
         const daysElapsed = Math.ceil(
           (now.getTime() - new Date(app.created_at).getTime()) /

@@ -45,8 +45,8 @@ export async function GET(request: NextRequest) {
       const searchTerm = `%${search}%`
 
       // Also try matching by UUID-like lead_id directly
-      let leads: any[] = []
-      let searchError: any = null
+      let leads: unknown[] = []
+      let searchError: unknown = null
 
       // Check if search term looks like a UUID
       const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(search)
@@ -140,7 +140,7 @@ export async function GET(request: NextRequest) {
       })
 
       // Activity log events
-      activities.forEach((act: any) => {
+      activities.forEach((act: unknown) => {
         timeline.push({
           id: act.id,
           type: mapActivityType(act.action_type),
@@ -153,7 +153,7 @@ export async function GET(request: NextRequest) {
       })
 
       // Communication events
-      communications.forEach((comm: any) => {
+      communications.forEach((comm: unknown) => {
         timeline.push({
           id: comm.id,
           type: 'communication',
@@ -221,7 +221,7 @@ interface TimelineEvent {
   title: string
   description: string
   actor: string
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
 }
 
 // ─── Helpers ───────────────────────────────────────────────────────

@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Process appraisal
-    const result = await caeService.processAppraisal(body.lead_id, body.provider as any)
+    const result = await caeService.processAppraisal(body.lead_id, body.provider as unknown)
 
     if (!result.success) {
       return NextResponse.json(

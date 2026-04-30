@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -24,7 +25,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      executive_user_id: z.string().uuid().optional(),
+
+      scheduled_date: z.string().optional(),
+
+      duration_minutes: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       executive_user_id,
@@ -69,7 +80,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check for overlaps
-    const conflicts = existingSchedules.filter((schedule: any) => {
+    const conflicts = existingSchedules.filter((schedule: unknown) => {
       const scheduleStart = new Date(schedule.scheduled_date)
       const scheduleEnd = new Date(scheduleStart.getTime() + schedule.duration_minutes * 60 * 1000)
 
@@ -82,7 +93,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       has_conflicts: conflicts.length > 0,
       conflict_count: conflicts.length,
-      conflicts: conflicts.map((c: any) => ({
+      conflicts: conflicts.map((c: unknown) => ({
         id: c.id,
         title: c.title,
         scheduled_date: c.scheduled_date,

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -57,12 +58,12 @@ export async function GET(
       .eq('id', user.id)
       .maybeSingle()
 
-    let ticket: any = null
-    let messages: any[] = []
-    let attachments: any[] = []
-    let activityLog: any[] = []
-    let internalNotes: any[] = []
-    let relatedTickets: any[] = []
+    let ticket: unknown = null
+    let messages: unknown[] = []
+    let attachments: unknown[] = []
+    let activityLog: unknown[] = []
+    let internalNotes: unknown[] = []
+    let relatedTickets: unknown[] = []
 
     // Fetch based on source
     if (ticketSource === 'EMPLOYEE') {
@@ -341,7 +342,43 @@ export async function PATCH(
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      status: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      category: z.string().optional(),
+
+
+      assigned_to_id: z.string().uuid().optional(),
+
+
+      routed_to_department: z.string().optional(),
+
+
+      escalation_level: z.string().optional(),
+
+
+      is_confidential: z.boolean().optional(),
+
+
+      resolution_notes: z.string().optional(),
+
+
+      add_message: z.string().optional(),
+
+
+      escalate: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       status,
@@ -357,13 +394,13 @@ export async function PATCH(
     } = body
 
     // Build update object
-    const updates: any = { updated_at: new Date().toISOString() }
-    const activityLogs: any[] = []
+    const updates: Record<string, unknown> = { updated_at: new Date().toISOString() }
+    const activityLogs: unknown[] = []
     const updaterName = superAdmin?.full_name || employee?.full_name || 'Unknown'
     const updaterType = superAdmin ? 'super_admin' : 'employee'
 
     // Get current ticket for comparison
-    let currentTicket: any = null
+    let currentTicket: unknown = null
     let tableName = ''
     let activityTableName = ''
 
@@ -579,7 +616,7 @@ export async function PATCH(
     // Handle add_message
     if (add_message && add_message.content?.trim()) {
       let messageTableName = ''
-      const messagePayload: any = {
+      const messagePayload: Record<string, unknown> = {
         ticket_id: id,
         content: add_message.content.trim(),
         is_internal: add_message.is_internal || false,
@@ -614,7 +651,7 @@ export async function PATCH(
 
         // Track first response time
         if (!currentTicket.first_response_at) {
-          const firstResponseUpdate: any = {
+          const firstResponseUpdate: Record<string, unknown> = {
             first_response_at: new Date().toISOString()
           }
           const created = new Date(currentTicket.created_at)

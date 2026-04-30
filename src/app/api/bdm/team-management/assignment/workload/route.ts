@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
 
     // For each BDE, get their lead distribution by stage
     const teamWorkload = await Promise.all(
-      teamMembers.map(async (bde: any) => {
+      teamMembers.map(async (bde: unknown) => {
         const settings = bde.bde_assignment_settings
 
         // Get lead distribution by stage
@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
           .not('current_stage', 'in', '(CLOSED,CANCELLED,REJECTED,DISBURSED)')
 
         const stageDistribution: Record<string, number> = {}
-        leadsByStage?.forEach((lead: any) => {
+        leadsByStage?.forEach((lead: unknown) => {
           const stage = lead.current_stage || 'UNKNOWN'
           stageDistribution[stage] = (stageDistribution[stage] || 0) + 1
         })
@@ -181,7 +181,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Generate alerts for individual BDE
-function generateBDEAlerts(settings: any, workloadPercentage: number): string[] {
+function generateBDEAlerts(settings: unknown, workloadPercentage: number): string[] {
   const alerts: string[] = []
 
   if (settings.assignment_status === 'paused') {
@@ -221,8 +221,8 @@ function generateBDEAlerts(settings: any, workloadPercentage: number): string[] 
 }
 
 // Generate team-level recommendations
-function generateRecommendations(teamWorkload: any[]): any[] {
-  const recommendations: any[] = []
+function generateRecommendations(teamWorkload: unknown[]): unknown[] {
+  const recommendations: unknown[] = []
 
   // Check for workload imbalance
   const workloads = teamWorkload.map(bde => bde.workload.percentage)

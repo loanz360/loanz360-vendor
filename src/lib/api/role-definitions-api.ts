@@ -173,7 +173,7 @@ export async function createSubRole(roleData: Omit<RoleDefinition, 'displayOrder
 export async function updateSubRole(key: string, updates: Partial<RoleDefinition>): Promise<{ success: boolean; data?: RoleDefinition; error?: string }> {
   try {
     // Build update object
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (updates.name !== undefined) updateData.role_name = updates.name
     if (updates.description !== undefined) updateData.description = updates.description
     if (updates.isActive !== undefined) updateData.is_active = updates.isActive

@@ -15,7 +15,7 @@ export interface PerformanceMetric {
   unit: string
   timestamp: Date
   tags?: Record<string, string>
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface APIMetric {
@@ -452,7 +452,7 @@ export class PerformanceTimer {
   /**
    * Stop timer and record metric
    */
-  stop(metadata?: Record<string, any>) {
+  stop(metadata?: Record<string, unknown>) {
     const duration = performance.now() - this.startTime
 
     MetricsCollector.recordCustomMetric({
@@ -482,7 +482,7 @@ export class PerformanceTimer {
 /**
  * Record daily business metrics
  */
-export async function recordDailyMetrics(supabase: any) {
+export async function recordDailyMetrics(supabase: unknown) {
   try {
     // Active incentives
     const { count: activeIncentives } = await supabase

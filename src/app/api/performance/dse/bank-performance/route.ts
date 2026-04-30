@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
     const allRejections: Record<string, number> = {}
     banks.forEach((b) => {
       const reasons = b.rejection_reasons || []
-      reasons.forEach((r: any) => {
+      reasons.forEach((r: Record<string, unknown>) => {
         const reason = typeof r === 'string' ? r : r.reason || 'Unknown'
         allRejections[reason] = (allRejections[reason] || 0) + (typeof r === 'object' ? r.count || 1 : 1)
       })

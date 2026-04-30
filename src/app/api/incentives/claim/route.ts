@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -102,7 +103,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      allocation_id: z.string().uuid().optional(),
+
+
+      claimed_amount: z.string().optional(),
+
+
+      payment_method: z.string().optional(),
+
+
+      claim_id: z.string().uuid().optional(),
+
+
+      claim_status: z.string().optional(),
+
+
+      review_notes: z.string().optional(),
+
+
+      payment_reference: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { allocation_id, claimed_amount, payment_method } = body
 
@@ -225,7 +253,25 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden: Only SuperAdmin or HR can review claims' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      claim_id: z.string().optional(),
+
+
+      payment_reference: z.string().optional(),
+
+
+      review_notes: z.string().optional(),
+
+
+      claim_status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { claim_id, claim_status, review_notes, payment_reference } = body
 
@@ -249,7 +295,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Update the claim
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       claim_status,
       reviewed_by: user.id,
       reviewed_at: new Date().toISOString(),

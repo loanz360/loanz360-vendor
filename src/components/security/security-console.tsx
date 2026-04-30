@@ -53,7 +53,7 @@ interface SecurityScan {
   findings: number
   started_at: string
   completed_at?: string
-  scan_data?: Record<string, any>
+  scan_data?: Record<string, unknown>
 }
 
 interface AnomalyDetection {
@@ -64,7 +64,7 @@ interface AnomalyDetection {
   user_id?: string
   ip_address?: string
   user_agent?: string
-  details: Record<string, any>
+  details: Record<string, unknown>
   detected_at: string
   resolved_at?: string
   resolution_notes?: string
@@ -438,7 +438,7 @@ export default function SecurityConsole() {
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => setActiveTab(tab.id as unknown)}
               className={`
                 flex items-center py-4 px-1 border-b-2 font-medium text-sm
                 ${activeTab === tab.id
@@ -609,7 +609,7 @@ export default function SecurityConsole() {
               <div className="flex items-center space-x-2">
                 <select
                   value={scanFilter}
-                  onChange={e => setScanFilter(e.target.value as any)}
+                  onChange={e => setScanFilter(e.target.value as unknown)}
                   className="px-3 py-2 text-sm border border-gray-300 rounded-lg"
                 >
                   <option value="all">All Types</option>
@@ -620,7 +620,7 @@ export default function SecurityConsole() {
                 </select>
                 <select
                   value={severityFilter}
-                  onChange={e => setSeverityFilter(e.target.value as any)}
+                  onChange={e => setSeverityFilter(e.target.value as unknown)}
                   className="px-3 py-2 text-sm border border-gray-300 rounded-lg"
                 >
                   <option value="all">All Severities</option>
@@ -687,7 +687,7 @@ export default function SecurityConsole() {
               <div className="flex items-center space-x-2">
                 <select
                   value={anomalyFilter}
-                  onChange={e => setAnomalyFilter(e.target.value as any)}
+                  onChange={e => setAnomalyFilter(e.target.value as unknown)}
                   className="px-3 py-2 text-sm border border-gray-300 rounded-lg"
                 >
                   <option value="all">All Anomalies</option>
@@ -696,7 +696,7 @@ export default function SecurityConsole() {
                 </select>
                 <select
                   value={severityFilter}
-                  onChange={e => setSeverityFilter(e.target.value as any)}
+                  onChange={e => setSeverityFilter(e.target.value as unknown)}
                   className="px-3 py-2 text-sm border border-gray-300 rounded-lg"
                 >
                   <option value="all">All Severities</option>

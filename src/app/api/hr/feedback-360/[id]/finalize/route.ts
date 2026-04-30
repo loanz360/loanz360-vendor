@@ -43,8 +43,8 @@ export async function PATCH(
       .eq('request_id', id)
 
     const allResponses = responses || []
-    const submitted = allResponses.filter((r: any) => r.status === 'SUBMITTED')
-    const pending = allResponses.filter((r: any) => r.status !== 'SUBMITTED')
+    const submitted = allResponses.filter((r: Record<string, unknown>) => r.status === 'SUBMITTED')
+    const pending = allResponses.filter((r: Record<string, unknown>) => r.status !== 'SUBMITTED')
 
     if (submitted.length < 3) {
       return NextResponse.json({
@@ -61,7 +61,7 @@ export async function PATCH(
       }, { status: 400 })
     }
 
-    const avgRating = submitted.reduce((s: number, r: any) => s + (r.overall_rating || 0), 0) / submitted.length
+    const avgRating = submitted.reduce((s: number, r: unknown) => s + (r.overall_rating || 0), 0) / submitted.length
 
     const { error: updateErr } = await adminClient
       .from('feedback_360_requests')

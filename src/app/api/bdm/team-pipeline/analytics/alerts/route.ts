@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * BDM Team Pipeline - Real-time Alerts API
@@ -185,7 +186,15 @@ export async function PATCH(request: NextRequest) {
     }
 
     // 2. Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      alertId: z.string().uuid().optional(),
+
+      action: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { alertId, action } = body // action: 'mark_read' | 'mark_resolved'
 
@@ -199,7 +208,7 @@ export async function PATCH(request: NextRequest) {
     const supabase = createClient()
 
     // 3. Update alert
-    let updateData: Record<string, any> = {}
+    let updateData: Record<string, unknown> = {}
 
     if (action === 'mark_read') {
       updateData = { is_read: true }

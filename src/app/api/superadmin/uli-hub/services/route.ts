@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: ULI Services Management
  * GET    /api/superadmin/uli-hub/services  — List services (optional ?category=)
@@ -54,7 +55,55 @@ export async function GET(request: NextRequest) {
 // POST — Create a new ULI service
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      service_code: z.string().optional(),
+
+      service_name: z.string().optional(),
+
+      service_description: z.string().optional(),
+
+      category: z.string().optional(),
+
+      uli_api_path: z.string().optional(),
+
+      uli_api_method: z.string().optional(),
+
+      uli_api_version: z.string().optional(),
+
+      request_schema: z.string().optional(),
+
+      response_schema: z.string().optional(),
+
+      is_enabled: z.boolean().optional(),
+
+      is_sandbox_only: z.boolean().optional(),
+
+      requires_consent: z.string().optional(),
+
+      timeout_ms: z.string().optional(),
+
+      retry_count: z.string().optional(),
+
+      retry_delay_ms: z.string().optional(),
+
+      rate_limit_per_minute: z.string().optional(),
+
+      rate_limit_per_day: z.string().optional(),
+
+      cost_per_call: z.string().optional(),
+
+      feature_flag_key: z.string().optional(),
+
+      display_order: z.string().optional(),
+
+      icon_name: z.string().optional(),
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const supabase = createAdminClient()
 
@@ -101,7 +150,13 @@ export async function POST(request: NextRequest) {
 // PATCH — Update an existing ULI service
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     if (!body.id) {
       return NextResponse.json(

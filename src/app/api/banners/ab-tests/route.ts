@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -149,7 +150,7 @@ export async function GET(request: NextRequest) {
 
     // Apply status filter
     if (status) {
-      if (!VALID_AB_TEST_STATUSES.includes(status as any)) {
+      if (!VALID_AB_TEST_STATUSES.includes(status as unknown)) {
         return NextResponse.json(
           { error: `Invalid status. Must be one of: ${VALID_AB_TEST_STATUSES.join(', ')}` },
           { status: 400 }
@@ -227,7 +228,33 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      name: z.string().optional(),
+
+      description: z.string().optional(),
+
+      banner_a_id: z.string().uuid().optional(),
+
+      banner_b_id: z.string().uuid().optional(),
+
+      start_date: z.string().optional(),
+
+      end_date: z.string().optional(),
+
+      traffic_split: z.string().optional(),
+
+      target_sub_roles: z.string().optional(),
+
+      id: z.string().uuid(),
+
+      status: z.string().optional(),
+
+      winner: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       name,
@@ -381,7 +408,21 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      winner: z.string().optional(),
+
+      end_date: z.string().optional(),
+
+      status: z.string().optional(),
+
+      traffic_split: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, status, winner, end_date, traffic_split } = body
 
@@ -401,7 +442,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Build update object
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

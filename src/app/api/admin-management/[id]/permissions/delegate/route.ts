@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -22,7 +23,21 @@ export async function POST(
 
     const supabase = createSupabaseAdmin()
     const { id: delegatorId } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      delegatee_id: z.string().uuid().optional(),
+
+      module_key: z.string().optional(),
+
+      delegated_permissions: z.string().optional(),
+
+      delegation_reason: z.string().optional(),
+
+      delegation_days: z.number().optional().default(7),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {
@@ -262,7 +277,7 @@ export async function GET(
     }
 
     // Add computed fields
-    const enrichDelegations = (delegations: any[]) => delegations.map(delegation => ({
+    const enrichDelegations = (delegations: unknown[]) => delegations.map(delegation => ({
       ...delegation,
       is_expired: new Date(delegation.valid_until) < new Date(),
       days_remaining: Math.ceil(

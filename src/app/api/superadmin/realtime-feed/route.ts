@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Real-Time Activity Feed API
  * Main endpoint for fetching activity logs with filters
@@ -32,13 +33,13 @@ export async function GET(request: NextRequest) {
 
     // Parse filters
     const filters: ActivityFilters = {
-      categories: searchParams.get('categories')?.split(',').filter(Boolean) as any,
+      categories: searchParams.get('categories')?.split(',').filter(Boolean) as unknown,
       event_types: searchParams.get('event_types')?.split(',').filter(Boolean),
-      severity_levels: searchParams.get('severity_levels')?.split(',').filter(Boolean) as any,
-      actor_types: searchParams.get('actor_types')?.split(',').filter(Boolean) as any,
+      severity_levels: searchParams.get('severity_levels')?.split(',').filter(Boolean) as unknown,
+      actor_types: searchParams.get('actor_types')?.split(',').filter(Boolean) as unknown,
       modules: searchParams.get('modules')?.split(',').filter(Boolean),
-      sources: searchParams.get('sources')?.split(',').filter(Boolean) as any,
-      status: searchParams.get('status')?.split(',').filter(Boolean) as any,
+      sources: searchParams.get('sources')?.split(',').filter(Boolean) as unknown,
+      status: searchParams.get('status')?.split(',').filter(Boolean) as unknown,
       start_date: searchParams.get('start_date') || undefined,
       end_date: searchParams.get('end_date') || undefined,
       search: searchParams.get('search') || undefined,
@@ -163,7 +164,17 @@ export async function PATCH(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      activity_id: z.string().uuid().optional(),
+
+      action: z.string().optional(),
+
+      notes: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // SECURITY FIX: Use authenticated user_id instead of trusting request body
@@ -184,7 +195,7 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const updateData: Record<string, any> = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

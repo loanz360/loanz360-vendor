@@ -35,7 +35,7 @@ let cacheTimestamp: number = 0
 const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
 // Badge styling based on banner type
-const TYPE_BADGES: Record<string, { icon: any; color: string; label: string }> = {
+const TYPE_BADGES: Record<string, { icon: unknown; color: string; label: string }> = {
   PROMOTIONAL: { icon: Sparkles, color: 'bg-purple-500', label: 'Promo' },
   INFORMATIONAL: { icon: Bell, color: 'bg-blue-500', label: 'Info' },
   ANNOUNCEMENT: { icon: Bell, color: 'bg-green-500', label: 'New' },

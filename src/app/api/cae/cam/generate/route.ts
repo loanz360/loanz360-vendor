@@ -69,7 +69,7 @@ interface GenerateCAMResponse {
  * - Super Admin: Full access
  */
 async function verifyCAMAccess(
-  supabase: any,
+  supabase: unknown,
   userId: string,
   leadId: string,
   accessType: 'generate' | 'view'
@@ -166,7 +166,7 @@ async function verifyCAMAccess(
  * Log CAM access for compliance
  */
 async function logCAMAccess(
-  supabase: any,
+  supabase: unknown,
   camId: string,
   userId: string,
   role: string,
@@ -337,9 +337,9 @@ export async function POST(request: NextRequest) {
 
         // Risk Flags
         risk_flags: cam.risk_assessment.risk_flags,
-        critical_flags_count: cam.risk_assessment.risk_flags?.filter((f: any) => f.severity === 'CRITICAL').length || 0,
-        high_flags_count: cam.risk_assessment.risk_flags?.filter((f: any) => f.severity === 'HIGH').length || 0,
-        medium_flags_count: cam.risk_assessment.risk_flags?.filter((f: any) => f.severity === 'MEDIUM').length || 0,
+        critical_flags_count: cam.risk_assessment.risk_flags?.filter((f: unknown) => f.severity === 'CRITICAL').length || 0,
+        high_flags_count: cam.risk_assessment.risk_flags?.filter((f: unknown) => f.severity === 'HIGH').length || 0,
+        medium_flags_count: cam.risk_assessment.risk_flags?.filter((f: unknown) => f.severity === 'MEDIUM').length || 0,
 
         // Processing
         processing_time_ms: processingTime,
@@ -483,7 +483,7 @@ export async function GET(request: NextRequest) {
 /**
  * Build CAM response from database record
  */
-function buildCAMResponse(dbRecord: any): CreditAppraisalMemo {
+function buildCAMResponse(dbRecord: unknown): CreditAppraisalMemo {
   return {
     cam_id: dbRecord.cam_id,
     lead_id: dbRecord.lead_id,
@@ -515,9 +515,9 @@ function buildCAMResponse(dbRecord: any): CreditAppraisalMemo {
  * Generate Universal CAM with 9 sections and lender matching
  */
 async function generateUniversalCAM(
-  supabase: any,
-  user: any,
-  lead: any,
+  supabase: unknown,
+  user: unknown,
+  lead: unknown,
   body: GenerateCAMRequest,
   request: NextRequest,
   userRole: string,
@@ -800,12 +800,12 @@ async function generateUniversalCAM(
 /**
  * Build verification results from stored verifications
  */
-function buildVerificationResults(verifications: any[]): any {
+function buildVerificationResults(verifications: unknown[]): unknown {
   if (!verifications || verifications.length === 0) {
     return undefined
   }
 
-  const results: any = {}
+  const results: Record<string, unknown> = {}
 
   for (const v of verifications) {
     switch (v.verification_type) {

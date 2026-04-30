@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -11,7 +12,7 @@ import { sanitizeUuid } from '@/lib/security/sanitization'
 /**
  * Normalize contest data to handle both old and new schema formats
  */
-function normalizeContestData(contest: any): any {
+function normalizeContestData(contest: unknown): unknown {
   const statusMap: Record<string, string> = {
     'completed': 'expired',
     'active': 'active',
@@ -216,7 +217,76 @@ export async function PATCH(
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      contest_title: z.string().optional(),
+
+
+      contest_description: z.string().optional(),
+
+
+      contest_rules: z.string().optional(),
+
+
+      contest_image_url: z.string().optional(),
+
+
+      contest_type: z.string().optional(),
+
+
+      start_date: z.string().optional(),
+
+
+      end_date: z.string().optional(),
+
+
+      evaluation_criteria: z.string().optional(),
+
+
+      evaluation_frequency: z.string().optional(),
+
+
+      auto_evaluate: z.string().optional(),
+
+
+      reward_details: z.string().optional(),
+
+
+      winner_count: z.string().optional(),
+
+
+      reward_tiers: z.string().optional(),
+
+
+      enable_leaderboard: z.string().optional(),
+
+
+      leaderboard_visibility: z.string().optional(),
+
+
+      show_scores: z.string().optional(),
+
+
+      notification_enabled: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+      is_active: z.boolean().optional(),
+
+
+      target_subroles: z.array(z.unknown()).optional(),
+
+
+      geography_filters: z.array(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Sanitize and validate updatable fields
@@ -232,7 +302,7 @@ export async function PATCH(
       sanitizeJson,
     } = await import('@/lib/security/sanitization')
 
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_by: user.id,
     }
 
@@ -401,7 +471,7 @@ export async function PATCH(
 
       // Insert new filters
       if (Array.isArray(geography_filters) && geography_filters.length > 0) {
-        const geoFilters = geography_filters.map((filter: any) => ({
+        const geoFilters = geography_filters.map((filter: unknown) => ({
           contest_id: id,
           geography_type: filter.geography_type,
           state_id: filter.state_id || null,

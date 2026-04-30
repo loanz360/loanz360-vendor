@@ -16,7 +16,7 @@ const departmentUpdateSchema = z.object({
 });
 
 // Helper function to check if user is Super Admin
-async function isSuperAdmin(supabase: any): Promise<boolean> {
+async function isSuperAdmin(supabase: unknown): Promise<boolean> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
 

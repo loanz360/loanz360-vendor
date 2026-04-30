@@ -208,7 +208,7 @@ export async function POST(
     })
 
     // Prepare deal update data
-    const dealUpdateData: Record<string, any> = {
+    const dealUpdateData: Record<string, unknown> = {
       daily_updates: dailyUpdates,
       last_updated_by_bde_at: now.toISOString(),
       updated_at: now.toISOString()

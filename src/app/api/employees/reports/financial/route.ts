@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
     if (reportType === 'partner') {
       const partnerMap: Record<string, { name: string; type: string; total: number; pending: number; approved: number; count: number }> = {}
 
-      cpData.forEach((app: any) => {
+      cpData.forEach((app: unknown) => {
         const name = app.cp_user?.full_name || 'Unknown'
         const key = `CP:${name}`
         if (!partnerMap[key]) partnerMap[key] = { name, type: 'CP', total: 0, pending: 0, approved: 0, count: 0 }
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
         if (['ACCOUNTS_VERIFIED', 'SA_APPROVED', 'PAYOUT_CREDITED'].includes(app.status)) partnerMap[key].approved += app.expected_payout_amount || 0
       })
 
-      baData.forEach((lead: any) => {
+      baData.forEach((lead: unknown) => {
         const name = lead.source_partner_name || 'Unknown'
         const key = `BA:${name}`
         if (!partnerMap[key]) partnerMap[key] = { name, type: 'BA', total: 0, pending: 0, approved: 0, count: 0 }
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
         if (['APPROVED', 'PAID'].includes(lead.commission_status)) partnerMap[key].approved += lead.commission_amount || 0
       })
 
-      bpData.forEach((lead: any) => {
+      bpData.forEach((lead: unknown) => {
         const name = lead.source_partner_name || 'Unknown'
         const key = `BP:${name}`
         if (!partnerMap[key]) partnerMap[key] = { name, type: 'BP', total: 0, pending: 0, approved: 0, count: 0 }
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
     if (reportType === 'bank') {
       const bankMap: Record<string, { bank: string; disbursed: number; payout: number; count: number }> = {}
 
-      cpData.forEach((app: any) => {
+      cpData.forEach((app: unknown) => {
         const bank = app.bank_name || 'Unknown'
         if (!bankMap[bank]) bankMap[bank] = { bank, disbursed: 0, payout: 0, count: 0 }
         bankMap[bank].disbursed += app.loan_amount_disbursed || 0
@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
         bankMap[bank].count++
       })
 
-      baData.forEach((lead: any) => {
+      baData.forEach((lead: unknown) => {
         const bank = lead.sanctioned_bank || 'Unknown'
         if (!bankMap[bank]) bankMap[bank] = { bank, disbursed: 0, payout: 0, count: 0 }
         bankMap[bank].disbursed += lead.disbursed_amount || 0
@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
         bankMap[bank].count++
       })
 
-      bpData.forEach((lead: any) => {
+      bpData.forEach((lead: unknown) => {
         const bank = lead.sanctioned_bank || 'Unknown'
         if (!bankMap[bank]) bankMap[bank] = { bank, disbursed: 0, payout: 0, count: 0 }
         bankMap[bank].disbursed += lead.disbursed_amount || 0

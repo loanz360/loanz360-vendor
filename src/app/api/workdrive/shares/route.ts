@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive Shares API
@@ -95,7 +96,46 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      file_id: z.string().uuid().optional(),
+
+
+      folder_id: z.string().uuid().optional(),
+
+
+      share_type: z.string().optional(),
+
+
+      password: z.string().optional(),
+
+
+      expires_in_days: z.string().optional(),
+
+
+      max_downloads: z.string().optional(),
+
+
+      max_views: z.string().optional(),
+
+
+      allow_download: z.string().optional(),
+
+
+      watermark_enabled: z.string().optional(),
+
+
+      notify_on_access: z.string().optional(),
+
+
+      shared_with_emails: z.string().email().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       file_id,

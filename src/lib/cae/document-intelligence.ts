@@ -30,14 +30,14 @@ export interface VerificationResult {
   confidence_score: number
   provider_code: string
   verified_at: string
-  verification_details: Record<string, any>
+  verification_details: Record<string, unknown>
   discrepancies?: string[]
 }
 
 // Extracted document data
 export interface ExtractedData {
   raw_text?: string
-  structured_data: Record<string, any>
+  structured_data: Record<string, unknown>
   confidence_scores: Record<string, number>
   extracted_at: string
 }
@@ -107,9 +107,8 @@ export interface DocumentChecklist {
  * Document Intelligence Service
  */
 export class DocumentIntelligenceService {
-  private supabase: any
-
-  constructor(supabase: any) {
+  private supabase: unknown
+  constructor(supabase: unknown) {
     this.supabase = supabase
   }
 
@@ -170,11 +169,11 @@ export class DocumentIntelligenceService {
         .eq('lead_id', leadId)
 
       const uploadedDocsMap = new Map(
-        (uploadedDocs || []).map((doc: any) => [doc.document_category_id, doc])
+        (uploadedDocs || []).map((doc: unknown) => [doc.document_category_id, doc])
       )
 
       // Build checklist
-      const docRequirements: DocumentRequirement[] = (requirements || []).map((req: any) => {
+      const docRequirements: DocumentRequirement[] = (requirements || []).map((req: unknown) => {
         const uploaded = uploadedDocsMap.get(req.document_category_id)
         return {
           id: req.id,
@@ -235,7 +234,7 @@ export class DocumentIntelligenceService {
   /**
    * Map database document status to enum
    */
-  private mapDocumentStatus(doc: any): DocumentStatus {
+  private mapDocumentStatus(doc: unknown): DocumentStatus {
     if (doc.is_rejected) return 'REJECTED'
     if (doc.is_verified) return 'VERIFIED'
     if (doc.verification_result) return 'VERIFICATION_PENDING'
@@ -346,8 +345,7 @@ export class DocumentIntelligenceService {
    */
   private async performOCR(
     request: DocumentProcessingRequest,
-    docCategory: any
-  ): Promise<ExtractedData> {
+    docCategory: unknown  ): Promise<ExtractedData> {
     // In production, this would call the configured OCR provider
     // For now, return mock extracted data based on document type
 
@@ -365,7 +363,7 @@ export class DocumentIntelligenceService {
    */
   private async performVerification(
     request: DocumentProcessingRequest,
-    docCategory: any,
+    docCategory: unknown,
     extractedData?: ExtractedData
   ): Promise<VerificationResult> {
     // In production, this would call the configured verification provider
@@ -391,7 +389,7 @@ export class DocumentIntelligenceService {
    * Get mock extracted data for testing
    */
   private getMockExtractedData(categoryCode: string): {
-    data: Record<string, any>
+    data: Record<string, unknown>
     confidence: Record<string, number>
   } {
     switch (categoryCode) {
@@ -614,7 +612,7 @@ export class DocumentIntelligenceService {
       let verifiedCount = 0
       let verificationAttempts = 0
 
-      data.forEach((doc: any) => {
+      data.forEach((doc: unknown) => {
         byStatus[doc.status] = (byStatus[doc.status] || 0) + 1
         if (doc.processing_time_ms) {
           totalProcessingTime += doc.processing_time_ms
@@ -644,6 +642,6 @@ export class DocumentIntelligenceService {
 }
 
 // Export singleton factory
-export function createDocumentIntelligenceService(supabase: any): DocumentIntelligenceService {
+export function createDocumentIntelligenceService(supabase: unknown): DocumentIntelligenceService {
   return new DocumentIntelligenceService(supabase)
 }

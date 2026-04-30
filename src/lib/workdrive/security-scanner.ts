@@ -293,7 +293,7 @@ export async function logSecurityEvent(params: {
   eventType: 'scan_blocked' | 'scan_warning' | 'scan_passed' | 'access_denied' | 'suspicious_activity'
   fileId?: string
   fileName?: string
-  details: Record<string, any>
+  details: Record<string, unknown>
   ipAddress?: string
 }): Promise<void> {
   try {
@@ -380,7 +380,7 @@ export async function getComplianceReport(params: {
   totalFiles: number
   flaggedFiles: number
   byCategory: Record<string, number>
-  recentAlerts: any[]
+  recentAlerts: unknown[]
 }> {
   try {
     // This would query actual compliance data

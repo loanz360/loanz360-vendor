@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
         ? entries.filter((e) => {
             const history: Array<{ stage: string }> = e.stage_history || []
             return history.some((h) => h.stage === nextStage) || e.current_stage === nextStage ||
-              FUNNEL_STAGES.indexOf(e.current_stage as any) > index
+              FUNNEL_STAGES.indexOf(e.current_stage as unknown) > index
           }).length
         : 0
 

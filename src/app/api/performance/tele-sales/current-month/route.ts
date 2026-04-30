@@ -364,7 +364,7 @@ export async function GET(request: NextRequest) {
 /**
  * Aggregate daily metrics into monthly totals
  */
-function aggregateTeleSalesMetrics(dailyMetrics: any[]): any {
+function aggregateTeleSalesMetrics(dailyMetrics: unknown[]): unknown {
   if (dailyMetrics.length === 0) {
     return getEmptyMetrics()
   }
@@ -495,7 +495,7 @@ function aggregateTeleSalesMetrics(dailyMetrics: any[]): any {
   }
 }
 
-function getEmptyMetrics(): any {
+function getEmptyMetrics(): unknown {
   return {
     outboundCallsMade: 0,
     inboundCallsReceived: 0,
@@ -540,7 +540,7 @@ function getEmptyMetrics(): any {
   }
 }
 
-function getEmptyAccumulator(): any {
+function getEmptyAccumulator(): unknown {
   return {
     outboundCallsMade: 0,
     inboundCallsReceived: 0,
@@ -583,7 +583,7 @@ function getEmptyAccumulator(): any {
  * Calculate weighted performance score for Tele Sales
  * Enterprise-grade scoring with balanced weights
  */
-function calculateTeleSalesPerformanceScore(current: any, targets: TeleSalesMonthlyTargets): number {
+function calculateTeleSalesPerformanceScore(current: unknown, targets: TeleSalesMonthlyTargets): number {
   // Weight distribution based on business priorities
   const weights = {
     // Revenue & Conversion (40%)
@@ -651,7 +651,7 @@ function calculateEfficiencyAchievement(current: number, target: number): number
   return Math.round((target / current) * 100 * 10) / 10
 }
 
-function calculateTrend(dailyMetrics: any[], field: string, lowerIsBetter: boolean = false): 'up' | 'down' | 'stable' {
+function calculateTrend(dailyMetrics: unknown[], field: string, lowerIsBetter: boolean = false): 'up' | 'down' | 'stable' {
   if (dailyMetrics.length < 7) return 'stable'
 
   // Compare last 7 days with previous 7 days

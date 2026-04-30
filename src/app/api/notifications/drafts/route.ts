@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -173,7 +174,67 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      id: z.string().uuid(),
+
+
+      title: z.string().optional(),
+
+
+      message: z.string().optional(),
+
+
+      notification_type: z.string().optional(),
+
+
+      target_type: z.string().optional(),
+
+
+      message_html: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      target_category: z.string().optional(),
+
+
+      target_subrole: z.string().optional(),
+
+
+      target_geography: z.string().optional(),
+
+
+      channels: z.array(z.unknown()).optional(),
+
+
+      settings: z.record(z.unknown()).optional(),
+
+
+      localized_content: z.string().optional(),
+
+
+      selected_languages: z.string().optional(),
+
+
+      segment_id: z.string().uuid().optional(),
+
+
+      template_id: z.string().uuid().optional(),
+
+
+      approval_status: z.string().optional(),
+
+
+      approval_chain: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr as Partial<DraftNotification>
 
     // Validate required fields
@@ -276,7 +337,16 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, ...updateData } = body
 

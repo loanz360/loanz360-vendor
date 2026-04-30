@@ -95,7 +95,7 @@ export async function POST(
     // Process each row
     for (const row of rows) {
       try {
-        const rawData = row.raw_data as any
+        const rawData = row.raw_data as unknown
 
         // Update row status to processing
         await supabase
@@ -140,7 +140,7 @@ export async function POST(
 
           // Create allocation
           const performanceCriteria = {
-            ...(incentive.performance_criteria as any),
+            ...(incentive.performance_criteria as unknown),
             metric: rawData.target_metric,
             target_value: parseFloat(rawData.target_value),
           }

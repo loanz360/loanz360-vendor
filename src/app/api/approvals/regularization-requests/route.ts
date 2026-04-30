@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -73,7 +74,22 @@ export async function POST(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      request_id: z.string().uuid().optional(),
+
+
+      action: z.string().optional(),
+
+
+      rejection_reason: z.string(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { request_id, action, rejection_reason } = body
 
@@ -120,7 +136,7 @@ export async function POST(request: Request) {
     }
 
     if (action === 'approve') {
-      const approvalChain = regRequest.approval_chain as any[]
+      const approvalChain = regRequest.approval_chain as unknown[]
       const currentLevel = regRequest.approval_level || 0
 
       if (approvalChain && approvalChain.length > 0) {

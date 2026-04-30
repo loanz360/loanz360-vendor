@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -83,7 +84,7 @@ export async function GET(request: NextRequest) {
       .sort((a, b) => b.progress_percentage - a.progress_percentage) // Show closest to completion first
 
     // Group badges by category
-    const badgesByCategory = (allBadges || []).reduce((acc: any, badge) => {
+    const badgesByCategory = (allBadges || []).reduce((acc: unknown, badge) => {
       if (!acc[badge.category]) {
         acc[badge.category] = []
       }
@@ -122,7 +123,15 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      badge_id: z.string().uuid(),
+
+      is_displayed: z.boolean().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()

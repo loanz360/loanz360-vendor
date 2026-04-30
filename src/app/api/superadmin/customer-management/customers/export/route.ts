@@ -140,7 +140,7 @@ async function exportCustomersHandler(request: NextRequest) {
     }
 
     // Transform data for export
-    const exportData = customers.map((customer: any) => {
+    const exportData = customers.map((customer: unknown) => {
       const baseData = {
         id: customer.id,
         name: customer.users?.full_name || 'N/A',
@@ -225,7 +225,7 @@ async function exportCustomersHandler(request: NextRequest) {
 }
 
 // Helper function to convert JSON to CSV
-function convertToCSV(data: any[]): string {
+function convertToCSV(data: unknown[]): string {
   if (data.length === 0) {
     return ''
   }

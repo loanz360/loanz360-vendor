@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '20'), 50)
     const since = searchParams.get('since') // ISO timestamp for incremental updates
 
-    const activities: any[] = []
+    const activities: unknown[] = []
 
     // Build time filter
     const timeFilter = since || new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
@@ -113,7 +113,7 @@ export async function GET(request: NextRequest) {
       .order('earned_at', { ascending: false })
       .limit(5)
 
-    recentBadges?.forEach((ub: any) => {
+    recentBadges?.forEach((ub: unknown) => {
       activities.push({
         id: `badge_${ub.id}`,
         type: 'BADGE',

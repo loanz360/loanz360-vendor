@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // PERFORMANCE REVIEWS API
@@ -11,7 +12,7 @@ import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-async function getEmployeeId(supabase: any, userId: string) {
+async function getEmployeeId(supabase: unknown, userId: string) {
   const { data: employee } = await supabase
     .from('employees')
     .select('id')
@@ -124,7 +125,76 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      cycle_id: z.string().uuid().optional(),
+
+
+      review_type: z.string().optional(),
+
+
+      MANAGER: z.string().optional(),
+
+
+      PEER: z.string().optional(),
+
+
+      competency_ratings: z.string().optional(),
+
+
+      goal_achievement_percentage: z.string().optional(),
+
+
+      goals_rating: z.string().optional(),
+
+
+      strengths: z.string().optional(),
+
+
+      areas_for_improvement: z.string().optional(),
+
+
+      achievements: z.string().optional(),
+
+
+      key_accomplishments: z.string().optional(),
+
+
+      development_areas: z.string().optional(),
+
+
+      training_recommendations: z.string().optional(),
+
+
+      career_aspirations: z.string().optional(),
+
+
+      promotion_recommendation: z.string().optional(),
+
+
+      promotion_justification: z.string().optional(),
+
+
+      retention_risk: z.string().optional(),
+
+
+      retention_risk_reason: z.string().optional(),
+
+
+      increment_recommendation_percentage: z.string().optional(),
+
+
+      increment_justification: z.string().optional(),
+
+
+      bonus_recommendation: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       cycle_id,

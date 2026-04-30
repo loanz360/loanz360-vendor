@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * ULAP Document API
@@ -230,7 +231,17 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 export async function PATCH(request: NextRequest, { params }: RouteParams) {
   try {
     const { documentId } = await params;
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      isVerified: z.string().optional(),
+
+      rejectionReason: z.string().optional(),
+
+      notes: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
 
     if (!documentId) {

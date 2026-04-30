@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * BDM Team Pipeline - BDE Actions API
@@ -174,7 +175,7 @@ export async function GET(request: NextRequest) {
       if (action.status === 'pending') acc[bdeId].pending++
       if (action.isOverdue) acc[bdeId].overdue++
       return acc
-    }, {} as Record<string, any>)
+    }, {} as Record<string, unknown>)
 
     // 9. Return response
     return NextResponse.json({
@@ -218,7 +219,31 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      bdeId: z.string().uuid().optional(),
+
+      title: z.string().optional(),
+
+      description: z.string().optional(),
+
+      category: z.string().optional(),
+
+      priority: z.string().optional(),
+
+      dueDate: z.string().optional(),
+
+      relatedLeadId: z.string().uuid().optional(),
+
+      actionId: z.string().uuid().optional(),
+
+      status: z.string().optional(),
+
+      notes: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       bdeId,
@@ -308,7 +333,17 @@ export async function PATCH(request: NextRequest) {
     }
 
     // 2. Parse request body
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      status: z.string().optional(),
+
+      actionId: z.string().optional(),
+
+      notes: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { actionId, status, notes } = body
 
@@ -322,7 +357,7 @@ export async function PATCH(request: NextRequest) {
     // 3. Update action status
     const supabase = createClient()
 
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       updated_at: new Date().toISOString(),
     }
 
@@ -377,13 +412,13 @@ export async function PATCH(request: NextRequest) {
 }
 
 // Helper functions
-function getActionStatus(action: any): string {
+function getActionStatus(action: unknown): string {
   if (action.is_resolved) return 'completed'
   if (action.is_read) return 'in_progress'
   return 'pending'
 }
 
-function getActionStatusLabel(action: any): string {
+function getActionStatusLabel(action: unknown): string {
   const status = getActionStatus(action)
   const labels: Record<string, string> = {
     pending: 'Pending',
@@ -394,7 +429,7 @@ function getActionStatusLabel(action: any): string {
   return labels[status] || status
 }
 
-function getActionStatusColor(action: any): string {
+function getActionStatusColor(action: unknown): string {
   const status = getActionStatus(action)
   const colors: Record<string, string> = {
     pending: '#F59E0B',

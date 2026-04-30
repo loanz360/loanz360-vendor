@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * BDM Team Targets - What-If Scenario Modeling API
  * Simulates different performance scenarios to predict outcomes
@@ -32,7 +33,21 @@ async function getScenarioProjectionsHandler(request: NextRequest) {
     const bdmUserId = auth.user!.id
 
     // Parse request body for scenario parameters
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      month: z.number().optional(),
+
+      year: z.number().optional(),
+
+      bdeId: z.string().uuid().optional(),
+
+      scenarioType: z.string().optional(),
+
+      parameters: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { month, year, bdeId, scenarioType, parameters } = body
 
@@ -102,7 +117,7 @@ async function getScenarioProjectionsHandler(request: NextRequest) {
     const targetRevenue = target?.monthly_revenue_target || 0
 
     // Define scenario models
-    const scenarios: Record<string, any> = {}
+    const scenarios: Record<string, unknown> = {}
 
     // Baseline scenario - maintain current pace
     scenarios.baseline = {

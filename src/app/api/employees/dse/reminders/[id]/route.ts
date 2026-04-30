@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -37,7 +38,19 @@ export async function PUT(
     const roleCheck = await verifyDSERole(supabase, user.id)
     if (!roleCheck.isValid) return roleCheck.response
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      status: z.string().optional(),
+
+
+      snoozed_until: z.string(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { status, snoozed_until } = body
 

@@ -29,7 +29,7 @@ export interface TransactionStep {
 
 export class TransactionHandler {
   private steps: TransactionStep[] = []
-  private executedSteps: { name: string; result: any }[] = []
+  private executedSteps: { name: string; result: unknown}[] = []
   private supabase: SupabaseClient
 
   constructor(supabase: SupabaseClient) {
@@ -134,7 +134,7 @@ export class TransactionHandler {
  */
 export async function createIncentiveWithAllocations(
   supabase: SupabaseClient,
-  incentiveData: any,
+  incentiveData: unknown,
   targetSubroles: string[],
   budgetId?: string,
   budgetAmount?: number
@@ -255,8 +255,7 @@ export async function createIncentiveWithAllocations(
 export async function processClaimWithTDS(
   supabase: SupabaseClient,
   claimId: string,
-  approvalData: any
-): Promise<TransactionResult<any>> {
+  approvalData: unknown): Promise<TransactionResult<any>> {
   const transaction = new TransactionHandler(supabase)
 
   let tdsDeductionId: string | null = null
@@ -362,13 +361,13 @@ export async function processClaimWithTDS(
 export async function updateIncentiveWithWorkflow(
   supabase: SupabaseClient,
   incentiveId: string,
-  updates: any,
+  updates: unknown,
   initiateWorkflow: boolean = false
 ): Promise<TransactionResult<any>> {
   const transaction = new TransactionHandler(supabase)
 
   let workflowId: string | null = null
-  let previousData: any = null
+  let previousData: unknown = null
 
   // Step 1: Get previous data for rollback
   transaction.addStep({
@@ -453,7 +452,7 @@ export async function executeWithRollback<T>(
     rollback?: () => Promise<unknown>
   }>
 ): Promise<TransactionResult<T>> {
-  const executedOps: Array<{ name: string; result: any }> = []
+  const executedOps: Array<{ name: string; result: unknown}> = []
 
   try {
     for (const op of operations) {

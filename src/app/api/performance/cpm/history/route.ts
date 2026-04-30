@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const history: any[] = []
+    const history: unknown[] = []
     const now = new Date()
 
     // Try to fetch history data - handle gracefully if tables don't exist
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
         const adjustedYear = month > 0 ? year : year - 1
 
         let targets = null
-        let dailyMetrics: any[] = []
+        let dailyMetrics: unknown[] = []
 
         try {
           const { data, error } = await supabase

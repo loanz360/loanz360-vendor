@@ -36,7 +36,7 @@ export interface IntegrationConfig {
   type: IntegrationType
   description?: string
   status: IntegrationStatus
-  config: Record<string, any>
+  config: Record<string, unknown>
   credentials: Record<string, string>
   events: string[]
   webhook_url?: string
@@ -60,10 +60,10 @@ export interface IntegrationEvent {
   id: string
   integration_id: string
   event_type: string
-  payload: Record<string, any>
+  payload: Record<string, unknown>
   status: 'pending' | 'sent' | 'failed' | 'retrying'
   attempts: number
-  response?: Record<string, any>
+  response?: Record<string, unknown>
   error_message?: string
   created_at: string
   processed_at?: string
@@ -73,8 +73,8 @@ export interface WebhookPayload {
   event: string
   timestamp: string
   source: 'loanz360'
-  data: Record<string, any>
-  metadata?: Record<string, any>
+  data: Record<string, unknown>
+  metadata?: Record<string, unknown>
 }
 
 export interface IntegrationSyncResult {
@@ -368,8 +368,8 @@ export class IntegrationHubService {
    */
   async dispatchEvent(
     eventType: string,
-    data: Record<string, any>,
-    metadata?: Record<string, any>
+    data: Record<string, unknown>,
+    metadata?: Record<string, unknown>
   ): Promise<{ sent: number; failed: number; errors: string[] }> {
     const integrations = await this.getActiveIntegrationsForEvent(eventType)
 
@@ -470,7 +470,7 @@ export class IntegrationHubService {
   /**
    * Format message for Slack
    */
-  private formatSlackMessage(payload: WebhookPayload): Record<string, any> {
+  private formatSlackMessage(payload: WebhookPayload): Record<string, unknown> {
     const ticket = payload.data
 
     const eventLabels: Record<string, string> = {
@@ -548,7 +548,7 @@ export class IntegrationHubService {
   /**
    * Format message for Teams
    */
-  private formatTeamsMessage(payload: WebhookPayload): Record<string, any> {
+  private formatTeamsMessage(payload: WebhookPayload): Record<string, unknown> {
     const ticket = payload.data
 
     const eventLabels: Record<string, string> = {
@@ -876,8 +876,8 @@ export function getIntegrationHub(): IntegrationHubService {
 // Helper functions
 export async function dispatchIntegrationEvent(
   eventType: string,
-  data: Record<string, any>,
-  metadata?: Record<string, any>
+  data: Record<string, unknown>,
+  metadata?: Record<string, unknown>
 ) {
   return getIntegrationHub().dispatchEvent(eventType, data, metadata)
 }

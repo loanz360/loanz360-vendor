@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
       })
 
       return acc
-    }, [] as any[])
+    }, [] as unknown[])
 
     return NextResponse.json({
       graphData: cumulativeData,

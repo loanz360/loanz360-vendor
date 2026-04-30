@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -61,7 +62,27 @@ export async function GET(request: NextRequest) {
 // POST - Create and start a new scraping job
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action: z.string().optional(),
+
+      job_id: z.string().uuid(),
+
+      processed_keywords: z.string().optional(),
+
+      total_businesses: z.string().optional(),
+
+      successful_scrapes: z.string().optional(),
+
+      failed_scrapes: z.string().optional(),
+
+      status: z.string().optional(),
+
+      error_log: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action, job_id } = body
 
@@ -209,7 +230,25 @@ export async function POST(request: NextRequest) {
 // PATCH - Update job progress (called by Lambda)
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      error_log: z.string().optional(),
+
+      total_businesses: z.string().optional(),
+
+      failed_scrapes: z.string().optional(),
+
+      successful_scrapes: z.string().optional(),
+
+      status: z.string().optional(),
+
+      processed_keywords: z.string().optional(),
+
+      job_id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const {
       job_id,
@@ -228,7 +267,7 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
     if (processed_keywords !== undefined) updateData.processed_keywords = processed_keywords
     if (total_businesses !== undefined) updateData.total_businesses = total_businesses

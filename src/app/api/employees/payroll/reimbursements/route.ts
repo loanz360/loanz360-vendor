@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // EMPLOYEE REIMBURSEMENTS API
@@ -146,7 +147,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      category_id: z.string().uuid().optional(),
+
+
+      claim_date: z.string().optional(),
+
+
+      claim_amount: z.string().optional(),
+
+
+      claim_description: z.string().optional(),
+
+
+      receipt_urls: z.array(z.unknown()).optional(),
+
+
+      additional_documents: z.string().optional(),
+
+
+      reimbursement_id: z.string().uuid().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       category_id,
@@ -273,7 +304,19 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      reimbursement_id: z.string().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { reimbursement_id, action, ...actionData } = body
 

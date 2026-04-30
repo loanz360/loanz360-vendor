@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Employee Email Single Message API
@@ -137,7 +138,25 @@ export async function PUT(
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      is_read: z.boolean().optional(),
+
+
+      is_starred: z.boolean().optional(),
+
+
+      folder: z.string().optional(),
+
+
+      labels: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { is_read, is_starred, folder, labels } = body
 

@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       clients.add(controller)
 
       // Helper to send events
-      const sendEvent = (type: string, data: any) => {
+      const sendEvent = (type: string, data: unknown) => {
         try {
           const event = `event: ${type}\ndata: ${JSON.stringify(data)}\n\n`
           controller.enqueue(new TextEncoder().encode(event))

@@ -308,7 +308,7 @@ export async function POST(request: NextRequest) {
     // 10. Return response
     return NextResponse.json({
       success: true,
-      data: lead as any,
+      data: lead as unknown,
     } as CreateLeadResponse)
   } catch (error) {
     apiLogger.error('Create lead error', error)

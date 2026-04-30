@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function calculateCROPerformance(
-  supabase: any,
+  supabase: unknown,
   userId: string,
   date: string
 ): Promise<CROPerformanceMetrics> {
@@ -212,7 +212,7 @@ async function calculateCROPerformance(
 }
 
 async function calculateBDEPerformance(
-  supabase: any,
+  supabase: unknown,
   userId: string,
   date: string
 ): Promise<BDEPerformanceMetrics> {
@@ -339,7 +339,7 @@ function getPerformanceGrade(score: number): 'A' | 'B' | 'C' | 'D' | 'F' {
 }
 
 async function calculatePercentileRank(
-  supabase: any,
+  supabase: unknown,
   role: string,
   score: number,
   date: string

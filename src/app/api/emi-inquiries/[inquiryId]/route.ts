@@ -143,7 +143,7 @@ export async function PATCH(
     ]
 
     // Filter only allowed fields from body
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     for (const field of allowedFields) {
       if (body[field] !== undefined) {
         updateData[field] = body[field]

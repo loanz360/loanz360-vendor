@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Amazon SES Templates Management API
  * CRUD operations for SES email templates
@@ -83,7 +84,31 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      templateName: z.string(),
+
+
+      subject: z.string().optional(),
+
+
+      htmlBody: z.string().optional(),
+
+
+      textBody: z.string().optional(),
+
+
+      testRender: z.string().optional(),
+
+
+      testData: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const { templateName, subject, htmlBody, textBody, testRender, testData } = body;
 
@@ -186,7 +211,25 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      subject: z.string().optional(),
+
+
+      htmlBody: z.string().optional(),
+
+
+      textBody: z.string().optional(),
+
+
+      templateName: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2;
     const { templateName, subject, htmlBody, textBody } = body;
 

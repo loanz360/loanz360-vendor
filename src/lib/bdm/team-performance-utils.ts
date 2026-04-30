@@ -473,7 +473,7 @@ export function generateFileName(
   return `${prefix}_${monthName}_${year}_${timestamp}.${extension}`
 }
 
-export function convertToCSV(data: any[], headers: string[]): string {
+export function convertToCSV(data: unknown[], headers: string[]): string {
   const csvRows = []
 
   // Add headers

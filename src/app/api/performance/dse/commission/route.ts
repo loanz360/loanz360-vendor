@@ -82,13 +82,13 @@ export async function GET(request: NextRequest) {
  * Generate a real-time commission estimate based on current performance data.
  */
 async function generateCommissionEstimate(
-  adminClient: any,
+  adminClient: unknown,
   userId: string,
   month: number,
   year: number
 ): Promise<Partial<DSECommissionCalculation>> {
   // Fetch monthly summary
-  let summary: any = null
+  let summary: unknown = null
   const { data: s1 } = await adminClient
     .from('dse_monthly_summary')
     .select('*')
@@ -145,7 +145,7 @@ async function generateCommissionEstimate(
 
   // Calculate variable pay based on slabs
   let variablePay = 0
-  const variableDetails: any[] = []
+  const variableDetails: unknown[] = []
 
   if (slabs && slabs.length > 0) {
     for (const slab of slabs) {
@@ -178,7 +178,7 @@ async function generateCommissionEstimate(
 
   // Product incentives
   let productIncentive = 0
-  const productDetails: any[] = (products || []).map((p: any) => {
+  const productDetails: unknown[] = (products || []).map((p: unknown) => {
     productIncentive += p.incentive_earned || 0
     return {
       product_type: p.product_type,

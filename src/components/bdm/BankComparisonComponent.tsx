@@ -206,7 +206,7 @@ export function BankComparisonComponent({ bankIds, dateRange = 'last_30_days', o
             ].map((metric) => (
               <button
                 key={metric.id}
-                onClick={() => setSelectedMetric(metric.id as any)}
+                onClick={() => setSelectedMetric(metric.id as unknown)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   selectedMetric === metric.id
                     ? 'bg-purple-600 text-white'

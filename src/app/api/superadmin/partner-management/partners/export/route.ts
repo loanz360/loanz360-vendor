@@ -114,7 +114,7 @@ async function exportPartnersHandler(request: NextRequest) {
     }
 
     // Format data for export
-    const exportData = partners.map((partner: any) => ({
+    const exportData = partners.map((partner: unknown) => ({
       partner_id: partner.partner_id,
       full_name: partner.full_name,
       partner_type: partner.partner_type,
@@ -189,7 +189,7 @@ async function exportPartnersHandler(request: NextRequest) {
 /**
  * Generate CSV content
  */
-function generateCSV(data: any[]): string {
+function generateCSV(data: unknown[]): string {
   if (data.length === 0) return ''
 
   // Headers
@@ -222,7 +222,7 @@ function generateCSV(data: any[]): string {
 /**
  * Generate TSV (Tab-Separated Values) for Excel
  */
-function generateTSV(data: any[]): string {
+function generateTSV(data: unknown[]): string {
   if (data.length === 0) return ''
 
   const headers = Object.keys(data[0])

@@ -386,7 +386,7 @@ export default function AdvancedSearch({
               <select
                 value={filters.sortBy}
                 onChange={(e) =>
-                  updateFilter('sortBy', e.target.value as any)
+                  updateFilter('sortBy', e.target.value as unknown)
                 }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
               >

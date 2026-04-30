@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * ULAP Loan Details Management API
@@ -58,7 +59,29 @@ export async function GET(request: NextRequest) {
 // POST - Create or update loan details
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      subcategory_id: z.string().uuid(),
+
+      eligibility: z.string().optional(),
+
+      documents: z.array(z.unknown()).optional(),
+
+      features: z.string().optional(),
+
+      min_amount: z.string().optional(),
+
+      max_amount: z.string().optional(),
+
+      tenure: z.number().optional(),
+
+      interest_range: z.string().optional(),
+
+      additional_info: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {

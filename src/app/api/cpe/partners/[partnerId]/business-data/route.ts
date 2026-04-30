@@ -99,7 +99,7 @@ export async function GET(
     }
 
     // Group by month and aggregate
-    const monthlyData: { [key: string]: any } = {}
+    const monthlyData: { [key: string]: unknown } = {}
 
     metricsData?.forEach((record) => {
       const month = record.metric_date.substring(0, 7) // Extract YYYY-MM
@@ -121,7 +121,7 @@ export async function GET(
     })
 
     // Convert to array and sort
-    const monthlyArray = Object.values(monthlyData).sort((a: any, b: any) =>
+    const monthlyArray = Object.values(monthlyData).sort((a: unknown, b: unknown) =>
       a.month.localeCompare(b.month)
     )
 

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
@@ -49,7 +50,17 @@ export async function POST(request: NextRequest) {
     }
 
     // --- Parse body ---
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      strategy: z.string().optional(),
+
+      application_ids: z.array(z.unknown()).optional(),
+
+      partner_type: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { strategy, application_ids, partner_type } = body as {
       strategy: Strategy

@@ -222,7 +222,7 @@ export default function EnhancedPerformanceDashboard() {
                 <div>
                   <h2 className="text-lg lg:text-xl font-semibold text-white mb-4">Key Performance Indicators</h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 lg:gap-4">
-                    {performanceData?.metrics?.map((metric: any, idx: number) => (
+                    {performanceData?.metrics?.map((metric: unknown, idx: number) => (
                       <MetricCard key={idx} metric={metric} />
                     ))}
                   </div>
@@ -287,7 +287,7 @@ export default function EnhancedPerformanceDashboard() {
 }
 
 // Real-time Stats Bar Component
-function RealtimeStatsBar({ data }: { data: any }) {
+function RealtimeStatsBar({ data }: { data: unknown}) {
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
       <Card className="bg-gradient-to-br from-blue-900/50 to-blue-800/30 border-blue-500/30">
@@ -360,7 +360,7 @@ function TrendIndicator({ value }: { value: number }) {
 }
 
 // Predictions Panel Component
-function PredictionsPanel({ data }: { data: any }) {
+function PredictionsPanel({ data }: { data: unknown}) {
   return (
     <div className="space-y-4 lg:space-y-6">
       {/* Prediction Cards */}
@@ -475,7 +475,7 @@ function PredictionsPanel({ data }: { data: any }) {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {data.recommendations.map((rec: any, idx: number) => (
+            {data.recommendations.map((rec: unknown, idx: number) => (
               <div key={idx} className={`p-4 rounded-lg border ${
                 rec.priority === 'high' ? 'bg-red-950/30 border-red-500/50' :
                 rec.priority === 'medium' ? 'bg-yellow-950/30 border-yellow-500/50' :
@@ -505,7 +505,7 @@ function PredictionsPanel({ data }: { data: any }) {
 }
 
 // Gamification Panel Component
-function GamificationPanel({ data }: { data: any }) {
+function GamificationPanel({ data }: { data: unknown}) {
   return (
     <div className="space-y-4 lg:space-y-6">
       {/* Level & Points */}
@@ -582,7 +582,7 @@ function GamificationPanel({ data }: { data: any }) {
             <div className="mb-6">
               <h4 className="text-sm font-semibold text-gray-400 mb-3">Recently Unlocked</h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 lg:gap-3">
-                {data.achievements.recent.map((achievement: any, idx: number) => (
+                {data.achievements.recent.map((achievement: unknown, idx: number) => (
                   <div key={idx} className="p-2 lg:p-3 bg-gradient-to-br from-yellow-900/30 to-orange-900/20 border border-yellow-500/30 rounded-lg text-center">
                     <Award className="w-6 h-6 lg:w-8 lg:h-8 mx-auto mb-1 lg:mb-2 text-yellow-400" />
                     <p className="text-xs lg:text-sm font-semibold text-white truncate">{achievement.name}</p>
@@ -602,7 +602,7 @@ function GamificationPanel({ data }: { data: any }) {
                   <span className="text-xs text-gray-500">{catData.unlocked}/{catData.total}</span>
                 </div>
                 <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-1 lg:gap-2">
-                  {catData.items?.slice(0, 6).map((achievement: any, idx: number) => (
+                  {catData.items?.slice(0, 6).map((achievement: unknown, idx: number) => (
                     <div
                       key={idx}
                       className={`p-1.5 lg:p-2 rounded-lg text-center ${
@@ -626,7 +626,7 @@ function GamificationPanel({ data }: { data: any }) {
 }
 
 // History Panel Component
-function HistoryPanel({ data }: { data: any }) {
+function HistoryPanel({ data }: { data: unknown}) {
   const [viewMode, setViewMode] = useState<'month' | 'quarter' | 'year'>('month')
 
   return (
@@ -718,7 +718,7 @@ function HistoryPanel({ data }: { data: any }) {
                   key={mode}
                   size="sm"
                   variant={viewMode === mode ? 'default' : 'outline'}
-                  onClick={() => setViewMode(mode as any)}
+                  onClick={() => setViewMode(mode as unknown)}
                   className={`text-xs lg:text-sm px-2 lg:px-3 ${viewMode === mode ? 'bg-orange-500' : ''}`}
                 >
                   {mode.charAt(0).toUpperCase() + mode.slice(1)}
@@ -729,7 +729,7 @@ function HistoryPanel({ data }: { data: any }) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto">
-            {data.data?.slice(0, 24).map((period: any, idx: number) => (
+            {data.data?.slice(0, 24).map((period: unknown, idx: number) => (
               <Card key={idx} className="bg-gray-800 border-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
@@ -773,7 +773,7 @@ function HistoryPanel({ data }: { data: any }) {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
-              {data.yearOverYearGrowth.map((yoy: any, idx: number) => (
+              {data.yearOverYearGrowth.map((yoy: unknown, idx: number) => (
                 <div key={idx} className="p-3 lg:p-4 bg-gray-800 rounded-lg">
                   <p className="text-xs lg:text-sm text-gray-400">{yoy.vsYear} → {yoy.year}</p>
                   <div className="flex items-center gap-1 lg:gap-2 mt-1 lg:mt-2">

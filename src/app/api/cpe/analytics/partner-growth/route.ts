@@ -77,12 +77,12 @@ export async function GET(request: NextRequest) {
     const response = {
       success: true,
       data: {
-        labels: months.map((m: any) => m.month), // ['2025-01', '2025-02', ...]
+        labels: months.map((m: unknown) => m.month), // ['2025-01', '2025-02', ...]
         datasets: {
-          businessAssociates: months.map((m: any) => m.businessAssociates),
-          businessPartners: months.map((m: any) => m.businessPartners),
-          channelPartners: months.map((m: any) => m.channelPartners),
-          total: months.map((m: any) => m.total),
+          businessAssociates: months.map((m: unknown) => m.businessAssociates),
+          businessPartners: months.map((m: unknown) => m.businessPartners),
+          channelPartners: months.map((m: unknown) => m.channelPartners),
+          total: months.map((m: unknown) => m.total),
         },
         raw: months, // Full data for flexibility
       },

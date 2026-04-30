@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // Gateway Providers API
 // GET: List all providers
@@ -57,7 +58,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      type: z.string().optional(),
+
+
+      provider_name: z.string().optional(),
+
+
+      display_name: z.string().optional(),
+
+
+      config: z.record(z.unknown()).optional(),
+
+
+      is_active: z.boolean().optional().default(false),
+
+
+      priority: z.number().optional().default(10),
+
+
+      rate_limit_per_minute: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       type,
@@ -107,7 +135,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function maskCredentials(config: Record<string, any>): Record<string, any> {
+function maskCredentials(config: Record<string, unknown>): Record<string, unknown> {
   const sensitiveKeys = ['api_key', 'api_secret', 'password', 'auth_token', 'secret_key']
   const masked = { ...config }
 

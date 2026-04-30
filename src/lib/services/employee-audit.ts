@@ -9,7 +9,7 @@ import { logger } from '@/lib/utils/logger'
 export interface EmployeeActivityLog {
   employeeId: string
   action: string
-  actionDetails?: Record<string, any>
+  actionDetails?: Record<string, unknown>
   performedBy: string
   performedByRole: string
   performedByName?: string

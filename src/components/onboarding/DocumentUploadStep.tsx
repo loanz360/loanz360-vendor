@@ -8,8 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Upload, FileText, CheckCircle, XCircle, Loader2, Trash2 } from 'lucide-react';
 
 interface DocumentUploadStepProps {
-  onboardingData: any;
-  onComplete: () => void;
+  onboardingData: unknown  onComplete: () => void;
 }
 
 interface DocumentType {
@@ -267,7 +266,7 @@ export default function DocumentUploadStep({ onboardingData, onComplete }: Docum
                               const input = document.createElement('input');
                               input.type = 'file';
                               input.accept = docType.allowed_formats.map((f) => `.${f}`).join(',');
-                              input.onchange = (e: any) => {
+                              input.onchange = (e: unknown) => {
                                 const file = e.target?.files?.[0];
                                 if (file) {
                                   handleFileUpload(docType, file);

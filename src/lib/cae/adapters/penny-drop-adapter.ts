@@ -471,7 +471,7 @@ export class PennyDropAdapter {
   }
 
   private parseRazorpayResponse(
-    response: any,
+    response: unknown,
     request: BankAccountVerificationRequest,
     referenceId: string
   ): BankAccountVerificationResult {
@@ -505,7 +505,7 @@ export class PennyDropAdapter {
   }
 
   private parseDecentroResponse(
-    response: any,
+    response: unknown,
     request: BankAccountVerificationRequest,
     referenceId: string
   ): BankAccountVerificationResult {
@@ -539,7 +539,7 @@ export class PennyDropAdapter {
   }
 
   private parseCashfreeResponse(
-    response: any,
+    response: unknown,
     request: BankAccountVerificationRequest,
     referenceId: string
   ): BankAccountVerificationResult {

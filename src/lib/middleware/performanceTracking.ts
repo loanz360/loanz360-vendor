@@ -113,13 +113,13 @@ export function trackDatabaseQuery<T>(
  */
 export function TrackPerformance(metricName?: string) {
   return function (
-    target: any,
+    target: unknown,
     propertyKey: string,
     descriptor: PropertyDescriptor
   ) {
     const originalMethod = descriptor.value
 
-    descriptor.value = async function (...args: any[]) {
+    descriptor.value = async function (...args: unknown[]) {
       const name = metricName || `${target.constructor.name}.${propertyKey}`
       const startTime = performance.now()
 

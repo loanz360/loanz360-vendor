@@ -315,7 +315,7 @@ export const ClaimListQuerySchema = z.object({
 export async function validateRequest<T>(
   request: Request,
   schema: z.ZodSchema<T>
-): Promise<{ success: true; data: T } | { success: false; error: string; details: any }> {
+): Promise<{ success: true; data: T } | { success: false; error: string; details: unknown}> {
   try {
     const body = await request.json()
     const result = schema.safeParse(body)
@@ -352,7 +352,7 @@ export async function validateRequest<T>(
 export function validateQueryParams<T>(
   searchParams: URLSearchParams,
   schema: z.ZodSchema<T>
-): { success: true; data: T } | { success: false; error: string; details: any } {
+): { success: true; data: T } | { success: false; error: string; details: unknown} {
   try {
     const params = Object.fromEntries(searchParams.entries())
     const result = schema.safeParse(params)

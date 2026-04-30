@@ -302,7 +302,7 @@ describe('Incentive Validations', () => {
         })),
       }
 
-      const result = validateQueryParams(searchParams, Schema as any)
+      const result = validateQueryParams(searchParams, Schema as unknown)
 
       expect(result.success).toBe(true)
     })
@@ -321,7 +321,7 @@ describe('Incentive Validations', () => {
         })),
       }
 
-      const result = validateQueryParams(searchParams, Schema as any)
+      const result = validateQueryParams(searchParams, Schema as unknown)
 
       expect(result.success).toBe(false)
       expect(result.error).toBeTruthy()

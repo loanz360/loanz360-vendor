@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Assignment Rules API
@@ -135,7 +136,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      name: z.string().optional(),
+
+      description: z.string().optional(),
+
+      strategy: z.string().optional(),
+
+      priority: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+      criteria: z.record(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { name, description, strategy, priority, is_active, criteria } = body
 

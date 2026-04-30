@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Helper function to verify Digital Sales access
  */
-async function verifyDigitalSalesAccess(supabase: any, userId: string) {
+async function verifyDigitalSalesAccess(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')
@@ -145,7 +146,22 @@ export async function PUT(
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      end_time: z.string().optional(),
+
+
+      start_time: z.string().optional(),
+
+
+      duration_minutes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Verify meeting belongs to user
@@ -175,7 +191,7 @@ export async function PUT(
     }
 
     // Update meeting
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       ...body,
       updated_at: new Date().toISOString()
     }

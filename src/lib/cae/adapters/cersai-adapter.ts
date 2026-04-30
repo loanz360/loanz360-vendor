@@ -498,7 +498,7 @@ export class CERSAIAdapter {
     }
   }
 
-  private parseSearchResponse(response: any, searchId: string): CERSAISearchResult {
+  private parseSearchResponse(response: unknown, searchId: string): CERSAISearchResult {
     if (response.error) {
       return {
         success: false,
@@ -514,7 +514,7 @@ export class CERSAIAdapter {
     }
 
     const charges = response.charges || response.data || []
-    const activeCharges = charges.filter((c: any) => c.status === 'ACTIVE')
+    const activeCharges = charges.filter((c: unknown) => c.status === 'ACTIVE')
 
     return {
       success: true,
@@ -523,11 +523,11 @@ export class CERSAIAdapter {
       total_records: charges.length,
       charges,
       has_active_charges: activeCharges.length > 0,
-      total_charge_amount: activeCharges.reduce((sum: number, c: any) => sum + (c.charge_amount || 0), 0),
+      total_charge_amount: activeCharges.reduce((sum: number, c: unknown) => sum + (c.charge_amount || 0), 0),
       summary: {
         active_charges: activeCharges.length,
         satisfied_charges: charges.length - activeCharges.length,
-        total_secured_creditors: new Set(charges.map((c: any) => c.secured_creditor?.name)).size
+        total_secured_creditors: new Set(charges.map((c: unknown) => c.secured_creditor?.name)).size
       }
     }
   }

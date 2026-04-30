@@ -130,7 +130,7 @@ export async function GET(request: NextRequest) {
       ...admin,
       permissions: permissionsMap.get(admin.id) || [],
       enabled_modules_count:
-        permissionsMap.get(admin.id)?.filter((p: any) => p.is_enabled).length || 0,
+        permissionsMap.get(admin.id)?.filter((p: unknown) => p.is_enabled).length || 0,
     }))
 
     return NextResponse.json({

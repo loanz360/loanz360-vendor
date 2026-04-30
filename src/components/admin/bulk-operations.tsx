@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useConfirmationDialog, ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 import { fetchWithErrorHandling, showSuccessToast } from '@/lib/errors/client-errors'
 
-export function BulkOperations({ admins, onComplete }: { admins: any[]; onComplete: () => void }) {
+export function BulkOperations({ admins, onComplete }: { admins: unknown[]; onComplete: () => void }) {
   const [selected, setSelected] = React.useState<Set<string>>(new Set())
   const [action, setAction] = React.useState('')
   const { isOpen, config, openDialog, closeDialog } = useConfirmationDialog()

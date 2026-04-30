@@ -147,7 +147,7 @@ export function getCacheStatus(): void {
 export async function triggerSync(): Promise<void> {
   if (registration?.sync) {
     try {
-      await (registration.sync as any).register('sync-pending')
+      await (registration.sync as unknown).register('sync-pending')
     } catch (error) {
       console.error('[PWA] Background sync failed:', error)
     }
@@ -339,7 +339,7 @@ export function isAppInstalled(): boolean {
   }
 
   // iOS Safari standalone check
-  if ((navigator as any).standalone === true) {
+  if ((navigator as unknown).standalone === true) {
     return true
   }
 

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * Credits API
  * Enterprise credit balance management
@@ -36,7 +37,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })
     }
 
-    const credits = (data || []).map((credit: Record<string, any>) => {
+    const credits = (data || []).map((credit: Record<string, unknown>) => {
       const available = credit.total_credits - credit.used_credits - credit.reserved_credits
       return {
         providerId: credit.provider_id,
@@ -79,7 +80,21 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      providerId: z.string().uuid().optional(),
+
+      creditType: z.string().optional(),
+
+      amount: z.number().optional(),
+
+      transactionType: z.string().optional(),
+
+      description: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { providerId, creditType, amount, transactionType, description } = body

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
@@ -59,7 +60,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      contact_ids: z.array(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { contact_ids } = body
 
@@ -133,7 +143,7 @@ export async function POST(request: NextRequest) {
 
     // Process each contact
     for (const contact of contacts) {
-      let assignedCro: any = null
+      let assignedCro: unknown = null
       let matchType: 'location_and_loan' | 'location_or_loan' | 'any_available' = 'any_available'
 
       // Step 1: Try to find CRO matching BOTH location AND loan type

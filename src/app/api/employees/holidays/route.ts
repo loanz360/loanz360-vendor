@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -112,7 +113,31 @@ export async function POST(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      name: z.string().optional(),
+
+
+      date: z.string().optional(),
+
+
+      type: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      is_mandatory: z.boolean().optional(),
+
+
+      id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { name, date, type, description, is_mandatory } = body
 
@@ -207,7 +232,31 @@ export async function PUT(request: Request) {
       return NextResponse.json({ success: false, error: 'Only HR and Super Admin can update holidays' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      is_mandatory: z.boolean().optional(),
+
+
+      type: z.string().optional(),
+
+
+      name: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      date: z.string().optional(),
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, name, date, type, description, is_mandatory } = body
 

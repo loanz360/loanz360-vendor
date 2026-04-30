@@ -7,7 +7,7 @@ import { NextRequest } from 'next/server'
 import logger from './logger'
 
 interface ErrorContext {
-  [key: string]: any
+  [key: string]: unknown
 }
 
 /**
@@ -37,8 +37,7 @@ export function logApiError(
 export function logValidationError(
   message: string,
   request: NextRequest,
-  validationErrors: any
-): void {
+  validationErrors: unknown): void {
   logger.warn(`Validation Error: ${message}`, {
     url: request.url,
     method: request.method,

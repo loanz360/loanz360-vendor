@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Helper function to verify Digital Sales access
  */
-async function verifyDigitalSalesAccess(supabase: any, userId: string) {
+async function verifyDigitalSalesAccess(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')
@@ -168,7 +169,55 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      lead_id: z.string().uuid().optional(),
+
+
+      customer_id: z.string().uuid().optional(),
+
+
+      title: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      meeting_type: z.string().optional(),
+
+
+      meeting_purpose: z.string().optional(),
+
+
+      scheduled_date: z.string().optional(),
+
+
+      start_time: z.string().optional(),
+
+
+      duration_minutes: z.number().optional().default(30),
+
+
+      meeting_link: z.string().optional(),
+
+
+      meeting_platform: z.string().optional(),
+
+
+      attendees: z.array(z.unknown()).optional().default([]),
+
+
+      set_reminder: z.boolean().optional().default(false),
+
+
+      reminder_minutes_before: z.number().optional().default(15),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       lead_id,

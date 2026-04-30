@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // HR ONBOARDING MANAGEMENT API
@@ -157,7 +158,34 @@ export async function PATCH(request: NextRequest) {
     // Use admin client for data queries (bypasses RLS - auth already verified above)
     const adminClient = createSupabaseAdmin()
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string(),
+
+
+      employee_id: z.string().uuid(),
+
+
+      task_id: z.string().uuid().optional(),
+
+
+      hr_assigned: z.string().optional(),
+
+
+      buddy_assigned: z.string().optional(),
+
+
+      task_status: z.string().optional(),
+
+
+      hr_notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action, employee_id, task_id, hr_assigned, buddy_assigned, task_status, hr_notes } = body
 

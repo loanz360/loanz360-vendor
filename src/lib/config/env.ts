@@ -66,9 +66,9 @@ async function validateEnv(): Promise<EnvConfig> {
     return cachedEnv
   } catch (error) {
     if (error && typeof error === 'object' && 'issues' in error) {
-      const issues = (error as any).issues
+      const issues = (error as unknown).issues
       const missingVars = issues
-        ?.map((err: any) => `${err.path.join('.')}: ${err.message}`)
+        ?.map((err: unknown) => `${err.path.join('.')}: ${err.message}`)
         ?.join('\n') || 'Unknown validation error'
       throw new ConfigError(
         `Invalid environment configuration:\n${missingVars}\n\nPlease check your .env.local file.`

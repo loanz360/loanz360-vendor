@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -126,7 +127,19 @@ export async function PATCH(request: NextRequest) {
 
     const supabase = await createClient()
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      insight_id: z.string().uuid().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { insight_id, action } = body
 
@@ -153,7 +166,7 @@ export async function PATCH(request: NextRequest) {
 }
 
 // AI Insight Generation Logic
-async function generateAIInsights(supabase: any, croId: string): Promise<Partial<CROAIInsight>[]> {
+async function generateAIInsights(supabase: unknown, croId: string): Promise<Partial<CROAIInsight>[]> {
   const insights: Partial<CROAIInsight>[] = []
 
   // Get current month data
@@ -197,24 +210,24 @@ async function generateAIInsights(supabase: any, croId: string): Promise<Partial
   }
 
   // Aggregate metrics
-  const totalCalls = dailyMetrics.reduce((sum: number, d: any) => sum + (d.calls_made || 0), 0)
-  const totalConversions = dailyMetrics.reduce((sum: number, d: any) => sum + (d.leads_converted || 0), 0)
-  const avgCallDuration = dailyMetrics.reduce((sum: number, d: any) => sum + (d.avg_call_duration_minutes || 0), 0) / dailyMetrics.length
-  const totalLeadsGenerated = dailyMetrics.reduce((sum: number, d: any) => sum + (d.leads_generated || 0), 0)
-  const avgResponseTime = dailyMetrics.reduce((sum: number, d: any) => sum + (d.avg_response_time_minutes || 0), 0) / dailyMetrics.length
-  const totalFollowups = dailyMetrics.reduce((sum: number, d: any) => sum + (d.followups_completed || 0), 0)
-  const totalDisbursed = dailyMetrics.reduce((sum: number, d: any) => sum + (d.cases_disbursed || 0), 0)
+  const totalCalls = dailyMetrics.reduce((sum: number, d: unknown) => sum + (d.calls_made || 0), 0)
+  const totalConversions = dailyMetrics.reduce((sum: number, d: unknown) => sum + (d.leads_converted || 0), 0)
+  const avgCallDuration = dailyMetrics.reduce((sum: number, d: unknown) => sum + (d.avg_call_duration_minutes || 0), 0) / dailyMetrics.length
+  const totalLeadsGenerated = dailyMetrics.reduce((sum: number, d: unknown) => sum + (d.leads_generated || 0), 0)
+  const avgResponseTime = dailyMetrics.reduce((sum: number, d: unknown) => sum + (d.avg_response_time_minutes || 0), 0) / dailyMetrics.length
+  const totalFollowups = dailyMetrics.reduce((sum: number, d: unknown) => sum + (d.followups_completed || 0), 0)
+  const totalDisbursed = dailyMetrics.reduce((sum: number, d: unknown) => sum + (d.cases_disbursed || 0), 0)
 
   const daysWorked = dailyMetrics.length
   const avgCallsPerDay = totalCalls / daysWorked
 
   // Calculate company averages
-  const companyAvgCalls = companyAvg ? companyAvg.reduce((sum: number, c: any) => sum + (c.total_calls_made || 0), 0) / companyAvg.length : 0
-  const companyAvgConversion = companyAvg ? companyAvg.reduce((sum: number, c: any) => sum + (c.conversion_rate || 0), 0) / companyAvg.length : 0
+  const companyAvgCalls = companyAvg ? companyAvg.reduce((sum: number, c: unknown) => sum + (c.total_calls_made || 0), 0) / companyAvg.length : 0
+  const companyAvgConversion = companyAvg ? companyAvg.reduce((sum: number, c: unknown) => sum + (c.conversion_rate || 0), 0) / companyAvg.length : 0
 
   // Analyze call patterns
   const recentDays = dailyMetrics.slice(0, 7)
-  const avgRecentCalls = recentDays.reduce((sum: number, d: any) => sum + (d.calls_made || 0), 0) / recentDays.length
+  const avgRecentCalls = recentDays.reduce((sum: number, d: unknown) => sum + (d.calls_made || 0), 0) / recentDays.length
 
   // --- GENERATE INSIGHTS ---
 
@@ -340,7 +353,7 @@ async function generateAIInsights(supabase: any, croId: string): Promise<Partial
   }
 
   // 5. Follow-up Completion Analysis
-  const scheduledFollowups = dailyMetrics.reduce((sum: number, d: any) => sum + (d.followups_scheduled || 0), 0)
+  const scheduledFollowups = dailyMetrics.reduce((sum: number, d: unknown) => sum + (d.followups_scheduled || 0), 0)
   const followupRate = scheduledFollowups > 0 ? (totalFollowups / scheduledFollowups) * 100 : 100
 
   if (followupRate < 70) {
@@ -366,8 +379,8 @@ async function generateAIInsights(supabase: any, croId: string): Promise<Partial
     const firstHalf = recentDays.slice(Math.floor(recentDays.length / 2))
     const secondHalf = recentDays.slice(0, Math.floor(recentDays.length / 2))
 
-    const firstHalfCalls = firstHalf.reduce((sum: number, d: any) => sum + (d.calls_made || 0), 0)
-    const secondHalfCalls = secondHalf.reduce((sum: number, d: any) => sum + (d.calls_made || 0), 0)
+    const firstHalfCalls = firstHalf.reduce((sum: number, d: unknown) => sum + (d.calls_made || 0), 0)
+    const secondHalfCalls = secondHalf.reduce((sum: number, d: unknown) => sum + (d.calls_made || 0), 0)
 
     if (secondHalfCalls < firstHalfCalls * 0.7) {
       insights.push({

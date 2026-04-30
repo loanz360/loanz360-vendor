@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -10,8 +11,7 @@ import { apiLogger } from '@/lib/utils/logger'
 interface ValidationError {
   row: number
   field: string
-  value: any
-  error: string
+  value: unknown  error: string
 }
 
 interface ImportResult {
@@ -19,7 +19,7 @@ interface ImportResult {
   successCount: number
   errorCount: number
   errors: ValidationError[]
-  createdPartners: any[]
+  createdPartners: unknown[]
 }
 
 /**
@@ -54,7 +54,13 @@ async function importPartnersHandler(request: NextRequest) {
     }
 
     // Parse CSV data from request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      validateOnly: z.boolean().optional().default(false),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { data: csvData, validateOnly = false } = body
 
@@ -67,7 +73,7 @@ async function importPartnersHandler(request: NextRequest) {
 
     // Validate and process each row
     const validationErrors: ValidationError[] = []
-    const validRows: any[] = []
+    const validRows: unknown[] = []
 
     for (let i = 0; i < csvData.length; i++) {
       const row = csvData[i]
@@ -287,7 +293,7 @@ async function importPartnersHandler(request: NextRequest) {
 /**
  * Validate a single partner row
  */
-function validatePartnerRow(row: any, rowNumber: number): ValidationError[] {
+function validatePartnerRow(row: unknown, rowNumber: number): ValidationError[] {
   const errors: ValidationError[] = []
 
   // Required fields

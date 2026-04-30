@@ -33,7 +33,7 @@ export interface RealtimeEvent {
   type: EventType
   ticket_id?: string
   ticket_source?: 'EMPLOYEE' | 'CUSTOMER' | 'PARTNER'
-  data: Record<string, any>
+  data: Record<string, unknown>
   target_user_ids?: string[]  // Specific users to notify
   target_roles?: string[]     // Roles to notify
   broadcast?: boolean         // Send to all connected clients
@@ -50,7 +50,7 @@ export interface NotificationPayload {
   ticket_number?: string
   priority?: 'urgent' | 'high' | 'medium' | 'low' | 'info'
   action_url?: string
-  data?: Record<string, any>
+  data?: Record<string, unknown>
   created_at: string
 }
 

@@ -115,7 +115,43 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      notification_type: z.string(),
+
+
+      in_app_enabled: z.string().optional(),
+
+
+      email_enabled: z.string().email().optional(),
+
+
+      sms_enabled: z.string().optional(),
+
+
+      push_enabled: z.string().optional(),
+
+
+      digest_mode: z.string().optional(),
+
+
+      digest_frequency: z.string().optional(),
+
+
+      quiet_hours_enabled: z.string().optional(),
+
+
+      quiet_hours_start: z.string().optional(),
+
+
+      quiet_hours_end: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       notification_type,

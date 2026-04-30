@@ -227,7 +227,7 @@ describe('Timezone Utilities', () => {
     it('should return default timezone on error', () => {
       // Mock Intl to throw an error
       const originalIntl = global.Intl
-      delete (global as any).Intl
+      delete (global as unknown).Intl
 
       const timezone = getBrowserTimezone()
 

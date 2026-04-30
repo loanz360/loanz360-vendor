@@ -48,9 +48,7 @@ export interface AuditLogEntry {
   performedByRole?: string
   performedByIP?: string
   userAgent?: string
-  oldValues?: any
-  newValues?: any
-  changedFields?: string[]
+  oldValues?: unknown  newValues?: unknown  changedFields?: string[]
   reason?: string
   requestId?: string
   sessionId?: string
@@ -66,9 +64,7 @@ export interface AuditHistoryEntry {
   performedByName: string
   performedByRole: string
   changedFields: string[]
-  oldValues: any
-  newValues: any
-  reason?: string
+  oldValues: unknown  newValues: unknown  reason?: string
   performedAt: string
   checksumValid: boolean
 }
@@ -103,9 +99,7 @@ export class IncentiveAuditService {
     action: AuditAction
     actionCategory: ActionCategory
     context: AuditContext
-    oldValues?: any
-    newValues?: any
-  }): Promise<string | null> {
+    oldValues?: unknown    newValues?: unknown  }): Promise<string | null> {
     try {
       const supabase = await createClient()
 
@@ -450,7 +444,7 @@ export function extractRequestContext(request: Request): Partial<AuditContext> {
 /**
  * Get changed fields between two objects
  */
-export function getChangedFields(oldObj: any, newObj: any): string[] {
+export function getChangedFields(oldObj: unknown, newObj: unknown): string[] {
   const changed: string[] = []
 
   if (!oldObj || !newObj) return changed

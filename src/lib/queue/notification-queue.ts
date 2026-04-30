@@ -36,7 +36,7 @@ export interface PushJobData {
   recipient_ids: string[]
   title: string
   body: string
-  data?: Record<string, any>
+  data?: Record<string, unknown>
 }
 
 export interface BulkJobData {
@@ -50,12 +50,12 @@ export interface BulkJobData {
 
 export interface AnalyticsJobData {
   job_type: 'refresh_materialized_views' | 'calculate_engagement' | 'generate_report'
-  params?: Record<string, any>
+  params?: Record<string, unknown>
 }
 
 export interface CleanupJobData {
   job_type: 'archive_old' | 'delete_expired' | 'cleanup_cache'
-  params?: Record<string, any>
+  params?: Record<string, unknown>
 }
 
 type JobData = EmailJobData | SMSJobData | PushJobData | BulkJobData | AnalyticsJobData | CleanupJobData
@@ -96,7 +96,7 @@ class InMemoryQueue<T = JobData> {
   async add(
     jobName: string,
     data: T,
-    options?: { jobId?: string; priority?: number; delay?: number; timeout?: number; repeat?: any }
+    options?: { jobId?: string; priority?: number; delay?: number; timeout?: number; repeat?: unknown}
   ): Promise<Job<T>> {
     const id = options?.jobId || `${this.name}-${jobName}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 

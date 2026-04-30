@@ -52,7 +52,7 @@ const updateCustomerSchema = z.object({
 })
 
 // Helper function to verify DSE role and customer ownership
-async function verifyAccess(supabase: any, userId: string, customerId: string) {
+async function verifyAccess(supabase: unknown, userId: string, customerId: string) {
   const { data: profile, error: profileError } = await supabase
     .from('users')
     .select('role, sub_role')

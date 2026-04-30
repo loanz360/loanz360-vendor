@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import {
@@ -113,7 +114,39 @@ export async function PUT(
 
 
     const { id } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      email_notifications_enabled: z.string().email().optional(),
+
+      security_emails: z.string().email().optional(),
+
+      authentication_emails: z.string().email().optional(),
+
+      authorization_emails: z.string().email().optional(),
+
+      activity_emails: z.string().email().optional(),
+
+      system_emails: z.string().email().optional(),
+
+      compliance_emails: z.string().email().optional(),
+
+      alerts_emails: z.string().email().optional(),
+
+      reports_emails: z.string().email().optional(),
+
+      marketing_emails: z.string().email().optional(),
+
+      enable_daily_digest: z.string().optional(),
+
+      enable_weekly_digest: z.string().optional(),
+
+      digest_time: z.string().optional(),
+
+      updated_by_user_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {
@@ -150,7 +183,7 @@ export async function PUT(
     }
 
     // Build preferences object
-    const preferences: any = {}
+    const preferences: Record<string, unknown> = {}
 
     if (email_notifications_enabled !== undefined) preferences.email_notifications_enabled = email_notifications_enabled
     if (security_emails !== undefined) preferences.security_emails = security_emails

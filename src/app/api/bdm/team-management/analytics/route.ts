@@ -192,7 +192,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper function to generate trends
-function generateTrends(leads: any[], days: number) {
+function generateTrends(leads: unknown[], days: number) {
   const trends = []
   const today = new Date()
 
@@ -215,7 +215,7 @@ function generateTrends(leads: any[], days: number) {
 }
 
 // Helper function to calculate loan type distribution
-function calculateLoanTypeDistribution(leads: any[]) {
+function calculateLoanTypeDistribution(leads: unknown[]) {
   const distribution: Record<string, number> = {}
 
   leads.forEach((lead) => {

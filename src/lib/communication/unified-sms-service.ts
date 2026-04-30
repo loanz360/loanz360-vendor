@@ -572,7 +572,7 @@ export class UnifiedSMSService {
         provider_transaction_id: params.response.transactionId?.toString(),
         error_code: params.response.success ? null : params.response.statusCode.toString(),
         error_message: params.response.success ? null : params.response.description,
-        provider_response: params.response as any,
+        provider_response: params.response as unknown,
         message_parts: params.response.pdu || 1
       })
     } catch (error) {
@@ -613,7 +613,7 @@ export const smsService = {
     templateCode?: string
     userId?: string
   }) => getSMSService().sendOTP(params),
-  getTemplates: (filter?: any) => getSMSService().getTemplates(filter),
-  getDeliveryLogs: (filter?: any) => getSMSService().getDeliveryLogs(filter),
-  getDeliveryStats: (filter?: any) => getSMSService().getDeliveryStats(filter)
+  getTemplates: (filter?: unknown) => getSMSService().getTemplates(filter),
+  getDeliveryLogs: (filter?: unknown) => getSMSService().getDeliveryLogs(filter),
+  getDeliveryStats: (filter?: unknown) => getSMSService().getDeliveryStats(filter)
 }

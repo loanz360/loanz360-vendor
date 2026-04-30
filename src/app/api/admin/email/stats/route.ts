@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Email Statistics API
@@ -197,7 +198,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      format: z.string().optional().default('json'),
+
+
+      type: z.string().optional().default('accounts'),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const { format = 'json', type = 'accounts' } = body;
 

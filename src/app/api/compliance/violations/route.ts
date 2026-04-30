@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
@@ -57,7 +58,21 @@ export async function GET(request: NextRequest) {
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      violationId: z.string().uuid(),
+
+      status: z.string().optional(),
+
+      assignedTo: z.string().optional(),
+
+      resolutionNotes: z.string().optional(),
+
+      resolvedBy: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { violationId, status, assignedTo, resolutionNotes, resolvedBy } = body
 
@@ -70,7 +85,7 @@ export async function PATCH(request: NextRequest) {
 
     const supabase = createSupabaseAdmin()
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (status) updateData.status = status
     if (assignedTo) updateData.assigned_to = assignedTo
     if (resolutionNotes) updateData.resolution_notes = resolutionNotes

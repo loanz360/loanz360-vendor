@@ -69,8 +69,8 @@ export async function GET(request: NextRequest) {
       teamMemberIds = teamMemberIds.filter((id) => id === bdeId)
     }
 
-    let leaveRequests: any[] = []
-    let regularizationRequests: any[] = []
+    let leaveRequests: unknown[] = []
+    let regularizationRequests: unknown[] = []
 
     // Fetch Leave Requests if type is 'leaves' or 'all'
     if (!type || type === 'all' || type === 'leaves') {
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
       if (leavesError) {
         apiLogger.error('Error fetching leave requests', leavesError)
       } else {
-        leaveRequests = (leaves || []).map((leave: any) => ({
+        leaveRequests = (leaves || []).map((leave: unknown) => ({
           id: leave.id,
           type: 'leave',
           bdeName: leave.users?.full_name || 'Unknown',
@@ -118,7 +118,7 @@ export async function GET(request: NextRequest) {
       if (regError) {
         apiLogger.error('Error fetching regularization requests', regError)
       } else {
-        regularizationRequests = (regularizations || []).map((reg: any) => ({
+        regularizationRequests = (regularizations || []).map((reg: unknown) => ({
           id: reg.id,
           type: 'regularization',
           bdeName: reg.users?.full_name || 'Unknown',

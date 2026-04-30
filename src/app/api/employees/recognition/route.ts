@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // EMPLOYEE RECOGNITION API
@@ -97,7 +98,7 @@ export async function GET(request: NextRequest) {
         by_type: {} as Record<string, number>
       }
 
-      statsData?.forEach((r: any) => {
+      statsData?.forEach((r: Record<string, unknown>) => {
         stats.by_type[r.recognition_type] = (stats.by_type[r.recognition_type] || 0) + 1
       })
     }
@@ -132,7 +133,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_id: z.string().uuid().optional(),
+
+
+      MONTHLY_STAR: z.string().optional(),
+
+
+      PEER_APPRECIATION: z.string().optional(),
+
+
+      title: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      specific_achievement: z.string().optional(),
+
+
+      is_public: z.boolean().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       employee_id, // Who is being recognized

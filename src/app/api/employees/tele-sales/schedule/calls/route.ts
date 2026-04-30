@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Verify user is TeleSales
  */
-async function verifyTeleSalesUser(supabase: any, userId: string) {
+async function verifyTeleSalesUser(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')
@@ -158,7 +159,52 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      title: z.string().optional(),
+
+
+      scheduled_date: z.string().optional(),
+
+
+      scheduled_time: z.string().optional(),
+
+
+      lead_id: z.string().uuid().optional(),
+
+
+      description: z.string().optional(),
+
+
+      call_type: z.string().optional(),
+
+
+      call_purpose: z.string().optional(),
+
+
+      duration_minutes: z.string().optional(),
+
+
+      contact_name: z.string().optional(),
+
+
+      contact_phone: z.string().optional(),
+
+
+      contact_email: z.string().email().optional(),
+
+
+      set_reminder: z.string().optional(),
+
+
+      reminder_minutes_before: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields
@@ -170,7 +216,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get lead details if lead_id provided
-    let leadDetails: any = {}
+    let leadDetails: Record<string, unknown> = {}
     if (body.lead_id) {
       const { data: lead } = await supabase
         .from('online_leads')

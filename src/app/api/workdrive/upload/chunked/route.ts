@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive Chunked Upload API
@@ -156,7 +157,27 @@ export async function POST(request: NextRequest) {
     }
 
     // Handle JSON requests (init and complete)
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      action: z.string().optional(),
+
+      fileName: z.string().optional(),
+
+      fileSize: z.string().optional(),
+
+      mimeType: z.string().optional(),
+
+      totalChunks: z.string().optional(),
+
+      workspaceId: z.string().uuid().optional(),
+
+      folderId: z.string().uuid().optional(),
+
+      sessionId: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action } = body
 

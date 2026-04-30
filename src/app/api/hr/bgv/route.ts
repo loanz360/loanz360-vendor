@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -121,7 +122,40 @@ export async function POST(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_id: z.string().uuid(),
+
+
+      vendor: z.string().optional(),
+
+
+      check_types: z.array(z.unknown()).optional(),
+
+
+      remarks: z.string().optional(),
+
+
+      check_id: z.string().uuid(),
+
+
+      bgv_request_id: z.string().uuid(),
+
+
+      status: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+      verified_by: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { employee_id, vendor, check_types, remarks } = body
     if (!employee_id) return NextResponse.json({ success: false, error: 'Employee ID required' }, { status: 400 })
@@ -167,7 +201,28 @@ export async function PATCH(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      verified_by: z.string().optional(),
+
+
+      bgv_request_id: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+      check_id: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { check_id, bgv_request_id, status, notes, verified_by } = body
     if (!check_id) return NextResponse.json({ success: false, error: 'Check ID required' }, { status: 400 })

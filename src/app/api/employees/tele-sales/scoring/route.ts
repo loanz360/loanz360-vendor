@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -66,7 +67,7 @@ export async function GET(request: NextRequest) {
     // Calculate criteria averages
     const criteriaScores: Record<string, { total: number; count: number }> = {}
     scores?.forEach(s => {
-      const criteriaArray = s.criteria_scores as any[]
+      const criteriaArray = s.criteria_scores as unknown[]
       criteriaArray?.forEach(cs => {
         if (!criteriaScores[cs.name]) {
           criteriaScores[cs.name] = { total: 0, count: 0 }
@@ -143,7 +144,21 @@ export async function POST(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      call_id: z.string().uuid().optional(),
+
+      scoring_template_id: z.string().uuid().optional(),
+
+      criteria_scores: z.array(z.unknown()).optional(),
+
+      review_notes: z.string().optional(),
+
+      scoring_method: z.string().optional().default('MANUAL'),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -189,7 +204,7 @@ export async function POST(request: NextRequest) {
     let totalScore = 0
     let maxPossibleScore = 0
     const enrichedCriteriaScores = criteria_scores.map(cs => {
-      const templateCriteria = template?.criteria?.find((c: any) => c.id === cs.criteria_id)
+      const templateCriteria = template?.criteria?.find((c: unknown) => c.id === cs.criteria_id)
       const maxScore = templateCriteria?.max_score || 10
       const weight = templateCriteria?.weight || 1.0
 

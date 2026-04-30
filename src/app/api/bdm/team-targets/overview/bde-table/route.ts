@@ -176,7 +176,7 @@ async function getBDETableHandler(request: NextRequest) {
 
     // Group badges by BDE
     const badgesByBDE = new Map()
-    earnedBadges?.forEach((eb: any) => {
+    earnedBadges?.forEach((eb: unknown) => {
       if (!badgesByBDE.has(eb.bde_user_id)) {
         badgesByBDE.set(eb.bde_user_id, [])
       }

@@ -62,14 +62,14 @@ interface AuditLog {
   admin_id: string | null
   action_type: AuditActionType
   action_description: string
-  changes: Record<string, any>
+  changes: Record<string, unknown>
   performed_by: string | null
   performed_by_name: string | null
   performed_by_role: string | null
   performed_at: string
   ip_address: string | null
   user_agent: string | null
-  metadata: Record<string, any>
+  metadata: Record<string, unknown>
 }
 
 interface AuditLogViewerProps {
@@ -189,7 +189,7 @@ export function AuditLogViewer({
         ? `/api/admin-management/${adminId}/audit-logs?${params}`
         : `/api/admin-management/audit-logs?${params}`
 
-      const result = await fetchWithErrorHandling<{ logs: AuditLog[]; pagination: any }>(endpoint)
+      const result = await fetchWithErrorHandling<{ logs: AuditLog[]; pagination: unknown}>(endpoint)
 
       if (result.success && result.data) {
         setLogs(result.data.logs || [])

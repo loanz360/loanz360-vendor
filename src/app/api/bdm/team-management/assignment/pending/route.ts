@@ -96,7 +96,7 @@ export async function GET(request: NextRequest) {
 
     // For each pending lead, check for matching BDEs
     const enrichedLeads = await Promise.all(
-      pendingLeads.map(async (lead: any) => {
+      pendingLeads.map(async (lead: unknown) => {
         // Find matching BDEs
         const { data: matchingBDEs, error: matchError } = await supabase
           .from('users')
@@ -120,13 +120,13 @@ export async function GET(request: NextRequest) {
           .eq('bde_assignment_settings.assignment_status', 'active')
 
         // Filter by pincode match
-        const pincodeMatches = matchingBDEs?.filter((bde: any) => {
+        const pincodeMatches = matchingBDEs?.filter((bde: unknown) => {
           const pincodes = bde.assigned_pincode_ranges || []
           return pincodes.includes(lead.pincode)
         }) || []
 
         // Filter by capacity
-        const availableBDEs = pincodeMatches.filter((bde: any) => {
+        const availableBDEs = pincodeMatches.filter((bde: unknown) => {
           const settings = bde.bde_assignment_settings
           return settings.current_lead_count < settings.max_concurrent_leads
         })
@@ -181,7 +181,7 @@ export async function GET(request: NextRequest) {
             matchingBDEs: availableBDEs.length,
             totalMatches: pincodeMatches.length,
           },
-          suggestedBDEs: availableBDEs.slice(0, 3).map((bde: any) => ({
+          suggestedBDEs: availableBDEs.slice(0, 3).map((bde: unknown) => ({
             id: bde.id,
             name: bde.full_name,
             email: bde.email,
@@ -223,7 +223,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Calculate statistics for pending leads
-function calculateStatistics(leads: any[]): any {
+function calculateStatistics(leads: unknown[]): unknown {
   const byLoanType: Record<string, number> = {}
   const byLeadSource: Record<string, number> = {}
   const byPriority: Record<string, number> = {}

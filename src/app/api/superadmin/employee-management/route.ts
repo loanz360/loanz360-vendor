@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyAuth, checkPermission } from '@/lib/auth/employee-mgmt-auth'
@@ -155,7 +156,7 @@ export async function GET(request: NextRequest) {
 
     const totalActive = stats?.filter(s => s.is_active).length || 0
     const totalInactive = stats?.filter(s => !s.is_active).length || 0
-    const statusBreakdown = stats?.reduce((acc: any, curr) => {
+    const statusBreakdown = stats?.reduce((acc: unknown, curr) => {
       acc[curr.employee_status] = (acc[curr.employee_status] || 0) + 1
       return acc
     }, {})
@@ -212,7 +213,73 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      sub_role: z.string().optional(),
+
+
+      work_email: z.string().email().optional(),
+
+
+      personal_email: z.string().email().optional(),
+
+
+      mobile_number: z.string().min(10).optional(),
+
+
+      full_name: z.string().optional(),
+
+
+      present_address: z.string().optional(),
+
+
+      permanent_address: z.string().optional(),
+
+
+      city: z.string().optional(),
+
+
+      state: z.string().optional(),
+
+
+      pincode: z.string().optional(),
+
+
+      department_id: z.string().uuid().optional(),
+
+
+      date_of_joining: z.string().optional(),
+
+
+      probation_end_date: z.string().optional(),
+
+
+      reporting_manager_id: z.string().uuid().optional(),
+
+
+      emergency_contact_name: z.string().optional(),
+
+
+      emergency_contact_number: z.string().optional(),
+
+
+      emergency_contact_relation: z.string().optional(),
+
+
+      qualification: z.string().optional(),
+
+
+      experience_years: z.string().optional(),
+
+
+      previous_company: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields
@@ -420,7 +487,7 @@ export async function POST(request: NextRequest) {
     })
 
     // ─── Step 5: Send welcome email (non-blocking) ───
-    const departmentName = (newEmployee.departments as any)?.name || 'N/A'
+    const departmentName = (newEmployee.departments as unknown)?.name || 'N/A'
     try {
       const { sendEmployeeWelcomeEmail, EMAIL_CONFIG } = await import('@/lib/services/employee-email-service')
 

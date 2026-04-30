@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // TICKET INTERNAL NOTES API
@@ -92,7 +93,16 @@ export async function POST(
       return NextResponse.json({ success: false, error: 'Access denied. Only HR and Super Admin can add internal notes.' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      note: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { note } = body
 

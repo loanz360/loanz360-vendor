@@ -42,21 +42,21 @@ export function BadgeShowcaseComponent({ bdeUserId }: BadgeShowcaseProps) {
           <Trophy className="w-6 h-6 text-purple-600 mb-2" />
           <p className="text-sm text-gray-600">Legendary</p>
           <p className="text-2xl font-bold">
-            {earnedBadges.filter((b: any) => b.badge?.rarity === 'legendary').length}
+            {earnedBadges.filter((b: unknown) => b.badge?.rarity === 'legendary').length}
           </p>
         </div>
         <div className="bg-white border rounded-lg p-4">
           <Star className="w-6 h-6 text-blue-600 mb-2" />
           <p className="text-sm text-gray-600">Epic</p>
           <p className="text-2xl font-bold">
-            {earnedBadges.filter((b: any) => b.badge?.rarity === 'epic').length}
+            {earnedBadges.filter((b: unknown) => b.badge?.rarity === 'epic').length}
           </p>
         </div>
         <div className="bg-white border rounded-lg p-4">
           <Award className="w-6 h-6 text-green-600 mb-2" />
           <p className="text-sm text-gray-600">Rare</p>
           <p className="text-2xl font-bold">
-            {earnedBadges.filter((b: any) => b.badge?.rarity === 'rare').length}
+            {earnedBadges.filter((b: unknown) => b.badge?.rarity === 'rare').length}
           </p>
         </div>
       </div>
@@ -73,7 +73,7 @@ export function BadgeShowcaseComponent({ bdeUserId }: BadgeShowcaseProps) {
           <p className="text-center text-gray-500 py-8">No badges earned yet</p>
         ) : (
           <div className="grid grid-cols-4 gap-4">
-            {earnedBadges.map((earned: any) => (
+            {earnedBadges.map((earned: unknown) => (
               <div
                 key={earned.id}
                 className="border rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer"

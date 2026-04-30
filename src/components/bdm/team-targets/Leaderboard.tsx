@@ -190,7 +190,7 @@ export default function Leaderboard({ month, year }: LeaderboardProps) {
   return (
     <div className="space-y-6">
       {/* View Selector */}
-      <Tabs value={activeView} onValueChange={(v) => setActiveView(v as any)} className="w-full">
+      <Tabs value={activeView} onValueChange={(v) => setActiveView(v as unknown)} className="w-full">
         <TabsList className="grid w-full grid-cols-3 bg-gray-900 border border-gray-800">
           <TabsTrigger
             value="overall"

@@ -22,8 +22,7 @@ export async function fetchWithErrorHandling<T = any>(
   success: boolean
   data?: T
   error?: string
-  details?: any
-}> {
+  details?: unknown}> {
   const {
     timeout = 30000,
     retries = 3,
@@ -203,7 +202,7 @@ export function dismissToast(toastId: string) {
 /**
  * Handle API error and show appropriate toast
  */
-export function handleApiError(error: any, fallbackMessage: string = 'An error occurred') {
+export function handleApiError(error: unknown, fallbackMessage: string = 'An error occurred') {
   console.error('[API Error]', error)
 
   if (error?.error) {
@@ -220,7 +219,7 @@ export function handleApiError(error: any, fallbackMessage: string = 'An error o
 /**
  * Validate response format
  */
-export function isValidApiResponse(response: any): boolean {
+export function isValidApiResponse(response: Record<string, unknown>): boolean {
   return (
     response &&
     typeof response === 'object' &&
@@ -235,7 +234,7 @@ export function isValidApiResponse(response: any): boolean {
 export function logError(
   error: Error,
   errorInfo?: { componentStack?: string },
-  context?: Record<string, any>
+  context?: Record<string, unknown>
 ) {
   console.group('🚨 Error Caught')
   console.error('Error:', error)
@@ -259,7 +258,7 @@ export function logError(
  */
 export async function safeAsync<T>(
   fn: () => Promise<T>,
-  onError?: (error: any) => void
+  onError?: (error: unknown) => void
 ): Promise<T | null> {
   try {
     return await fn()

@@ -177,14 +177,14 @@ export function sanitizeDate(dateString: string): string {
 /**
  * Validate integer
  */
-export function validateInteger(value: any): boolean {
+export function validateInteger(value: unknown): boolean {
   return validator.isInt(String(value))
 }
 
 /**
  * Sanitize integer
  */
-export function sanitizeInteger(value: any, min?: number, max?: number): number {
+export function sanitizeInteger(value: unknown, min?: number, max?: number): number {
   const num = parseInt(String(value), 10)
 
   if (isNaN(num)) {
@@ -205,14 +205,14 @@ export function sanitizeInteger(value: any, min?: number, max?: number): number 
 /**
  * Validate decimal/float
  */
-export function validateDecimal(value: any): boolean {
+export function validateDecimal(value: unknown): boolean {
   return validator.isFloat(String(value))
 }
 
 /**
  * Sanitize decimal
  */
-export function sanitizeDecimal(value: any, min?: number, max?: number): number {
+export function sanitizeDecimal(value: unknown, min?: number, max?: number): number {
   const num = parseFloat(String(value))
 
   if (isNaN(num)) {
@@ -250,8 +250,8 @@ export function sanitizeEnum<T extends string>(
  * Sanitize array of values
  */
 export function sanitizeArray<T>(
-  arr: any[],
-  itemSanitizer: (item: any) => T,
+  arr: unknown[],
+  itemSanitizer: (item: Record<string, unknown>) => T,
   minLength?: number,
   maxLength?: number
 ): T[] {
@@ -273,7 +273,7 @@ export function sanitizeArray<T>(
 /**
  * Sanitize boolean
  */
-export function sanitizeBoolean(value: any): boolean {
+export function sanitizeBoolean(value: unknown): boolean {
   if (typeof value === 'boolean') return value
   if (value === 'true' || value === '1') return true
   if (value === 'false' || value === '0') return false
@@ -283,7 +283,7 @@ export function sanitizeBoolean(value: any): boolean {
 /**
  * Sanitize JSON object
  */
-export function sanitizeJson(json: any): any {
+export function sanitizeJson(json: unknown): unknown {
   if (typeof json === 'string') {
     try {
       return JSON.parse(json)
@@ -328,20 +328,18 @@ export interface SanitizedContestData {
   target_all_partners: boolean
   start_date: string
   end_date: string
-  evaluation_criteria: any
-  evaluation_frequency: 'realtime' | 'hourly' | 'daily'
+  evaluation_criteria: unknown  evaluation_frequency: 'realtime' | 'hourly' | 'daily'
   auto_evaluate: boolean
-  reward_details?: any
+  reward_details?: Record<string, unknown>
   winner_count: number
-  reward_tiers?: any
-  enable_leaderboard: boolean
+  reward_tiers?: unknown  enable_leaderboard: boolean
   leaderboard_visibility: 'public' | 'private' | 'rank_only'
   show_scores: boolean
   notification_enabled: boolean
   status: 'draft' | 'scheduled' | 'active' | 'expired' | 'disabled'
 }
 
-export function sanitizeContestData(data: any): SanitizedContestData {
+export function sanitizeContestData(data: Record<string, unknown>): SanitizedContestData {
   // Required fields
   const contest_title = sanitizeContestTitle(data.contest_title)
   const start_date = sanitizeDate(data.start_date)

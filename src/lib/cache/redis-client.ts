@@ -237,8 +237,7 @@ export async function getCachedLeaderboard(contestId: string, limit: number = 10
 export async function setCachedLeaderboard(
   contestId: string,
   limit: number,
-  data: any
-): Promise<boolean> {
+  data: unknown): Promise<boolean> {
   const cacheKey = `${CACHE_PREFIXES.CONTEST_LEADERBOARD}${contestId}:${limit}`
   return setCached(cacheKey, data, CACHE_TTL.LEADERBOARD)
 }
@@ -254,7 +253,7 @@ export async function getCachedAnalytics(contestId: string) {
 /**
  * Set cached analytics
  */
-export async function setCachedAnalytics(contestId: string, data: any): Promise<boolean> {
+export async function setCachedAnalytics(contestId: string, data: unknown): Promise<boolean> {
   const cacheKey = `${CACHE_PREFIXES.CONTEST_ANALYTICS}${contestId}`
   return setCached(cacheKey, data, CACHE_TTL.ANALYTICS)
 }
@@ -273,8 +272,7 @@ export async function getCachedParticipantStatus(contestId: string, userId: stri
 export async function setCachedParticipantStatus(
   contestId: string,
   userId: string,
-  data: any
-): Promise<boolean> {
+  data: unknown): Promise<boolean> {
   const cacheKey = `${CACHE_PREFIXES.CONTEST_PARTICIPANT}${contestId}:${userId}`
   return setCached(cacheKey, data, CACHE_TTL.PARTICIPANT_STATUS)
 }
@@ -290,7 +288,7 @@ export async function getCachedContestDetails(contestId: string) {
 /**
  * Set cached contest details
  */
-export async function setCachedContestDetails(contestId: string, data: any): Promise<boolean> {
+export async function setCachedContestDetails(contestId: string, data: unknown): Promise<boolean> {
   const cacheKey = `${CACHE_PREFIXES.CONTEST_DETAILS}${contestId}`
   return setCached(cacheKey, data, CACHE_TTL.CONTEST_DETAILS)
 }

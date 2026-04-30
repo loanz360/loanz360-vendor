@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -129,7 +130,35 @@ export async function GET(request: NextRequest) {
 // POST - Create a new form configuration with tabs and fields
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      name: z.string().optional(),
+
+      description: z.string().optional(),
+
+      category_id: z.string().uuid().optional(),
+
+      loan_type_id: z.string().uuid().optional(),
+
+      profile_id: z.string().uuid().optional(),
+
+      sub_profile_id: z.string().uuid().optional(),
+
+      tabs: z.array(z.unknown()).optional(),
+
+      fields: z.array(z.unknown()).optional(),
+
+      is_default: z.boolean().optional(),
+
+      created_by: z.string().optional(),
+
+      id: z.string().uuid(),
+
+      updated_by: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const {
       name,
@@ -271,7 +300,25 @@ export async function POST(request: NextRequest) {
 // PUT - Update a form configuration
 export async function PUT(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      is_default: z.boolean().optional(),
+
+      name: z.string().optional(),
+
+      description: z.string().optional(),
+
+      updated_by: z.string().optional(),
+
+      tabs: z.string().optional(),
+
+      fields: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2;
     const {
       id,

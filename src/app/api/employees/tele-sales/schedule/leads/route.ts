@@ -7,7 +7,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Verify user is TeleSales
  */
-async function verifyTeleSalesUser(supabase: any, userId: string) {
+async function verifyTeleSalesUser(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')

@@ -147,7 +147,7 @@ export function validateAdminData(admin: BulkImportAdmin): string | null {
  * Convert admins to CSV format for export
  */
 export function adminsToCSV(
-  admins: any[],
+  admins: unknown[],
   includeModules: boolean = false
 ): string {
   const headers = [

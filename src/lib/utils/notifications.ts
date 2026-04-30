@@ -8,7 +8,7 @@ export interface NotificationPayload {
   type: 'leave_approval' | 'leave_rejection' | 'regularization_approval' | 'regularization_rejection' | 'lead_assignment'
   title: string
   message: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 /**
@@ -63,7 +63,7 @@ export async function sendNotification(payload: NotificationPayload): Promise<vo
 /**
  * Send leave approval notification
  */
-export async function notifyLeaveApproval(userId: string, leaveDetails: any): Promise<void> {
+export async function notifyLeaveApproval(userId: string, leaveDetails: unknown): Promise<void> {
   await sendNotification({
     userId,
     type: 'leave_approval',
@@ -76,7 +76,7 @@ export async function notifyLeaveApproval(userId: string, leaveDetails: any): Pr
 /**
  * Send leave rejection notification
  */
-export async function notifyLeaveRejection(userId: string, leaveDetails: any, reason: string): Promise<void> {
+export async function notifyLeaveRejection(userId: string, leaveDetails: unknown, reason: string): Promise<void> {
   await sendNotification({
     userId,
     type: 'leave_rejection',
@@ -89,7 +89,7 @@ export async function notifyLeaveRejection(userId: string, leaveDetails: any, re
 /**
  * Send regularization approval notification
  */
-export async function notifyRegularizationApproval(userId: string, regularizationDetails: any): Promise<void> {
+export async function notifyRegularizationApproval(userId: string, regularizationDetails: unknown): Promise<void> {
   await sendNotification({
     userId,
     type: 'regularization_approval',
@@ -102,7 +102,7 @@ export async function notifyRegularizationApproval(userId: string, regularizatio
 /**
  * Send regularization rejection notification
  */
-export async function notifyRegularizationRejection(userId: string, regularizationDetails: any, reason: string): Promise<void> {
+export async function notifyRegularizationRejection(userId: string, regularizationDetails: unknown, reason: string): Promise<void> {
   await sendNotification({
     userId,
     type: 'regularization_rejection',
@@ -115,7 +115,7 @@ export async function notifyRegularizationRejection(userId: string, regularizati
 /**
  * Send lead assignment notification
  */
-export async function notifyLeadAssignment(userId: string, leadDetails: any): Promise<void> {
+export async function notifyLeadAssignment(userId: string, leadDetails: unknown): Promise<void> {
   await sendNotification({
     userId,
     type: 'lead_assignment',

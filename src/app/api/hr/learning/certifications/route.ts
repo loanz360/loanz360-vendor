@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -129,7 +130,37 @@ export async function POST(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      employee_id: z.string().uuid(),
+
+
+      certification_name: z.string(),
+
+
+      issuing_body: z.string(),
+
+
+      certificate_number: z.string().optional(),
+
+
+      issued_date: z.string(),
+
+
+      expiry_date: z.string().optional(),
+
+
+      document_url: z.string().optional(),
+
+
+      trim: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { employee_id, certification_name, issuing_body, certificate_number, issued_date, expiry_date, document_url } = body
 

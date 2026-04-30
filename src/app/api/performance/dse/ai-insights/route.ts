@@ -317,7 +317,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper function to format database insight to API format
-function formatInsight(dbInsight: any): AIInsight {
+function formatInsight(dbInsight: unknown): AIInsight {
   return {
     id: dbInsight.id,
     type: dbInsight.insight_type,

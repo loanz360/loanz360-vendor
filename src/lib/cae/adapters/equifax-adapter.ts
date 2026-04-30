@@ -362,7 +362,7 @@ export class EquifaxAdapter extends BaseCAEAdapter {
     return enquiries
   }
 
-  private generateSummary(accounts: any[]): EquifaxResponse['ConsumerCreditReport']['Summary'] {
+  private generateSummary(accounts: unknown[]): EquifaxResponse['ConsumerCreditReport']['Summary'] {
     const activeAccounts = accounts.filter(a => a.AccountStatus === 'Active').length
     const overdueAccounts = accounts.filter(a => a.PaymentStatus === 'Overdue').length
     const writtenOffAccounts = accounts.filter(a => (a.WriteOffAmount || 0) > 0).length
@@ -547,17 +547,17 @@ export class EquifaxAdapter extends BaseCAEAdapter {
     }
   }
 
-  private countRecentEnquiries(enquiries: any[], months: number): number {
+  private countRecentEnquiries(enquiries: unknown[], months: number): number {
     const cutoff = new Date()
     cutoff.setMonth(cutoff.getMonth() - months)
     return enquiries.filter(e => new Date(e.EnquiryDate) >= cutoff).length
   }
 
-  private countDPD(accounts: any[], days: number): number {
+  private countDPD(accounts: unknown[], days: number): number {
     return accounts.filter(a => (a.DaysOverdue || 0) >= days).length
   }
 
-  private getOldestAccountAge(accounts: any[]): number {
+  private getOldestAccountAge(accounts: unknown[]): number {
     if (accounts.length === 0) return 0
     const oldest = accounts.reduce((min, a) => {
       const opened = new Date(a.DateOpened)
@@ -567,7 +567,7 @@ export class EquifaxAdapter extends BaseCAEAdapter {
     return Math.floor(months)
   }
 
-  private generateFlags(creditScore: number, foir: number, accounts: any[], enquiries: any[]): CAEFlag[] {
+  private generateFlags(creditScore: number, foir: number, accounts: unknown[], enquiries: unknown[]): CAEFlag[] {
     const flags: CAEFlag[] = []
 
     if (creditScore < 600) {

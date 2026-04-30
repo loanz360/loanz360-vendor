@@ -287,7 +287,7 @@ export default function LeaveApprovalsView() {
           {/* Status Filter */}
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as any)}
+            onChange={(e) => setStatusFilter(e.target.value as unknown)}
             className="px-4 py-2.5 bg-black/40 border border-orange-500/30 rounded-lg text-white focus:outline-none focus:border-orange-500"
           >
             <option value="pending">Pending Only</option>

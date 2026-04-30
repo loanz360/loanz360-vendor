@@ -17,7 +17,7 @@ import { toast } from 'sonner'
  * Export data to CSV format
  */
 export function exportToCSV(
-  data: any[],
+  data: unknown[],
   filename: string = 'export.csv',
   columns?: { key: string; label: string }[]
 ): void {
@@ -67,7 +67,7 @@ export function exportToCSV(
  * Note: This creates a basic Excel file. For advanced formatting, use a library like xlsx
  */
 export function exportToExcel(
-  data: any[],
+  data: unknown[],
   filename: string = 'export.xlsx',
   sheetName: string = 'Sheet1'
 ): void {
@@ -91,7 +91,7 @@ export function exportToExcel(
  * Export data to JSON format
  */
 export function exportToJSON(
-  data: any[],
+  data: unknown[],
   filename: string = 'export.json',
   pretty: boolean = true
 ): void {
@@ -104,7 +104,7 @@ export function exportToJSON(
  * Export partners data with custom formatting
  */
 export function exportPartners(
-  partners: any[],
+  partners: unknown[],
   format: 'csv' | 'excel' | 'json' = 'csv'
 ): void {
   if (!partners || partners.length === 0) {
@@ -169,7 +169,7 @@ export function exportPartners(
  * Export analytics data
  */
 export function exportAnalytics(
-  analyticsData: any,
+  analyticsData: unknown,
   format: 'csv' | 'excel' | 'json' = 'csv'
 ): void {
   const filename = `analytics_export_${new Date().toISOString().split('T')[0]}`
@@ -247,7 +247,7 @@ export function exportAnalytics(
  * Export contest leaderboard
  */
 export function exportContestLeaderboard(
-  contestData: any,
+  contestData: unknown,
   format: 'csv' | 'excel' | 'json' = 'csv'
 ): void {
   if (!contestData || !contestData.leaderboard) {
@@ -301,7 +301,7 @@ function downloadBlob(blob: Blob, filename: string): void {
  * For production, use a library like jsPDF or pdfmake
  */
 export function exportToPDF(
-  data: any[],
+  data: unknown[],
   title: string,
   filename: string = 'export.pdf'
 ): void {
@@ -319,7 +319,7 @@ export async function batchExport(
   format: 'csv' | 'excel' | 'json',
   onProgress?: (progress: number) => void
 ): Promise<void> {
-  const allData: any[] = []
+  const allData: unknown[] = []
 
   for (let page = 1; page <= totalPages; page++) {
     const pageData = await fetchFunction(page)
@@ -349,8 +349,8 @@ export async function batchExport(
  * Export with custom filters applied
  */
 export function exportWithFilters(
-  data: any[],
-  filters: Record<string, any>,
+  data: unknown[],
+  filters: Record<string, unknown>,
   format: 'csv' | 'excel' | 'json' = 'csv'
 ): void {
   // Filter data based on provided filters

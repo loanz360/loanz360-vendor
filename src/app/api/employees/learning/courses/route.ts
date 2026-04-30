@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // LEARNING MANAGEMENT API - COURSES
@@ -12,7 +13,7 @@ import { createClient } from '@/lib/supabase/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
-async function getEmployeeId(supabase: any, userId: string) {
+async function getEmployeeId(supabase: unknown, userId: string) {
   const { data: employee } = await supabase
     .from('employees')
     .select('id, sub_role')
@@ -160,7 +161,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      course_id: z.string().uuid(),
+
+
+      target_completion_date: z.string().optional(),
+
+
+      enrollment_id: z.string().uuid().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { course_id, target_completion_date } = body
 
@@ -241,7 +260,19 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      action: z.string().optional(),
+
+
+      enrollment_id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { enrollment_id, action, ...actionData } = body
 

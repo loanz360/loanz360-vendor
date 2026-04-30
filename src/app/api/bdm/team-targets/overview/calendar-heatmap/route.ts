@@ -165,7 +165,7 @@ async function getCalendarHeatmapHandler(request: NextRequest) {
       let partialCount = 0
       let missedCount = 0
 
-      dayAchievements.forEach((ach: any) => {
+      dayAchievements.forEach((ach: unknown) => {
         totalLeads += ach.leads_contacted || 0
         totalConversions += ach.conversions || 0
         totalRevenue += ach.revenue || 0

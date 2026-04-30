@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -89,7 +90,55 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      name: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      priority: z.string().optional(),
+
+
+      ticket_source: z.string().optional(),
+
+
+      first_response_hours: z.string().optional(),
+
+
+      resolution_hours: z.string().optional(),
+
+
+      business_hours_only: z.string().optional(),
+
+
+      business_start_hour: z.string().optional(),
+
+
+      business_end_hour: z.string().optional(),
+
+
+      business_days: z.string().optional(),
+
+
+      exclude_holidays: z.string().optional(),
+
+
+      escalation_enabled: z.string().optional(),
+
+
+      escalation_thresholds: z.string().optional(),
+
+
+      is_active: z.boolean().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields

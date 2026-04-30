@@ -28,7 +28,7 @@ export interface ProviderConfig {
   isActive: boolean
   priority: number
   credentials: Record<string, string>
-  settings: Record<string, any>
+  settings: Record<string, unknown>
   costPerUnit: number
   currency: string
   supportedRegions: string[]
@@ -68,7 +68,7 @@ export interface SendResult {
   error?: string
   latencyMs: number
   cost?: number
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 // =====================================================

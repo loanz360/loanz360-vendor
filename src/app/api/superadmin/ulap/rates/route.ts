@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * ULAP Bank Rates Management API
@@ -71,7 +72,31 @@ export async function GET(request: NextRequest) {
 // POST - Create or update bank rate
 export async function POST(request: NextRequest) {
   try {
-        const { data: body, error: _valErr } = await parseBody(request)
+        const bodySchema = z.object({
+
+          bank_id: z.string().uuid().optional(),
+
+          subcategory_id: z.string().uuid().optional(),
+
+          interest_rate_min: z.string().optional(),
+
+          interest_rate_max: z.string().optional(),
+
+          processing_fee: z.number().optional(),
+
+          max_amount: z.string().optional(),
+
+          max_tenure: z.string().optional(),
+
+          updated_by: z.string().optional(),
+
+          id: z.string().uuid(),
+
+          is_active: z.boolean().optional(),
+
+        })
+
+        const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {
@@ -185,7 +210,15 @@ export async function POST(request: NextRequest) {
 // PATCH - Update rate status (activate/deactivate)
 export async function PATCH(request: NextRequest) {
   try {
-        const { data: body, error: _valErr2 } = await parseBody(request)
+        const bodySchema2 = z.object({
+
+          is_active: z.boolean().optional(),
+
+          id: z.string().optional(),
+
+        })
+
+        const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     const { id, is_active } = body

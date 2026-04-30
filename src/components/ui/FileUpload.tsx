@@ -5,7 +5,7 @@ import { Upload, X, AlertCircle, CheckCircle, Loader2, Image as ImageIcon } from
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface FileUploadProps {
-  onUploadSuccess: (url: string, metadata?: any) => void
+  onUploadSuccess: (url: string, metadata?: unknown) => void
   onUploadError?: (error: string) => void
   currentImageUrl?: string | null
   maxSizeMB?: number

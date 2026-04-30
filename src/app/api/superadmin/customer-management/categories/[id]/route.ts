@@ -72,7 +72,7 @@ export async function GET(
     }
 
     // Fetch children if this is not a level 3 category
-    let children: any[] = []
+    let children: unknown[] = []
     if (category.level < 3) {
       const { data: childCategories } = await supabase
         .from('customer_category_definitions')
@@ -178,7 +178,7 @@ export async function PUT(
     }
 
     // Build update object
-    const updateData: Record<string, any> = {}
+    const updateData: Record<string, unknown> = {}
 
     if (validatedData.category_name !== undefined) {
       updateData.category_name = validatedData.category_name

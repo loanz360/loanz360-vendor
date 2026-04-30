@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Profile Completion Reminder API
@@ -74,7 +75,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      customerId: z.string().uuid().optional(),
+
+      dryRun: z.boolean().optional().default(false),
+
+      limit: z.number().optional().default(100),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr.catch(() => ({}))
     const { customerId, dryRun = false, limit = 100 } = body
 
@@ -125,7 +136,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Filter out customers who have opted out of SMS
-    const eligibleProfiles = profiles?.filter((p: any) =>
+    const eligibleProfiles = profiles?.filter((p: unknown) =>
       p.users?.sms_opt_in !== false && p.users?.mobile
     ) || []
 
@@ -143,7 +154,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         success: true,
         dryRun: true,
-        wouldSendTo: eligibleProfiles.map((p: any) => ({
+        wouldSendTo: eligibleProfiles.map((p: unknown) => ({
           id: p.id,
           name: p.full_name,
           phone: p.users?.mobile?.slice(0, 4) + '****' + p.users?.mobile?.slice(-2),
@@ -161,7 +172,7 @@ export async function POST(request: NextRequest) {
       errors: [] as string[]
     }
 
-    for (const profile of eligibleProfiles as any[]) {
+    for (const profile of eligibleProfiles as unknown[]) {
       try {
         const phone = profile.users?.mobile
         const name = profile.full_name?.split(' ')[0] || 'Customer'

@@ -417,7 +417,7 @@ export default function DepartmentTicketDetail({
                       {/* Message Attachments */}
                       {msg.attachments && msg.attachments.length > 0 && (
                         <div className="mt-3 flex flex-wrap gap-2">
-                          {msg.attachments.map((att: any) => (
+                          {msg.attachments.map((att: unknown) => (
                             <a
                               key={att.id}
                               href={att.file_url || `/api/support/tickets/${ticketId}/attachments/${att.id}`}

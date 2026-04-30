@@ -13,8 +13,7 @@ import {
 } from '@/lib/utils/report-export'
 
 interface Props {
-  dashboardData: any
-  dateRange?: { start: string; end: string }
+  dashboardData: unknown  dateRange?: { start: string; end: string }
 }
 
 type ExportType = 'pdf' | 'team' | 'financial' | 'analytics'

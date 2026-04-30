@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { gdprService } from '@/lib/compliance/gdpr-service'
@@ -14,7 +15,15 @@ export async function POST(request: NextRequest) {
   if (rateLimitResponse) return rateLimitResponse
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      request_id: z.string().uuid().optional(),
+
+      verification_code: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { request_id, verification_code } = body
 

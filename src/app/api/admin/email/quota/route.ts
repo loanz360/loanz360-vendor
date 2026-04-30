@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Email Quota API Routes
@@ -94,7 +95,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      accountId: z.string().uuid(),
+
+
+      policyId: z.string().uuid().optional(),
+
+
+      storageQuotaMb: z.string().optional(),
+
+
+      dailySendLimit: z.string().optional(),
+
+
+      name: z.string(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
 
     if (!body.name) {
@@ -147,7 +169,25 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      storageQuotaMb: z.string().optional(),
+
+
+      dailySendLimit: z.string().optional(),
+
+
+      policyId: z.string().optional(),
+
+
+      accountId: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2;
     const { accountId, policyId, storageQuotaMb, dailySendLimit } = body;
 

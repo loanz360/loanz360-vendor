@@ -4,7 +4,7 @@ import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
 
-async function verifyDSMRole(supabase: any, userId: string) {
+async function verifyDSMRole(supabase: unknown, userId: string) {
   const { data: profile, error } = await supabase
     .from('users')
     .select('role, sub_role')
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    const dseIds = dseId ? [dseId] : teamDSEs.map((d: any) => d.id)
+    const dseIds = dseId ? [dseId] : teamDSEs.map((d: Record<string, unknown>) => d.id)
 
     // Get partners recruited by team DSEs
     const { data: partners } = await supabase
@@ -73,21 +73,21 @@ export async function GET(request: NextRequest) {
         success: true,
         data: [],
         pipeline: {},
-        dseList: teamDSEs.map((d: any) => ({ id: d.id, name: d.full_name, code: d.employee_code })),
+        dseList: teamDSEs.map((d: Record<string, unknown>) => ({ id: d.id, name: d.full_name, code: d.employee_code })),
         meta: { page, limit, total: 0, totalPages: 0 }
       })
     }
 
-    const partnerUserIds = partners.map((p: any) => p.user_id).filter(Boolean)
-    const partnerMap = new Map(partners.map((p: any) => [p.user_id, p]))
-    const dseMap = new Map(teamDSEs.map((d: any) => [d.id, d]))
+    const partnerUserIds = partners.map((p: unknown) => p.user_id).filter(Boolean)
+    const partnerMap = new Map(partners.map((p: unknown) => [p.user_id, p]))
+    const dseMap = new Map(teamDSEs.map((d: Record<string, unknown>) => [d.id, d]))
 
     if (partnerUserIds.length === 0) {
       return NextResponse.json({
         success: true,
         data: [],
         pipeline: {},
-        dseList: teamDSEs.map((d: any) => ({ id: d.id, name: d.full_name, code: d.employee_code })),
+        dseList: teamDSEs.map((d: Record<string, unknown>) => ({ id: d.id, name: d.full_name, code: d.employee_code })),
         meta: { page, limit, total: 0, totalPages: 0 }
       })
     }
@@ -117,7 +117,7 @@ export async function GET(request: NextRequest) {
     if (queryError) throw queryError
 
     // Enrich with partner and DSE info
-    const enrichedLeads = (leads || []).map((lead: any) => {
+    const enrichedLeads = (leads || []).map((lead: unknown) => {
       const partner = partnerMap.get(lead.partner_user_id)
       const dse = partner ? dseMap.get(partner.recruited_by_cpe) : null
       return {
@@ -157,7 +157,7 @@ export async function GET(request: NextRequest) {
       success: true,
       data: enrichedLeads,
       pipeline,
-      dseList: teamDSEs.map((d: any) => ({ id: d.id, name: d.full_name, code: d.employee_code })),
+      dseList: teamDSEs.map((d: Record<string, unknown>) => ({ id: d.id, name: d.full_name, code: d.employee_code })),
       meta: {
         page,
         limit,

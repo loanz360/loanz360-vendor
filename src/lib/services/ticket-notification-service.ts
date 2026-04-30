@@ -55,7 +55,7 @@ export interface TicketNotificationPayload {
   oldValue?: string
   newValue?: string
   actionBy?: string
-  customData?: Record<string, any>
+  customData?: Record<string, unknown>
 }
 
 export interface NotificationResult {

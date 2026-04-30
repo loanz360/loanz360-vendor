@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -95,7 +96,35 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      template_code: z.string().optional(),
+
+      template_name: z.string().optional(),
+
+      content: z.string().optional(),
+
+      variables: z.string().optional(),
+
+      variable_descriptions: z.string().optional(),
+
+      dlt_template_id: z.string().uuid().optional(),
+
+      dlt_content_type: z.string().optional(),
+
+      default_sender_id: z.string().uuid().optional(),
+
+      category: z.string().optional(),
+
+      tags: z.array(z.unknown()).optional(),
+
+      description: z.string().optional(),
+
+      id: z.string().uuid(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       template_code,
@@ -196,7 +225,13 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, ...updates } = body
 

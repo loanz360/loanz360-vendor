@@ -34,7 +34,7 @@ export interface PushNotificationPayload {
     url?: string
     notification_id?: string
     action?: string
-    [key: string]: any
+    [key: string]: unknown
   }
   actions?: Array<{
     action: string
@@ -150,7 +150,7 @@ export async function sendBulkPushNotifications(
 /**
  * Validate a push subscription
  */
-export function validateSubscription(subscription: any): subscription is PushSubscription {
+export function validateSubscription(subscription: unknown): subscription is PushSubscription {
   return (
     subscription &&
     typeof subscription.endpoint === 'string' &&

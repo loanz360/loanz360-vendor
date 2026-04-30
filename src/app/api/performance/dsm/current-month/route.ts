@@ -229,7 +229,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function aggregateDSMMetrics(metrics: any[]): any {
+function aggregateDSMMetrics(metrics: unknown[]): unknown {
   if (metrics.length === 0) {
     return {
       total_team_revenue: 0,
@@ -261,7 +261,7 @@ function aggregateDSMMetrics(metrics: any[]): any {
   }
 }
 
-function calculateDSMPerformanceScore(current: any, targets: DSMMonthlyTargets): number {
+function calculateDSMPerformanceScore(current: unknown, targets: DSMMonthlyTargets): number {
   const weights = {
     team_revenue: 0.30,
     team_size: 0.10,
@@ -291,7 +291,7 @@ function calculateDSMPerformanceScore(current: any, targets: DSMMonthlyTargets):
   return Math.round(score)
 }
 
-function calculateAverage(metrics: any[], field: string): number {
+function calculateAverage(metrics: unknown[], field: string): number {
   const validMetrics = metrics.filter(m => m[field] !== null && m[field] !== undefined)
   if (validMetrics.length === 0) return 0
   const sum = validMetrics.reduce((acc, m) => acc + (m[field] || 0), 0)

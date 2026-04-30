@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -95,7 +96,31 @@ export async function POST(
     }
 
     const { profileId } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      profile_type: z.string().optional(),
+
+      address_type: z.string().optional(),
+
+      address_line_1: z.string().optional(),
+
+      address_line_2: z.string().optional(),
+
+      landmark: z.string().optional(),
+
+      city: z.string().optional(),
+
+      state: z.string().optional(),
+
+      pin_code: z.string().optional(),
+
+      country: z.string().optional(),
+
+      is_primary: z.boolean().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       profile_type,

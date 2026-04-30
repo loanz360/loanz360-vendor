@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { logger } from '@/lib/utils/logger'
@@ -177,7 +178,25 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Access denied. Manager only.' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      applicationId: z.string().uuid().optional(),
+
+
+      applicationType: z.string().optional(),
+
+
+      assignToUserId: z.string().uuid().optional(),
+
+
+      notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { applicationId, applicationType, assignToUserId, notes } = body
 

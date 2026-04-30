@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -215,7 +216,29 @@ async function createPayoutPercentageHandler(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      bank_name: z.string().optional(),
+
+      location: z.string().optional(),
+
+      loan_type: z.string().optional(),
+
+      commission_percentage: z.string().optional(),
+
+      effective_from: z.string().optional(),
+
+      change_reason: z.string().optional(),
+
+      id: z.string().uuid().optional(),
+
+      specific_conditions: z.string().optional(),
+
+      create_new_version: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {
@@ -441,7 +464,27 @@ async function updatePayoutPercentageHandler(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      change_reason: z.string().optional(),
+
+      create_new_version: z.string().optional(),
+
+      location: z.string().optional(),
+
+      effective_from: z.string().optional(),
+
+      specific_conditions: z.string().optional(),
+
+      loan_type: z.string().optional(),
+
+      commission_percentage: z.string().optional(),
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     const {

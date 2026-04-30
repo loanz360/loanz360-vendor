@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -55,7 +56,19 @@ export async function POST(request: NextRequest) {
   const corsHeaders = getCorsHeaders(request)
 
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      session_id: z.string().uuid().optional(),
+
+      node_id: z.string().uuid().optional(),
+
+      answer: z.string().optional(),
+
+      collected_data: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { session_id, node_id, answer, collected_data } = body
 
@@ -269,7 +282,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function evaluateCondition(operator: string, actualValue: any, conditionValue: string): boolean {
+function evaluateCondition(operator: string, actualValue: unknown, conditionValue: string): boolean {
   if (actualValue === undefined || actualValue === null) {
     return operator === 'is_empty'
   }
@@ -297,7 +310,7 @@ function evaluateCondition(operator: string, actualValue: any, conditionValue: s
   }
 }
 
-async function submitLead(supabase: any, session: any, collectedData: any): Promise<string> {
+async function submitLead(supabase: unknown, session: unknown, collectedData: unknown): Promise<string> {
   // Generate reference number
   const referenceNumber = `OL${Date.now().toString(36).toUpperCase()}`
 

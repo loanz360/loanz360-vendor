@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       .eq('created_by_employee_id', user.id)
       .is('archived_at', null)
 
-    const statusBreakdown = statusCounts?.reduce((acc: any, item) => {
+    const statusBreakdown = statusCounts?.reduce((acc: unknown, item) => {
       acc[item.status] = (acc[item.status] || 0) + 1
       return acc
     }, {})
@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
       .eq('created_by_employee_id', user.id)
       .is('archived_at', null)
 
-    const loanTypeBreakdown = loanTypes?.reduce((acc: any, item) => {
+    const loanTypeBreakdown = loanTypes?.reduce((acc: unknown, item) => {
       acc[item.loan_type] = (acc[item.loan_type] || 0) + 1
       return acc
     }, {})

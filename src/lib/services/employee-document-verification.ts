@@ -37,7 +37,7 @@ export interface VerifyEmployeeDocumentResult {
   method: 'DIGILOCKER' | 'EKYC'
   provider: string
   maskedNumber?: string
-  extractedData?: Record<string, any>
+  extractedData?: Record<string, unknown>
   discrepancies?: NameDiscrepancy[]
   error?: string
   latencyMs: number

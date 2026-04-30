@@ -68,7 +68,7 @@ interface TimelineEvent {
   userAvatar: string | null
   timestamp: string
   timestampFormatted: string
-  metadata: Record<string, any> | null
+  metadata: Record<string, unknown> | null
 }
 
 interface Document {
@@ -145,7 +145,7 @@ export function LeadDetailModal({ leadId, isOpen, onClose }: LeadDetailModalProp
   if (!isOpen) return null
 
   const getEventIcon = (icon: string) => {
-    const icons: Record<string, any> = {
+    const icons: Record<string, unknown> = {
       user: User,
       edit: Edit2,
       phone: Phone,
@@ -235,7 +235,7 @@ export function LeadDetailModal({ leadId, isOpen, onClose }: LeadDetailModalProp
               ].map(tab => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  onClick={() => setActiveTab(tab.id as unknown)}
                   className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors ${
                     activeTab === tab.id
                       ? 'border-b-2 border-blue-600 text-blue-600'

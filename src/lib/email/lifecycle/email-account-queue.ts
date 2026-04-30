@@ -376,7 +376,7 @@ async function processAccountJob(job: Job<AccountJobData>): Promise<void> {
       break;
 
     default:
-      throw new Error(`Unknown job type: ${(job.data as any).jobType}`);
+      throw new Error(`Unknown job type: ${(job.data as unknown).jobType}`);
   }
 }
 
@@ -397,7 +397,7 @@ async function processCreateAccount(
     throw new Error('No email provider available for account creation');
   }
 
-  const adapter = await (providerService as any).getAdapter(provider);
+  const adapter = await (providerService as unknown).getAdapter(provider);
 
   if (!adapter?.createAccount) {
     console.warn(`[AccountQueue] Provider ${provider.providerName} does not support account management`);
@@ -496,7 +496,7 @@ async function processSuspendAccount(
     const provider = providers.find(p => p.providerName === account.provider_name);
 
     if (provider) {
-      const adapter = await (providerService as any).getAdapter(provider);
+      const adapter = await (providerService as unknown).getAdapter(provider);
 
       if (adapter?.suspendAccount) {
         const request: SuspendAccountRequest = {
@@ -548,7 +548,7 @@ async function processActivateAccount(
     const provider = providers.find(p => p.providerName === account.provider_name);
 
     if (provider) {
-      const adapter = await (providerService as any).getAdapter(provider);
+      const adapter = await (providerService as unknown).getAdapter(provider);
 
       if (adapter?.activateAccount) {
         const success = await adapter.activateAccount(account.provider_account_id);
@@ -596,7 +596,7 @@ async function processDeleteAccount(
     const provider = providers.find(p => p.providerName === account.provider_name);
 
     if (provider) {
-      const adapter = await (providerService as any).getAdapter(provider);
+      const adapter = await (providerService as unknown).getAdapter(provider);
 
       if (adapter?.deleteAccount) {
         const request: DeleteAccountRequest = {
@@ -681,7 +681,7 @@ async function processSyncQuota(
 
   if (!provider) return;
 
-  const adapter = await (providerService as any).getAdapter(provider);
+  const adapter = await (providerService as unknown).getAdapter(provider);
 
   if (adapter?.syncAccountQuota) {
     const quota = await adapter.syncAccountQuota(account.provider_account_id);

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -12,7 +13,17 @@ const supabase = createClient(
 // POST - Send OTP
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      mobile_number: z.string().min(10),
+
+      lead_id: z.string().uuid().optional(),
+
+      otp_type: z.string().optional().default('VERIFICATION'),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr;
     const { mobile_number, lead_id, otp_type = 'VERIFICATION' } = body;
 

@@ -83,12 +83,12 @@ export interface AuditLogEntry {
   user_agent: string | null
   session_id: string | null
   request_id: string | null
-  request_headers: Record<string, any>
+  request_headers: Record<string, unknown>
 
   // Changes
-  before_state: Record<string, any> | null
-  after_state: Record<string, any> | null
-  changes: Record<string, any> | null
+  before_state: Record<string, unknown> | null
+  after_state: Record<string, unknown> | null
+  changes: Record<string, unknown> | null
 
   // Classification
   sensitivity_level: keyof typeof SensitivityLevels
@@ -116,8 +116,8 @@ export interface LogAuditEventParams {
   action: string
   resourceType?: string
   resourceId?: string
-  beforeState?: Record<string, any>
-  afterState?: Record<string, any>
+  beforeState?: Record<string, unknown>
+  afterState?: Record<string, unknown>
   ipAddress?: string
   userAgent?: string
   sessionId?: string
@@ -375,7 +375,7 @@ export interface ComplianceReport {
   // Findings
   findings: ReportFinding[]
   recommendations: ReportRecommendation[]
-  summary: Record<string, any> | null
+  summary: Record<string, unknown> | null
 
   // Export
   export_format: keyof typeof ReportFormats
@@ -441,7 +441,7 @@ export interface ScheduledReport {
   export_format: keyof typeof ReportFormats
   include_evidence: boolean
   include_raw_data: boolean
-  report_filters: Record<string, any>
+  report_filters: Record<string, unknown>
 
   // Status
   is_active: boolean
@@ -522,6 +522,6 @@ export interface AuditTrailEntry {
   sequence_number: number
   admin_email: string
   action: string
-  changes: Record<string, any> | null
+  changes: Record<string, unknown> | null
   created_at: string
 }

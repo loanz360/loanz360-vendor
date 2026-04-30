@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
     ).length
 
     const allIssues = entries.flatMap((e) => e.issues || [])
-    const criticalIssues = allIssues.filter((i: any) => i.severity === 'critical').length
+    const criticalIssues = allIssues.filter((i: unknown) => i.severity === 'critical').length
     const avgScore = entries.length > 0
       ? entries.reduce((sum, e) => sum + (e.compliance_score || 0), 0) / entries.length
       : 100

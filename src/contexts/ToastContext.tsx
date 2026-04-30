@@ -42,10 +42,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
       showToast(event.detail.message, event.detail.type)
     }
 
-    window.addEventListener('show-toast' as any, handleToastEvent as EventListener)
+    window.addEventListener('show-toast' as unknown, handleToastEvent as EventListener)
 
     return () => {
-      window.removeEventListener('show-toast' as any, handleToastEvent as EventListener)
+      window.removeEventListener('show-toast' as unknown, handleToastEvent as EventListener)
     }
   }, [showToast])
 

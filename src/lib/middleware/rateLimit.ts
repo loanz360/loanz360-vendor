@@ -159,7 +159,7 @@ export async function rateLimit(
         )
       }
 
-      ;(request as any).rateLimitHeaders = {
+      ;(request as unknown).rateLimitHeaders = {
         'X-RateLimit-Limit': result.limit.toString(),
         'X-RateLimit-Remaining': result.remaining.toString(),
         'X-RateLimit-Reset': result.reset.toString(),
@@ -195,7 +195,7 @@ export async function rateLimit(
       )
     }
 
-    ;(request as any).rateLimitHeaders = {
+    ;(request as unknown).rateLimitHeaders = {
       'X-RateLimit-Limit': config.limit.toString(),
       'X-RateLimit-Remaining': result.remaining.toString(),
       'X-RateLimit-Reset': result.resetTime.toString(),
@@ -216,7 +216,7 @@ export function addRateLimitHeaders(
   response: NextResponse,
   request: NextRequest
 ): NextResponse {
-  const headers = (request as any).rateLimitHeaders
+  const headers = (request as unknown).rateLimitHeaders
   if (headers) {
     Object.entries(headers).forEach(([key, value]) => {
       response.headers.set(key, value as string)

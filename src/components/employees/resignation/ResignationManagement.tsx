@@ -7,8 +7,7 @@ import { AlertCircle, CheckCircle, Clock, FileText, MessageSquare, TrendingDown,
 import { useAuth } from '@/lib/auth/auth-context'
 
 interface ResignationData {
-  employee: any
-  resignation: any | null
+  employee: unknown  resignation: unknown | null
   hasActiveResignation: boolean
 }
 

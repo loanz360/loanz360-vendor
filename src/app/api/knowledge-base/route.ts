@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     // Mode: Search articles
     if (mode === 'search') {
       const query = searchParams.get('q') || ''
-      const visibility = searchParams.get('visibility') as any
+      const visibility = searchParams.get('visibility') as unknown
       const categoryId = searchParams.get('category_id') || undefined
       const limit = parseInt(searchParams.get('limit') || '10')
 
@@ -44,15 +44,15 @@ export async function GET(request: NextRequest) {
     // Mode: Get popular articles
     if (mode === 'popular') {
       const limit = parseInt(searchParams.get('limit') || '10')
-      const visibility = searchParams.get('visibility') as any
+      const visibility = searchParams.get('visibility') as unknown
       const articles = await getPopularArticles(limit, visibility)
       return NextResponse.json({ articles })
     }
 
     // Default: Get articles with filters
     const categoryId = searchParams.get('category_id') || undefined
-    const status = searchParams.get('status') as any
-    const visibility = searchParams.get('visibility') as any
+    const status = searchParams.get('status') as unknown
+    const visibility = searchParams.get('visibility') as unknown
     const search = searchParams.get('search') || undefined
     const tags = searchParams.get('tags')?.split(',') || undefined
     const limit = parseInt(searchParams.get('limit') || '20')

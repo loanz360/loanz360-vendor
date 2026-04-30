@@ -49,7 +49,7 @@ function parseCSV(csvContent: string): CSVRow[] {
   })
 
   return result.data.map(row => {
-    const parsed: any = {}
+    const parsed: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(row)) {
       parsed[key] = NUMERIC_FIELDS.has(key) ? (parseFloat(value) || 0) : value
     }

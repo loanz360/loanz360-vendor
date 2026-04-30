@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
@@ -47,7 +48,19 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      policyId: z.string().uuid(),
+
+      isEnforced: z.string().optional(),
+
+      autoCheckEnabled: z.string().optional(),
+
+      ownerId: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate input
@@ -81,7 +94,17 @@ export async function POST(request: NextRequest) {
  */
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      autoCheckEnabled: z.string().optional(),
+
+      isEnforced: z.string().optional(),
+
+      policyId: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { policyId, isEnforced, autoCheckEnabled } = body
 
@@ -94,7 +117,7 @@ export async function PATCH(request: NextRequest) {
 
     const supabase = createSupabaseAdmin()
 
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
     if (isEnforced !== undefined) updateData.is_enforced = isEnforced
     if (autoCheckEnabled !== undefined) updateData.auto_check_enabled = autoCheckEnabled
 

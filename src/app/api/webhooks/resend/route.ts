@@ -117,7 +117,7 @@ function verifyResendSignature(
 }
 
 // Event handlers
-async function handleEmailSent(supabase: any, data: any) {
+async function handleEmailSent(supabase: unknown, data: unknown) {
   const { email_id, to, from } = data
 
   await supabase
@@ -129,7 +129,7 @@ async function handleEmailSent(supabase: any, data: any) {
     .eq('external_id', email_id)
 }
 
-async function handleEmailDelivered(supabase: any, data: any) {
+async function handleEmailDelivered(supabase: unknown, data: unknown) {
   const { email_id, to } = data
 
   await supabase
@@ -142,7 +142,7 @@ async function handleEmailDelivered(supabase: any, data: any) {
 
 }
 
-async function handleEmailDelayed(supabase: any, data: any) {
+async function handleEmailDelayed(supabase: unknown, data: unknown) {
   const { email_id, to, reason } = data
 
   await supabase
@@ -155,7 +155,7 @@ async function handleEmailDelayed(supabase: any, data: any) {
 
 }
 
-async function handleEmailBounced(supabase: any, data: any) {
+async function handleEmailBounced(supabase: unknown, data: unknown) {
   const { email_id, to, bounce_type, bounce_reason } = data
 
   await supabase
@@ -174,7 +174,7 @@ async function handleEmailBounced(supabase: any, data: any) {
 
 }
 
-async function handleEmailComplained(supabase: any, data: any) {
+async function handleEmailComplained(supabase: unknown, data: unknown) {
   const { email_id, to } = data
 
   await supabase

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -95,7 +96,25 @@ export async function POST(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      shift_start_time: z.string().optional().default('09:00:00'),
+
+      shift_end_time: z.string().optional().default('18:00:00'),
+
+      skills: z.array(z.unknown()).optional().default([]),
+
+      languages: z.string().optional(),
+
+      status: z.string(),
+
+      status_reason: z.string().optional(),
+
+      break_type: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -155,7 +174,17 @@ export async function PUT(request: NextRequest) {
     if (rateLimitResponse) return rateLimitResponse
 
     const supabase = await createClient()
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      status: z.string().optional(),
+
+      status_reason: z.string().optional(),
+
+      break_type: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -190,7 +219,7 @@ export async function PUT(request: NextRequest) {
       }, { status: 400 })
     }
 
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       status,
       status_reason,
       status_changed_at: now.toISOString(),

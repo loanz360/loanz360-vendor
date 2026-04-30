@@ -10,18 +10,17 @@ import { RealtimeChannel } from '@supabase/supabase-js'
 export interface TicketRealtimeEvent {
   event: 'INSERT' | 'UPDATE' | 'DELETE'
   ticketId: string
-  ticket: any
-  timestamp: string
+  ticket: unknown  timestamp: string
 }
 
 export interface UseTicketRealtimeOptions {
   ticketId?: string // Subscribe to specific ticket
   department?: string // Subscribe to department tickets
   assignedToUserId?: string // Subscribe to user's assigned tickets
-  onNewTicket?: (ticket: any) => void
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void
+  onTicketUpdate?: (ticket: unknown) => void
   onTicketDelete?: (ticketId: string) => void
-  onNewMessage?: (message: any) => void
+  onNewMessage?: (message: unknown) => void
 }
 
 /**
@@ -152,8 +151,8 @@ export function useTicketRealtime(options: UseTicketRealtimeOptions) {
  */
 export function useTicketDetailRealtime(
   ticketId: string,
-  onUpdate?: (ticket: any) => void,
-  onNewMessage?: (message: any) => void
+  onUpdate?: (ticket: unknown) => void,
+  onNewMessage?: (message: unknown) => void
 ) {
   return useTicketRealtime({
     ticketId,
@@ -167,8 +166,8 @@ export function useTicketDetailRealtime(
  */
 export function useDepartmentQueueRealtime(
   department: string,
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useTicketRealtime({
     department,
@@ -182,8 +181,8 @@ export function useDepartmentQueueRealtime(
  */
 export function useMyTicketsRealtime(
   userId: string,
-  onNewTicket?: (ticket: any) => void,
-  onTicketUpdate?: (ticket: any) => void
+  onNewTicket?: (ticket: unknown) => void,
+  onTicketUpdate?: (ticket: unknown) => void
 ) {
   return useTicketRealtime({
     assignedToUserId: userId,

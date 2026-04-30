@@ -11,14 +11,14 @@ interface Alert {
   title: string;
   message: string;
   channels: AlertChannel[];
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   timestamp?: number;
 }
 
 interface AlertRule {
   id: string;
   name: string;
-  condition: (data: any) => boolean;
+  condition: (data: Record<string, unknown>) => boolean;
   severity: AlertSeverity;
   channels: AlertChannel[];
   cooldown?: number; // Minimum time between alerts (ms)
@@ -67,7 +67,7 @@ class AlertManager {
   /**
    * Check if data matches any alert rules
    */
-  checkRules(data: any) {
+  checkRules(data: Record<string, unknown>) {
     for (const [ruleId, rule] of this.rules.entries()) {
       if (!rule.enabled) continue;
 
@@ -351,7 +351,7 @@ export async function sendAlert(
   title: string,
   message: string,
   channels: AlertChannel[] = ['email', 'slack'],
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ) {
   await alertManager.sendAlert({ severity, title, message, channels, metadata });
 }
@@ -360,6 +360,6 @@ export function registerAlertRule(rule: AlertRule) {
   alertManager.registerRule(rule);
 }
 
-export function checkAlertRules(data: any) {
+export function checkAlertRules(data: Record<string, unknown>) {
   alertManager.checkRules(data);
 }

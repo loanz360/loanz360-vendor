@@ -113,7 +113,7 @@ export async function fetchJSONWithRetry<T = any>(
  * @param error - Error object
  * @returns Boolean indicating if error is retryable
  */
-export function isRetryableError(error: any): boolean {
+export function isRetryableError(error: unknown): boolean {
   // Network errors
   if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
     return true

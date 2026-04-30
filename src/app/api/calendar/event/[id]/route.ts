@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { googleCalendarService } from '@/lib/calendar/google-calendar-service'
@@ -14,7 +15,27 @@ export async function PUT(
 ) {
   try {
     const { id } = params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      title: z.string().optional(),
+
+      description: z.string().optional(),
+
+      start_time: z.string().optional(),
+
+      end_time: z.string().optional(),
+
+      location: z.string().optional(),
+
+      attendees: z.string().optional(),
+
+      has_google_meet: z.string().optional(),
+
+      status: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       title,

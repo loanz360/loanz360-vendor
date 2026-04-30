@@ -24,7 +24,7 @@ export interface AssignmentResult {
  * Get employee workload (number of active tickets)
  */
 async function getEmployeeWorkload(
-  supabase: any,
+  supabase: unknown,
   employeeId: string
 ): Promise<number> {
   const { data, error } = await supabase
@@ -45,7 +45,7 @@ async function getEmployeeWorkload(
  * Get employees in a department with their current workload
  */
 async function getDepartmentEmployees(
-  supabase: any,
+  supabase: unknown,
   department: string
 ) {
   const { data, error } = await supabase
@@ -71,7 +71,7 @@ async function getDepartmentEmployees(
 
   // Get workload for each employee
   const employeesWithWorkload = await Promise.all(
-    data.map(async (emp: any) => ({
+    data.map(async (emp: unknown) => ({
       id: emp.employee_id,
       name: emp.profiles.full_name,
       email: emp.profiles.email,
@@ -88,7 +88,7 @@ async function getDepartmentEmployees(
  * Assigns to the employee who was assigned least recently
  */
 async function assignRoundRobin(
-  supabase: any,
+  supabase: unknown,
   department: string
 ): Promise<AssignmentResult> {
   try {
@@ -105,7 +105,7 @@ async function assignRoundRobin(
 
     // Get last assignment timestamp for each employee
     const employeesWithLastAssignment = await Promise.all(
-      employees.map(async (emp: any) => {
+      employees.map(async (emp: unknown) => {
         const { data } = await supabase
           .from('partner_support_tickets')
           .select('created_at')
@@ -150,7 +150,7 @@ async function assignRoundRobin(
  * Assigns to the employee with the least active tickets
  */
 async function assignWorkloadBased(
-  supabase: any,
+  supabase: unknown,
   department: string
 ): Promise<AssignmentResult> {
   try {
@@ -166,7 +166,7 @@ async function assignWorkloadBased(
     }
 
     // Sort by workload (ascending)
-    employees.sort((a: any, b: any) => a.workload - b.workload)
+    employees.sort((a: unknown, b: unknown) => a.workload - b.workload)
 
     const selected = employees[0]
 
@@ -192,7 +192,7 @@ async function assignWorkloadBased(
  * Assigns based on employee expertise in ticket category
  */
 async function assignSkillBased(
-  supabase: any,
+  supabase: unknown,
   department: string,
   category: string
 ): Promise<AssignmentResult> {
@@ -212,7 +212,7 @@ async function assignSkillBased(
     const { data: skillMatches } = await supabase
       .from('employee_skills')
       .select('employee_id, skill_level')
-      .in('employee_id', employees.map((e: any) => e.id))
+      .in('employee_id', employees.map((e: unknown) => e.id))
       .eq('skill_category', category)
       .eq('is_active', true)
 
@@ -223,17 +223,17 @@ async function assignSkillBased(
 
     // Find employees with skills, prioritize by skill level and workload
     const skilledEmployees = employees
-      .filter((emp: any) =>
-        skillMatches.some((skill: any) => skill.employee_id === emp.id)
+      .filter((emp: unknown) =>
+        skillMatches.some((skill: unknown) => skill.employee_id === emp.id)
       )
-      .map((emp: any) => {
-        const skill = skillMatches.find((s: any) => s.employee_id === emp.id)
+      .map((emp: unknown) => {
+        const skill = skillMatches.find((s: unknown) => s.employee_id === emp.id)
         return {
           ...emp,
           skillLevel: skill?.skill_level || 0
         }
       })
-      .sort((a: any, b: any) => {
+      .sort((a: unknown, b: unknown) => {
         // First by skill level (descending), then by workload (ascending)
         if (b.skillLevel !== a.skillLevel) {
           return b.skillLevel - a.skillLevel
@@ -265,7 +265,7 @@ async function assignSkillBased(
  * Assigns urgent tickets to senior/manager employees
  */
 async function assignPriorityBased(
-  supabase: any,
+  supabase: unknown,
   department: string,
   priority: string
 ): Promise<AssignmentResult> {
@@ -284,12 +284,12 @@ async function assignPriorityBased(
     // For urgent/high priority, prefer managers and senior employees
     if (priority === 'urgent' || priority === 'high') {
       const seniorEmployees = employees.filter(
-        (emp: any) => emp.role === 'manager' || emp.role === 'senior'
+        (emp: unknown) => emp.role === 'manager' || emp.role === 'senior'
       )
 
       if (seniorEmployees.length > 0) {
         // Among senior employees, pick least busy
-        seniorEmployees.sort((a: any, b: any) => a.workload - b.workload)
+        seniorEmployees.sort((a: unknown, b: unknown) => a.workload - b.workload)
         const selected = seniorEmployees[0]
 
         return {

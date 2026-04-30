@@ -92,7 +92,7 @@ export default function SocietyDetailsStep({ data, errors, onUpdate }: Cooperati
           </label>
           <select
             value={data.registration_type}
-            onChange={(e) => onUpdate({ registration_type: e.target.value as any })}
+            onChange={(e) => onUpdate({ registration_type: e.target.value as unknown })}
             className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
           >
             <option value="">Select registration type</option>
@@ -109,7 +109,7 @@ export default function SocietyDetailsStep({ data, errors, onUpdate }: Cooperati
           </label>
           <select
             value={data.cooperative_type}
-            onChange={(e) => onUpdate({ cooperative_type: e.target.value as any })}
+            onChange={(e) => onUpdate({ cooperative_type: e.target.value as unknown })}
             className={`w-full px-4 py-3 bg-gray-800 border rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50 ${
               errors.cooperative_type ? 'border-red-500' : 'border-gray-700'
             }`}
@@ -129,7 +129,7 @@ export default function SocietyDetailsStep({ data, errors, onUpdate }: Cooperati
           </label>
           <select
             value={data.area_of_operation}
-            onChange={(e) => onUpdate({ area_of_operation: e.target.value as any })}
+            onChange={(e) => onUpdate({ area_of_operation: e.target.value as unknown })}
             className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
           >
             <option value="">Select area of operation</option>
@@ -212,7 +212,7 @@ export default function SocietyDetailsStep({ data, errors, onUpdate }: Cooperati
           </label>
           <select
             value={data.gst_registration_status}
-            onChange={(e) => onUpdate({ gst_registration_status: e.target.value as any })}
+            onChange={(e) => onUpdate({ gst_registration_status: e.target.value as unknown })}
             className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-orange-500/50"
           >
             <option value="">Select GST status</option>

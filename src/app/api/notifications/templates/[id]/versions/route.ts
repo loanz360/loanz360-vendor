@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // Template Version History API
 // GET: Get all versions of a template
@@ -102,7 +103,19 @@ export async function POST(
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      version_id: z.string().uuid().optional(),
+
+
+      version_number: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { version_id, version_number } = body
 

@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch monthly summary (both schemas)
-    let summary: any = null
+    let summary: unknown = null
     const { data: s1 } = await adminClient
       .from('dse_monthly_summary')
       .select('*')

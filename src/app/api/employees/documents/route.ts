@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
       .order('display_order', { ascending: true })
 
     // Group documents by category
-    const documentsByCategory = documents.reduce((acc: any, doc: any) => {
+    const documentsByCategory = documents.reduce((acc: unknown, doc: unknown) => {
       const cat = doc.document_type?.category || 'OTHER'
       if (!acc[cat]) {
         acc[cat] = []

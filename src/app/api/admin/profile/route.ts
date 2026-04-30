@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -66,7 +67,34 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      full_name: z.string().optional(),
+
+
+      email: z.string().email().optional(),
+
+
+      mobile_number: z.string().min(10).optional(),
+
+
+      profile_photo_url: z.string().optional(),
+
+
+      department: z.string().optional(),
+
+
+      designation: z.string().optional(),
+
+
+      employee_id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Upsert admin profile

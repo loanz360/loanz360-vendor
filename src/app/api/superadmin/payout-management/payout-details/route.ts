@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
     const limit = Math.min(50, Math.max(1, parseInt(searchParams.get('limit') || '25')))
 
-    const records: any[] = []
+    const records: unknown[] = []
     let totalCount = 0
 
     // Fetch CP applications

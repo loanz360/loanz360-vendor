@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // =====================================================
 // EMPLOYEE LOANS API
@@ -135,7 +136,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Employee not found' }, { status: 404 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      loan_type: z.string().optional(),
+
+
+      loan_amount: z.number().optional(),
+
+
+      interest_rate: z.string().optional(),
+
+
+      tenure_months: z.string().optional(),
+
+
+      requested_reason: z.string().optional(),
+
+
+      supporting_documents: z.string().optional(),
+
+
+      loan_id: z.string().uuid().optional(),
+
+
+      action: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       loan_type,
@@ -233,7 +264,19 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      action: z.string().optional(),
+
+
+      loan_id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { loan_id, action, ...actionData } = body
 

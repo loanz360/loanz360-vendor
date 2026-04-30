@@ -70,7 +70,7 @@ export async function createInAppNotification(
 /**
  * Render template with variables
  */
-export function renderTemplate(template: string, variables: Record<string, any>): string {
+export function renderTemplate(template: string, variables: Record<string, unknown>): string {
   let rendered = template
 
   // Replace {{variable}} with actual values
@@ -169,7 +169,7 @@ export async function processNotificationQueue(limit: number = 100): Promise<num
 /**
  * Send notification via configured channels
  */
-async function sendNotificationChannels(notification: any): Promise<void> {
+async function sendNotificationChannels(notification: unknown): Promise<void> {
   const channels = notification.channels || []
 
   // Send email
@@ -228,7 +228,7 @@ async function updateChannelStatus(
 ): Promise<void> {
   const supabase = createSupabaseAdmin()
 
-  const updateData: any = {
+  const updateData: Record<string, unknown> = {
     [`${channel}_status`]: status,
   }
 

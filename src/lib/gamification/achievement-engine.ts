@@ -37,7 +37,7 @@ export interface UnlockCriteria {
   rank?: number;
   months?: number;
   consecutiveMonths?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface UserTier {
@@ -132,7 +132,7 @@ export async function updateUserTier(
     .eq('user_id', userId);
 
   const totalPoints =
-    (currentTierData?.reduce((sum: number, a: any) => sum + (a.points || 0), 0) || 0) +
+    (currentTierData?.reduce((sum: number, a: unknown) => sum + (a.points || 0), 0) || 0) +
     newPoints;
 
   const newTier = calculateUserTier(totalPoints);
@@ -194,7 +194,7 @@ export async function updateUserTier(
 /**
  * Check if criteria is met for achievement
  */
-function checkCriteria(criteria: UnlockCriteria, userStats: any): boolean {
+function checkCriteria(criteria: UnlockCriteria, userStats: unknown): boolean {
   switch (criteria.type) {
     case 'target_achieved':
       return userStats.targetsAchieved >= (criteria.count || 1);
@@ -244,11 +244,11 @@ async function getUserStats(userId: string): Promise<unknown> {
     .eq('user_id', userId);
 
   const targetsAchieved = allocations?.filter(
-    (a: any) => a.progress_percentage >= 100
+    (a: unknown) => a.progress_percentage >= 100
   ).length || 0;
 
   const totalEarned = allocations?.reduce(
-    (sum: number, a: any) => sum + (a.earned_amount || 0),
+    (sum: number, a: unknown) => sum + (a.earned_amount || 0),
     0
   ) || 0;
 
@@ -265,7 +265,7 @@ async function getUserStats(userId: string): Promise<unknown> {
 
   const monthlyProgress =
     monthlyAllocations?.reduce(
-      (sum: number, a: any) => sum + (a.progress_percentage || 0),
+      (sum: number, a: unknown) => sum + (a.progress_percentage || 0),
       0
     ) / (monthlyAllocations?.length || 1) || 0;
 
@@ -311,7 +311,7 @@ async function getUserStats(userId: string): Promise<unknown> {
     monthlyProgress,
     currentRank,
     consecutiveAchievements,
-    perfectMonths: allocations?.filter((a: any) => a.progress_percentage === 100)
+    perfectMonths: allocations?.filter((a: unknown) => a.progress_percentage === 100)
       .length || 0,
   };
 }
@@ -341,7 +341,7 @@ export async function checkAndUnlockAchievements(
       .eq('user_id', userId);
 
     const unlockedCodes = new Set(
-      userAchievements?.map((a: any) => a.achievement_code) || []
+      userAchievements?.map((a: unknown) => a.achievement_code) || []
     );
 
     // Get user stats
@@ -492,7 +492,7 @@ export async function calculateLeaderboard(
         .eq('user_id', userId);
 
       const totalPoints = achievements?.reduce(
-        (sum: number, a: any) => sum + (a.points || 0),
+        (sum: number, a: unknown) => sum + (a.points || 0),
         0
       ) || 0;
 

@@ -294,7 +294,7 @@ interface DocumentItem {
   name: string
   is_mandatory: boolean
   status: 'PENDING' | 'SUBMITTED' | 'VERIFIED' | 'REJECTED'
-  verified_data?: Record<string, any>
+  verified_data?: Record<string, unknown>
   rejection_reason?: string
 }
 
@@ -339,9 +339,8 @@ export interface CreditAppraisalMemo {
  * CAM Service - Neutral CAM Factory
  */
 export class CAMService {
-  private supabase: any
-
-  constructor(supabase: any) {
+  private supabase: unknown
+  constructor(supabase: unknown) {
     this.supabase = supabase
   }
 
@@ -505,7 +504,7 @@ export class CAMService {
   /**
    * Build customer profile from lead data
    */
-  private buildCustomerProfile(lead: any): CustomerProfile {
+  private buildCustomerProfile(lead: unknown): CustomerProfile {
     const customer = lead.customer || {}
 
     return {
@@ -555,7 +554,7 @@ export class CAMService {
   /**
    * Build employment details
    */
-  private buildEmploymentDetails(lead: any, customer: any): SalariedDetails | SelfEmployedDetails {
+  private buildEmploymentDetails(lead: unknown, customer: unknown): SalariedDetails | SelfEmployedDetails {
     const empType = lead.employment_type || customer.employment_type || 'SALARIED'
 
     if (empType === 'SALARIED') {
@@ -593,7 +592,7 @@ export class CAMService {
   /**
    * Build loan details from lead
    */
-  private buildLoanDetails(lead: any): LoanDetails {
+  private buildLoanDetails(lead: unknown): LoanDetails {
     return {
       loan_type: lead.loan_type || '',
       loan_purpose: lead.loan_purpose || 'General Purpose',
@@ -613,7 +612,7 @@ export class CAMService {
    * Integrates with Bank Statement Analysis for verified income data
    */
   private async performIncomeAnalysis(
-    lead: any,
+    lead: unknown,
     customer: CustomerProfile
   ): Promise<IncomeAnalysis> {
     const declaredMonthlyIncome = lead.monthly_income || 0
@@ -1391,6 +1390,6 @@ export class CAMService {
 }
 
 // Export factory function
-export function createCAMService(supabase: any): CAMService {
+export function createCAMService(supabase: unknown): CAMService {
   return new CAMService(supabase)
 }

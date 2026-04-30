@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -113,7 +114,43 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      ownerType: z.string().optional(),
+
+
+      ownerId: z.string().uuid().optional(),
+
+
+      accountHolderName: z.string().optional(),
+
+
+      accountNumber: z.string().optional(),
+
+
+      bankName: z.string().optional(),
+
+
+      branchName: z.string().optional(),
+
+
+      ifscCode: z.string().optional(),
+
+
+      accountType: z.string().optional(),
+
+
+      isPrimary: z.string().optional(),
+
+
+      accountId: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       ownerType,
@@ -248,7 +285,19 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      isPrimary: z.string().optional(),
+
+
+      accountId: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { accountId, isPrimary, ...updateFields } = body
 

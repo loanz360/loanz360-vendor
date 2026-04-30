@@ -11,8 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { User, Save } from 'lucide-react';
 
 interface ProfileCompletionStepProps {
-  onboardingData: any;
-  onComplete: () => void;
+  onboardingData: unknown  onComplete: () => void;
 }
 
 export default function ProfileCompletionStep({ onboardingData, onComplete }: ProfileCompletionStepProps) {

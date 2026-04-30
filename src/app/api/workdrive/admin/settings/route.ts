@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * WorkDrive Admin Settings API
@@ -97,7 +98,19 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Access denied' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      key: z.string(),
+
+
+      value: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { key, value } = body
 

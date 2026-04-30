@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 import { logApiError } from '@/lib/monitoring/errorLogger'
@@ -140,7 +141,37 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      lead_id: z.string().uuid().optional(),
+
+      text: z.string().optional(),
+
+      note_type: z.string().optional(),
+
+      is_call_log: z.boolean().optional(),
+
+      call_direction: z.string().optional(),
+
+      call_start_time: z.string().optional(),
+
+      call_end_time: z.string().optional(),
+
+      call_duration: z.string().optional(),
+
+      call_recording_url: z.string().optional(),
+
+      call_sid: z.string().uuid().optional(),
+
+      disposition_code: z.string().optional(),
+
+      disposition_notes: z.string().optional(),
+
+      id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields
@@ -167,7 +198,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Prepare note data
-    const noteData: any = {
+    const noteData: Record<string, unknown> = {
       lead_id: body.lead_id,
       note_type: body.note_type || 'General',
       text: body.text,
@@ -208,7 +239,7 @@ export async function POST(request: NextRequest) {
         .maybeSingle()
 
       if (dispositionCode) {
-        const updates: any = {}
+        const updates: Record<string, unknown> = {}
 
         // Auto-set status
         if (dispositionCode.auto_set_status) {
@@ -293,7 +324,13 @@ export async function PUT(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const noteId = body.id
 
@@ -323,7 +360,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

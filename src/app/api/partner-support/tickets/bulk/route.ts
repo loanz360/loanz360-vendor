@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -40,7 +41,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      operation: z.string().optional(),
+
+
+      ticket_ids: z.array(z.unknown()).optional(),
+
+
+      data: z.record(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { operation, ticket_ids, data } = body
 
@@ -161,7 +177,7 @@ export async function POST(request: NextRequest) {
 
         for (const ticket of tickets) {
           try {
-            const updates: any = { status: data.status }
+            const updates: Record<string, unknown> = { status: data.status }
 
             if (data.status === 'resolved') {
               updates.resolved_at = new Date().toISOString()

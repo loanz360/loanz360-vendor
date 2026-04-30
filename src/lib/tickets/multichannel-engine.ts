@@ -11,7 +11,7 @@ export interface ChannelConfig {
   channel_type: ChannelType
   name: string
   is_active: boolean
-  config: Record<string, any>
+  config: Record<string, unknown>
   auto_create_ticket: boolean
   default_priority: string
   default_category?: string
@@ -42,7 +42,7 @@ export interface InboundMessage {
     type: string
     size: number
   }>
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   ticket_id?: string
   ticket_source?: string
   status: 'pending' | 'processed' | 'failed' | 'ignored'
@@ -63,7 +63,7 @@ export interface OutboundMessage {
   subject?: string
   content: string
   template_id?: string
-  template_data?: Record<string, any>
+  template_data?: Record<string, unknown>
   status: 'pending' | 'sent' | 'delivered' | 'failed' | 'read'
   external_id?: string
   sent_at?: string
@@ -659,7 +659,7 @@ export async function getChannelStats(startDate: Date, endDate: Date): Promise<R
 }>> {
   const supabase = await createClient()
 
-  const stats: Record<string, any> = {}
+  const stats: Record<string, unknown> = {}
 
   const channels: ChannelType[] = ['email', 'sms', 'whatsapp', 'web_chat', 'phone', 'portal']
 

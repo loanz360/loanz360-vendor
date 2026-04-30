@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -70,7 +71,55 @@ export async function POST(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      full_name: z.string().optional(),
+
+
+      email: z.string().email().optional(),
+
+
+      phone: z.string().min(10).optional(),
+
+
+      requisition_id: z.string().uuid().optional(),
+
+
+      current_company: z.string().optional(),
+
+
+      current_designation: z.string().optional(),
+
+
+      total_experience_years: z.string().optional(),
+
+
+      current_salary: z.string().optional(),
+
+
+      expected_salary: z.string().optional(),
+
+
+      notice_period_days: z.string().optional(),
+
+
+      source: z.string().optional(),
+
+
+      resume_url: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { full_name, email, phone, requisition_id, current_company, current_designation, total_experience_years, current_salary, expected_salary, notice_period_days, source, resume_url, notes } = body
 
@@ -130,7 +179,16 @@ export async function PATCH(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id } = body
     if (!id) return NextResponse.json({ success: false, error: 'Candidate ID required' }, { status: 400 })

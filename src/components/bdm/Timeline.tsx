@@ -36,7 +36,7 @@ interface TimelineEvent {
   userRole?: string
   timestamp: string
   timestampFormatted: string
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
   relativeTime?: string
 }
 
@@ -74,7 +74,7 @@ export function Timeline({
   }
 
   const getEventIcon = (icon: string, color: string) => {
-    const iconMap: Record<string, any> = {
+    const iconMap: Record<string, unknown> = {
       user: User,
       edit: Edit2,
       phone: Phone,

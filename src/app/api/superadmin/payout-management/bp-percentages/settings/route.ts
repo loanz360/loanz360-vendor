@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -39,7 +40,15 @@ async function updateBPSettingsHandler(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      bp_percentage_multiplier: z.string().optional(),
+
+      bp_team_percentage_multiplier: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { bp_percentage_multiplier, bp_team_percentage_multiplier } = body
@@ -87,7 +96,7 @@ async function updateBPSettingsHandler(request: NextRequest) {
     }
 
     // Build update object (no need to get user for Super Admin)
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
     if (bp_percentage_multiplier !== undefined) {
       updateData.bp_percentage_multiplier = bp_percentage_multiplier
@@ -123,7 +132,7 @@ async function updateBPSettingsHandler(request: NextRequest) {
     // Recalculate commissions for non-overridden entries
     if (bpPercentages && bpPercentages.length > 0) {
       for (const bp of bpPercentages) {
-        const updateBpData: any = {}
+        const updateBpData: Record<string, unknown> = {}
 
         // Recalculate BP commission if not manually overridden and BP multiplier was updated
         if (!bp.is_bp_manual_override && bp_percentage_multiplier !== undefined) {

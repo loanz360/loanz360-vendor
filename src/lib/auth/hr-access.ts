@@ -34,7 +34,7 @@ function isHRRole(value: string | null | undefined): boolean {
  * Uses admin client to bypass RLS for the role lookup.
  * Never throws — returns false on any error.
  */
-export async function checkHRAccess(supabase: any): Promise<boolean> {
+export async function checkHRAccess(supabase: unknown): Promise<boolean> {
   try {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return false
@@ -49,7 +49,7 @@ export async function checkHRAccess(supabase: any): Promise<boolean> {
  * Check HR access by explicit userId.
  * Accepts any Supabase client (admin recommended to bypass RLS).
  */
-export async function checkHRAccessByUserId(supabase: any, userId: string): Promise<boolean> {
+export async function checkHRAccessByUserId(supabase: unknown, userId: string): Promise<boolean> {
   try {
     // 1. Check employees table (sub_role or role column)
     const { data: employee } = await supabase
@@ -99,7 +99,7 @@ export async function checkHRAccessByUserId(supabase: any, userId: string): Prom
  * Usage: const deny = await requireHRAccess(supabase)
  *        if (deny) return deny
  */
-export async function requireHRAccess(supabase: any) {
+export async function requireHRAccess(supabase: unknown) {
   const ok = await checkHRAccess(supabase)
   if (!ok) {
     const { NextResponse } = await import('next/server')

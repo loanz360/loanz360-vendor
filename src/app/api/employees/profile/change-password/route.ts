@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
@@ -67,7 +68,17 @@ export async function POST(request: NextRequest) {
     const userId = sessionData.userId
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      currentPassword: z.string().optional(),
+
+      newPassword: z.string().optional(),
+
+      confirmPassword: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { currentPassword, newPassword, confirmPassword } = body
 

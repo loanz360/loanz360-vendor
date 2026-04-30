@@ -346,7 +346,7 @@ export class MFAService {
       }
 
       // Remove used backup code
-      const updatedCodes = method.totp_backup_codes.filter((_: any, i: number) => i !== codeIndex)
+      const updatedCodes = method.totp_backup_codes.filter((_: unknown, i: number) => i !== codeIndex)
 
       await this.supabase
         .from('mfa_methods')

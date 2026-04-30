@@ -265,7 +265,7 @@ export async function DELETE(request: NextRequest) {
     const isSuperAdmin = employee?.role === 'super_admin'
 
     // Check access: uploader, ticket owner, HR, or Super Admin
-    const ticket = (attachment as any).support_tickets
+    const ticket = (attachment as unknown).support_tickets
     if (
       attachment.uploaded_by !== user.id &&
       ticket.employee_id !== user.id &&

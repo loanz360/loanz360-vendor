@@ -113,7 +113,7 @@ interface NormalizedEvent {
   timestamp?: string
 }
 
-function normalizeEvents(provider: string, payload: Record<string, any>): NormalizedEvent[] {
+function normalizeEvents(provider: string, payload: Record<string, unknown>): NormalizedEvent[] {
   const events: NormalizedEvent[] = []
 
   switch (provider) {

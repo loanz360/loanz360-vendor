@@ -39,7 +39,7 @@ export interface ChatbotVersion {
   is_active: boolean
   node_count: number
   created_at: string
-  flow_data?: any
+  flow_data?: Record<string, unknown>
 }
 
 export interface ChatbotVersionManagerProps {
@@ -86,20 +86,20 @@ function statusConfig(s: ChatbotVersion['status']) {
   }
 }
 
-function computeDiff(flowA: any, flowB: any) {
-  const nodesA: Record<string, any> = {}
-  const nodesB: Record<string, any> = {}
+function computeDiff(flowA: unknown, flowB: unknown) {
+  const nodesA: Record<string, unknown> = {}
+  const nodesB: Record<string, unknown> = {}
 
   const arrA = Array.isArray(flowA?.nodes) ? flowA.nodes : []
   const arrB = Array.isArray(flowB?.nodes) ? flowB.nodes : []
 
-  arrA.forEach((n: any) => { nodesA[n.id ?? n.name ?? JSON.stringify(n)] = n })
-  arrB.forEach((n: any) => { nodesB[n.id ?? n.name ?? JSON.stringify(n)] = n })
+  arrA.forEach((n: unknown) => { nodesA[n.id ?? n.name ?? JSON.stringify(n)] = n })
+  arrB.forEach((n: unknown) => { nodesB[n.id ?? n.name ?? JSON.stringify(n)] = n })
 
   const allKeys = new Set([...Object.keys(nodesA), ...Object.keys(nodesB)])
-  const added: any[] = []
-  const removed: any[] = []
-  const modified: Array<{ key: string; before: any; after: any }> = []
+  const added: unknown[] = []
+  const removed: unknown[] = []
+  const modified: Array<{ key: string; before: unknown; after: unknown}> = []
 
   allKeys.forEach((k) => {
     if (!nodesA[k]) {

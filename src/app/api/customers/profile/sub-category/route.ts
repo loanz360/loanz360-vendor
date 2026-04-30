@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Customer Profile Selection API (Simplified 2-Step Flow)
@@ -98,7 +99,28 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      subrole: z.string().optional(),
+
+
+      profile: z.string(),
+
+
+      custom_profile_name: z.string().optional(),
+
+
+      primary_category: z.string().optional(),
+
+
+      specific_profile: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { subrole, profile, custom_profile_name } = body
 

@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Format historical data
-    const formattedHistory = (summaries || []).map((s: any) => ({
+    const formattedHistory = (summaries || []).map((s: unknown) => ({
       month: s.month,
       year: s.year,
       period: new Date(s.year, s.month - 1).toLocaleDateString('en-IN', {

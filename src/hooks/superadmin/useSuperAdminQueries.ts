@@ -227,7 +227,7 @@ export function useRealtimeFeed(filters: Record<string, string> = {}) {
 export function useCreateAdmin() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (data: any) =>
+    mutationFn: (data: Record<string, unknown>) =>
       fetchAPI<any>(SUPERADMIN_API.ADMIN_MANAGEMENT.BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -242,7 +242,7 @@ export function useCreateAdmin() {
 export function useCreatePartner() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (data: any) =>
+    mutationFn: (data: Record<string, unknown>) =>
       fetchAPI<any>(SUPERADMIN_API.PARTNER_MANAGEMENT.BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

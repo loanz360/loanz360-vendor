@@ -36,8 +36,7 @@ export interface ValidationError {
   field: string
   message: string
   severity: 'ERROR' | 'WARNING'
-  value?: any
-  rule?: string
+  value?: unknown  rule?: string
 }
 
 export interface ValidationResult {
@@ -194,10 +193,10 @@ export class ValidationEngine {
         sanitized.loan_amount = this.parseCurrency(sanitized.loan_amount)
       }
       if (typeof sanitized.monthly_income === 'string') {
-        sanitized.monthly_income = this.parseCurrency(sanitized.monthly_income as any)
+        sanitized.monthly_income = this.parseCurrency(sanitized.monthly_income as unknown)
       }
       if (typeof sanitized.existing_emis === 'string') {
-        sanitized.existing_emis = this.parseCurrency(sanitized.existing_emis as any)
+        sanitized.existing_emis = this.parseCurrency(sanitized.existing_emis as unknown)
       }
     }
 
@@ -218,7 +217,7 @@ export class ValidationEngine {
   /**
    * Validate a single field
    */
-  validateField(data: any, rule: ValidationRule): { valid: boolean; message: string; value?: any } {
+  validateField(data: unknown, rule: ValidationRule): { valid: boolean; message: string; value?: unknown} {
     const value = this.getNestedValue(data, rule.field)
 
     // Required check
@@ -486,7 +485,7 @@ export class ValidationEngine {
     return rules
   }
 
-  private transformDBRule(dbRule: any): ValidationRule {
+  private transformDBRule(dbRule: unknown): ValidationRule {
     return {
       id: dbRule.id,
       field: dbRule.field_name || dbRule.field,
@@ -510,7 +509,7 @@ export class ValidationEngine {
     }
   }
 
-  private getNestedValue(obj: any, path: string): any {
+  private getNestedValue(obj: unknown, path: string): unknown {
     const parts = path.split('.')
     let current = obj
     for (const part of parts) {
@@ -520,7 +519,7 @@ export class ValidationEngine {
     return current
   }
 
-  private compareCrossField(value: any, refValue: any, operator: string): boolean {
+  private compareCrossField(value: unknown, refValue: unknown, operator: string): boolean {
     switch (operator) {
       case 'eq': return value === refValue
       case 'neq': return value !== refValue

@@ -231,7 +231,7 @@ export async function PATCH(
     }
 
     // Build update object with sanitized data
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_by: updated_by_user_id,
       updated_at: new Date().toISOString(),
     }

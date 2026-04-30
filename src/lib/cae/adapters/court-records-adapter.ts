@@ -539,7 +539,7 @@ export class CourtRecordsAdapter {
     }
   }
 
-  private parseSearchResponse(response: any, searchId: string): CourtSearchResult {
+  private parseSearchResponse(response: unknown, searchId: string): CourtSearchResult {
     if (response.error) {
       return {
         success: false,
@@ -557,7 +557,7 @@ export class CourtRecordsAdapter {
     }
 
     const cases = response.cases || response.data || []
-    const pendingCases = cases.filter((c: any) => c.case_status === 'PENDING' || c.status === 'PENDING')
+    const pendingCases = cases.filter((c: unknown) => c.case_status === 'PENDING' || c.status === 'PENDING')
 
     return {
       success: true,
@@ -572,7 +572,7 @@ export class CourtRecordsAdapter {
     }
   }
 
-  private calculateOverallRisk(cases: any[]): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' {
+  private calculateOverallRisk(cases: unknown[]): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' {
     if (!cases || cases.length === 0) return 'LOW'
 
     const hasCriminalPending = cases.some(c =>
@@ -591,7 +591,7 @@ export class CourtRecordsAdapter {
     return 'LOW'
   }
 
-  private extractRiskFactors(cases: any[]): string[] {
+  private extractRiskFactors(cases: unknown[]): string[] {
     const factors: string[] = []
 
     if (!cases || cases.length === 0) return factors

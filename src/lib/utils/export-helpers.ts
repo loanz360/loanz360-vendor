@@ -6,7 +6,7 @@
 /**
  * Convert JSON data to CSV format
  */
-export function jsonToCSV(data: any[], columns?: string[]): string {
+export function jsonToCSV(data: unknown[], columns?: string[]): string {
   if (!data || data.length === 0) return ''
 
   // Get columns from data keys if not provided
@@ -46,7 +46,7 @@ export function jsonToCSV(data: any[], columns?: string[]): string {
 /**
  * Download data as CSV file
  */
-export function downloadCSV(data: any[], filename: string, columns?: string[]) {
+export function downloadCSV(data: unknown[], filename: string, columns?: string[]) {
   const csv = jsonToCSV(data, columns)
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
   const link = document.createElement('a')
@@ -64,7 +64,7 @@ export function downloadCSV(data: any[], filename: string, columns?: string[]) {
  * Generate Excel (XLSX) file
  * Note: This is a simplified version. For production, use libraries like 'xlsx' or 'exceljs'
  */
-export function generateExcelXML(data: any[], sheetName: string = 'Sheet1'): string {
+export function generateExcelXML(data: unknown[], sheetName: string = 'Sheet1'): string {
   if (!data || data.length === 0) return ''
 
   const cols = Object.keys(data[0])
@@ -233,7 +233,7 @@ function escapeXML(str: string): string {
 /**
  * Format audit log for export
  */
-export function formatAuditLogForExport(logs: any[]): any[] {
+export function formatAuditLogForExport(logs: unknown[]): unknown[] {
   return logs.map(log => ({
     'Audit ID': log.id,
     'Admin ID': log.admin_unique_id || log.admin_id,
@@ -251,7 +251,7 @@ export function formatAuditLogForExport(logs: any[]): any[] {
 /**
  * Format session data for export
  */
-export function formatSessionsForExport(sessions: any[]): any[] {
+export function formatSessionsForExport(sessions: unknown[]): unknown[] {
   return sessions.map(session => ({
     'Session ID': session.id,
     'Admin ID': session.admin_unique_id || session.admin_id,
@@ -275,7 +275,7 @@ export function formatSessionsForExport(sessions: any[]): any[] {
 /**
  * Format admin list for export
  */
-export function formatAdminsForExport(admins: any[]): any[] {
+export function formatAdminsForExport(admins: unknown[]): unknown[] {
   return admins.map(admin => ({
     'Admin ID': admin.admin_unique_id,
     'Full Name': admin.full_name,

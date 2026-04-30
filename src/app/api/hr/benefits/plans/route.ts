@@ -74,7 +74,25 @@ export async function POST(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      id: z.string().uuid(),
+
+
+      coverage_amount: z.string().optional(),
+
+
+      employer_contribution: z.string().optional(),
+
+
+      employee_contribution: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const parsed = benefitCreateSchema.safeParse(body)
     if (!parsed.success) {
@@ -122,7 +140,25 @@ export async function PATCH(request: NextRequest) {
     const deny = await requireHRAccess(supabase)
     if (deny) return deny
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      employee_contribution: z.string().optional(),
+
+
+      coverage_amount: z.string().optional(),
+
+
+      employer_contribution: z.string().optional(),
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id } = body
     if (!id) return NextResponse.json({ success: false, error: 'Plan ID required' }, { status: 400 })

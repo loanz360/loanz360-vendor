@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -133,7 +134,29 @@ export async function POST(
 
     const supabase = createSupabaseAdmin()
     const { id } = await params
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      module_key: z.string().optional(),
+
+      permissions: z.array(z.unknown()).optional(),
+
+      resource_restriction: z.string().optional().default('all'),
+
+      restricted_to_branches: z.string().optional(),
+
+      restricted_to_regions: z.string().optional(),
+
+      restricted_to_departments: z.string().optional(),
+
+      valid_until: z.string().optional(),
+
+      notes: z.string().optional(),
+
+      granted_by_user_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {

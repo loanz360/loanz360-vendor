@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * System Activities API Endpoint
@@ -95,7 +96,7 @@ export async function GET(request: NextRequest) {
     let filteredActivities = activities || []
     if (search) {
       const searchLower = search.toLowerCase()
-      filteredActivities = filteredActivities.filter((activity: any) =>
+      filteredActivities = filteredActivities.filter((activity: unknown) =>
         activity.description?.toLowerCase().includes(searchLower) ||
         activity.user_full_name?.toLowerCase().includes(searchLower) ||
         activity.user_email?.toLowerCase().includes(searchLower) ||
@@ -181,7 +182,25 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      activityId: z.string().uuid().optional(),
+
+
+      status: z.string().optional(),
+
+
+      startDate: z.string().optional(),
+
+
+      endDate: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { activityId, status } = body
 
@@ -282,7 +301,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      startDate: z.string().optional(),
+
+
+      endDate: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { startDate, endDate } = body
 

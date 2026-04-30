@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: ULI Bulk Service Operations
  * PATCH /api/superadmin/uli-hub/services/bulk — Bulk enable/disable services
@@ -11,7 +12,17 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function PATCH(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      ids: z.array(z.unknown()).optional(),
+
+      is_enabled: z.boolean().optional(),
+
+      category: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { ids, is_enabled, category } = body
 

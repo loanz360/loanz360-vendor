@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -119,7 +120,40 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      subject: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      text: z.string().optional(),
+
+
+      ticket_id: z.string().uuid().optional(),
+
+
+      ticket_source: z.string().optional(),
+
+
+      apply_classification: z.string().optional(),
+
+
+      apply_tags: z.string().optional(),
+
+
+      apply_priority: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action, subject, description, text, ticket_id, ticket_source } = body
 
@@ -220,7 +254,28 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      apply_priority: z.string().optional(),
+
+
+      apply_tags: z.string().optional(),
+
+
+      ticket_source: z.string().optional(),
+
+
+      apply_classification: z.string().optional(),
+
+
+      ticket_id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { ticket_id, ticket_source, apply_classification, apply_tags, apply_priority } = body
 
@@ -254,7 +309,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Ticket not found' }, { status: 404 })
     }
 
-    const updates: Record<string, any> = {}
+    const updates: Record<string, unknown> = {}
 
     // Apply classification if requested
     if (apply_classification) {

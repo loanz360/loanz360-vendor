@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -158,7 +159,97 @@ export async function POST(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      user_id: z.string().uuid().optional(),
+
+
+      basic_salary: z.number().optional(),
+
+
+      hra: z.number().optional(),
+
+
+      da: z.number().optional(),
+
+
+      special_allowance: z.string().optional(),
+
+
+      medical_allowance: z.string().optional(),
+
+
+      conveyance_allowance: z.string().optional(),
+
+
+      education_allowance: z.string().optional(),
+
+
+      performance_bonus: z.string().optional(),
+
+
+      other_allowances: z.string().optional(),
+
+
+      pf_employee: z.string().optional(),
+
+
+      pf_employer: z.string().optional(),
+
+
+      esi_employee: z.string().optional(),
+
+
+      esi_employer: z.string().optional(),
+
+
+      professional_tax: z.string().optional(),
+
+
+      tds: z.string().optional(),
+
+
+      loan_deduction: z.string().optional(),
+
+
+      advance_deduction: z.string().optional(),
+
+
+      other_deductions: z.string().optional(),
+
+
+      effective_from: z.string().optional(),
+
+
+      effective_to: z.string().optional(),
+
+
+      salary_grade: z.string().optional(),
+
+
+      payment_mode: z.string().optional(),
+
+
+      bank_account_number: z.string().optional(),
+
+
+      bank_name: z.string().optional(),
+
+
+      bank_ifsc: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+      salary_id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       user_id,
@@ -324,7 +415,16 @@ export async function PUT(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, updated_at: clientUpdatedAt } = body
 
@@ -471,7 +571,16 @@ export async function DELETE(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr3 } = await parseBody(request)
+    const bodySchema3 = z.object({
+
+
+      salary_id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr3 } = await parseBody(request, bodySchema3)
     if (_valErr3) return _valErr3
     const id = body.salary_id
 

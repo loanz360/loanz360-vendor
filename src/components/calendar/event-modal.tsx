@@ -127,7 +127,7 @@ export default function EventModal({
 
   // ==================== FORM HANDLING ====================
 
-  const handleInputChange = (field: keyof EventFormData, value: any) => {
+  const handleInputChange = (field: keyof EventFormData, value: unknown) => {
     setFormData(prev => ({ ...prev, [field]: value }))
     setError(null)
   }

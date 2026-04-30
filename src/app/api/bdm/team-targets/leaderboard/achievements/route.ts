@@ -91,10 +91,10 @@ async function getTeamAchievementsHandler(request: NextRequest) {
     // Milestone achievements
     const milestones = []
     badges?.forEach((badge) => {
-      const badgeInfo = badge.achievement_badges as any
+      const badgeInfo = badge.achievement_badges as unknown
       if (badgeInfo?.category === 'milestone') {
         milestones.push({
-          bdeName: (badge.users as any)?.name || 'Unknown',
+          bdeName: (badge.users as unknown)?.name || 'Unknown',
           badgeName: badgeInfo.badge_name,
           icon: badgeInfo.icon,
           earnedAt: badge.earned_at,
@@ -144,8 +144,8 @@ async function getTeamAchievementsHandler(request: NextRequest) {
       success: true,
       data: {
         badges: badges?.map(b => ({
-          bdeName: (b.users as any)?.name,
-          badge: (b.achievement_badges as any),
+          bdeName: (b.users as unknown)?.name,
+          badge: (b.achievement_badges as unknown),
           earnedAt: b.earned_at,
         })) || [],
         streaks: streaks.slice(0, 10),

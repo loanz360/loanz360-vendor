@@ -79,11 +79,11 @@ export async function GET(request: NextRequest) {
         // Calculate selected month metrics
         const currentMonth = {
             totalAssigned: selectedMonthApps?.length || 0,
-            loginCompleted: selectedMonthApps?.filter((app: any) => app.status === 'active' || app.status === 'follow_up').length || 0,
-            sanctioned: selectedMonthApps?.filter((app: any) => app.status === 'qualified').length || 0,
-            dropped: selectedMonthApps?.filter((app: any) => app.status === 'dropped').length || 0,
-            disbursed: selectedMonthApps?.filter((app: any) => app.status === 'converted').length || 0,
-            rejected: selectedMonthApps?.filter((app: any) => app.status === 'dropped').length || 0,
+            loginCompleted: selectedMonthApps?.filter((app: unknown) => app.status === 'active' || app.status === 'follow_up').length || 0,
+            sanctioned: selectedMonthApps?.filter((app: unknown) => app.status === 'qualified').length || 0,
+            dropped: selectedMonthApps?.filter((app: unknown) => app.status === 'dropped').length || 0,
+            disbursed: selectedMonthApps?.filter((app: unknown) => app.status === 'converted').length || 0,
+            rejected: selectedMonthApps?.filter((app: unknown) => app.status === 'dropped').length || 0,
         }
 
         // Fetch previous month data for comparison
@@ -97,11 +97,11 @@ export async function GET(request: NextRequest) {
 
         const previousMonth = {
             totalAssigned: previousMonthApps?.length || 0,
-            loginCompleted: previousMonthApps?.filter((app: any) => app.status === 'active' || app.status === 'follow_up').length || 0,
-            sanctioned: previousMonthApps?.filter((app: any) => app.status === 'qualified').length || 0,
-            dropped: previousMonthApps?.filter((app: any) => app.status === 'dropped').length || 0,
-            disbursed: previousMonthApps?.filter((app: any) => app.status === 'converted').length || 0,
-            rejected: previousMonthApps?.filter((app: any) => app.status === 'dropped').length || 0,
+            loginCompleted: previousMonthApps?.filter((app: unknown) => app.status === 'active' || app.status === 'follow_up').length || 0,
+            sanctioned: previousMonthApps?.filter((app: unknown) => app.status === 'qualified').length || 0,
+            dropped: previousMonthApps?.filter((app: unknown) => app.status === 'dropped').length || 0,
+            disbursed: previousMonthApps?.filter((app: unknown) => app.status === 'converted').length || 0,
+            rejected: previousMonthApps?.filter((app: unknown) => app.status === 'dropped').length || 0,
         }
 
         // Calculate month-over-month trends
@@ -124,14 +124,14 @@ export async function GET(request: NextRequest) {
         const leaderboard = await getLeaderboard(supabase, user.id, profile.location, selectedMonthStart, selectedMonthEnd)
 
         // Find current user rank
-        const currentUserRank = leaderboard.findIndex((entry: any) => entry.userId === user.id) + 1
+        const currentUserRank = leaderboard.findIndex((entry: unknown) => entry.userId === user.id) + 1
 
         // Calculate last month summary (month before selected month)
         const lastMonth = {
-            filesDisbursed: previousMonthApps?.filter((app: any) => app.status === 'converted').length || 0,
+            filesDisbursed: previousMonthApps?.filter((app: unknown) => app.status === 'converted').length || 0,
             volumeDisbursed: previousMonthApps
-                ?.filter((app: any) => app.status === 'converted')
-                .reduce((sum: number, app: any) => sum + (app.loan_amount || 0), 0) || 0,
+                ?.filter((app: unknown) => app.status === 'converted')
+                .reduce((sum: number, app: unknown) => sum + (app.loan_amount || 0), 0) || 0,
         }
 
         return NextResponse.json({
@@ -175,7 +175,7 @@ function calculateTrend(current: number, previous: number): { value: number; dir
 
 // Helper function to get daily trends
 async function getDailyTrends(
-    supabase: any,
+    supabase: unknown,
     userId: string,
     startDate: Date,
     endDate: Date
@@ -194,9 +194,9 @@ async function getDailyTrends(
     }
 
     // Group by date
-    const trendsByDate: Record<string, any> = {}
+    const trendsByDate: Record<string, unknown> = {}
 
-    apps.forEach((app: any) => {
+    apps.forEach((app: unknown) => {
         const date = new Date(app.created_at).toISOString().split('T')[0]
         if (!trendsByDate[date]) {
             trendsByDate[date] = {
@@ -219,7 +219,7 @@ async function getDailyTrends(
 
 // Helper function to get organization benchmark
 async function getOrganizationBenchmark(
-    supabase: any,
+    supabase: unknown,
     startDate: Date,
     endDate: Date
 ) {
@@ -235,7 +235,7 @@ async function getOrganizationBenchmark(
         }
     }
 
-    const bdeIds = bdes.map((bde: any) => bde.id)
+    const bdeIds = bdes.map((bde: unknown) => bde.id)
 
     const { data: allApps } = await supabase
         .from('crm_leads')
@@ -252,7 +252,7 @@ async function getOrganizationBenchmark(
     }
 
     const casesByBDE: Record<string, number> = {}
-    allApps.forEach((app: any) => {
+    allApps.forEach((app: unknown) => {
         casesByBDE[app.cro_id] = (casesByBDE[app.cro_id] || 0) + 1
     })
 
@@ -267,7 +267,7 @@ async function getOrganizationBenchmark(
 
 // Helper function to get leaderboard
 async function getLeaderboard(
-    supabase: any,
+    supabase: unknown,
     currentUserId: string,
     userLocation: string,
     startDate: Date,
@@ -283,7 +283,7 @@ async function getLeaderboard(
     }
 
     const leaderboardData = await Promise.all(
-        bdes.map(async (bde: any) => {
+        bdes.map(async (bde: unknown) => {
             const { data: apps } = await supabase
                 .from('crm_leads')
                 .select('status, loan_amount')
@@ -293,10 +293,10 @@ async function getLeaderboard(
                 .lte('created_at', endDate.toISOString())
 
             const totalApps = apps?.length || 0
-            const disbursed = apps?.filter((app: any) => app.status === 'converted').length || 0
+            const disbursed = apps?.filter((app: unknown) => app.status === 'converted').length || 0
             const volume = apps
-                ?.filter((app: any) => app.status === 'converted')
-                .reduce((sum: number, app: any) => sum + (app.loan_amount || 0), 0) || 0
+                ?.filter((app: unknown) => app.status === 'converted')
+                .reduce((sum: number, app: unknown) => sum + (app.loan_amount || 0), 0) || 0
 
             const conversionRate = totalApps > 0 ? (disbursed / totalApps) * 100 : 0
 

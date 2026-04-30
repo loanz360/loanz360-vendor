@@ -7,7 +7,7 @@ interface Notification {
   type: string
   title: string
   message: string
-  data?: Record<string, any>
+  data?: Record<string, unknown>
   created_at: string
   read?: boolean
 }

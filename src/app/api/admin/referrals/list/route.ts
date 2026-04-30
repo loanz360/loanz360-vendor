@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
     // 3. FETCH REFERRALS BASED ON TYPE
     // =====================================================
 
-    let referrals: any[] = []
+    let referrals: unknown[] = []
 
     if (type === 'BP') {
       const { data, error } = await supabase

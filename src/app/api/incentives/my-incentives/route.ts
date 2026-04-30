@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch active incentives using user.id (auth UUID, not employee.id)
-    let activeIncentives: any[] = []
+    let activeIncentives: unknown[] = []
     if (!statusFilter || statusFilter === 'active') {
       const { data: activeData, error: activeError } = await supabase.rpc(
         'get_active_incentives_for_user',
@@ -94,7 +94,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch expired incentives using user.id (auth UUID, not employee.id)
-    let expiredIncentives: any[] = []
+    let expiredIncentives: unknown[] = []
     if (!statusFilter || statusFilter === 'expired') {
       const { data: expiredData, error: expiredError } = await supabase.rpc(
         'get_expired_incentives_for_user',

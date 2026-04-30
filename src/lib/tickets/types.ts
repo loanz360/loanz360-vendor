@@ -480,13 +480,11 @@ export type ActionType =
 export interface AutomationCondition {
   field: string
   operator: 'equals' | 'not_equals' | 'contains' | 'not_contains' | 'in' | 'not_in' | 'greater_than' | 'less_than'
-  value: any
-}
+  value: unknown}
 
 export interface AutomationAction {
   type: ActionType
-  value?: any
-  template?: string
+  value?: unknown  template?: string
   channel?: string
 }
 
@@ -637,7 +635,7 @@ export interface TicketCreateRequest {
   requires_urgent_attention?: boolean
   attachments?: File[]
   loan_application_id?: string
-  custom_fields?: Record<string, any>
+  custom_fields?: Record<string, unknown>
 }
 
 export interface TicketUpdateRequest {

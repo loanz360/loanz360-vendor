@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * CAE Document Processing API
@@ -12,7 +13,25 @@ import { apiLogger } from '@/lib/utils/logger'
 
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      document_id: z.string().uuid().optional(),
+
+      lead_id: z.string().uuid().optional(),
+
+      appraisal_id: z.string().uuid().optional(),
+
+      document_category_code: z.string().optional(),
+
+      file_url: z.string().optional(),
+
+      file_type: z.string().optional(),
+
+      file_size: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { document_id, lead_id, appraisal_id, document_category_code, file_url, file_type, file_size } = body
 

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -155,7 +156,17 @@ async function updateCPPercentagesHandler(request: NextRequest) {
     }
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      id: z.string().uuid(),
+
+      cp_commission_percentage: z.string().optional(),
+
+      specific_conditions: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const { id, cp_commission_percentage, specific_conditions } = body
@@ -168,7 +179,7 @@ async function updateCPPercentagesHandler(request: NextRequest) {
     }
 
     // Build update object
-    const updateData: any = {}
+    const updateData: Record<string, unknown> = {}
 
     if (cp_commission_percentage !== undefined) {
       if (cp_commission_percentage < 0 || cp_commission_percentage > 100) {

@@ -118,8 +118,7 @@ export interface VerificationOptions {
 export interface VerificationResult {
   verification_type: VerificationType
   status: VerificationStatus
-  result?: any
-  error?: {
+  result?: unknown  error?: {
     code: string
     message: string
   }
@@ -153,8 +152,7 @@ export interface RiskFlag {
   severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
   description: string
   verification_type: VerificationType
-  details?: any
-}
+  details?: unknown}
 
 // ============================================================================
 // Verification Service
@@ -388,8 +386,7 @@ export class VerificationService {
     const startedAt = new Date().toISOString()
 
     try {
-      let result: any
-      let provider: string = ''
+      let result: unknown      let provider: string = ''
       let referenceId: string = ''
 
       switch (type) {
@@ -632,7 +629,7 @@ export class VerificationService {
     // For property loans, search by property details
     if (loanDetails?.collateral_type === 'PROPERTY' && loanDetails.collateral_details) {
       return this.cersaiAdapter.searchPropertyCharges({
-        type: loanDetails.collateral_details.property_type as any,
+        type: loanDetails.collateral_details.property_type as unknown,
         city: loanDetails.collateral_details.city || '',
         district: loanDetails.collateral_details.city || '',
         state: loanDetails.collateral_details.state || '',
@@ -658,7 +655,7 @@ export class VerificationService {
   // Helper Methods
   // ============================================================================
 
-  private determineVerificationStatus(type: VerificationType, result: any): VerificationStatus {
+  private determineVerificationStatus(type: VerificationType, result: unknown): VerificationStatus {
     if (!result) return 'FAILED'
     if (result.error) return 'FAILED'
     if (result.requires_manual_review || result.requires_review) return 'REQUIRES_REVIEW'

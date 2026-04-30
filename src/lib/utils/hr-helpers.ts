@@ -141,28 +141,28 @@ export function formatStatusLabel(status: string): string {
 /**
  * Return a success JSON response
  */
-export function apiSuccess(data: any, meta?: Record<string, any>, status: number = 200) {
+export function apiSuccess(data: unknown, meta?: Record<string, unknown>, status: number = 200) {
   return NextResponse.json({ success: true, data, ...meta ? { meta } : {} }, { status })
 }
 
 /**
  * Return an error JSON response
  */
-export function apiError(error: string, status: number = 500, details?: any) {
+export function apiError(error: string, status: number = 500, details?: unknown) {
   return NextResponse.json({ success: false, error, ...details ? { details } : {} }, { status })
 }
 
 /**
  * Return a 201 Created JSON response
  */
-export function apiCreated(data: any, message: string = 'Created successfully') {
+export function apiCreated(data: unknown, message: string = 'Created successfully') {
   return NextResponse.json({ success: true, data, message }, { status: 201 })
 }
 
 /**
  * Return a paginated JSON response
  */
-export function apiPaginated(data: any[], total: number, page: number, limit: number) {
+export function apiPaginated(data: unknown[], total: number, page: number, limit: number) {
   return NextResponse.json({
     success: true,
     data,

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 /**
  * Webhook Endpoint Detail API
@@ -118,7 +119,31 @@ export async function PUT(
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      name: z.string().optional(),
+
+
+      url: z.string().optional(),
+
+
+      subscribed_events: z.array(z.unknown()).optional(),
+
+
+      is_active: z.boolean().optional(),
+
+
+      max_retries: z.string().optional(),
+
+
+      custom_headers: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       name,
@@ -217,7 +242,16 @@ export async function PATCH(
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      url: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     // Validate URL if provided

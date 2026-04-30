@@ -180,12 +180,12 @@ export async function GET(request: NextRequest) {
       if (escalated) query = query.gt('escalation_level', 0)
 
       const { data: empTickets, count: empCount } = await query
-        .order(sortBy as any, { ascending: sortOrder === 'asc' })
+        .order(sortBy as unknown, { ascending: sortOrder === 'asc' })
         .limit(perSourceLimit)
 
       if (empTickets) {
         counts.by_source.EMPLOYEE = empCount || 0
-        empTickets.forEach((t: any) => {
+        empTickets.forEach((t: unknown) => {
           tickets.push({
             ticket_source: 'EMPLOYEE',
             unified_ticket_id: `EMP-${t.ticket_number}`,
@@ -259,12 +259,12 @@ export async function GET(request: NextRequest) {
       if (escalated) query = query.gt('escalation_level', 0)
 
       const { data: custTickets, count: custCount } = await query
-        .order(sortBy as any, { ascending: sortOrder === 'asc' })
+        .order(sortBy as unknown, { ascending: sortOrder === 'asc' })
         .limit(perSourceLimit)
 
       if (custTickets) {
         counts.by_source.CUSTOMER = custCount || 0
-        custTickets.forEach((t: any) => {
+        custTickets.forEach((t: unknown) => {
           tickets.push({
             ticket_source: 'CUSTOMER',
             unified_ticket_id: `CST-${t.ticket_number}`,
@@ -344,12 +344,12 @@ export async function GET(request: NextRequest) {
       if (escalated) query = query.gt('escalation_level', 0)
 
       const { data: partnerTickets, count: partnerCount } = await query
-        .order(sortBy as any, { ascending: sortOrder === 'asc' })
+        .order(sortBy as unknown, { ascending: sortOrder === 'asc' })
         .limit(perSourceLimit)
 
       if (partnerTickets) {
         counts.by_source.PARTNER = partnerCount || 0
-        partnerTickets.forEach((t: any) => {
+        partnerTickets.forEach((t: unknown) => {
           tickets.push({
             ticket_source: 'PARTNER',
             unified_ticket_id: `PTR-${t.ticket_number}`,
@@ -394,8 +394,8 @@ export async function GET(request: NextRequest) {
 
     // Sort combined results with null-safe comparison
     tickets.sort((a, b) => {
-      const aVal = (a as any)[sortBy]
-      const bVal = (b as any)[sortBy]
+      const aVal = (a as unknown)[sortBy]
+      const bVal = (b as unknown)[sortBy]
       // Handle null/undefined values - push them to the end
       if (aVal == null && bVal == null) return 0
       if (aVal == null) return 1

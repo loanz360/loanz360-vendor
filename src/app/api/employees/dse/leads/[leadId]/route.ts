@@ -42,7 +42,7 @@ const updateLeadSchema = z.object({
 })
 
 // Helper to verify lead access
-async function verifyLeadAccess(supabase: any, userId: string, leadId: string) {
+async function verifyLeadAccess(supabase: unknown, userId: string, leadId: string) {
   const { data: lead, error } = await supabase
     .from('dse_leads')
     .select('*')

@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Process transactions into monthly summaries
-function processMonthlyData(transactions: any[]): {
+function processMonthlyData(transactions: unknown[]): {
   month: string
   earned: number
   redeemed: number

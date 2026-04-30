@@ -96,7 +96,7 @@ export default function TeamSummaryCards({ kpis }: TeamSummaryCardsProps) {
 
 // Helper functions
 function getMainIcon(iconName: string) {
-  const icons: Record<string, any> = {
+  const icons: Record<string, unknown> = {
     Users,
     TrendingUp,
     DollarSign,

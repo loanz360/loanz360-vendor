@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -56,7 +57,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      action: z.string().optional(),
+
+
+      tickets: z.array(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { action, tickets, data: actionData } = body
 
@@ -104,7 +117,7 @@ export async function POST(request: NextRequest) {
           return NextResponse.json({ success: false, error: 'status is required' }, { status: 400 })
         }
 
-        const updates: any = {
+        const updates: Record<string, unknown> = {
           status: actionData.status,
           updated_at: new Date().toISOString()
         }
@@ -211,7 +224,7 @@ export async function POST(request: NextRequest) {
           // Get appropriate field name based on source
           const assignFieldName = getAssignFieldName(source as TicketSource)
 
-          const updates: any = {
+          const updates: Record<string, unknown> = {
             [assignFieldName]: actionData.assigned_to_id,
             updated_at: new Date().toISOString()
           }
@@ -393,7 +406,7 @@ export async function POST(request: NextRequest) {
 
       case 'export': {
         // Fetch all tickets for export
-        const exportData: any[] = []
+        const exportData: unknown[] = []
 
         for (const [source, ids] of Object.entries(ticketsBySource)) {
           if (ids.length === 0) continue

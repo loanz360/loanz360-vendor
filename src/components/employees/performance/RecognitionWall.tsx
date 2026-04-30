@@ -154,7 +154,7 @@ export default function RecognitionWall() {
               <div className="text-gray-400 text-sm">Most Common</div>
               <div className="text-lg font-semibold mt-1">
                 {Object.keys(stats.by_type || {}).length > 0
-                  ? Object.entries(stats.by_type).sort((a: any, b: any) => b[1] - a[1])[0][0]
+                  ? Object.entries(stats.by_type).sort((a: unknown, b: unknown) => b[1] - a[1])[0][0]
                   : 'N/A'}
               </div>
             </div>

@@ -1,11 +1,12 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
 import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
 
-async function verifySuperAdmin(supabase: any) {
+async function verifySuperAdmin(supabase: unknown) {
   const { data: { user }, error: authError } = await supabase.auth.getUser()
   if (authError || !user) return null
 
@@ -70,7 +71,28 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      condition_text: z.string().optional(),
+
+
+      condition_order: z.string().optional(),
+
+
+      is_active: z.boolean().optional(),
+
+
+      applies_to: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { condition_text, condition_order, is_active, applies_to } = body
 
@@ -121,7 +143,28 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      condition_text: z.string().optional(),
+
+
+      is_active: z.boolean().optional(),
+
+
+      condition_order: z.string().optional(),
+
+
+      applies_to: z.string().optional(),
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id, condition_text, condition_order, is_active, applies_to } = body
 

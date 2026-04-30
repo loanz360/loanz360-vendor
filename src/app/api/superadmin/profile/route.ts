@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
@@ -246,7 +247,49 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      displayName: z.string().optional(),
+
+
+      mobile: z.string().min(10).optional(),
+
+
+      secondaryMobile: z.string().optional(),
+
+
+      secondaryEmail: z.string().email().optional(),
+
+
+      countryCode: z.string().optional(),
+
+
+      timezone: z.string().optional(),
+
+
+      language: z.string().optional(),
+
+
+      dateOfBirth: z.string().optional(),
+
+
+      digitalSignatureUrl: z.string().optional(),
+
+
+      designation: z.string().optional(),
+
+
+      notifications: z.string().optional(),
+
+
+      accessibility: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       // Personal fields

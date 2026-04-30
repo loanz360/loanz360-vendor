@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
 import { apiLogger } from '@/lib/utils/logger'
@@ -8,7 +9,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 /**
  * Helper function to verify Digital Sales access
  */
-async function verifyDigitalSalesAccess(supabase: any, userId: string) {
+async function verifyDigitalSalesAccess(supabase: unknown, userId: string) {
   const { data: profile } = await supabase
     .from('employee_profile')
     .select('subrole, status')
@@ -133,7 +134,19 @@ export async function PUT(
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      status: z.string(),
+
+
+      sub_tasks: z.array(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Verify task belongs to user
@@ -159,7 +172,7 @@ export async function PUT(
     }
 
     if (body.sub_tasks) {
-      const completedCount = body.sub_tasks.filter((st: any) => st.is_completed).length
+      const completedCount = body.sub_tasks.filter((st: unknown) => st.is_completed).length
       const totalCount = body.sub_tasks.length
       updateData.progress_percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
 
@@ -236,7 +249,16 @@ export async function PATCH(
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { status } = body
 
@@ -263,7 +285,7 @@ export async function PATCH(
       )
     }
 
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       status,
       updated_at: new Date().toISOString()
     }

@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * BDM Team Targets - Target Templates API
  * GET: List all available templates
@@ -170,7 +171,34 @@ async function createTemplateHandler(request: NextRequest) {
     // 2. PARSE REQUEST BODY
     // =====================================================
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      templateName: z.string().optional(),
+
+
+      templateDescription: z.string().optional(),
+
+
+      dailyConversionTarget: z.string().optional(),
+
+
+      monthlyConversionTarget: z.string().optional(),
+
+
+      monthlyRevenueTarget: z.string().optional(),
+
+
+      incentiveMultiplier: z.string().optional(),
+
+
+      isPublic: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       templateName,

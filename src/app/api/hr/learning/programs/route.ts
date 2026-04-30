@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -108,7 +109,43 @@ export async function POST(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      title: z.string(),
+
+
+      description: z.string().optional(),
+
+
+      category: z.string(),
+
+
+      delivery_mode: z.string(),
+
+
+      duration_hours: z.string().optional(),
+
+
+      is_mandatory: z.boolean().optional(),
+
+
+      target_roles: z.string().optional(),
+
+
+      max_participants: z.string().optional(),
+
+
+      facilitator: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { title, description, category, delivery_mode, duration_hours, is_mandatory, target_roles, max_participants, facilitator } = body
 
@@ -158,7 +195,43 @@ export async function PATCH(request: NextRequest) {
     const isHR = await checkHRAccess(supabase)
     if (!isHR) return NextResponse.json({ success: false, error: 'Forbidden: HR access required' }, { status: 403 })
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      delivery_mode: z.string().optional(),
+
+
+      category: z.string().optional(),
+
+
+      title: z.string().optional(),
+
+
+      duration_hours: z.string().optional(),
+
+
+      is_mandatory: z.boolean().optional(),
+
+
+      description: z.string().optional(),
+
+
+      target_roles: z.string().optional(),
+
+
+      facilitator: z.string().optional(),
+
+
+      status: z.string().optional(),
+
+
+      max_participants: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const queryId = request.nextUrl.searchParams.get('id')
     const { id: bodyId, title, description, category, delivery_mode, duration_hours, is_mandatory, target_roles, max_participants, facilitator, status } = body

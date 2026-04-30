@@ -284,7 +284,7 @@ export async function POST(request: NextRequest) {
             .eq('external_message_id', messageId);
 
           // Handle bounced recipients (parallel)
-          await Promise.all((bounce?.bouncedRecipients || []).map(async (recipient: any) => {
+          await Promise.all((bounce?.bouncedRecipients || []).map(async (recipient: unknown) => {
             // Add to opt-out list for hard bounces
             if (isHardBounce) {
               await supabase.from('communication_optouts').upsert(
@@ -344,7 +344,7 @@ export async function POST(request: NextRequest) {
             .eq('provider_message_id', messageId);
 
           // Handle complained recipients (parallel)
-          await Promise.all((complaint?.complainedRecipients || []).map(async (recipient: any) => {
+          await Promise.all((complaint?.complainedRecipients || []).map(async (recipient: unknown) => {
             // Add to opt-out list
             await supabase.from('communication_optouts').upsert(
               {

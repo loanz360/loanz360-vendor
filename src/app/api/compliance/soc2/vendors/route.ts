@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { soc2Service } from '@/lib/compliance/soc2-service'
@@ -34,7 +35,29 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      vendor_name: z.string().optional(),
+
+      vendor_type: z.string().optional(),
+
+      services_provided: z.string().optional(),
+
+      data_access_level: z.string().optional(),
+
+      has_soc2_report: z.string().optional(),
+
+      has_iso27001: z.string().optional(),
+
+      security_questionnaire_completed: z.string().optional(),
+
+      assessment_notes: z.string().optional(),
+
+      assessed_by: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       vendor_name,

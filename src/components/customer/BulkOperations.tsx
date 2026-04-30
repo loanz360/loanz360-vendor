@@ -34,7 +34,7 @@ export function BulkOperations({
   const [success, setSuccess] = useState<string | null>(null)
 
   // Form data for different operations
-  const [formData, setFormData] = useState<Record<string, any>>({})
+  const [formData, setFormData] = useState<Record<string, unknown>>({})
 
   if (selectedCustomers.length === 0) {
     return null

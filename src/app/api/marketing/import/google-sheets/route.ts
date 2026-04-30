@@ -90,8 +90,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse headers and rows
-    const headers = values[0].map((h: any) => String(h || '').trim())
-    const rows = values.slice(1).map((row: any[]) => {
+    const headers = values[0].map((h: unknown) => String(h || '').trim())
+    const rows = values.slice(1).map((row: unknown[]) => {
       const obj: Record<string, string> = {}
       headers.forEach((header: string, i: number) => {
         obj[header] = String(row[i] || '').trim()
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     }).filter((row: Record<string, string>) => Object.values(row).some(v => v)) // Filter empty rows
 
     // Get available sheets for response
-    const availableSheets = sheets.map((s: any) => s.properties?.title).filter(Boolean)
+    const availableSheets = sheets.map((s: unknown) => s.properties?.title).filter(Boolean)
 
     return NextResponse.json({
       success: true,
@@ -170,7 +170,7 @@ export async function GET(request: NextRequest) {
     }
 
     const metadata = await response.json()
-    const sheets = metadata.sheets?.map((s: any) => ({
+    const sheets = metadata.sheets?.map((s: unknown) => ({
       title: s.properties?.title,
       index: s.properties?.index,
       rowCount: s.properties?.gridProperties?.rowCount,

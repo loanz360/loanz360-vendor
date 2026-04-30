@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: Follow-up Automation
  * GET /api/automation/follow-ups - Get pending follow-ups
@@ -154,7 +155,49 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      leadId: z.string().uuid().optional(),
+
+
+      leadNumber: z.string().optional(),
+
+
+      customerName: z.string().optional(),
+
+
+      customerMobile: z.string().optional(),
+
+
+      bdeId: z.string().uuid().optional(),
+
+
+      bdeName: z.string().optional(),
+
+
+      scheduledDate: z.string().optional(),
+
+
+      followUpType: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+      scheduleId: z.string().uuid().optional(),
+
+
+      outcome: z.string().optional(),
+
+
+      nextFollowUpDate: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields
@@ -221,7 +264,22 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      scheduleId: z.string().optional(),
+
+
+      outcome: z.string().optional(),
+
+
+      nextFollowUpDate: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     if (!body.scheduleId || !body.outcome) {

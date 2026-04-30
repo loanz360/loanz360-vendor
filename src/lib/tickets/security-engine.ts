@@ -36,12 +36,10 @@ export interface AuditLogEntry {
   user_role?: string
   ip_address?: string
   user_agent?: string
-  details: Record<string, any>
+  details: Record<string, unknown>
   changes?: {
     field: string
-    old_value: any
-    new_value: any
-  }[]
+    old_value: unknown    new_value: unknown  }[]
   timestamp: string
   session_id?: string
 }
@@ -191,8 +189,8 @@ export async function logTicketAccess(
   userId: string,
   userEmail: string,
   action: 'viewed' | 'updated' | 'deleted',
-  details?: Record<string, any>,
-  changes?: { field: string; old_value: any; new_value: any }[]
+  details?: Record<string, unknown>,
+  changes?: { field: string; old_value: unknown; new_value: unknown}[]
 ): Promise<void> {
   await createAuditLog({
     action: action === 'viewed' ? 'ticket_viewed' :
@@ -216,7 +214,7 @@ export async function logTicketAccess(
 /**
  * Mask sensitive data in a ticket
  */
-export function maskSensitiveData(data: Record<string, any>, fieldsToMask: string[]): Record<string, any> {
+export function maskSensitiveData(data: Record<string, unknown>, fieldsToMask: string[]): Record<string, unknown> {
   const masked = { ...data }
 
   for (const field of fieldsToMask) {
@@ -288,10 +286,10 @@ export async function anonymizeUserData(userId: string): Promise<boolean> {
 /**
  * Export user data (GDPR compliance)
  */
-export async function exportUserData(userId: string): Promise<Record<string, any>> {
+export async function exportUserData(userId: string): Promise<Record<string, unknown>> {
   const supabase = await createClient()
 
-  const userData: Record<string, any> = {}
+  const userData: Record<string, unknown> = {}
 
   // Get user profile
   const { data: profile } = await supabase

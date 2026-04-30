@@ -246,13 +246,13 @@ export async function POST(request: NextRequest) {
  * Helper function: Create allocations for eligible users
  */
 async function createIncentiveAllocations(
-  supabase: any,
+  supabase: unknown,
   incentiveId: string,
   targetAllEmployees: boolean,
   targetSubroles: string[]
 ) {
   try {
-    let eligibleUsers: any[] = []
+    let eligibleUsers: unknown[] = []
 
     if (targetAllEmployees) {
       // Get all active employees (FIXED: use employee_status and user_id)
@@ -273,7 +273,7 @@ async function createIncentiveAllocations(
 
       if (subroleError) throw subroleError
 
-      const subroleCodes = subroles.map((sr: any) => sr.subrole_code)
+      const subroleCodes = subroles.map((sr: unknown) => sr.subrole_code)
 
       // FIXED: use employee_status and user_id
       const { data: users, error } = await supabase
@@ -320,8 +320,8 @@ async function createIncentiveAllocations(
  * Helper function: Send incentive launch notification
  */
 async function sendIncentiveLaunchNotification(
-  supabase: any,
-  incentive: any,
+  supabase: unknown,
+  incentive: unknown,
   createdByName: string
 ) {
   try {

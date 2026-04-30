@@ -5,7 +5,7 @@ import { rateLimit, RATE_LIMIT_CONFIGS } from '@/lib/middleware/rateLimit'
 
 
 // Helper function to verify DSM role
-async function verifyDSMRole(supabase: any, userId: string) {
+async function verifyDSMRole(supabase: unknown, userId: string) {
   const { data: profile, error } = await supabase
     .from('users')
     .select('role, sub_role')
@@ -24,7 +24,7 @@ async function verifyDSMRole(supabase: any, userId: string) {
 }
 
 // Helper function to get DSM's team members with details
-async function getTeamMembers(supabase: any, dsmUserId: string) {
+async function getTeamMembers(supabase: unknown, dsmUserId: string) {
   const { data: teamMembers, error } = await supabase
     .from('users')
     .select('id, full_name, email, employee_id')
@@ -199,12 +199,12 @@ export async function GET(request: NextRequest) {
 
     // Calculate pipeline values
     const totalPipelineValue = (allLeads || [])
-      .filter((l: any) => !['Won', 'Lost'].includes(l.lead_stage))
-      .reduce((sum: number, l: any) => sum + (l.estimated_value || 0), 0)
+      .filter((l: unknown) => !['Won', 'Lost'].includes(l.lead_stage))
+      .reduce((sum: number, l: unknown) => sum + (l.estimated_value || 0), 0)
 
     const wonValue = (allLeads || [])
-      .filter((l: any) => l.lead_stage === 'Won')
-      .reduce((sum: number, l: any) => sum + (l.estimated_value || 0), 0)
+      .filter((l: unknown) => l.lead_stage === 'Won')
+      .reduce((sum: number, l: unknown) => sum + (l.estimated_value || 0), 0)
 
     const conversionRate = totalLeads && totalLeads > 0
       ? parseFloat(((convertedLeads || 0) / totalLeads * 100).toFixed(1))
@@ -262,12 +262,12 @@ export async function GET(request: NextRequest) {
         ])
 
         const dsePipelineValue = (dseLeadData || [])
-          .filter((l: any) => !['Won', 'Lost'].includes(l.lead_stage))
-          .reduce((sum: number, l: any) => sum + (l.estimated_value || 0), 0)
+          .filter((l: unknown) => !['Won', 'Lost'].includes(l.lead_stage))
+          .reduce((sum: number, l: unknown) => sum + (l.estimated_value || 0), 0)
 
         const dseWonValue = (dseLeadData || [])
-          .filter((l: any) => l.lead_stage === 'Won')
-          .reduce((sum: number, l: any) => sum + (l.estimated_value || 0), 0)
+          .filter((l: unknown) => l.lead_stage === 'Won')
+          .reduce((sum: number, l: unknown) => sum + (l.estimated_value || 0), 0)
 
         const dseConversionRate = dseLeads && dseLeads > 0
           ? parseFloat(((dseConvertedLeads || 0) / dseLeads * 100).toFixed(1))
@@ -296,13 +296,13 @@ export async function GET(request: NextRequest) {
 
     // Process customer status distribution
     const statusDistribution: Record<string, number> = {}
-    ;(customersByStatus || []).forEach((c: any) => {
+    ;(customersByStatus || []).forEach((c: unknown) => {
       statusDistribution[c.customer_status] = (statusDistribution[c.customer_status] || 0) + 1
     })
 
     // Process source distribution
     const sourceDistribution: Record<string, number> = {}
-    ;(leadsBySource || []).forEach((c: any) => {
+    ;(leadsBySource || []).forEach((c: unknown) => {
       sourceDistribution[c.source] = (sourceDistribution[c.source] || 0) + 1
     })
 
@@ -312,7 +312,7 @@ export async function GET(request: NextRequest) {
     stages.forEach(stage => {
       stageDistribution[stage] = { count: 0, value: 0 }
     })
-    ;(allLeads || []).forEach((l: any) => {
+    ;(allLeads || []).forEach((l: unknown) => {
       if (stageDistribution[l.lead_stage]) {
         stageDistribution[l.lead_stage].count++
         stageDistribution[l.lead_stage].value += l.estimated_value || 0

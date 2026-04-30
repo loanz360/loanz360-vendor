@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
@@ -102,7 +103,43 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      title: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      category: z.string().optional().default('general'),
+
+
+      priority: z.string().optional().default('medium'),
+
+
+      due_date: z.string().optional(),
+
+
+      assigned_to: z.string().optional(),
+
+
+      related_ticket_id: z.string().uuid().optional(),
+
+
+      related_payout_id: z.string().uuid().optional(),
+
+
+      related_entity_type: z.string().optional(),
+
+
+      related_entity_id: z.string().uuid().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       title,

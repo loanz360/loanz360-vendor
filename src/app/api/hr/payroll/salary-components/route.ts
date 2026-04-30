@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
@@ -143,7 +144,49 @@ export async function POST(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      code: z.string().optional(),
+
+
+      name: z.string().optional(),
+
+
+      type: z.string().optional(),
+
+
+      category: z.string().optional(),
+
+
+      is_statutory: z.boolean().optional(),
+
+
+      is_taxable: z.boolean().optional(),
+
+
+      calculation_type: z.string().optional(),
+
+
+      percentage_of: z.string().optional(),
+
+
+      percentage_value: z.string().optional(),
+
+
+      description: z.string().optional(),
+
+
+      display_order: z.string().optional(),
+
+
+      id: z.string().uuid(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       code,
@@ -260,7 +303,16 @@ export async function PUT(request: Request) {
       )
     }
 
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+
+      id: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
     const { id } = body
 

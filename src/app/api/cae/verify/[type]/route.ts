@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * API Route: Run Single Verification
  * POST /api/cae/verify/[type]
@@ -80,7 +81,51 @@ export async function POST(
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      lead_id: z.string().uuid(),
+
+      name: z.string().optional(),
+
+      pan: z.string().optional(),
+
+      aadhaar: z.string().optional(),
+
+      mobile: z.string().min(10).optional(),
+
+      email: z.string().email().optional(),
+
+      dob: z.string().optional(),
+
+      father_name: z.string().optional(),
+
+      address: z.string().optional(),
+
+      city: z.string().optional(),
+
+      state: z.string().optional(),
+
+      pincode: z.string().optional(),
+
+      entity_type: z.string().optional(),
+
+      gstin: z.string().optional(),
+
+      cin: z.string().optional(),
+
+      udyam_number: z.string().optional(),
+
+      account_number: z.string().optional(),
+
+      ifsc_code: z.string().optional(),
+
+      collateral_type: z.string().optional(),
+
+      collateral_details: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     if (!body.lead_id) {

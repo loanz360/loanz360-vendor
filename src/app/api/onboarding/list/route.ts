@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { apiLogger } from '@/lib/utils/logger'
 
 // Helper function to check if user is HR or Super Admin
-async function isHROrSuperAdmin(supabase: any): Promise<boolean> {
+async function isHROrSuperAdmin(supabase: unknown): Promise<boolean> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
 

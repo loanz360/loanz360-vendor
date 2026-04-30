@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import type { MeetingsQueryParams, MeetingWithDetails } from '@/lib/types/meetings.types'
@@ -45,8 +46,8 @@ export async function GET(request: NextRequest) {
     const sort_order = searchParams.get('sort_order') || 'desc'
 
     const filters: MeetingsQueryParams = {
-      status: searchParams.get('status') as any,
-      meeting_type: searchParams.get('meeting_type') as any,
+      status: searchParams.get('status') as unknown,
+      meeting_type: searchParams.get('meeting_type') as unknown,
       customer_id: searchParams.get('customer_id') || undefined,
       date_from: searchParams.get('date_from') || undefined,
       date_to: searchParams.get('date_to') || undefined,
@@ -108,7 +109,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Apply sorting
-    query = query.order(sort_by as any, { ascending: sort_order === 'asc' })
+    query = query.order(sort_by as unknown, { ascending: sort_order === 'asc' })
 
     // Apply pagination
     const from = (page - 1) * limit
@@ -124,7 +125,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform data to include customer details
-    const meetingsWithDetails: MeetingWithDetails[] = meetings.map((meeting: any) => ({
+    const meetingsWithDetails: MeetingWithDetails[] = meetings.map((meeting: unknown) => ({
       ...meeting,
       customer_name: meeting.customer?.full_name,
       customer_email: meeting.customer?.email,
@@ -181,7 +182,33 @@ export async function POST(request: NextRequest) {
     }
 
     // Parse request body
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      title: z.string().optional(),
+
+      meeting_type: z.string().optional(),
+
+      scheduled_date: z.string().optional(),
+
+      customer_id: z.string().uuid().optional(),
+
+      description: z.string().optional(),
+
+      scheduled_end_date: z.string().optional(),
+
+      duration_minutes: z.string().optional(),
+
+      location: z.string().optional(),
+
+      is_virtual: z.boolean().optional(),
+
+      meeting_link: z.string().optional(),
+
+      attendees: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields

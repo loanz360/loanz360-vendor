@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createSupabaseAdmin } from '@/lib/supabase/server'
@@ -90,7 +91,23 @@ export async function POST(request: NextRequest) {
 
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      template_name: z.string(),
+
+      template_description: z.string().optional(),
+
+      created_by_user_id: z.string().uuid().optional(),
+
+      template_id: z.string().uuid(),
+
+      is_active: z.boolean().optional(),
+
+      updated_by_user_id: z.string().uuid().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     const {
@@ -190,7 +207,21 @@ export async function PUT(request: NextRequest) {
 
 
     const supabase = createSupabaseAdmin()
-    const { data: body, error: _valErr2 } = await parseBody(request)
+    const bodySchema2 = z.object({
+
+      template_name: z.string().optional(),
+
+      template_description: z.string().optional(),
+
+      template_id: z.string().optional(),
+
+      is_active: z.boolean().optional(),
+
+      updated_by_user_id: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr2 } = await parseBody(request, bodySchema2)
     if (_valErr2) return _valErr2
 
     const {
@@ -231,7 +262,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Build update object
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       updated_at: new Date().toISOString()
     }
 

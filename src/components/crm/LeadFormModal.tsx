@@ -113,7 +113,7 @@ export default function LeadFormModal({
     }
   }
 
-  const handleChange = (field: keyof LeadFormData, value: any) => {
+  const handleChange = (field: keyof LeadFormData, value: unknown) => {
     setFormData({ ...formData, [field]: value })
   }
 

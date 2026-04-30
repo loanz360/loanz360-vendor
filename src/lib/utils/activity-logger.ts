@@ -51,8 +51,8 @@ export interface ActivityLogData {
   entityName?: string
 
   // Optional change tracking
-  changesBefore?: Record<string, any>
-  changesAfter?: Record<string, any>
+  changesBefore?: Record<string, unknown>
+  changesAfter?: Record<string, unknown>
 
   // Optional request context (auto-populated from request if available)
   ipAddress?: string
@@ -62,7 +62,7 @@ export interface ActivityLogData {
   requestPath?: string
 
   // Optional additional metadata
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 
   // Optional status
   status?: ActivityStatus
@@ -203,8 +203,8 @@ export async function logDataModification(
   entityName: string,
   userType: UserType,
   severity: SeverityLevel = 'medium',
-  changesBefore?: Record<string, any>,
-  changesAfter?: Record<string, any>,
+  changesBefore?: Record<string, unknown>,
+  changesAfter?: Record<string, unknown>,
   additionalData?: Partial<ActivityLogData>,
   request?: Request
 ): Promise<boolean> {
@@ -237,8 +237,8 @@ export async function logPermissionChange(
   targetEntity: string,
   targetEntityName: string,
   userType: UserType,
-  changesBefore?: Record<string, any>,
-  changesAfter?: Record<string, any>,
+  changesBefore?: Record<string, unknown>,
+  changesAfter?: Record<string, unknown>,
   additionalData?: Partial<ActivityLogData>,
   request?: Request
 ): Promise<boolean> {
@@ -285,7 +285,7 @@ export async function logErrorEvent(
   description: string,
   userType: UserType,
   severity: SeverityLevel = 'high',
-  errorDetails?: Record<string, any>,
+  errorDetails?: Record<string, unknown>,
   additionalData?: Partial<ActivityLogData>,
   request?: Request
 ): Promise<boolean> {

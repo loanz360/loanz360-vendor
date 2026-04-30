@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { soc2Service } from '@/lib/compliance/soc2-service'
@@ -13,7 +14,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const control_id = searchParams.get('control_id')
 
-    const filters: any = {}
+    const filters: Record<string, unknown> = {}
     if (control_id) filters.control_id = control_id
 
     const tests = await soc2Service.getControlTests(filters)
@@ -40,7 +41,25 @@ export async function GET(request: NextRequest) {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      control_id: z.string().uuid().optional(),
+
+      test_date: z.string().optional(),
+
+      test_result: z.string().optional(),
+
+      evidence_collected: z.string().optional(),
+
+      issues_identified: z.string().optional(),
+
+      remediation_actions: z.string().optional(),
+
+      tested_by: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       control_id,

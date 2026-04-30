@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 /**
  * BDM Team Targets - Set Individual BDE Target API
  * Allows BDM to set/update target for a single BDE
@@ -56,7 +57,40 @@ async function setIndividualTargetHandler(request: NextRequest) {
     // 2. PARSE REQUEST BODY
     // =====================================================
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      bdeId: z.string().uuid().optional(),
+
+
+      month: z.number().optional(),
+
+
+      year: z.number().optional(),
+
+
+      dailyConversionTarget: z.string().optional(),
+
+
+      monthlyConversionTarget: z.string().optional(),
+
+
+      monthlyRevenueTarget: z.string().optional(),
+
+
+      incentiveMultiplier: z.string().optional(),
+
+
+      targetRationale: z.string().optional(),
+
+
+      notes: z.string().optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       bdeId,

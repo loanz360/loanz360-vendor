@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 // Notification Tracking API
 // POST: Track notification interactions (opens, clicks, dismissals)
@@ -12,7 +13,25 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient()
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      notification_id: z.string().uuid().optional(),
+
+
+      action: z.string().optional(),
+
+
+      timestamp: z.string().optional(),
+
+
+      metadata: z.record(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const {
       notification_id,

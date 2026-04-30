@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
@@ -132,15 +133,15 @@ export async function GET(
     }
 
     // Format messages with attachments
-    const formattedMessages = (messages || []).map((msg: any) => ({
+    const formattedMessages = (messages || []).map((msg: unknown) => ({
       id: msg.id,
       sender_type: msg.sender_type === 'employee' ? 'support' : msg.sender_type,
       sender_name: msg.sender_name,
       content: msg.message,
       created_at: msg.created_at,
       attachments: (attachments || [])
-        .filter((att: any) => att.message_id === msg.id)
-        .map((att: any) => ({
+        .filter((att: unknown) => att.message_id === msg.id)
+        .map((att: unknown) => ({
           id: att.id,
           file_name: att.file_name,
           file_type: att.file_type,
@@ -207,7 +208,29 @@ export async function PATCH(
     }
 
     const ticketId = params.id
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      status: z.string().optional(),
+
+      priority: z.string().optional(),
+
+      assigned_to_customer_support_id: z.string().uuid().optional(),
+
+      routed_to_department: z.string().optional(),
+
+      routing_note: z.string().optional(),
+
+      internal_notes: z.string().optional(),
+
+      resolution_summary: z.string().optional(),
+
+      satisfaction_rating: z.string().optional(),
+
+      satisfaction_feedback: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Get current ticket
@@ -274,13 +297,13 @@ export async function PATCH(
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       updated_at: new Date().toISOString(),
       updated_by_id: user.id
     }
 
     // Track changes for activity log
-    const changes: { field: string; oldValue: any; newValue: any }[] = []
+    const changes: { field: string; oldValue: unknown; newValue: unknown}[] = []
 
     // Handle status change
     if (body.status && body.status !== ticket.status) {

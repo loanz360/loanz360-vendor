@@ -144,7 +144,7 @@ export interface VisualizationConfig {
   x_axis?: string
   y_axis?: string
   colors?: string[]
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface BusinessInsight {
@@ -156,7 +156,7 @@ export interface BusinessInsight {
   // Content
   title: string
   description: string
-  insight_data: Record<string, any>
+  insight_data: Record<string, unknown>
   visualization_config?: VisualizationConfig
 
   // Actionable Recommendations
@@ -205,8 +205,7 @@ export interface ReportDimension {
 export interface ReportFilter {
   field: string
   operator: 'equals' | 'not_equals' | 'greater_than' | 'less_than' | 'contains' | 'in' | 'between'
-  value: any
-}
+  value: unknown}
 
 export interface ReportConfig {
   title: string
@@ -261,7 +260,7 @@ export interface DashboardWidget {
   title: string
   metric: string
   position: { x: number; y: number; w: number; h: number }
-  config: Record<string, any>
+  config: Record<string, unknown>
 }
 
 export interface DashboardLayout {
@@ -376,7 +375,7 @@ export interface BoardDashboardData {
 export interface AnalyticsCache {
   id: string
   cache_key: string
-  cached_data: Record<string, any>
+  cached_data: Record<string, unknown>
   data_hash: string
   expires_at: string
   access_count: number
@@ -483,7 +482,7 @@ export interface ModelTrainingRequest {
   model_type: MLModelType
   training_data: TrainingDataset[]
   test_split: number // 0-1 (e.g., 0.2 for 20% test data)
-  hyperparameters?: Record<string, any>
+  hyperparameters?: Record<string, unknown>
 }
 
 export interface ModelTrainingResponse {
@@ -521,8 +520,7 @@ export interface RealTimeUpdate {
 export interface WebSocketMessage {
   type: 'subscribe' | 'unsubscribe' | 'update' | 'ping' | 'pong'
   channel?: string
-  data?: any
-}
+  data?: unknown}
 
 // ============================================================================
 // ANALYTICS SERVICE TYPES

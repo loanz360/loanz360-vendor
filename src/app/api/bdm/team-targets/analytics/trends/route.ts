@@ -174,7 +174,7 @@ async function getAnalyticsTrendsHandler(request: NextRequest) {
 
       // If specific BDE, filter their data
       if (bdeId) {
-        const bdePerformance = overview.bde_performance?.find((bde: any) => bde.bde_id === bdeId)
+        const bdePerformance = overview.bde_performance?.find((bde: unknown) => bde.bde_id === bdeId)
         if (bdePerformance) {
           monthlySummaries.push({
             month: period.month,

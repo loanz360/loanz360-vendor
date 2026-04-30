@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseAdmin } from '@/lib/supabase/server'
 import { verifyUnifiedAuth } from '@/lib/auth/unified-auth'
@@ -38,7 +39,22 @@ async function bulkOperationHandler(request: NextRequest) {
       )
     }
 
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+
+      operation: z.string().optional(),
+
+
+      customer_ids: z.array(z.unknown()).optional(),
+
+
+      data: z.record(z.unknown()).optional(),
+
+
+    })
+
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { operation, customer_ids, data } = body
 
@@ -118,9 +134,9 @@ async function bulkOperationHandler(request: NextRequest) {
 
 // Bulk update user status
 async function bulkUpdateStatus(
-  supabase: any,
+  supabase: unknown,
   customerIds: string[],
-  data: any,
+  data: unknown,
   userId: string
 ) {
   const { status } = data
@@ -147,7 +163,7 @@ async function bulkUpdateStatus(
     }, { status: 500 })
   }
 
-  const userIds = customers.map((c: any) => c.user_id)
+  const userIds = customers.map((c: unknown) => c.user_id)
 
   // Update user statuses
   const { error: updateError } = await supabase
@@ -188,9 +204,9 @@ async function bulkUpdateStatus(
 
 // Bulk update KYC status
 async function bulkUpdateKYCStatus(
-  supabase: any,
+  supabase: unknown,
   customerIds: string[],
-  data: any,
+  data: unknown,
   userId: string
 ) {
   const { kyc_status } = data
@@ -242,9 +258,9 @@ async function bulkUpdateKYCStatus(
 
 // Bulk add tag
 async function bulkAddTag(
-  supabase: any,
+  supabase: unknown,
   customerIds: string[],
-  data: any,
+  data: unknown,
   userId: string
 ) {
   const { tag_name, tag_category } = data
@@ -294,10 +310,9 @@ async function bulkAddTag(
 
 // Bulk remove tag
 async function bulkRemoveTag(
-  supabase: any,
+  supabase: unknown,
   customerIds: string[],
-  data: any
-) {
+  data: unknown) {
   const { tag_name } = data
 
   if (!tag_name || typeof tag_name !== 'string') {
@@ -331,9 +346,9 @@ async function bulkRemoveTag(
 
 // Bulk assign to user
 async function bulkAssign(
-  supabase: any,
+  supabase: unknown,
   customerIds: string[],
-  data: any,
+  data: unknown,
   userId: string
 ) {
   const { assigned_to } = data
@@ -405,9 +420,9 @@ async function bulkAssign(
 
 // Bulk add note
 async function bulkAddNote(
-  supabase: any,
+  supabase: unknown,
   customerIds: string[],
-  data: any,
+  data: unknown,
   userId: string
 ) {
   const { note_content, note_type, category } = data
@@ -456,10 +471,9 @@ async function bulkAddNote(
 
 // Bulk export
 async function bulkExport(
-  supabase: any,
+  supabase: unknown,
   customerIds: string[],
-  data: any
-) {
+  data: unknown) {
   const { format } = data
   const exportFormat = format || 'json'
 

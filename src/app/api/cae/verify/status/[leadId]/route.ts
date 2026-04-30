@@ -16,8 +16,8 @@ interface VerificationStatusResponse {
   data?: {
     lead_id: string
     overall_status: string
-    verifications: any[]
-    risk_flags: any[]
+    verifications: unknown[]
+    risk_flags: unknown[]
     summary: {
       total: number
       completed: number
@@ -68,7 +68,7 @@ export async function GET(
     }
 
     // Fetch all verification results for this lead
-    const verifications: any[] = []
+    const verifications: unknown[] = []
 
     // Bank Statement Analysis
     const { data: bankStatements } = await supabase

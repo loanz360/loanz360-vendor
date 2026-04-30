@@ -24,8 +24,8 @@ export interface ContestAuditLog {
   contest_id: string
   action: ContestAuditAction
   changed_by: string
-  changes?: Record<string, { old: any; new: any }>
-  metadata?: Record<string, any>
+  changes?: Record<string, { old: unknown; new: unknown}>
+  metadata?: Record<string, unknown>
   ip_address?: string
   user_agent?: string
 }
@@ -67,7 +67,7 @@ export async function logContestAction(log: ContestAuditLog): Promise<void> {
 export async function logContestCreated(
   contestId: string,
   userId: string,
-  contestData: Record<string, any>,
+  contestData: Record<string, unknown>,
   request?: { ip?: string; userAgent?: string }
 ): Promise<void> {
   await logContestAction({
@@ -90,12 +90,12 @@ export async function logContestCreated(
 export async function logContestUpdated(
   contestId: string,
   userId: string,
-  oldData: Record<string, any>,
-  newData: Record<string, any>,
+  oldData: Record<string, unknown>,
+  newData: Record<string, unknown>,
   request?: { ip?: string; userAgent?: string }
 ): Promise<void> {
   // Calculate changes
-  const changes: Record<string, { old: any; new: any }> = {}
+  const changes: Record<string, { old: unknown; new: unknown}> = {}
 
   for (const key of Object.keys(newData)) {
     if (oldData[key] !== newData[key]) {

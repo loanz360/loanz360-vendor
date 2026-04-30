@@ -70,7 +70,7 @@ export type SavedSearch = z.infer<typeof savedSearchSchema>
  * Search result
  */
 export interface SearchResult {
-  admins: any[]
+  admins: unknown[]
   total: number
   page: number
   limit: number
@@ -85,7 +85,7 @@ export interface SearchResult {
 /**
  * Build Supabase query from search filters
  */
-export function buildSearchQuery(filters: SearchFilter, baseQuery: any) {
+export function buildSearchQuery(filters: SearchFilter, baseQuery: unknown) {
   let query = baseQuery
 
   // Text search across multiple fields
@@ -188,7 +188,7 @@ export function buildSearchQuery(filters: SearchFilter, baseQuery: any) {
 /**
  * Apply pagination to query
  */
-export function applyPagination(query: any, page: number, limit: number) {
+export function applyPagination(query: unknown, page: number, limit: number) {
   const offset = (page - 1) * limit
   return query.range(offset, offset + limit - 1)
 }
@@ -480,7 +480,7 @@ export function queryParamsToFilters(params: URLSearchParams): Partial<SearchFil
   if (createdBefore) filters.createdBefore = createdBefore
 
   const sortBy = params.get('sortBy')
-  if (sortBy) filters.sortBy = sortBy as any
+  if (sortBy) filters.sortBy = sortBy as unknown
 
   const sortOrder = params.get('sortOrder')
   if (sortOrder === 'asc' || sortOrder === 'desc') {

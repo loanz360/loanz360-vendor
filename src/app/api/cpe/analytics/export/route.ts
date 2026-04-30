@@ -115,7 +115,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Process business performance data (group by month)
-    const monthlyBusinessData: { [key: string]: any } = {}
+    const monthlyBusinessData: { [key: string]: unknown } = {}
     businessResult.data?.forEach((record) => {
       const monthKey = record.metric_date.substring(0, 7)
       if (!monthlyBusinessData[monthKey]) {
@@ -132,7 +132,7 @@ export async function GET(request: NextRequest) {
       monthlyBusinessData[monthKey].disbursedAmount += parseFloat(record.disbursed_loan_amount || 0)
       monthlyBusinessData[monthKey].totalApplications += parseInt(record.total_loan_applications || 0)
     })
-    const businessMonthly = Object.values(monthlyBusinessData).sort((a: any, b: any) =>
+    const businessMonthly = Object.values(monthlyBusinessData).sort((a: unknown, b: unknown) =>
       a.month.localeCompare(b.month)
     )
 
@@ -178,7 +178,7 @@ export async function GET(request: NextRequest) {
     ]
 
     const growthMonths = growthResult.data?.months || []
-    growthMonths.forEach((m: any) => {
+    growthMonths.forEach((m: unknown) => {
       growthSheet.addRow({
         month: m.month,
         ba: m.businessAssociates || 0,
@@ -205,7 +205,7 @@ export async function GET(request: NextRequest) {
       { header: 'Total Applications', key: 'applications', width: 20 },
     ]
 
-    businessMonthly.forEach((m: any) => {
+    businessMonthly.forEach((m: unknown) => {
       businessSheet.addRow({
         month: m.month,
         totalLoan: m.totalLoanAmount || 0,
@@ -239,7 +239,7 @@ export async function GET(request: NextRequest) {
       { header: 'Applications', key: 'applications', width: 15 },
     ]
 
-    partnersResult.data?.forEach((partner: any) => {
+    partnersResult.data?.forEach((partner: unknown) => {
       partnersSheet.addRow({
         name: partner.full_name || 'N/A',
         mobile: partner.mobile_number || 'N/A',

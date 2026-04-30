@@ -83,7 +83,7 @@ export async function checkFormRateLimit(
 export async function logFormSubmission(
   identifier: string,
   formType: string,
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 ): Promise<void> {
   try {
     await supabase.from('form_submissions_log').insert({

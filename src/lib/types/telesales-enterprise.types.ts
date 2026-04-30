@@ -264,7 +264,7 @@ export interface TSEscalation {
   root_cause_category: string | null
   root_cause_details: string | null
   preventive_action: string | null
-  attachments: any[]
+  attachments: unknown[]
   call_recording_url: string | null
   created_at: string
   updated_at: string
@@ -308,7 +308,7 @@ export interface TSDispositionConfig {
   requires_notes: boolean
   min_notes_length: number
   auto_create_task: boolean
-  task_template: any | null
+  task_template: unknown | null
   default_callback_hours: number | null
   remove_from_queue: boolean
   add_to_dnc: boolean

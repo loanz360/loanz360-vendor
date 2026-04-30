@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { apiLogger } from '@/lib/utils/logger'
 import { NextRequest, NextResponse } from 'next/server'
@@ -66,7 +67,19 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      userId: z.string().uuid(),
+
+      contentId: z.string().uuid().optional(),
+
+      contentType: z.string().optional(),
+
+      title: z.string().optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
 
     // Validate required fields

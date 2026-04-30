@@ -1,4 +1,5 @@
 import { parseBody } from '@/lib/utils/parse-body'
+import { z } from 'zod'
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
@@ -20,7 +21,7 @@ export async function GET() {
     if (error) throw error
 
     // Convert to key-value object
-    const settings: Record<string, any> = {}
+    const settings: Record<string, unknown> = {}
     data?.forEach(item => {
       settings[item.setting_key] = item.setting_value
     })
@@ -41,7 +42,13 @@ export async function GET() {
 // POST - Update settings
 export async function POST(request: NextRequest) {
   try {
-    const { data: body, error: _valErr } = await parseBody(request)
+    const bodySchema = z.object({
+
+      settings: z.record(z.unknown()).optional(),
+
+    })
+
+    const { data: body, error: _valErr } = await parseBody(request, bodySchema)
     if (_valErr) return _valErr
     const { settings } = body
 

@@ -97,7 +97,7 @@ export async function detectIncentiveConflicts(
 
     // Check for conflicts
     for (const allocation of userAllocations) {
-      const otherIncentive = allocation.incentives as any;
+      const otherIncentive = allocation.incentives as unknown;
 
       if (otherIncentive.status !== 'active') continue;
 
@@ -288,7 +288,7 @@ export async function applyProration(
       return false;
     }
 
-    const incentive = allocation.incentives as any;
+    const incentive = allocation.incentives as unknown;
     const joinDate = allocation.joined_on
       ? new Date(allocation.joined_on)
       : new Date();
@@ -655,7 +655,7 @@ export async function bulkAutoApproveClaims(
       };
     }
 
-    const claimIds = eligibleClaims.map((c: any) => c.id);
+    const claimIds = eligibleClaims.map((c: unknown) => c.id);
 
     return await bulkProcessClaims(
       claimIds,

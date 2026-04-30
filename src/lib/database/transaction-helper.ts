@@ -61,7 +61,7 @@ export async function withRetry<T>(
 /**
  * Check if error is transient (should be retried)
  */
-function isTransientError(error: any): boolean {
+function isTransientError(error: unknown): boolean {
   const transientCodes = [
     '40001', // serialization_failure
     '40P01', // deadlock_detected
@@ -76,7 +76,7 @@ function isTransientError(error: any): boolean {
 /**
  * Optimistic locking - check version before update
  */
-export async function updateWithOptimisticLock<T extends Record<string, any>>(
+export async function updateWithOptimisticLock<T extends Record<string, unknown>>(
   supabase: SupabaseClient,
   table: string,
   id: string,
@@ -118,7 +118,7 @@ export async function updateWithOptimisticLock<T extends Record<string, any>>(
 /**
  * Idempotency key tracker for preventing duplicate operations
  */
-const idempotencyCache = new Map<string, { result: any; timestamp: number }>()
+const idempotencyCache = new Map<string, { result: unknown; timestamp: number }>()
 const IDEMPOTENCY_TTL = 24 * 60 * 60 * 1000 // 24 hours
 
 /**
@@ -162,7 +162,7 @@ export async function withIdempotency<T>(
 export function generateIdempotencyKey(
   operation: string,
   userId: string,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ): string {
   const dataStr = JSON.stringify(data, Object.keys(data).sort())
   return `${operation}:${userId}:${hashString(dataStr)}`
@@ -307,7 +307,7 @@ export async function withLock<T>(
 /**
  * Check for concurrent updates before executing operation
  */
-export async function checkConcurrentUpdate<T extends Record<string, any>>(
+export async function checkConcurrentUpdate<T extends Record<string, unknown>>(
   supabase: SupabaseClient,
   table: string,
   id: string,
@@ -334,7 +334,7 @@ export async function checkConcurrentUpdate<T extends Record<string, any>>(
 /**
  * Upsert with conflict resolution
  */
-export async function upsertWithConflictResolution<T extends Record<string, any>>(
+export async function upsertWithConflictResolution<T extends Record<string, unknown>>(
   supabase: SupabaseClient,
   table: string,
   data: T,
@@ -395,7 +395,7 @@ export async function upsertWithConflictResolution<T extends Record<string, any>
 /**
  * Batch update with optimistic locking
  */
-export async function batchUpdateWithLocking<T extends Record<string, any>>(
+export async function batchUpdateWithLocking<T extends Record<string, unknown>>(
   supabase: SupabaseClient,
   table: string,
   updates: Array<{ id: string; version: number; data: Partial<T> }>

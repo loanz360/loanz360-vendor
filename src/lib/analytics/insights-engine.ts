@@ -556,7 +556,7 @@ function createInsight(params: {
   severity: InsightSeverity
   title: string
   description: string
-  insight_data: Record<string, any>
+  insight_data: Record<string, unknown>
   recommendations: string[]
   estimated_impact: string
   implementation_effort: ImplementationEffort

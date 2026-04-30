@@ -34,7 +34,7 @@ interface AIInsightsPanelProps {
   description: string
   currentCategory?: string
   currentPriority?: string
-  onApplySuggestion?: (type: string, value: any) => void
+  onApplySuggestion?: (type: string, value: unknown) => void
 }
 
 interface TicketInsights {
@@ -140,7 +140,7 @@ export function AIInsightsPanel({
     }
   }
 
-  const getComplexityFromInsights = (analysis: any): string => {
+  const getComplexityFromInsights = (analysis: unknown): string => {
     const score = analysis.sentiment?.score || 0.5
     const hasSimilar = (analysis.similar_tickets?.length || 0) > 0
 
@@ -149,7 +149,7 @@ export function AIInsightsPanel({
     return 'low'
   }
 
-  const getRecommendedActions = (analysis: any): string[] => {
+  const getRecommendedActions = (analysis: unknown): string[] => {
     const actions: string[] = []
 
     if (analysis.sentiment?.urgency_indicators?.length > 0) {
