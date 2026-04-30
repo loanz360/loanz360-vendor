@@ -341,7 +341,7 @@ function getQueueByName(queueName: string): InMemoryQueue<any> {
 export async function getJobStatus(
   queueName: string,
   jobId: string
-): Promise<any> {
+): Promise<unknown> {
   const queue = getQueueByName(queueName)
   const job = await queue.getJob(jobId)
 
@@ -364,7 +364,7 @@ export async function getJobStatus(
 /**
  * Get queue statistics
  */
-export async function getQueueStats(queueName: string): Promise<any> {
+export async function getQueueStats(queueName: string): Promise<unknown> {
   const queue = getQueueByName(queueName)
 
   const [waiting, active, completed, failed, delayed] = await Promise.all([

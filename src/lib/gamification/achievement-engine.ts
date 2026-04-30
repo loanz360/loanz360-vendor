@@ -234,7 +234,7 @@ function checkCriteria(criteria: UnlockCriteria, userStats: any): boolean {
 /**
  * Get user statistics for achievement checking
  */
-async function getUserStats(userId: string): Promise<any> {
+async function getUserStats(userId: string): Promise<unknown> {
   const supabase = createClient();
 
   // Get allocations with achievements
@@ -457,7 +457,7 @@ export async function calculateLeaderboard(
     if (!allocations) return [];
 
     // Group by user
-    const userScores = new Map<string, any>();
+    const userScores = new Map<string, unknown>();
 
     for (const allocation of allocations) {
       const userId = allocation.user_id;

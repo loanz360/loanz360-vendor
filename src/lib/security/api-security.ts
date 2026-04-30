@@ -172,7 +172,7 @@ export function sanitizeObject<T extends Record<string, any>>(obj: T): T {
  */
 export async function sanitizeRequestBody(
   request: NextRequest
-): Promise<any> {
+): Promise<unknown> {
   try {
     const body = await request.json();
     return sanitizeObject(body);

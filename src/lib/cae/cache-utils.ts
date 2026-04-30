@@ -423,7 +423,7 @@ export const analyticsCache = new TTLCache({
  *   (providerId) => `provider:${providerId}`
  * )
  */
-export function withCache<T extends (...args: any[]) => Promise<any>>(
+export function withCache<T extends (...args: any[]) => Promise<unknown>>(
   fn: T,
   cache: TTLCache,
   keyFn: (...args: Parameters<T>) => string,

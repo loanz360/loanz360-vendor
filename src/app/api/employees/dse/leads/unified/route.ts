@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
 
     // Get unfiltered count for from_partners (need partner IDs)
     let partnerUserIds: string[] = []
-    let partnerMap = new Map<string, any>()
+    let partnerMap = new Map<string, unknown>()
 
     if (source === 'all' || source === 'from_partners') {
       const { data: partners } = await supabase

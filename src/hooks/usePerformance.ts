@@ -305,7 +305,7 @@ export function useOptimizedState<T>(
 // Prefetch Hook
 // ============================================================================
 
-const prefetchCache = new Map<string, Promise<any>>()
+const prefetchCache = new Map<string, Promise<unknown>>()
 
 export function usePrefetch() {
   const prefetch = useCallback(async (url: string, options?: RequestInit) => {

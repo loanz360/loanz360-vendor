@@ -121,7 +121,7 @@ export async function GET(request: NextRequest) {
       .not('bank_id', 'is', null)
 
     // Group by bank
-    const bankMetricsMap = new Map<string, any>()
+    const bankMetricsMap = new Map<string, unknown>()
 
     applications?.forEach(app => {
       if (!app.bank_id) return

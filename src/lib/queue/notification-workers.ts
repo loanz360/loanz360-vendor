@@ -29,7 +29,7 @@ interface Job<T = any> {
   updateProgress: (progress: number) => Promise<void>
 }
 
-type WorkerHandler<T> = (job: Job<T>) => Promise<any>
+type WorkerHandler<T> = (job: Job<T>) => Promise<unknown>
 
 // =====================================================
 // In-Memory Worker Implementation
@@ -68,7 +68,7 @@ class InMemoryWorker<T> {
     }
   }
 
-  async processJob(job: Job<T>): Promise<any> {
+  async processJob(job: Job<T>): Promise<unknown> {
     try {
       const result = await this.handler(job)
       this.eventHandlers.completed.forEach(h => h(job))

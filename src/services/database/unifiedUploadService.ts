@@ -148,7 +148,7 @@ class UnifiedUploadService {
     file: File,
     options: UploadOptions,
     totalRows: number
-  ): Promise<any> {
+  ): Promise<unknown> {
     const { data, error } = await this.supabase
       .from('marketing_database_imports')
       .insert({

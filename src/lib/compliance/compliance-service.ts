@@ -251,7 +251,7 @@ export async function generateComplianceReport(
 /**
  * Get compliance dashboard stats
  */
-export async function getComplianceStats(): Promise<any> {
+export async function getComplianceStats(): Promise<unknown> {
   const supabase = createSupabaseAdmin()
 
   const { data, error } = await supabase.rpc('get_compliance_stats')

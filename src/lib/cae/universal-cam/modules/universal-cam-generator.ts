@@ -33,7 +33,7 @@ interface GeneratorDependencies {
   fetchLenders: () => Promise<any[]>
   fetchLenderRules: (loanType: string) => Promise<any[]>
   fetchDocuments: (leadId: string) => Promise<any[]>
-  fetchLeadDetails: (leadId: string) => Promise<any>
+  fetchLeadDetails: (leadId: string) => Promise<unknown>
 
   // Optional: BDE assignment
   findBestBDE?: (loanType: string, amount: number, location?: string) => Promise<{

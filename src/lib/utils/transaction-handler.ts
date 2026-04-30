@@ -19,8 +19,8 @@ export interface TransactionResult<T> {
 
 export interface TransactionStep {
   name: string
-  execute: () => Promise<any>
-  rollback?: () => Promise<any>
+  execute: () => Promise<unknown>
+  rollback?: () => Promise<unknown>
 }
 
 // =====================================================
@@ -449,8 +449,8 @@ export async function updateIncentiveWithWorkflow(
 export async function executeWithRollback<T>(
   operations: Array<{
     name: string
-    execute: () => Promise<any>
-    rollback?: () => Promise<any>
+    execute: () => Promise<unknown>
+    rollback?: () => Promise<unknown>
   }>
 ): Promise<TransactionResult<T>> {
   const executedOps: Array<{ name: string; result: any }> = []

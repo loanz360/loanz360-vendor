@@ -206,7 +206,7 @@ export class ProviderHealthMonitor {
   /**
    * Perform actual health check (can be overridden for specific providers)
    */
-  private async performHealthCheck(providerType: CAEProviderType, testRequest: any): Promise<any> {
+  private async performHealthCheck(providerType: CAEProviderType, testRequest: any): Promise<unknown> {
     // For MOCK provider, just return success
     if (providerType === 'MOCK') {
       return { success: true, provider: 'MOCK', health: 'OK' }

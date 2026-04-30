@@ -141,7 +141,7 @@ export class IncentiveChatbot {
   /**
    * Get relevant context data based on intent
    */
-  private async getRelevantContext(intent: { type: string; entities: any }): Promise<any> {
+  private async getRelevantContext(intent: { type: string; entities: any }): Promise<unknown> {
     switch (intent.type) {
       case 'progress_query':
         return await this.getProgressData()
@@ -202,7 +202,7 @@ export class IncentiveChatbot {
   /**
    * Get user's progress data
    */
-  private async getProgressData(): Promise<any> {
+  private async getProgressData(): Promise<unknown> {
     // Fetch from API
     const response = await fetch('/api/incentives/my-incentives')
     const data = await response.json()
@@ -269,7 +269,7 @@ export class IncentiveChatbot {
   /**
    * Get target data
    */
-  private async getTargetData(): Promise<any> {
+  private async getTargetData(): Promise<unknown> {
     const response = await fetch('/api/incentives/my-incentives')
     const data = await response.json()
 
@@ -318,7 +318,7 @@ export class IncentiveChatbot {
   /**
    * Get rank data
    */
-  private async getRankData(): Promise<any> {
+  private async getRankData(): Promise<unknown> {
     const response = await fetch('/api/incentives/gamification/leaderboard')
     const data = await response.json()
 
@@ -375,7 +375,7 @@ export class IncentiveChatbot {
   /**
    * Get claim data
    */
-  private async getClaimData(): Promise<any> {
+  private async getClaimData(): Promise<unknown> {
     const response = await fetch('/api/incentives/my-incentives')
     const data = await response.json()
 

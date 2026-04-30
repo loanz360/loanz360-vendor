@@ -133,7 +133,7 @@ export async function GET(request: NextRequest) {
     const slaMap = new Map(bankSLAs?.map(s => [s.bank_id, s.target_tat_days]) || [])
 
     // Group by bank
-    const bankMap = new Map<string, any>()
+    const bankMap = new Map<string, unknown>()
 
     bankStats?.forEach(app => {
       if (!app.bank_id || !app.banks) return
@@ -173,7 +173,7 @@ export async function GET(request: NextRequest) {
     })
 
     // Group previous period by bank
-    const prevBankMap = new Map<string, any>()
+    const prevBankMap = new Map<string, unknown>()
     prevBankStats?.forEach(app => {
       if (!app.bank_id) return
       if (!prevBankMap.has(app.bank_id)) {

@@ -500,7 +500,7 @@ export class VerificationService {
   // Individual Verification Methods
   // ============================================================================
 
-  private async verifyPAN(applicant: ApplicantDetails): Promise<any> {
+  private async verifyPAN(applicant: ApplicantDetails): Promise<unknown> {
     if (!applicant.pan) {
       throw new Error('PAN number is required for PAN verification')
     }
@@ -512,7 +512,7 @@ export class VerificationService {
     })
   }
 
-  private async verifyAadhaar(applicant: ApplicantDetails): Promise<any> {
+  private async verifyAadhaar(applicant: ApplicantDetails): Promise<unknown> {
     if (!applicant.aadhaar) {
       throw new Error('Aadhaar number is required for Aadhaar verification')
     }
@@ -523,7 +523,7 @@ export class VerificationService {
     })
   }
 
-  private async verifyITR(applicant: ApplicantDetails): Promise<any> {
+  private async verifyITR(applicant: ApplicantDetails): Promise<unknown> {
     if (!applicant.pan) {
       throw new Error('PAN number is required for ITR verification')
     }
@@ -534,7 +534,7 @@ export class VerificationService {
     })
   }
 
-  private async verifyGST(applicant: ApplicantDetails): Promise<any> {
+  private async verifyGST(applicant: ApplicantDetails): Promise<unknown> {
     if (!applicant.gstin) {
       throw new Error('GSTIN is required for GST verification')
     }
@@ -548,7 +548,7 @@ export class VerificationService {
   private async initiateBankStatementAnalysis(
     applicant: ApplicantDetails,
     leadId: string
-  ): Promise<any> {
+  ): Promise<unknown> {
     return this.bankStatementAdapter.analyzeStatement({
       customer_id: leadId,
       customer_name: applicant.name,
@@ -562,7 +562,7 @@ export class VerificationService {
   private async initiateAccountAggregator(
     applicant: ApplicantDetails,
     leadId: string
-  ): Promise<any> {
+  ): Promise<unknown> {
     return this.accountAggregatorAdapter.createConsent({
       customer_mobile: applicant.mobile,
       customer_name: applicant.name,
@@ -573,7 +573,7 @@ export class VerificationService {
     })
   }
 
-  private async verifyBankAccount(applicant: ApplicantDetails): Promise<any> {
+  private async verifyBankAccount(applicant: ApplicantDetails): Promise<unknown> {
     // Bank account details would typically come from the application form
     return this.pennyDropAdapter.verifyAccount({
       account_number: '', // Required from form
@@ -583,7 +583,7 @@ export class VerificationService {
     })
   }
 
-  private async verifyMCA(applicant: ApplicantDetails): Promise<any> {
+  private async verifyMCA(applicant: ApplicantDetails): Promise<unknown> {
     if (applicant.cin) {
       return this.mcaAdapter.verifyCompany({ cin: applicant.cin })
     } else if (applicant.din) {
@@ -593,7 +593,7 @@ export class VerificationService {
     }
   }
 
-  private async verifyUdyam(applicant: ApplicantDetails): Promise<any> {
+  private async verifyUdyam(applicant: ApplicantDetails): Promise<unknown> {
     if (!applicant.udyam_number) {
       throw new Error('Udyam number is required for MSME verification')
     }
@@ -601,7 +601,7 @@ export class VerificationService {
     return this.mcaAdapter.verifyUdyam(applicant.udyam_number)
   }
 
-  private async screenAML(applicant: ApplicantDetails): Promise<any> {
+  private async screenAML(applicant: ApplicantDetails): Promise<unknown> {
     return this.amlScreeningAdapter.screen({
       name: applicant.name,
       entity_type: applicant.entity_type === 'INDIVIDUAL' ? 'INDIVIDUAL' : 'COMPANY',
@@ -616,7 +616,7 @@ export class VerificationService {
   private async searchCERSAI(
     applicant: ApplicantDetails,
     loanDetails?: LoanDetails
-  ): Promise<any> {
+  ): Promise<unknown> {
     // Search by borrower PAN first
     if (applicant.pan) {
       return this.cersaiAdapter.searchByBorrower(applicant.pan, 'PAN')
@@ -642,7 +642,7 @@ export class VerificationService {
     throw new Error('Insufficient details for CERSAI search')
   }
 
-  private async checkLitigation(applicant: ApplicantDetails): Promise<any> {
+  private async checkLitigation(applicant: ApplicantDetails): Promise<unknown> {
     return this.courtRecordsAdapter.search({
       name: applicant.name,
       entity_type: applicant.entity_type === 'INDIVIDUAL' ? 'INDIVIDUAL' : 'COMPANY',

@@ -73,7 +73,7 @@ export interface SMSDeliveryResult {
 
 export class UnifiedSMSService {
   private supabase = createClient()
-  private providerCache: Map<string, any> = new Map()
+  private providerCache: Map<string, unknown> = new Map()
   private templateCache: Map<string, SMSTemplate> = new Map()
   private lastCacheUpdate: number = 0
   private cacheTimeout: number = 5 * 60 * 1000 // 5 minutes

@@ -96,7 +96,7 @@ export async function GET(request: NextRequest) {
       .lte('created_at', endDate.toISOString())
 
     // Group by bank
-    const bankStatsMap = new Map<string, any>()
+    const bankStatsMap = new Map<string, unknown>()
 
     bankIds.forEach(bankId => {
       bankStatsMap.set(bankId, {

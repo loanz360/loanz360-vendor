@@ -142,7 +142,7 @@ export async function GET(request: NextRequest) {
     }))
 
     // BDE performance breakdown
-    const bdeMap2 = new Map<string, any>()
+    const bdeMap2 = new Map<string, unknown>()
     applications?.forEach(app => {
       if (!app.assigned_bde_id) return
 
