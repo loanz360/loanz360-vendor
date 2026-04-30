@@ -194,7 +194,7 @@ export default function AccountsAnalytics({ defaultSection }: { defaultSection?:
       setFinancial(fin)
       setTrends(trendJson.data ?? [])
       setAnomalies(computeAnomalies(fin))
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message ?? 'Something went wrong')
     } finally {
       setLoading(false)
@@ -314,7 +314,7 @@ export default function AccountsAnalytics({ defaultSection }: { defaultSection?:
       }
 
       toast.success('Report generated successfully')
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error(err.message ?? 'Report generation failed')
     } finally {
       setGenerating(false)
