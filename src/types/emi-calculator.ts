@@ -102,6 +102,14 @@ export interface EMICalculationInput {
   processingFeeFlat?: number
   insurancePremium?: number
   otherCharges?: number
+  /**
+   * Promotional "No-Cost EMI" scheme flag (typical of retailer/appliance
+   * partnerships where the bank absorbs interest and the merchant covers fees).
+   * When true AND interestRate is 0, processing fee / insurance / other charges
+   * are overridden to 0 in the result — matching the customer-facing promise.
+   * Default: false (normal loans pay fees even at 0% promotional rate).
+   */
+  isPromoNoCostEmi?: boolean
 }
 
 /**
@@ -117,6 +125,13 @@ export interface EMICalculationResult {
   effectiveInterestRate?: number // APR including all fees
   processingFee?: number
   totalCostOfLoan?: number // Principal + Interest + All Fees
+  /**
+   * Average true monthly burden = totalCostOfLoan / tenureMonths.
+   * Differs from monthlyEMI when there are upfront fees / insurance — useful
+   * for transparent customer disclosure ("your EMI is X, your real monthly
+   * equivalent cost including fees is Y").
+   */
+  amortizedMonthlyCost?: number
 }
 
 /**
@@ -568,6 +583,7 @@ export interface EMIValidationErrors {
   customerPhone?: string
   customerEmail?: string
   submit?: string
+  prepayment?: string
 }
 
 /**
