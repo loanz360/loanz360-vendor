@@ -54,3 +54,21 @@ export const amountSchema = z.number().positive('Amount must be positive').max(1
 
 // Email
 export const emailSchema = z.string().email().max(255);
+
+// IFSC Code
+export const ifscSchema = z.string().regex(
+  /^[A-Z]{4}0[A-Z0-9]{6}$/,
+  'Invalid IFSC code'
+);
+
+// GST Number
+export const gstSchema = z.string().regex(
+  /^\d{2}[A-Z]{5}\d{4}[A-Z]\d[Z][A-Z\d]$/,
+  'Invalid GSTIN'
+);
+
+// Bank Account Number (Indian — 9-18 digits)
+export const bankAccountSchema = z.string().regex(
+  /^\d{9,18}$/,
+  'Invalid bank account number'
+);
