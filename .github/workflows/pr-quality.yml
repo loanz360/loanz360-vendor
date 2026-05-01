@@ -1,0 +1,36 @@
+name: PR quality gate
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  pr-checks:
+    name: PR validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check PR title format
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          if ! echo "$TITLE" | grep -qE "^(feat|fix|chore|docs|refactor|test|perf|ci|style|build|revert)(\(.+\))?:"; then
+            echo "::error::PR title must follow conventional commits format (feat:, fix:, etc.)"
+            exit 1
+          fi
+
+      - name: Check for large files
+        run: |
+          LARGE=$(find . -type f -size +1M -not -path './.git/*' -not -path './node_modules/*' -not -path './package-lock.json')
+          if [ -n "$LARGE" ]; then
+            echo "::warning::Large files detected: $LARGE"
+          fi
+
+      - name: Check for console.log in src
+        run: |
+          if grep -rn "console\.log" src/ --include="*.ts" --include="*.tsx" | grep -v "// eslint-disable\|logger\|__tests__\|\.test\.\|\.spec\."; then
+            echo "::warning::console.log found in source code"
+          fi
