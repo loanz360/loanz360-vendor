@@ -1,0 +1,9 @@
+{
+  "src/**/*.{ts,tsx}": [
+    "eslint --fix --max-warnings=0",
+    "bash -c 'npx tsc --noEmit'"
+  ],
+  "src/**/*.{ts,tsx,json,css,md}": [
+    "prettier --write"
+  ]
+}
