@@ -31,6 +31,7 @@ const PUBLIC_ROUTES = [
   '/verify-email',
   '/unauthorized',
   '/api-docs',
+  '/api-docs',
 ]
 
 /**
@@ -71,6 +72,7 @@ const PUBLIC_API_ROUTES = [
   '/api/admin/auth/login',
   '/api/csrf-token',
   '/api/health',
+  '/api/docs',
   '/api/docs',
   // SECURITY FIX CRITICAL-02: Debug endpoints removed from public routes
   // These endpoints now require authentication
