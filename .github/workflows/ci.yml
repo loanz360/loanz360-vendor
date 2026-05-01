@@ -13,6 +13,17 @@ concurrency:
 env:
   NODE_VERSION: '20'
   NODE_OPTIONS: '--max-old-space-size=4096'
+  NEXT_PUBLIC_SUPABASE_URL: 'https://placeholder.supabase.co'
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: 'placeholder-anon-key'
+  NEXT_PUBLIC_APP_URL: 'http://localhost:3000'
+  NEXT_PUBLIC_APP_NAME: 'LOANZ 360'
+  NEXT_PUBLIC_SITE_URL: 'http://localhost:3000'
+  NEXT_PUBLIC_URL: 'http://localhost:3000'
+  SUPABASE_SERVICE_ROLE_KEY: 'placeholder-service-role-key'
+  JWT_SECRET: 'ci-test-jwt-secret-placeholder-value'
+  SESSION_SECRET: 'ci-test-session-secret-placeholder'
+  CSRF_SECRET: 'ci-test-csrf-secret-placeholder-val'
+  CRON_SECRET: 'ci-test-cron-secret'
 
 jobs:
   lint:
